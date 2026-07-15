@@ -23,4 +23,6 @@ include::chapters/01-introduction.adoc[]
 
 include::chapters/02-engineering-economics.adoc[]
 
+include::chapters/03-engineering-change.adoc[]
+
 // Planned chapters are added here as they are written.
