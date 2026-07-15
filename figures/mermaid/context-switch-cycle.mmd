@@ -1,0 +1,10 @@
+flowchart LR
+    A[Focused work on Change A] --> I[Interruption or review wait]
+    I --> B[Work on Change B]
+    B --> C[Return trigger for Change A]
+    C --> R[Reconstruct code, decisions, and local state]
+    R --> A2[Resume productive work]
+
+    I -. attention residue .-> B
+    B -. intervening changes .-> R
+    C -. AI summary or preserved context .-> R
