@@ -1,0 +1,11 @@
+flowchart TD
+    INIT[Initiative] -->|contains| EC1[Engineering Change A]
+    INIT -->|contains| EC2[Engineering Change B]
+    T1[Ticket] -->|describes| EC1
+    T2[Ticket] -->|describes| EC1
+    PR1[Pull request] -->|implements| EC1
+    PR2[Pull request] -->|implements| EC1
+    REL[Release] -->|packages| EC1
+    REL -->|packages| EC2
+    DEP[Deployment] -->|delivers| EC1
+    INC[Incident] -->|caused by or remediated by| EC1
