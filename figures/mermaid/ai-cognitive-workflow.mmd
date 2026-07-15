@@ -1,0 +1,14 @@
+flowchart LR
+    CHANGE[Engineering Change] --> AI[AI inspects code and context]
+    AI --> FINDINGS[Ranked findings, summaries, and suggestions]
+    FINDINGS --> HUMAN[Human validates and decides]
+    HUMAN --> APPLY[Apply or modify]
+    HUMAN --> REJECT[Reject or defer]
+    HUMAN --> INVESTIGATE[Investigate independently]
+    APPLY --> OUTCOME[Changed artifact and downstream outcome]
+    REJECT --> OUTCOME
+    INVESTIGATE --> OUTCOME
+
+    AI -. potential offload .-> HUMAN
+    FINDINGS -. possible cognitive reload .-> HUMAN
+    OUTCOME --> EVAL[Measure effort, quality, latency, and learning]
