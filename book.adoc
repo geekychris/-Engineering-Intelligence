@@ -21,4 +21,6 @@ _Engineering Intelligence_ develops a framework for answering those questions. I
 
 include::chapters/01-introduction.adoc[]
 
+include::chapters/02-engineering-economics.adoc[]
+
 // Planned chapters are added here as they are written.
