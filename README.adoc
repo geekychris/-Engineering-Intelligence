@@ -1,0 +1,30 @@
+= Engineering Intelligence
+
+*A Quantitative Framework for Measuring, Understanding, and Optimizing Modern Software Engineering*
+
+This repository contains the source manuscript and companion technical assets for _Engineering Intelligence_. The book develops a rigorous framework for observing software delivery as a socio-technical and economic system: people, AI participants, repositories, review processes, build systems, deployment pipelines, production outcomes, and organizational constraints.
+
+== Build targets
+
+The manuscript is authored in AsciiDoc and is intended to produce:
+
+* HTML
+* PDF
+* EPUB
+* a searchable companion website
+
+== Repository layout
+
+[source,text]
+----
+book.adoc                 Main book entry point
+chapters/                 Numbered manuscript chapters
+figures/mermaid/           Standalone Mermaid source diagrams
+bibliography/              Bibliographic data and source notes
+appendices/                Metric catalogue, glossary, schemas, and methods
+examples/                  Worked examples, SQL, and event definitions
+----
+
+== Current status
+
+The manuscript is being developed incrementally. Chapter 1 establishes the discipline, defines the Engineering Change as the principal unit of analysis, and explains why measurement must support decisions and experiments rather than merely populate dashboards.
