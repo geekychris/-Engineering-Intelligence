@@ -1,0 +1,12 @@
+flowchart LR
+    S[Source artifacts and events] --> N[Normalize identities and schemas]
+    N --> D[Deterministic links]
+    N --> F[Pairwise and graph features]
+    F --> M[Probabilistic linkage model]
+    D --> G[Candidate Engineering Change graph]
+    M --> G
+    G --> C[Confidence and provenance]
+    C --> H[Human correction]
+    H --> L[Labeled examples]
+    L --> M
+    C --> O[Operational metrics and experiments]
