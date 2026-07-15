@@ -1,0 +1,660 @@
+= Engineering Economics
+
+[abstract]
+Engineering organizations make economic decisions continuously: whether to automate a review step, split a repository, add a required approver, buy an AI tool, tolerate a slower build, defer a migration, or invest in platform work. Yet these decisions are often made without a shared cost model. This chapter defines the economic foundations of Engineering Intelligence. It separates direct expenditure from human attention, delay, coordination, risk, and quality costs; introduces a formal cost model for an Engineering Change; explains why averages are often misleading; and provides practical methods for estimation, calibration, and decision support.
+
+== Why cost is harder than it appears
+
+At first glance, the cost of a pull request seems straightforward. Count the time spent by the author and reviewers, multiply by loaded compensation, add the software and infrastructure costs, and report the total. This calculation is useful, but it is not a complete economic model.
+
+Several important costs remain hidden:
+
+* The author may stop active work while waiting for review, then pay a context-reconstruction cost when comments arrive.
+* A review request may consume scarce security expertise whose organizational constraint is much greater than its nominal hourly cost.
+* A required approval may add little direct labor but create days of queueing delay.
+* A noisy AI reviewer may reduce authoring effort while increasing verification effort.
+* A change may be cheap to implement but expensive to coordinate across repositories and deployment boundaries.
+* A defect avoided before merge creates expected value even though the avoided incident never appears in operational data.
+* A delayed change may postpone revenue, risk reduction, learning, or customer benefit.
+
+The correct economic question is not simply, "How much labor was recorded?" It is:
+
+[quote]
+____
+What resources did this Engineering Change consume, what risks did it create or retire, what value did it enable, and what alternative uses of those resources were displaced?
+____
+
+This is an activity-based view of engineering economics. Costs are attributed to the activities and constraints that created them rather than being inferred from a single duration or output count.
+
+== Cost, price, value, and investment
+
+Four terms must be kept separate.
+
+*Cost* is the consumption of resources associated with an Engineering Change or process.
+
+*Price* is the amount paid to acquire a tool, service, or labor input. Price may be easy to observe while cost remains hidden. A low-priced tool can create expensive human validation work.
+
+*Value* is the benefit created or protected by the outcome. Value may include revenue, retention, reduced operational risk, compliance, faster learning, strategic option value, or avoided future effort.
+
+*Investment* is current cost incurred to improve future capability. Platform engineering, test infrastructure, codebase simplification, and knowledge transfer are often investments rather than immediate feature-delivery costs.
+
+Confusing these terms leads to poor optimization. A process can become cheaper while destroying value. A change can be expensive while producing exceptional returns. A platform investment can reduce current throughput while increasing future capacity.
+
+== The total cost of an Engineering Change
+
+Let an Engineering Change be denoted by stem:[e]. Its total economic cost can be represented as:
+
+[stem]
+++++
+C_{total}(e) = C_{human}(e) + C_{tool}(e) + C_{infra}(e) + C_{coord}(e) + C_{delay}(e) + C_{quality}(e) + C_{risk}(e)
+++++
+
+where:
+
+* stem:[C_{human}] is the cost of human attention and effort;
+* stem:[C_{tool}] is the marginal and allocated cost of software and AI services;
+* stem:[C_{infra}] is compute, storage, networking, test-environment, and observability cost;
+* stem:[C_{coord}] is the cost of cross-person, cross-team, and cross-system alignment;
+* stem:[C_{delay}] is the economic cost of waiting and deferred benefit;
+* stem:[C_{quality}] is expected rework, defects, incidents, and support cost;
+* stem:[C_{risk}] is the expected cost of low-probability, high-impact outcomes not fully represented by observed defects.
+
+This decomposition is intentionally additive for explanation, but the components are not always independent. A tool may reduce authoring time while increasing quality. More review may increase direct human cost while reducing expected defect cost. A slower rollout may increase delay but reduce operational risk.
+
+A useful model therefore records both component values and the assumptions connecting them.
+
+image::../figures/mermaid/engineering-cost-model.mmd[Engineering Change cost model]
+
+== Human effort cost
+
+The simplest human-cost estimate is:
+
+[stem]
+++++
+C_{labor}(e) = \sum_{p \in P_e} h_{p,e} \times r_p
+++++
+
+where stem:[P_e] is the set of participants, stem:[h_{p,e}] is the number of hours participant stem:[p] spent on the change, and stem:[r_p] is that participant's loaded hourly cost.
+
+Loaded cost commonly includes salary, benefits, payroll taxes, facilities, management overhead, and other allocated expenses. Organizations may use standardized rates by role or level to reduce sensitivity and protect individual compensation data.
+
+This estimate is useful for budgeting, but three refinements are required.
+
+=== Active time versus elapsed time
+
+Elapsed time cannot be treated as labor time. A pull request open for forty hours did not necessarily consume forty engineer-hours. Event data should distinguish:
+
+* active authoring;
+* active review;
+* active response and rework;
+* automated processing;
+* queue time;
+* blocked time;
+* inactive calendar time.
+
+Because perfect time tracking is neither realistic nor desirable, active effort is usually estimated from event sequences, IDE activity, review sessions, code updates, build interactions, and calibrated task-duration models.
+
+An effort estimate should be reported with uncertainty. For example:
+
+[stem]
+++++
+\hat{H}_{author}(e) = 6.2 \text{ hours}, \quad 90\%\ \text{interval} = [4.7, 8.5]
+++++
+
+False precision undermines trust. A modeled estimate of 6.237 hours communicates more certainty than the data supports.
+
+=== Attention-weighted effort
+
+Not all hours have equal opportunity cost. One hour from a broadly available contributor may be less constraining than one hour from the only engineer authorized to approve a cryptographic change.
+
+Define an attention scarcity multiplier stem:[s_p] for participant or role stem:[p]:
+
+[stem]
+++++
+C_{attention}(e) = \sum_{p \in P_e} h_{p,e} \times r_p \times s_p
+++++
+
+The multiplier is not a judgment of personal worth. It represents organizational scarcity. It can be estimated from queue depth, demand-to-capacity ratio, reviewer utilization, time-to-assignment, and the number of qualified substitutes.
+
+For example, if database-migration reviewers receive twice as much demand as available review capacity, their marginal attention may constrain delivery more than their accounting rate suggests.
+
+=== Context recovery and interruption cost
+
+When work is interrupted, resumption often requires rereading code, rebuilding assumptions, restoring local state, and recovering unresolved decisions. Let stem:[n_{switch}] be the number of material context switches and stem:[t_{recover}] the expected recovery time per switch:
+
+[stem]
+++++
+C_{recovery}(e) = n_{switch}(e) \times t_{recover}(e) \times r_{effective}
+++++
+
+This is a model, not a direct observation. Relevant proxies include:
+
+* time between review request and author response;
+* number of unrelated repositories or tasks touched during the wait;
+* repeated file navigation after resumption;
+* repeated builds or test runs without code changes;
+* reopening of previously resolved discussions;
+* multiple partially active branches;
+* change in active issue or repository before return.
+
+These signals must be used carefully. The goal is to estimate system-level friction, not to monitor individual behavior minute by minute.
+
+== Tool and AI cost
+
+Tool cost includes both fixed and variable components.
+
+Let a tool stem:[j] have annual fixed cost stem:[F_j], usage-based cost stem:[u_{j,e}], and allocated population stem:[N_j]. A simple per-change allocation is:
+
+[stem]
+++++
+C_{tool}(e) = \sum_j \left( \frac{F_j}{N_j} \times a_{j,e} + u_{j,e} \right)
+++++
+
+where stem:[a_{j,e}] is an allocation factor representing the share of licensed capacity attributed to the change.
+
+Per-seat allocation is often sufficient for financial reporting but weak for experiment analysis. To compare two AI review workflows, capture marginal usage:
+
+* model and model version;
+* input and output tokens;
+* number of review passes;
+* repository indexing cost;
+* embeddings and retrieval cost;
+* tool-call count;
+* latency;
+* cache hits;
+* retry and failure cost.
+
+The full economic cost of an AI tool must also include the human work it creates:
+
+[stem]
+++++
+C_{AI,net}(e) = C_{inference}(e) + C_{validation}(e) + C_{administration}(e) - V_{offload}(e)
+++++
+
+where stem:[V_{offload}] is the value of human effort genuinely avoided or quality improvement created.
+
+A cheap model producing many low-value comments can be more expensive than a costly model producing a small number of trusted findings. Cost per comment is therefore rarely useful. Cost per validated defect prevented, or cost per hour of quality-adjusted human attention saved, is more meaningful.
+
+== Infrastructure cost
+
+Infrastructure cost includes more than cloud invoices. A change can trigger builds, tests, ephemeral environments, security scans, artifact storage, deployment waves, and production observation.
+
+For Engineering Change stem:[e]:
+
+[stem]
+++++
+C_{infra}(e) = C_{build} + C_{test} + C_{env} + C_{artifact} + C_{deploy} + C_{observe}
+++++
+
+Useful event-level inputs include:
+
+* runner type and duration;
+* CPU, GPU, memory, and storage consumption;
+* cache effectiveness;
+* test-shard count;
+* environment lifetime;
+* artifact size and retention;
+* deployment target count;
+* log, metric, and trace volume.
+
+Shared infrastructure requires allocation rules. The rule should match the decision. For cost optimization, marginal cloud cost may be appropriate. For total-cost comparison, allocated platform and staffing cost may be needed. Mixing marginal and fully allocated cost in the same analysis produces misleading results.
+
+== Coordination cost
+
+Coordination cost is often the dominant hidden cost of large enterprise changes.
+
+It arises from:
+
+* identifying owners;
+* scheduling reviewers;
+* resolving conflicting requirements;
+* negotiating interfaces;
+* coordinating release order;
+* obtaining approvals;
+* communicating status;
+* managing dependencies;
+* handling handoffs;
+* aligning across time zones and organizations.
+
+A simple coordination model might use:
+
+[stem]
+++++
+C_{coord}(e) = \alpha T_e + \beta B_e + \gamma H_e + \delta A_e
+++++
+
+where:
+
+* stem:[T_e] is the number of teams materially involved;
+* stem:[B_e] is the number of ownership or approval boundaries;
+* stem:[H_e] is the number of handoffs;
+* stem:[A_e] is active coordination effort;
+* stem:[\alpha, \beta, \gamma, \delta] are empirically calibrated coefficients.
+
+This should not be interpreted as a universal formula. It is an example of a model whose coefficients can be learned from historical changes.
+
+Coordination cost is nonlinear. Adding a second team may be inexpensive if the relationship is routine and interfaces are stable. Adding a fifth team can increase the number of communication paths and scheduling constraints dramatically.
+
+The theoretical number of pairwise communication paths among stem:[n] participants is:
+
+[stem]
+++++
+L(n) = \frac{n(n-1)}{2}
+++++
+
+Real organizations do not require every participant to communicate directly, but the equation illustrates why coordination structures, clear ownership, and interface contracts matter.
+
+image::../figures/mermaid/coordination-boundaries.mmd[Coordination boundaries and handoffs]
+
+== Delay and cost of delay
+
+Waiting is not free merely because no one is actively working.
+
+A change delayed in review may postpone:
+
+* customer value;
+* revenue;
+* risk reduction;
+* regulatory compliance;
+* operational savings;
+* learning from production;
+* dependent work;
+* retirement of an expensive legacy system.
+
+Define the instantaneous value-delivery rate of change stem:[e] as stem:[v_e(t)]. If delivery is delayed from time stem:[t_0] to stem:[t_1], the cost of delay is:
+
+[stem]
+++++
+C_{delay}(e) = \int_{t_0}^{t_1} v_e(t)\,dt
+++++
+
+In practice, value curves are rarely known precisely. Organizations can use categories:
+
+[cols="1,3"]
+|===
+|Delay profile |Typical behavior
+
+|Standard
+|Value is approximately linear over the relevant window.
+
+|Fixed date
+|Value drops sharply after a regulatory, contractual, seasonal, or launch deadline.
+
+|Expedite
+|Delay creates immediate and unusually high cost, as with an active incident or critical vulnerability.
+
+|Intangible or exploratory
+|Value comes primarily from learning; delay postpones information rather than a known revenue stream.
+|===
+
+Cost of delay should not be applied indiscriminately to manufacture urgency. Its purpose is prioritization and trade-off analysis. When uncertain, report a range and sensitivity analysis.
+
+=== Queueing and inventory cost
+
+Open Engineering Changes behave like work-in-process inventory. They consume attention, create dependency uncertainty, age, and can require context recovery.
+
+Little's Law relates average work in process stem:[L], throughput stem:[\lambda], and average flow time stem:[W]:
+
+[stem]
+++++
+L = \lambda W
+++++
+
+If a team completes ten Engineering Changes per week and average flow time is three weeks, average work in process is approximately thirty changes, assuming a stable system and consistent boundaries.
+
+This relationship does not prescribe a target, but it exposes trade-offs. Increasing work in process without increasing throughput raises flow time. Reducing batch size and limiting concurrent work can reduce latency even if individual task execution speed does not change.
+
+A carrying-cost approximation is:
+
+[stem]
+++++
+C_{carry}(e) = W_e \times k_e
+++++
+
+where stem:[W_e] is time in process and stem:[k_e] is an estimated daily carrying cost incorporating delay, coordination overhead, and context risk.
+
+== Quality cost
+
+Quality cost should be modeled prospectively and retrospectively.
+
+Retrospective quality cost includes observed rework, rollback, support, incident response, customer remediation, and follow-up changes.
+
+Prospective quality cost is expected loss:
+
+[stem]
+++++
+C_{quality}^{expected}(e) = \sum_{f \in F_e} P(f \mid e) \times I(f)
+++++
+
+where stem:[F_e] is the set of relevant failure modes, stem:[P(f \mid e)] is the probability of failure stem:[f] given the change, and stem:[I(f)] is its impact.
+
+The expected-cost model allows review and testing investments to be evaluated economically. Suppose an additional security review costs $600 and reduces the estimated probability of a $200,000 loss from 1.0% to 0.4%. The expected loss reduction is:
+
+[stem]
+++++
+(0.010 - 0.004) \times 200{,}000 = 1{,}200
+++++
+
+Under those assumptions, the review produces $1,200 of expected risk reduction for $600 of direct cost. The estimate is uncertain, but the structure makes the decision explicit.
+
+=== Prevention, appraisal, and failure
+
+A useful classification from quality economics separates:
+
+* *prevention cost* — design practices, training, automation, and architecture intended to prevent defects;
+* *appraisal cost* — review, testing, scanning, and verification;
+* *internal failure cost* — defects found before release;
+* *external failure cost* — defects found after release.
+
+Optimization does not mean minimizing appraisal. Excessively reducing review may lower immediate cost while increasing external failure. Excessive appraisal may create delay with little incremental risk reduction. The objective is to minimize total quality-adjusted cost.
+
+== Risk and tail events
+
+Observed defect rates often underrepresent security, privacy, financial, and availability risk because severe events are rare. Historical averages can therefore create false confidence.
+
+Risk analysis should combine:
+
+* empirical incident frequency;
+* threat and failure-mode analysis;
+* potential blast radius;
+* control effectiveness;
+* expert priors;
+* scenario analysis;
+* stress testing;
+* simulation.
+
+For rare events, expected value alone can be inadequate. Two changes may have the same expected loss while one carries catastrophic tail risk. Decision support may therefore include quantiles, conditional value at risk, or explicit policy constraints.
+
+A change violating a regulatory requirement is not made acceptable merely because its estimated expected loss is low.
+
+== Value and return
+
+Cost analysis becomes dangerous when disconnected from value.
+
+Let stem:[V(e)] be the discounted value created by Engineering Change stem:[e]. A basic net value is:
+
+[stem]
+++++
+NV(e) = V(e) - C_{total}(e)
+++++
+
+Return on engineering investment can be expressed as:
+
+[stem]
+++++
+ROEI(e) = \frac{V(e) - C_{total}(e)}{C_{total}(e)}
+++++
+
+These formulas are simple; estimating value is not.
+
+Engineering value commonly falls into six categories:
+
+. *Growth value* — revenue, acquisition, conversion, retention, and market expansion.
+. *Efficiency value* — avoided labor, infrastructure savings, lower support cost, and faster delivery.
+. *Risk value* — reduced probability or impact of failure, fraud, security compromise, or noncompliance.
+. *Learning value* — information obtained through experiments, prototypes, instrumentation, and production feedback.
+. *Capability value* — reusable platforms, skills, data, architecture, and tooling that improve future work.
+. *Option value* — preserving the ability to make future choices under uncertainty.
+
+Not every change should be forced into a precise dollar value. The purpose of valuation is to improve comparisons, expose assumptions, and support portfolio decisions. Qualitative value classes and bounded estimates are preferable to fabricated precision.
+
+== Worked example: evaluating an AI review tool
+
+Consider an organization processing 100,000 pull requests per year. It is evaluating an AI reviewer with an annual license and infrastructure cost of $1.2 million.
+
+The observed treatment effects from a controlled rollout are:
+
+* average human review effort decreases by 7 minutes per pull request;
+* author response and validation effort increases by 2 minutes;
+* post-merge defect probability falls from 2.0% to 1.8%;
+* average review latency falls by 45 minutes;
+* the average loaded engineering cost is $150 per hour;
+* the average cost of a qualifying post-merge defect is $3,000.
+
+Net human time saved per pull request is five minutes:
+
+[stem]
+++++
+100{,}000 \times \frac{5}{60} \times 150 = 1{,}250{,}000
+++++
+
+Expected defect savings are:
+
+[stem]
+++++
+100{,}000 \times (0.020 - 0.018) \times 3{,}000 = 600{,}000
+++++
+
+Ignoring delay value, total estimated benefit is $1.85 million. Subtracting the $1.2 million tool cost yields an estimated annual net benefit of $650,000.
+
+This result is incomplete until uncertainty and heterogeneity are considered. The effect may differ by language, repository, change complexity, team experience, or comment type. The defect-cost distribution may be heavy-tailed. Adoption may be incomplete. The seven-minute review reduction may be concentrated in trivial changes.
+
+A publication-quality evaluation should therefore report:
+
+* confidence or credible intervals;
+* treatment compliance;
+* primary and guardrail outcomes;
+* effects by relevant change classes;
+* sensitivity to defect-cost assumptions;
+* inference and platform costs;
+* long-term effects after novelty and learning periods.
+
+== Worked example: a required specialist approval
+
+A platform team proposes requiring a database specialist to approve every schema-changing pull request.
+
+Historical data shows 4,000 such changes per year. Each approval requires an average of 12 specialist minutes and creates an average queueing delay of 5.5 hours. The specialist's loaded cost is $190 per hour. The approval is estimated to prevent eight production incidents annually, each costing an average of $45,000.
+
+Direct review cost:
+
+[stem]
+++++
+4{,}000 \times \frac{12}{60} \times 190 = 152{,}000
+++++
+
+Expected incident savings:
+
+[stem]
+++++
+8 \times 45{,}000 = 360{,}000
+++++
+
+On direct cost and expected quality benefit, the policy appears favorable. But the queueing delay affects 4,000 changes, and the specialist becomes a single constrained resource. The correct decision may be to retain specialist review only for high-risk migrations while automating classification and standard checks for routine changes.
+
+This illustrates a recurring pattern: the optimal solution is often not "add review" or "remove review," but route scarce attention according to predicted risk and uncertainty.
+
+== Estimation methods
+
+Different cost components require different methods.
+
+[cols="1,2,2"]
+|===
+|Component |Primary evidence |Common method
+
+|Human active effort
+|IDE, SCM, review, build, and calibrated task samples
+|Session reconstruction and hierarchical duration models
+
+|Tool cost
+|Contracts, billing, token and request telemetry
+|Direct allocation and marginal-cost calculation
+
+|Infrastructure cost
+|Runner, cloud, storage, deployment, and observability telemetry
+|Usage attribution and cost allocation
+
+|Coordination cost
+|Teams, handoffs, approvals, messages, dependencies
+|Activity models and graph-derived features
+
+|Delay cost
+|Priority, product economics, deadlines, dependency effects
+|Value curves and sensitivity analysis
+
+|Quality cost
+|Rework, defects, incidents, support, customer impact
+|Expected-loss models and retrospective attribution
+
+|Risk
+|Threat models, control evidence, incident history, expert judgment
+|Bayesian models, scenarios, and simulation
+|===
+
+=== Calibration samples
+
+Automated models should be calibrated against small, carefully designed samples. This does not require enterprise-wide surveys or invasive time sheets. Useful calibration methods include:
+
+* short-term voluntary work diaries for representative populations;
+* structured observation of selected changes;
+* expert labeling of activity sequences;
+* controlled tasks with known timing;
+* post hoc reconstruction during incident or project reviews;
+* comparison with independently recorded pair-programming or meeting sessions.
+
+Calibration data should be refreshed when workflows or tools change. An effort model trained before widespread AI adoption may systematically misestimate AI-assisted work.
+
+=== Hierarchical models
+
+Enterprise data is nested: changes within repositories, repositories within teams, teams within organizations. A hierarchical model can separate local variation from organization-wide effects.
+
+For example, active review time may be modeled as:
+
+[stem]
+++++
+\log H_{review,e} = \beta_0 + \beta^T X_e + u_{team(e)} + v_{repo(e)} + \epsilon_e
+++++
+
+where stem:[X_e] contains change-level features, stem:[u] is a team-level effect, and stem:[v] is a repository-level effect.
+
+This prevents a small repository from receiving an unstable estimate based only on a handful of changes and allows partial pooling across similar populations.
+
+== Marginal versus average economics
+
+Averages answer questions about total allocation. Marginal values answer questions about change.
+
+The average cost of a CI system includes fixed platform engineering and infrastructure. The marginal cost of one additional test run may be only compute and storage. When deciding whether to run a new test, marginal cost is often appropriate. When comparing operating models or vendors, total allocated cost matters.
+
+Likewise, reducing average review time by ten minutes does not necessarily free ten minutes of usable capacity. The saved fragments may be too dispersed to reallocate. A constrained reviewer queue may show a large nonlinear benefit from a small capacity increase, while an unconstrained queue may show almost none.
+
+Economic analyses should state explicitly whether they use:
+
+* marginal cost;
+* avoidable cost;
+* fully allocated cost;
+* replacement cost;
+* opportunity cost.
+
+== Uncertainty and sensitivity analysis
+
+Engineering economic models contain uncertain inputs. The proper response is not to hide uncertainty but to propagate it.
+
+Suppose annual benefit is:
+
+[stem]
+++++
+B = N \times (m_s - m_v) \times r + N \times (p_c - p_t) \times d
+++++
+
+where stem:[N] is annual volume, stem:[m_s] is minutes saved, stem:[m_v] is validation minutes added, stem:[r] is hourly labor cost, stem:[p_c] and stem:[p_t] are control and treatment defect probabilities, and stem:[d] is defect cost.
+
+Each parameter can be represented as a distribution rather than a point. Monte Carlo simulation can then estimate the probability that benefit exceeds cost.
+
+A decision report might state:
+
+* median annual net benefit: $650,000;
+* 80% credible interval: -$120,000 to $1.5 million;
+* probability of positive net benefit: 74%;
+* most influential uncertainty: average cost of escaped defects.
+
+This is more useful than a single number because it identifies which additional evidence would improve the decision.
+
+== Common failure modes
+
+=== Monetizing everything
+
+Not every important outcome can be credibly converted into dollars. Forced monetization can create artificial certainty and hide ethical or strategic constraints. Use qualitative classes, ranges, or guardrails when necessary.
+
+=== Treating salary as value
+
+Compensation is an input price, not the value created by an engineer. A lower-cost hour is not automatically a better hour, and a high-cost engineer is not automatically a poor economic choice.
+
+=== Ignoring displaced work
+
+A review process may appear cheap because the cost of waiting and task switching is assigned nowhere. A tool may appear productive because verification work moves from reviewers to authors.
+
+=== Double counting
+
+Time savings, increased throughput, and cost-of-delay benefits can describe overlapping value. Counting all three independently may inflate benefits.
+
+=== Optimizing component cost
+
+Reducing CI expense by running fewer tests may increase failure cost. Reducing review time may increase rework. Local optimization must be evaluated against total system cost and guardrail outcomes.
+
+=== Using cost metrics for individual ranking
+
+Cost estimates designed for process analysis are not reliable measures of individual performance. People receive work of different complexity, perform invisible mentoring and coordination, and operate under different constraints. Ranking individuals creates gaming and corrupts the data-generating process.
+
+== Designing an economic scorecard
+
+A practical scorecard should avoid collapsing everything into one number. Recommended views include:
+
+[cols="1,3"]
+|===
+|View |Question answered
+
+|Cost composition
+|Where is money and attention consumed?
+
+|Flow and delay
+|Where does work wait, and what is the estimated carrying cost?
+
+|Quality-adjusted cost
+|What is the total cost after rework and expected failure?
+
+|Scarce-attention use
+|Which roles or expertise pools constrain the system?
+
+|Tool economics
+|What is the net effect of each tool on labor, quality, latency, and infrastructure?
+
+|Change-class economics
+|How do costs differ by complexity, blast radius, repository topology, and domain?
+
+|Experiment economics
+|What causal effect did an intervention have, with what uncertainty?
+|===
+
+Executive reporting should emphasize distributions, trends, and decisions rather than league tables. Operational reporting should permit drill-down to the Engineering Change graph and raw evidence while respecting privacy and access controls.
+
+== Key takeaways
+
+* The cost of an Engineering Change includes human attention, tools, infrastructure, coordination, delay, quality, and risk.
+* Elapsed time is not labor time; queueing and context recovery must be modeled separately.
+* Human attention should be valued by both loaded cost and organizational scarcity.
+* AI economics must include validation burden and quality effects, not merely license or inference cost.
+* Cost of delay connects engineering flow to business impact, but should be estimated with ranges rather than fabricated precision.
+* Quality and risk are expected economic quantities, including failures that did not occur because controls worked.
+* Marginal, avoidable, and fully allocated costs answer different questions and must not be mixed silently.
+* The objective is not minimum local cost; it is maximum value under quality, risk, human, and strategic constraints.
+
+== Open questions
+
+* Which telemetry best estimates active cognitive effort without invasive monitoring?
+* How should fragmented minutes saved by AI tools be converted into realizable capacity?
+* How can organizations value scarce expertise without reinforcing unhealthy single points of dependency?
+* What is the best method for attributing cost and value across multi-repository Engineering Changes?
+* How should option value and learning value be included in portfolio decisions?
+* Which risk measures are most useful for rare, catastrophic engineering failures?
+
+== Implementation checklist
+
+. Define the cost components your organization will and will not estimate.
+. Separate active effort, waiting, blocked time, and context recovery.
+. Establish standardized loaded rates by role or level, with appropriate privacy controls.
+. Capture marginal AI and infrastructure usage at Engineering Change level.
+. Build ownership, handoff, and approval-boundary features for coordination analysis.
+. Define cost-of-delay classes and require assumptions to be visible.
+. Link post-merge rework, incidents, and support activity back to Engineering Changes with confidence scores.
+. Report uncertainty intervals and sensitivity analysis for derived dollar values.
+. Prohibit the use of process-cost estimates as direct individual performance rankings.
+. Evaluate workflow interventions using total quality-adjusted economics rather than a single component metric.
