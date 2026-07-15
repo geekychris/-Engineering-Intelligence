@@ -1,0 +1,9 @@
+flowchart LR
+    A[Application team] -->|API change| P[Platform team]
+    P -->|schema review| D[Database specialists]
+    P -->|threat review| S[Security]
+    A -->|release dependency| O[Operations]
+    S -->|approval| G[Governance]
+    D -->|migration sequence| O
+
+    classDef boundary stroke-dasharray: 5 5
