@@ -1,0 +1,371 @@
+= Human Attention and Cognitive Load
+
+[abstract]
+Human attention is the most constrained resource in modern software engineering. Compute can be provisioned, repositories can be replicated, and AI inference can be scaled, but expert judgment, working memory, and sustained focus remain scarce. This chapter develops a measurement framework for cognitive burden without relying on intrusive surveillance or large-scale surveys. It distinguishes intrinsic task complexity from process-induced friction, models context switching and attention residue, introduces cognitive offload and cognitive reload, and describes how AI-assisted review can be evaluated as a redistribution of cognitive work.
+
+== Why attention is the scarce resource
+
+Engineering organizations often describe their constraints in terms of headcount, budget, or compute. These are real constraints, but they are incomplete. The binding constraint is frequently the availability of focused, appropriately skilled human attention at the moment it is needed.
+
+A security specialist may be employed full time yet remain unavailable to a particular change because dozens of other changes compete for the same expertise. An author may have calendar capacity but lack the uninterrupted period required to reconstruct a distributed-system failure. A reviewer may technically complete a review while fatigued, fragmented, or unfamiliar with the domain.
+
+Engineering Intelligence therefore treats attention as an economic and operational resource rather than as an abstract psychological concept.
+
+[IMPORTANT]
+====
+The objective is not to maximize visible activity. It is to maximize valuable engineering outcomes per unit of scarce human attention while preserving quality, learning, and sustainability.
+====
+
+== Cognitive burden is multidimensional
+
+The phrase _cognitive load_ is often used as if it were one measurable quantity. In engineering work, several distinct burdens should be separated.
+
+[cols="1,3"]
+|===
+|Dimension |Description
+
+|Intrinsic complexity
+|Reasoning required by the problem itself: algorithms, concurrency, security semantics, financial rules, data consistency, or advanced interaction design.
+
+|Representational complexity
+|Difficulty created by how the system is expressed: poor naming, fragmented documentation, indirect abstractions, generated layers, or inconsistent conventions.
+
+|Navigational complexity
+|Effort required to locate relevant code, owners, tests, dependencies, and operational context.
+
+|Coordination complexity
+|Mental effort required to track people, decisions, approvals, dependencies, and release sequencing.
+
+|Temporal complexity
+|Burden caused by delays, interruptions, changing assumptions, and partially completed work.
+
+|Verification complexity
+|Effort required to determine whether a proposed change is correct, safe, complete, and appropriate.
+
+|Tool interaction burden
+|Effort required to operate development environments, CI systems, review tools, and AI assistants.
+|===
+
+The distinction matters because interventions act on different dimensions. Better documentation may reduce navigational complexity while leaving intrinsic complexity unchanged. An AI reviewer may reduce verification search but increase tool interaction burden. A monorepo may reduce dependency discovery while increasing local code volume.
+
+== A cognitive work model
+
+Let the human cognitive work associated with Engineering Change stem:[e] be:
+
+[stem]
+++++
+W_{human}(e) = W_{create} + W_{understand} + W_{verify} + W_{coordinate} + W_{recover} + W_{decide}
+++++
+
+where:
+
+* stem:[W_{create}] is reasoning used to produce designs, code, tests, and documentation;
+* stem:[W_{understand}] is effort spent building a mental model of the relevant system;
+* stem:[W_{verify}] is effort spent checking correctness, safety, and completeness;
+* stem:[W_{coordinate}] is effort spent aligning with other people and systems;
+* stem:[W_{recover}] is effort spent restoring context after delay or interruption;
+* stem:[W_{decide}] is effort spent resolving ambiguity and choosing among alternatives.
+
+These quantities are latent. They cannot be observed directly at enterprise scale. The measurement problem is therefore one of inference and validation.
+
+== Measuring latent burden through proxies
+
+A proxy is useful only if it has predictive or convergent validity. The fact that a signal is easy to collect does not mean it measures cognitive burden.
+
+Potential non-invasive proxies include:
+
+* number of materially distinct files and concepts revisited;
+* time between opening a review and taking the first substantive action;
+* repeated navigation through the same code regions;
+* number and duration of review-response cycles;
+* unresolved discussion branches;
+* number of simultaneous active Engineering Changes;
+* repository and domain transitions during an active change;
+* repeated CI runs without meaningful code change;
+* comment edits, reversals, and reopened decisions;
+* delay between a comment and the author's response after controlling for availability;
+* amount of new information introduced after the author believed the change complete;
+* proportion of AI findings requiring independent investigation.
+
+No single proxy should become a cognitive-load score. A robust model combines signals, controls for change complexity, and validates against outcomes such as resumption time, error probability, review latency, and downstream rework.
+
+== Context switching and attention residue
+
+When a person leaves an unfinished task, part of their attention remains attached to it. Returning later requires context reconstruction and may temporarily degrade performance on both the old and new task.
+
+For engineer stem:[p] and Engineering Change stem:[e], define a context-switch event whenever active attention moves to another materially distinct task for longer than a configured threshold.
+
+A simple recovery model is:
+
+[stem]
+++++
+T_{recover}(p,e) = \alpha + \beta_1 \Delta t + \beta_2 N_{intervening} + \beta_3 C_e + \beta_4 D_e + \epsilon
+++++
+
+where:
+
+* stem:[\Delta t] is time away from the change;
+* stem:[N_{intervening}] is the number of materially distinct intervening tasks;
+* stem:[C_e] is change complexity;
+* stem:[D_e] is the amount of change to the underlying artifacts while the engineer was away.
+
+The coefficients should be learned from data rather than treated as universal constants.
+
+image::../figures/mermaid/context-switch-cycle.mmd[Context switching and recovery cycle]
+
+=== Concurrent work in progress
+
+The number of simultaneously active changes is a useful but imperfect indicator. Two tiny maintenance changes may impose less burden than one complex migration. The model should therefore weight active work by complexity, novelty, urgency, and unresolved state.
+
+Define weighted cognitive inventory:
+
+[stem]
+++++
+CI_p(t) = \sum_{e \in Active_p(t)} w_e \times u_{p,e}(t)
+++++
+
+where stem:[w_e] represents change burden and stem:[u_{p,e}] represents the engineer's unresolved involvement.
+
+A rising cognitive inventory may predict slower responses, more context recovery, increased defect risk, or abandonment. These are hypotheses to validate, not assumptions to enforce as individual targets.
+
+== Review as cognitive work
+
+Review is not merely elapsed time or comment count. It is a sequence of cognitive operations:
+
+. construct a mental model of intent;
+. identify changed behavior;
+. connect the change to architecture and domain constraints;
+. search for omissions and failure modes;
+. judge whether tests provide sufficient evidence;
+. communicate findings in actionable form;
+. verify responses and revisions.
+
+Review burden depends on more than lines changed. Important factors include semantic novelty, number of concepts, architectural distance, dependency impact, generated versus handwritten code, test observability, author familiarity, reviewer familiarity, and potential blast radius.
+
+A thousand-line generated client may require less reasoning than a five-line authorization change.
+
+== Comment counts are weak measures
+
+More review comments can indicate careful review, poor code quality, stylistic noise, misunderstanding, or a highly consequential change. Fewer comments can indicate excellent code, superficial review, high trust, or reviewer fatigue.
+
+Comment count becomes useful only when enriched with type, severity, novelty, action, resolution, and downstream outcome.
+
+Recommended comment attributes include:
+
+* defect, design, security, test, maintainability, documentation, or style;
+* blocking versus advisory;
+* accepted, modified, rejected, deferred, duplicated, or unresolved;
+* human- or AI-originated;
+* evidence supplied;
+* estimated validation effort;
+* eventual relationship to rework, defect, or incident.
+
+== AI as a cognitive participant
+
+AI can perform parts of creation, understanding, verification, and explanation. Its economic value depends on whether it reduces total human cognitive work while maintaining or improving outcomes.
+
+This chapter defines two opposing constructs.
+
+[IMPORTANT]
+====
+*Cognitive offload* is human cognitive work avoided because a sufficiently reliable AI contribution performs or prepares that work.
+
+*Cognitive reload* is additional human cognitive work created by the need to inspect, interpret, correct, reject, or recover from AI output.
+====
+
+Net cognitive effect is:
+
+[stem]
+++++
+NCE(e) = W_{offload}(e) - W_{reload}(e)
+++++
+
+A positive value indicates net offload. A negative value indicates that the AI increased burden.
+
+== Why acceptance rate is insufficient
+
+Suggestion acceptance rate is useful operational telemetry, but it is not a direct measure of value or offload.
+
+A suggestion may be accepted because it is trivial, automatically applicable, socially persuasive, or difficult to evaluate. A valuable finding may be rejected because the reviewer used the wrong wording or because the author solved the underlying problem differently. A comment may create value without producing a code edit by prompting investigation or confirming safety.
+
+Acceptance telemetry should therefore distinguish:
+
+* direct application;
+* application with modification;
+* independent equivalent fix;
+* follow-up issue creation;
+* acknowledgement without change;
+* rejection with reason;
+* no observable response;
+* duplicate of a human finding;
+* duplicate of another AI finding.
+
+== A cognitive offload index
+
+A proposed Cognitive Offload Index for an experiment population is:
+
+[stem]
+++++
+COI = \frac{\hat{W}_{human,control} - \hat{W}_{human,treatment}}{\hat{W}_{human,control}}
+++++
+
+subject to quality and outcome guardrails.
+
+A COI of 0.15 means estimated human cognitive work fell by fifteen percent relative to the counterfactual. It should never be interpreted without confidence intervals and guardrails.
+
+A stronger quality-adjusted form is:
+
+[stem]
+++++
+QCOI = COI \times Q_r
+++++
+
+where stem:[Q_r] is a bounded quality-retention factor. If defects, incidents, or rework worsen, the quality-adjusted offload declines.
+
+The index is intentionally experimental. It is not suitable for ranking individuals or comparing unrelated teams without controlling for work mix.
+
+== Instrumenting AI review interactions
+
+At minimum, an AI review system should emit:
+
+* change and pull-request identifiers;
+* model, prompt, policy, and tool versions;
+* files and context inspected;
+* finding type, confidence, severity, and evidence;
+* time the finding became visible;
+* human views and expansions;
+* code suggestion application events;
+* comment replies and resolution;
+* subsequent related code edits;
+* reviewer duplication;
+* follow-up ticket creation;
+* downstream quality outcomes;
+* inference cost and latency.
+
+image::../figures/mermaid/ai-cognitive-workflow.mmd[AI and human cognitive workflow]
+
+Instrumentation should capture interactions, not private chain-of-thought or invasive behavioral data. The objective is to observe work distribution and outcomes.
+
+== Validating cognitive proxies
+
+A latent cognitive measure should be validated in several ways.
+
+=== Predictive validity
+
+Does it predict resumption time, review latency, rework, error probability, or abandonment better than simpler baselines such as lines changed and file count?
+
+=== Convergent validity
+
+Do independent proxies move together when cognitive burden plausibly changes?
+
+=== Discriminant validity
+
+Can the model distinguish cognitive burden from ordinary elapsed time, team size, and repository activity?
+
+=== Experimental responsiveness
+
+When an intervention specifically designed to reduce burden is introduced, does the measure move in the expected direction while quality remains stable?
+
+=== Calibration studies
+
+Small voluntary studies can compare inferred burden with structured task reports, observed review sessions, or controlled engineering exercises. Surveys are not required as the primary operational method, but limited calibration data can be useful.
+
+== Experiment designs
+
+Useful experiments include:
+
+* AI review summary versus no summary after long review delays;
+* prioritized AI findings versus unranked comment lists;
+* one consolidated review pass versus repeated incremental comments;
+* automatic low-severity fixes versus comments requiring manual action;
+* context-preserving handoff packages for cross-team changes;
+* WIP limits for review queues;
+* routing specialist attention only to high-risk changes;
+* AI-generated change maps for multi-repository work.
+
+Primary outcomes might include human review effort, response cycles, recovery time, quality-adjusted completion time, and downstream rework. Guardrails should include severe defects, security findings, reviewer learning, author understanding, and tool trust.
+
+== Behavioral adaptation
+
+People change behavior in response to AI systems and measurement. Initial acceptance may reflect novelty. Later users may learn when to ignore the tool. Authors may preemptively change code to avoid comments. Reviewers may reduce independent scrutiny because they assume AI covered routine risks.
+
+Evaluation should therefore consider:
+
+* novelty and learning periods;
+* long-term trust calibration;
+* automation bias;
+* skill development or atrophy;
+* changes in review allocation;
+* movement of work outside the measured interface;
+* differential effects by expertise.
+
+A tool that improves short-term speed while weakening human understanding may create long-term risk that is invisible in a short experiment.
+
+== Ethical constraints
+
+Cognitive telemetry can easily become surveillance. Engineering Intelligence requires explicit safeguards:
+
+* collect the minimum data necessary for the decision;
+* prefer artifact and workflow events over keystrokes or screen capture;
+* aggregate by system, change class, or team where possible;
+* prohibit unsupported individual productivity scoring;
+* document purpose, retention, access, and downstream use;
+* allow correction of inferred states;
+* review models for disparate impact;
+* separate research telemetry from performance management.
+
+Trust is not merely an ethical concern; it is a measurement requirement. People who believe telemetry will be used against them will alter behavior and degrade the validity of the system.
+
+== Common failure modes
+
+=== Equating speed with lower cognitive burden
+
+Faster completion can result from skipped verification, automation bias, or simpler work. Quality and work mix must be controlled.
+
+=== Treating AI output volume as offload
+
+More comments or generated code can increase human burden. Measure the net effect on human work and outcomes.
+
+=== Using one universal cognitive score
+
+Burden is multidimensional and context-dependent. Preserve component measures and uncertainty.
+
+=== Ignoring learning
+
+Review contributes to skill development and shared knowledge. Eliminating all human review may reduce immediate cost while weakening the organization.
+
+=== Measuring individuals rather than systems
+
+Individual-level signals are heavily confounded by task assignment, role, expertise, and hidden coordination. Use them primarily to reconstruct change-level work, not to rank people.
+
+== Key takeaways
+
+* Human attention is often the binding constraint in software delivery.
+* Cognitive burden includes intrinsic, representational, navigational, coordination, temporal, verification, and tool-related dimensions.
+* Context switching creates recovery cost that can be estimated from non-invasive workflow signals.
+* Review burden depends on semantic and architectural complexity, not merely code size.
+* AI can create both cognitive offload and cognitive reload.
+* Acceptance rate alone does not measure AI value.
+* Cognitive proxies require predictive, convergent, discriminant, and experimental validation.
+* Ethical safeguards and trust are necessary for valid measurement.
+
+== Open questions
+
+* Which event-derived proxies best estimate context recovery without invasive monitoring?
+* How can reviewer learning be valued alongside immediate review efficiency?
+* What is the long-term effect of AI review on expert skill and automation bias?
+* How should cognitive offload be measured when AI and humans iteratively transform the same work?
+* Which interventions reduce cognitive inventory without merely shifting burden to another role?
+
+== Implementation checklist
+
+. Define cognitive burden as a multidimensional construct rather than one score.
+. Separate intrinsic change complexity from process-induced friction.
+. Instrument review interactions, response cycles, task transitions, and resumption events.
+. Record AI findings, human actions, duplication, validation effort, and downstream outcomes.
+. Build simple baselines before introducing complex cognitive models.
+. Validate proxies against resumption time, rework, quality, and controlled experiments.
+. Report confidence intervals and avoid individual rankings.
+. Add quality, learning, and trust guardrails to AI workflow experiments.
+. Establish governance rules before collecting fine-grained behavioral telemetry.
+. Evaluate both cognitive offload and cognitive reload.
