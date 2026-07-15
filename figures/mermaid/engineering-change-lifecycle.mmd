@@ -1,0 +1,11 @@
+flowchart LR
+    I[Intent proposed] --> A[Accepted for work]
+    A --> W[Active implementation]
+    W --> V[Verification]
+    V --> R[Ready for release]
+    R --> D[Deployment or rollout]
+    D --> O[Observation]
+    O --> S{Accepted outcome?}
+    S -->|Yes| C[Completed]
+    S -->|No| X[Rework, rollback, or abandon]
+    X --> W
