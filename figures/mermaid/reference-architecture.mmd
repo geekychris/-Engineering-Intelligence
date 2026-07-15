@@ -1,0 +1,35 @@
+flowchart LR
+    subgraph Sources
+      SCM[Git hosting]
+      PM[Issue and planning]
+      IDE[IDE and agent telemetry]
+      AI[AI coding and review]
+      CI[CI and test systems]
+      CD[Deployment systems]
+      OBS[Production observability]
+    end
+
+    SCM --> BUS[Event ingestion]
+    PM --> BUS
+    IDE --> BUS
+    AI --> BUS
+    CI --> BUS
+    CD --> BUS
+    OBS --> BUS
+
+    BUS --> RAW[Immutable event store]
+    BUS --> STREAM[Stream processing]
+    RAW --> BATCH[Batch and graph processing]
+    STREAM --> STATE[Lifecycle state]
+    BATCH --> GRAPH[Engineering knowledge graph]
+    BATCH --> FEATURES[Versioned feature store]
+    STATE --> FEATURES
+    GRAPH --> FEATURES
+
+    FEATURES --> METRICS[Metric engine]
+    FEATURES --> MODELS[Statistical and ML models]
+    METRICS --> EXP[Experiment analysis]
+    MODELS --> EXP
+    EXP --> DECISIONS[Decision products and dashboards]
+    DECISIONS --> REG[Experiment and policy registry]
+    REG --> BUS
