@@ -1,0 +1,422 @@
+= The Engineering Change
+
+[abstract]
+A pull request is a platform artifact, not a reliable unit of engineering work. One coherent intent may span repositories, migrations, approvals, feature flags, deployments, and operational tasks; one pull request may contain several unrelated intents. This chapter formalizes the Engineering Change as the primary analytical unit of Engineering Intelligence. It defines its entities and boundaries, models it as a temporal property graph, describes deterministic and probabilistic reconstruction, introduces confidence and provenance requirements, and explains how to instrument the lifecycle at enterprise scale.
+
+== Why the pull request is insufficient
+
+Pull requests are attractive analytical units because they are visible, structured, and supported by mature APIs. They contain timestamps, authors, commits, reviewers, comments, checks, and merge outcomes. For many local questions, the pull request is exactly the right unit.
+
+It becomes misleading when used as a universal proxy for engineering work.
+
+A customer-visible capability may require a web change, a mobile change, an API update, a shared-library release, a database migration, infrastructure configuration, security approvals, a feature-flag rollout, documentation, and post-deployment verification. Each artifact may appear in a different repository or system. Measuring them independently hides the actual coordination, critical path, and outcome.
+
+The reverse problem also occurs. A pull request may combine a refactor, dependency update, and product feature that should be analyzed separately. Repository conventions, not engineering intent, determine the boundary.
+
+A reliable measurement system must therefore distinguish between observable artifacts and the logical change those artifacts collectively realize.
+
+== Formal definition
+
+[IMPORTANT]
+====
+An *Engineering Change* is the temporally bounded set of human, AI, code, configuration, data, infrastructure, verification, coordination, deployment, and operational activities undertaken to transform one coherent engineering intent into one or more accepted outcomes.
+====
+
+Let an Engineering Change be represented as:
+
+[stem]
+++++
+E = (I, A, R, O, \tau, \Pi)
+++++
+
+where:
+
+* stem:[I] is the engineering intent;
+* stem:[A] is the set of participating artifacts and activities;
+* stem:[R] is the set of relationships among them;
+* stem:[O] is the set of intended and realized outcomes;
+* stem:[\tau] is the temporal extent;
+* stem:[\Pi] is provenance, confidence, and reconstruction metadata.
+
+This representation separates what the organization intended from what its tools observed.
+
+=== Engineering intent
+
+Engineering intent is the reason the work exists. Examples include enabling a capability, remediating a vulnerability, migrating data, reducing cost, retiring a service, improving build performance, investigating a failure, satisfying regulation, or testing a hypothesis.
+
+Intent may be explicit in a change record or inferred from tickets, descriptions, and semantic evidence. It may also evolve. A defect fix can become a migration; a prototype can become a product feature. The model should preserve revisions rather than overwrite history.
+
+=== Artifacts and activities
+
+Artifacts are durable objects such as commits, pull requests, tickets, design documents, build records, binaries, deployments, feature flags, schemas, runbooks, and incidents.
+
+Activities are events or intervals such as authoring, reviewing, testing, approving, deploying, observing, rolling back, discussing, and validating.
+
+The distinction matters because a pull request is an artifact while a review session is an activity. Both contribute to cost and flow.
+
+=== Relationships
+
+Relationships connect the graph. Common edge types include `IMPLEMENTS`, `DEPENDS_ON`, `BLOCKS`, `REVIEWS`, `GENERATES`, `DEPLOYS`, `VERIFIES`, `ROLLS_BACK`, `SUPERSEDES`, `CAUSED_BY`, `REMEDIATES`, `PART_OF`, `OWNED_BY`, and `AFFECTS`.
+
+Edges should carry time, source, confidence, and reconstruction method. A link declared in a release manifest is not equivalent to one inferred from title similarity.
+
+=== Outcomes
+
+An outcome is the terminal or intermediate state the Engineering Change is intended to create. A merged pull request is not necessarily an outcome. A feature may be merged but disabled, deployed but not exposed, exposed but not adopted, or rolled back.
+
+Useful outcome states include accepted and operating, partially accepted, deployed but disabled, abandoned, superseded, rolled back, failed validation, completed without deployment, and informational outcome achieved.
+
+== The Engineering Change graph
+
+The natural representation is a temporal property graph:
+
+[stem]
+++++
+G_E = (V_E, E_E, X_V, X_E, T)
+++++
+
+where stem:[V_E] is the set of nodes, stem:[E_E] the set of edges, stem:[X_V] node attributes, stem:[X_E] edge attributes, and stem:[T] temporal information.
+
+image::../figures/mermaid/engineering-change-lifecycle.mmd[Engineering Change lifecycle graph]
+
+A graph representation enables questions that flat pull-request tables cannot answer well:
+
+* Which artifact lies on the critical path?
+* How many repository and ownership boundaries were crossed?
+* Which approvals delayed the accepted outcome?
+* Which deployments were associated with the same intent?
+* Did an incident originate from a change spanning several repositories?
+* How much human and AI effort accumulated across the complete change?
+* Which dependencies repeatedly create coordination cost?
+
+== Boundaries and identity
+
+Every metric depends on a boundary. The Engineering Change boundary determines which activities, costs, outcomes, and failures are attributed together.
+
+A robust identity scheme should provide a stable change identifier, parent-child relationships, aliases from external systems, versioned intent, explicit lifecycle state, confidence when membership is inferred, and merge-split history.
+
+An opaque organization-wide ID such as `EC-01J8...` is preferable to a ticket number or repository-local key. External identifiers become aliases.
+
+=== Parent and child changes
+
+Large initiatives should not become one unbounded Engineering Change. They should form a hierarchy:
+
+[stem]
+++++
+E_{initiative} \supset \{E_1, E_2, \dots, E_n\}
+++++
+
+A parent can aggregate value and dependency context, while child changes retain measurable lifecycle boundaries. For example, a payment migration may have children for dual-write support, historical backfill, read cutover, and legacy retirement.
+
+=== Merge and split operations
+
+Reconstruction is imperfect. Two changes initially believed separate may later prove to be one coordinated intent. One reconstructed change may contain unrelated work and need splitting.
+
+The data model should support `MERGED_INTO`, `SPLIT_FROM`, effective time, reason, actor or algorithm, previous membership, and metric recomputation. Historical reports must remain reproducible.
+
+== Lifecycle states
+
+A generic lifecycle is proposed, accepted for work, active, under verification, ready for release, releasing, observing, and accepted, abandoned, or rolled back.
+
+Real workflows are not strictly linear. Work may return from review, pause, fork, or deploy incrementally. State should therefore be derived from events rather than assumed from a waterfall sequence.
+
+A state transition can be represented as:
+
+[stem]
+++++
+S_{t+1} = f(S_t, event_t, context_t)
+++++
+
+The transition function should be versioned. Changing the definition of "active" or "ready for release" can materially alter flow metrics.
+
+=== Event time and processing time
+
+Enterprise event pipelines must distinguish event time, ingestion time, and processing time. Late and corrected events are normal. A deployment record may arrive after a source-control webhook. An incident may be linked to a change days later. Metrics must support retractions and recomputation.
+
+== Deterministic reconstruction
+
+The strongest reconstruction uses explicit identifiers propagated through the toolchain.
+
+A change ID can be attached to issue metadata, branch names, commit trailers, pull-request fields, CI environment variables, artifact metadata, deployment manifests, feature flags, telemetry attributes, and incident records.
+
+[source,text]
+----
+Engineering-Change: EC-01J8Z6D4K7J6Q2Q9H1K3B4M5N6
+----
+
+A deployment could emit the same identifier as an OpenTelemetry resource attribute:
+
+[source,text]
+----
+engineering.change.id = "EC-01J8Z6D4K7J6Q2Q9H1K3B4M5N6"
+----
+
+Explicit propagation produces high-confidence linkage and allows production telemetry to connect back to intent.
+
+=== Adoption strategy
+
+A practical adoption sequence is to generate IDs for new work, add optional pull-request and deployment fields, automate propagation in CI/CD templates, backfill high-value repositories, use probabilistic reconstruction for missing links, measure coverage and confidence, and make IDs mandatory only where the benefit justifies the friction.
+
+== Probabilistic reconstruction
+
+In existing estates, most changes must initially be inferred.
+
+For artifacts stem:[a_i] and stem:[a_j], define a linkage probability:
+
+[stem]
+++++
+P(z_{ij}=1 \mid X_{ij}) = \sigma(\beta_0 + \beta^T X_{ij})
+++++
+
+where stem:[z_{ij}=1] indicates common Engineering Change membership, stem:[X_{ij}] is a feature vector, and stem:[\sigma] is a logistic function.
+
+Features may include exact ticket matches, explicit references, shared authors and reviewers, temporal proximity, repository dependency, coordinated deployment, shared feature flags, semantic similarity, common design documents, service dependencies, and incident linkage.
+
+A graph clustering or correlation-clustering method can then propose Engineering Change groups.
+
+image::../figures/mermaid/change-reconstruction-pipeline.mmd[Engineering Change reconstruction pipeline]
+
+=== Negative evidence
+
+Reconstruction must include evidence that artifacts do not belong together: conflicting issue IDs, unrelated release trains, large temporal separation, mutually exclusive product areas, explicit independence labels, distinct accepted outcomes, or common shared-library relationships that are not change-specific.
+
+Ignoring negative evidence causes giant meaningless clusters around active engineers or frequently changed repositories.
+
+=== Confidence
+
+Every inferred membership should carry confidence:
+
+[stem]
+++++
+conf(a \in E) \in [0,1]
+++++
+
+[cols="1,2,3"]
+|===
+|Class |Typical confidence |Interpretation
+
+|Declared
+|1.00
+|Explicit identifier or authoritative manifest.
+
+|Strongly inferred
+|0.90–0.99
+|Multiple independent high-quality signals.
+
+|Inferred
+|0.70–0.89
+|Likely membership with meaningful uncertainty.
+
+|Tentative
+|0.50–0.69
+|Useful for exploration, unsuitable for high-stakes attribution.
+
+|Rejected
+|below threshold
+|Not included in the graph.
+|===
+
+Thresholds depend on the decision. Executive cost attribution may require stronger confidence than exploratory dependency discovery.
+
+== Provenance and explainability
+
+A reconstruction system must answer, "Why are these artifacts linked?"
+
+For each edge or membership decision, retain source systems, contributing signals, model version, feature values, explanation, confidence, creation time, correction time, and human override history.
+
+[source,json]
+----
+{
+  "artifact": "repo-a#1842",
+  "engineeringChange": "EC-01J8...",
+  "confidence": 0.96,
+  "evidence": [
+    {"type": "ticket_match", "value": "PAY-431", "weight": 0.52},
+    {"type": "explicit_pr_reference", "value": "repo-b#991", "weight": 0.27},
+    {"type": "coordinated_deployment", "windowMinutes": 18, "weight": 0.11}
+  ],
+  "modelVersion": "reconstruct-v3.4"
+}
+----
+
+Explainability is necessary for trust, correction, and debugging. It also reveals systematic data-quality problems.
+
+== Multi-repository changes
+
+Multi-repository work should be analyzed as a dependency graph, not a bag of pull requests.
+
+Let stem:[P_E] be pull requests in Engineering Change stem:[E], and let edges represent ordering or compatibility dependencies. The critical path is the longest-duration path through the directed acyclic portion of the graph.
+
+[stem]
+++++
+T(E) = \max_{p \in Paths(E)} \sum_{a \in p} d(a)
+++++
+
+Useful graph measures include repository count, dependency depth, fan-in, fan-out, ownership boundaries, critical-path length, parallelism ratio, synchronization points, cycles, and release-order constraints.
+
+Cycles deserve special attention. Two changes that each require the other can create compatibility layers, coordinated merges, or manual sequencing. The coordination cost may far exceed implementation complexity.
+
+== Repository topology as context
+
+In a monorepo, one pull request may touch many services and teams. In a polyrepo environment, the same intent may produce a chain of pull requests. Raw pull-request counts and sizes are therefore not comparable without topology context.
+
+The Engineering Change abstraction distinguishes intrinsic complexity, topological complexity, and organizational complexity. This supports experiments that estimate the economic effect of repository layout and ownership structure.
+
+== Relationship to initiatives, tickets, and releases
+
+The Engineering Change does not replace all planning entities. An initiative is usually broader and longer-lived. A ticket may describe one task or defect. A release is a packaging concept that may include many changes. A pull request is a source-control collaboration object.
+
+The relationships are many-to-many:
+
+image::../figures/mermaid/change-entity-relationships.mmd[Engineering Change entity relationships]
+
+A strong platform preserves each entity and connects them rather than forcing one system to become the universal source of truth.
+
+== Membership over time
+
+Membership can change as work evolves. An artifact may initially belong to a prototype and later be incorporated into a production change. A shared-library release may serve several Engineering Changes.
+
+The graph therefore needs temporal membership:
+
+[stem]
+++++
+membership(a,E,[t_s,t_e], role, confidence)
+++++
+
+An artifact can participate in multiple changes with different roles. Cost allocation should reflect role and causality rather than duplicating the full cost into every parent.
+
+== Cost and value allocation
+
+When one artifact supports several Engineering Changes, possible allocation methods include equal allocation, usage-weighted allocation, causal attribution, Shapley-value approximations, primary-change ownership with secondary references, or reporting shared-platform cost separately.
+
+No method is universally correct. The allocation method must match the decision.
+
+== Instrumentation architecture
+
+Engineering Change instrumentation should be event-driven. Source systems emit normalized events into an immutable log. Identity-resolution services map users, repositories, services, teams, and tools. A reconstruction service creates and updates graphs. Stream processors maintain near-real-time lifecycle state, while batch jobs recompute topology, semantics, and historical corrections.
+
+Core event domains include planning, source control, AI, CI, deployment, production, and organization.
+
+A normalized event envelope should include:
+
+[source,json]
+----
+{
+  "eventId": "01J...",
+  "eventType": "pull_request.review.submitted",
+  "eventTime": "2026-07-15T21:42:13Z",
+  "ingestionTime": "2026-07-15T21:42:15Z",
+  "source": "github-enterprise",
+  "sourceEntityId": "repo-a#1842/review/7781",
+  "actor": {"type": "human", "id": "person-392"},
+  "engineeringChangeId": "EC-01J8...",
+  "changeLinkConfidence": 1.0,
+  "schemaVersion": "1.2",
+  "payload": {}
+}
+----
+
+== Near-real-time and batch responsibilities
+
+Near-real-time computation is appropriate for current state, review and CI queues, aging changes, experiment exposure, AI interactions, deployment progression, and operational alerts.
+
+Batch computation is appropriate for repository topology, semantic clustering, historical reconstruction, ownership networks, code-complexity analysis, model training, incident attribution, and cost recomputation.
+
+The two paths must converge on versioned state. A batch correction should update the graph without erasing the evidence that produced the previous state.
+
+== Data-quality metrics
+
+Recommended data-quality measures include explicit ID coverage, inferred membership coverage, percentage above confidence thresholds, orphan artifact rate, contradictory-link rate, late-event rate, source-event loss, identity ambiguity, reconstruction correction rate, event-to-state latency, and metric recomputation lag.
+
+Coverage and confidence should be displayed alongside derived measures.
+
+== Validation of reconstruction
+
+Reconstruction quality can be evaluated as an information-retrieval problem.
+
+[stem]
+++++
+Precision = \frac{TP}{TP+FP}
+++++
+
+[stem]
+++++
+Recall = \frac{TP}{TP+FN}
+++++
+
+Pairwise precision and recall measure whether artifact pairs are correctly grouped. Cluster metrics such as B-cubed precision and recall, adjusted Rand index, and normalized mutual information can evaluate whole-group quality.
+
+Ranking metrics such as mean reciprocal rank and NDCG are useful when the system proposes candidate related artifacts.
+
+Evaluation should be stratified by monorepo versus polyrepo, single-team versus cross-team, work type, explicit versus missing ticket IDs, repository activity level, and long-running versus short changes.
+
+== Human correction and active learning
+
+Users should be able to attach or detach an artifact, merge or split changes, correct intent, confirm an outcome, or mark a relationship as invalid.
+
+Corrections become labeled data for active learning. The system should prioritize uncertain or high-value cases for review rather than asking users to validate every graph.
+
+The correction interface must show why a link exists and what downstream reports will change. Silent mutation destroys trust.
+
+== Privacy and governance
+
+Engineering Change reconstruction combines data across many systems and can expose sensitive organizational behavior. Governance requirements include purpose limitation, role-based access, retention rules, aggregation thresholds, audit logs, model transparency, and explicit prohibition of unsupported individual ranking.
+
+Human identity is often unnecessary for system analysis. Pseudonymous identifiers and role-level aggregation should be used whenever the decision does not require named attribution.
+
+== Common failure modes
+
+=== Treating ticket links as ground truth
+
+Tickets are useful but often stale, missing, or reused. They are one source of evidence, not an infallible boundary.
+
+=== Clustering by author and time alone
+
+Active engineers often work on several unrelated changes. This creates false joins.
+
+=== Ignoring deployment and production evidence
+
+A change is not complete at merge. Without release and outcome linkage, flow and quality metrics are truncated.
+
+=== Hiding uncertainty
+
+Inferred links should not be displayed as facts. Confidence and provenance must travel with the data.
+
+=== Building one giant initiative node
+
+Overly broad changes make cost, latency, and causality meaningless. Use hierarchical decomposition.
+
+=== Recomputing history without versioning
+
+Changing reconstruction rules can alter past metrics. Preserve model versions and support reproducible analysis.
+
+== Key takeaways
+
+* Pull requests are observable artifacts, not universal units of engineering work.
+* The Engineering Change connects coherent intent to accepted outcome across tools, repositories, teams, and deployment stages.
+* A temporal property graph is the natural representation for multi-repository and multi-team work.
+* Explicit identifiers provide the strongest linkage, but probabilistic reconstruction is essential for existing estates.
+* Every inferred membership requires confidence, provenance, explanation, and correction history.
+* Repository topology, ownership boundaries, and deployment sequencing are context features, not substitutes for intent.
+* The reconstruction system itself must be measured for coverage, precision, recall, latency, and correction rate.
+
+== Open questions
+
+* What graph-clustering methods best reconstruct changes at enterprise scale while respecting temporal constraints?
+* How should shared artifacts be allocated across several Engineering Changes?
+* Which confidence thresholds are appropriate for operational dashboards, experiments, and financial attribution?
+* How can organizations make change-ID propagation useful enough that teams adopt it voluntarily?
+* What is the right terminal outcome for platform, research, and infrastructure changes?
+
+== Implementation checklist
+
+. Define the Engineering Change entity, identifier, aliases, lifecycle, and outcome vocabulary.
+. Add optional explicit change IDs to planning, SCM, CI/CD, and telemetry templates.
+. Build a normalized event envelope with event time, source identity, schema version, and provenance.
+. Create deterministic linking rules before introducing machine learning.
+. Add probabilistic reconstruction with positive and negative evidence.
+. Store confidence and explanation for every inferred relationship.
+. Support parent-child, merge, split, and temporal membership operations.
+. Build a labeled validation set and report pairwise and cluster-quality metrics.
+. Expose graph corrections through a low-friction user interface.
+. Display reconstruction coverage and confidence alongside every high-level metric.
