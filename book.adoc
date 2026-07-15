@@ -1,0 +1,24 @@
+= Engineering Intelligence
+:subtitle: A Quantitative Framework for Measuring, Understanding, and Optimizing Modern Software Engineering
+:author: Chris Collins
+:doctype: book
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
+:stem:
+:source-highlighter: rouge
+:xrefstyle: full
+:figure-caption: Figure
+:table-caption: Table
+
+[preface]
+= Preface
+
+Software engineering organizations are increasingly instrumented, yet they often remain poorly understood. They can report pull-request counts, deployment frequency, incident volume, and tool usage, but still struggle to explain where expert attention is spent, which process changes create value, or whether an AI-assisted workflow genuinely improves engineering outcomes.
+
+_Engineering Intelligence_ develops a framework for answering those questions. It treats engineering as a measurable socio-technical system and integrates engineering economics, human cognition, software architecture, queueing theory, causal inference, and AI-assisted development.
+
+include::chapters/01-introduction.adoc[]
+
+// Planned chapters are added here as they are written.
