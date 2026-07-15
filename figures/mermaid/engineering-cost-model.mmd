@@ -1,0 +1,19 @@
+flowchart TD
+    EC[Engineering Change] --> H[Human attention]
+    EC --> T[Tools and AI]
+    EC --> I[Infrastructure]
+    EC --> C[Coordination]
+    EC --> D[Delay]
+    EC --> Q[Quality]
+    EC --> R[Risk]
+
+    H --> TOTAL[Total economic cost]
+    T --> TOTAL
+    I --> TOTAL
+    C --> TOTAL
+    D --> TOTAL
+    Q --> TOTAL
+    R --> TOTAL
+
+    TOTAL --> NV[Net value]
+    VALUE[Value created or protected] --> NV
