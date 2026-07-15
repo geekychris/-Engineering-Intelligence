@@ -1,0 +1,19 @@
+flowchart TD
+    I[Engineering intent] --> EC[Engineering Change]
+    EC --> PR1[PR: user interface]
+    EC --> PR2[PR: service API]
+    EC --> PR3[PR: shared library]
+    EC --> DB[Database migration]
+    EC --> INFRA[Infrastructure change]
+    EC --> FLAG[Feature flag]
+    PR1 --> BUILD1[Build and tests]
+    PR2 --> BUILD2[Build and tests]
+    PR3 --> BUILD3[Artifact release]
+    BUILD3 --> PR2
+    DB --> RELEASE[Coordinated release]
+    INFRA --> RELEASE
+    FLAG --> RELEASE
+    BUILD1 --> RELEASE
+    BUILD2 --> RELEASE
+    RELEASE --> VERIFY[Production verification]
+    VERIFY --> OUTCOME[Accepted outcome]
