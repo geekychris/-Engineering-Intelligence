@@ -1,0 +1,14 @@
+{
+  "name": "engineering-intelligence-publication",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Publication tooling for Engineering Intelligence",
+  "scripts": {
+    "build": "bash scripts/build.sh all",
+    "validate": "bash scripts/build.sh validate",
+    "render-diagrams": "bash scripts/build.sh diagrams"
+  },
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.4.2"
+  }
+}
