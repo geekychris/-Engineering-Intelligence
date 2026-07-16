@@ -2,19 +2,19 @@ SHELL := /usr/bin/env bash
 
 .PHONY: all html pdf diagrams validate source-validate clean clean-diagrams
 
-all: clean-diagrams
+all:
 	bash scripts/build.sh all
 
-html: clean-diagrams
+html:
 	bash scripts/build.sh html
 
-pdf: clean-diagrams
+pdf:
 	bash scripts/build.sh pdf
 
-diagrams: clean-diagrams
+diagrams:
 	bash scripts/build.sh diagrams
 
-validate: clean-diagrams
+validate:
 	bash scripts/build.sh validate
 
 source-validate:
