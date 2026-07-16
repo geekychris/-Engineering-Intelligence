@@ -12,11 +12,27 @@ fail() {
   exit 1
 }
 
-command -v ruby >/dev/null 2>&1 || fail "Ruby is required"
-command -v bundle >/dev/null 2>&1 || fail "Bundler is required"
-command -v node >/dev/null 2>&1 || fail "Node.js is required"
-command -v npx >/dev/null 2>&1 || fail "npx is required"
-command -v python3 >/dev/null 2>&1 || fail "Python 3 is required"
+require_command() {
+  command -v "$1" >/dev/null 2>&1 || fail "$2"
+}
+
+case "$MODE" in
+  all|html|pdf|validate|diagrams)
+    ;;
+  *)
+    fail "Unknown build mode: $MODE"
+    ;;
+esac
+
+require_command python3 "Python 3 is required"
+require_command node "Node.js is required"
+require_command npx "npx is required"
+
+if [[ "$MODE" != "diagrams" ]]; then
+  require_command ruby "Ruby is required"
+  require_command bundle "Bundler is required"
+fi
+
 [[ -f "$BOOK" ]] || fail "book.adoc was not found"
 [[ -f "$ROOT/scripts/validate_sources.py" ]] || fail "source validator was not found"
 
@@ -186,9 +202,6 @@ case "$MODE" in
     build_html
     build_pdf
     write_manifest
-    ;;
-  *)
-    fail "Unknown build mode: $MODE"
     ;;
 esac
 
