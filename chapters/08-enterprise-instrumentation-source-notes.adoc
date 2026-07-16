@@ -1,0 +1,397 @@
+== Research foundations and source notes
+
+The enterprise-instrumentation framework in this chapter draws on provenance, event-time stream processing, durable logs, replayable data architecture, site reliability engineering, privacy engineering, and cybersecurity governance. It extends those foundations into an Engineering Intelligence evidence system centered on Engineering Changes, decision-grade metrics, and governed reconstruction.
+
+=== Durable evidence and replay
+
+Modern data-intensive architecture emphasizes durable logs, immutable or append-oriented evidence, and derived state that can be recomputed. See <<kleppmann2017>>.
+
+This foundation supports several requirements in the chapter:
+
+* preserve source evidence before interpretation;
+* separate event capture from derived state;
+* retain schema and transformation versions;
+* support replay and backfill;
+* make corrections auditable;
+* avoid irreversible mutation of historical evidence;
+* reconstruct current views from durable records.
+
+The purpose is not to require one physical log technology. It is to preserve the semantic property that evidence can be reprocessed when definitions, identity, ownership, or reconstruction logic changes.
+
+=== Event time, processing time, and late data
+
+Streaming-systems research distinguishes when an event occurred from when it was observed and processed. See <<akidau2018>>.
+
+Engineering Intelligence requires at least:
+
+* source event time;
+* ingestion time;
+* processing time;
+* effective time for corrected or temporal relationships;
+* observation maturity time for delayed outcomes.
+
+These distinctions matter because:
+
+* deployment evidence can arrive after source-control events;
+* incidents may be linked days later;
+* ownership data may be corrected retrospectively;
+* AI-provider events may be delayed or retried;
+* feature exposure may mature after deployment;
+* defect and value outcomes may require long windows.
+
+A metric that uses ingestion time as if it were event time can create false sequence, latency, and attribution conclusions.
+
+=== Watermarks and outcome maturity
+
+Watermarks provide a practical way to reason about how complete a time-bounded result is likely to be in the presence of late data. See <<akidau2018>>.
+
+The chapter extends this idea into *outcome maturity*. A recently merged Engineering Change may not yet have mature incident, adoption, support, or value evidence.
+
+A decision product should therefore distinguish:
+
+* complete enough for operational state;
+* provisional analytical result;
+* immature downstream outcome;
+* corrected or retracted result;
+* final result under a declared maturity policy.
+
+This is an Engineering Intelligence-specific extension of late-data semantics.
+
+=== Provenance
+
+W3C PROV provides a general model for entities, activities, agents, generation, use, derivation, attribution, and association. See <<moreau2013>>.
+
+The chapter applies provenance to:
+
+* source events;
+* identity resolution;
+* Engineering Change reconstruction;
+* metric computation;
+* model inference;
+* experiment assignment;
+* generated explanation;
+* organizational decision.
+
+The central rule is that observed evidence, inferred relationship, model output, and decision must remain distinguishable.
+
+A generated narrative should never become indistinguishable from the evidence that supports it.
+
+=== Canonical events and source contracts
+
+A canonical event model decouples downstream analytical semantics from vendor-specific APIs.
+
+The chapter’s source-contract model requires:
+
+* source owner;
+* semantic definition;
+* identifier rules;
+* timestamp meaning;
+* delivery and duplication behavior;
+* schema version;
+* deletion and correction semantics;
+* expected completeness and latency;
+* privacy classification;
+* replay and backfill behavior.
+
+This is a domain-specific operating standard. It is informed by general data-contract, event-log, and schema-evolution principles described in <<kleppmann2017>> and <<akidau2018>>.
+
+=== Idempotency and duplicate handling
+
+Enterprise connectors frequently deliver duplicate, retried, reordered, or partially updated events.
+
+The chapter therefore requires stable event identifiers, source sequence where available, idempotent ingestion, and explicit correction semantics.
+
+Exactly-once processing should not be claimed casually. In many systems, the practical objective is deterministic, idempotent effect from at-least-once delivery.
+
+This treatment is consistent with the distributed-data tradeoffs described in <<kleppmann2017>> and stream-processing practice in <<akidau2018>>.
+
+=== Schema evolution
+
+Source and canonical schemas change over time.
+
+Safe evolution requires:
+
+* versioned schemas;
+* backward- and forward-compatibility rules where appropriate;
+* shadow parsing;
+* contract tests;
+* lineage impact analysis;
+* migration and replay plans;
+* deprecation windows;
+* explicit semantic-change review.
+
+A technically compatible schema change can still alter meaning. Renaming a field is less dangerous than changing what a timestamp or status represents while retaining the same field name.
+
+The chapter therefore treats semantic versioning and contract governance as separate from serialization compatibility.
+
+=== Identity resolution
+
+Engineering evidence contains people, service accounts, bots, assistants, autonomous agents, vendors, repositories, services, teams, and organizational units.
+
+Identity resolution should retain:
+
+* source identities;
+* canonical identities;
+* identity type;
+* confidence;
+* effective time;
+* merge and split history;
+* correction provenance;
+* re-identification controls.
+
+The chapter’s temporal identity model is a domain-specific extension of entity-resolution and temporal-data practices.
+
+It is essential for avoiding errors such as attributing historical work to current teams or treating bots as people.
+
+=== Temporal ownership
+
+Repository and service ownership changes through reorganization, migration, and operational transfer.
+
+The chapter therefore resolves ownership as of event time rather than using present-day ownership for historical analysis.
+
+This supports valid analysis of:
+
+* team flow;
+* incident responsibility;
+* architecture boundaries;
+* investment outcomes;
+* intervention exposure;
+* organizational change.
+
+Current ownership remains useful for routing and action, but historical ownership is required for causal and retrospective interpretation.
+
+=== Engineering Change reconstruction
+
+Instrumentation is not complete when source events are merely collected. The platform must connect them into Engineering Changes.
+
+The chapter’s reconstruction layer uses:
+
+* explicit identifiers;
+* deterministic lineage;
+* rule-based relationships;
+* probabilistic linkage;
+* temporal membership;
+* confidence and explanations;
+* human correction.
+
+This architecture builds on provenance in <<moreau2013>> and replayable data principles in <<kleppmann2017>>, while the Engineering Change semantics are original to this book.
+
+=== Polyglot storage
+
+No single storage representation is ideal for every Engineering Intelligence workload.
+
+The chapter separates:
+
+* immutable raw evidence;
+* operational lifecycle state;
+* analytical columnar data;
+* graph relationships;
+* search and document retrieval;
+* feature and model-serving state;
+* registries and governance records.
+
+This polyglot approach follows the data-system tradeoff reasoning in <<kleppmann2017>>.
+
+The architectural goal is not maximum technology diversity. It is to preserve clear sources of truth and fit storage to access patterns while maintaining lineage.
+
+=== Reliability engineering
+
+The Engineering Intelligence platform is itself a production system.
+
+Site reliability engineering provides the foundation for service-level objectives, error budgets, operational toil, monitoring, incident response, and reliable change. See <<beyer2016>> and <<beyer2018>>.
+
+Relevant platform SLOs include:
+
+* source freshness;
+* source completeness;
+* ingestion success;
+* schema-conformance rate;
+* identity-resolution quality;
+* Engineering Change linkage quality;
+* metric publication latency;
+* replay completion;
+* correction propagation;
+* serving availability.
+
+A platform that publishes unreliable evidence can produce high-consequence organizational errors even when its infrastructure remains technically available.
+
+=== Data-quality SLOs
+
+Traditional infrastructure SLOs are necessary but insufficient.
+
+The chapter introduces semantic and analytical SLOs such as:
+
+* percentage of deployments linked to an Engineering Change;
+* proportion of actors with resolved identity type;
+* percentage of metric rows within freshness threshold;
+* calibration quality of inferred links;
+* rate of unresolved schema drift;
+* proportion of outcomes with mature observation windows.
+
+These are original Engineering Intelligence extensions of service-level thinking.
+
+=== Quality incidents
+
+A data or metric incident occurs when evidence becomes stale, incomplete, mislinked, semantically incorrect, or inappropriately exposed.
+
+The chapter treats these as operational incidents requiring:
+
+* detection;
+* severity classification;
+* containment;
+* correction;
+* replay;
+* downstream impact analysis;
+* affected-decision review;
+* practitioner notification where appropriate;
+* post-incident learning.
+
+This extends SRE incident-management principles from system availability to evidence integrity.
+
+=== Privacy engineering
+
+The NIST Privacy Framework provides a risk-based foundation for identifying, governing, controlling, communicating, and protecting privacy-related data processing. See <<nist2020-privacy>>.
+
+The chapter applies these principles through:
+
+* purpose limitation;
+* data minimization;
+* pseudonymization;
+* identity isolation;
+* aggregation thresholds;
+* retention limits;
+* restricted re-identification;
+* correction and appeal;
+* audit and access review.
+
+The system should collect the least detailed evidence needed for the declared decision rather than all technically available behavioral data.
+
+=== Security governance
+
+The NIST Cybersecurity Framework provides a general foundation for governing, identifying, protecting, detecting, responding to, and recovering from cybersecurity risk. See <<nist2024-csf>>.
+
+Relevant controls include:
+
+* source authentication;
+* least-privilege connector credentials;
+* secrets management;
+* encryption;
+* tenant and environment isolation;
+* audit logging;
+* supply-chain review;
+* incident response;
+* disaster recovery;
+* vendor-risk management.
+
+Engineering evidence can expose source code metadata, vulnerabilities, organizational structure, and sensitive work patterns. It should therefore be treated as high-value enterprise data.
+
+=== Access by purpose
+
+Role-based access alone is often too coarse for Engineering Intelligence.
+
+The chapter therefore combines role, data classification, population, and declared purpose.
+
+A platform engineer may need raw connector diagnostics but not identifiable practitioner behavior. A measurement scientist may need pseudonymous event sequences but not names. A manager may need team-level trends but not individual traces.
+
+Purpose-bound access is an original operating extension aligned with the privacy-risk principles in <<nist2020-privacy>>.
+
+=== Retention and deletion
+
+Retention periods should reflect purpose, legal obligation, analytical maturity, and risk.
+
+The chapter distinguishes:
+
+* immutable technical evidence needed for replay;
+* identifiable mappings;
+* detailed behavioral traces;
+* aggregated metrics;
+* experiment records;
+* decisions and audit evidence.
+
+These data classes may require different retention and deletion policies.
+
+Deletion requests and source deletions must propagate through derived stores without silently corrupting reproducibility claims. Where exact reconstruction can no longer be retained, the limitation should be recorded explicitly.
+
+=== Vendor and AI telemetry
+
+Third-party tools may emit incomplete or provider-defined telemetry and may change semantics without notice.
+
+The chapter therefore requires:
+
+* vendor source contracts;
+* version and configuration capture;
+* raw response retention where permitted;
+* reconciliation against billing or usage records;
+* model and prompt provenance;
+* data-use restrictions;
+* export and exit capability;
+* treatment of provider-generated labels as claims rather than facts.
+
+AI risk-management principles are informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+
+=== Observability versus surveillance
+
+Engineering observability explains system behavior and supports improvement. Surveillance attempts to infer individual diligence, intent, or worth from detailed activity traces.
+
+The chapter preserves this distinction through:
+
+* decision-first instrumentation;
+* aggregation by default;
+* prohibited individual employment use;
+* correction and appeal;
+* transparent definitions;
+* limited retention;
+* independent governance review.
+
+Measurement-validity concerns in <<messick1995>> and indicator-corruption concerns in <<campbell1979>> and <<goodhart1984>> reinforce these safeguards.
+
+=== Explainability and generated narratives
+
+Engineering Intelligence systems may generate summaries or explanations from evidence.
+
+The chapter requires generated content to retain:
+
+* cited source records;
+* metric and model versions;
+* uncertainty;
+* distinction between observation and inference;
+* generation timestamp;
+* model provenance;
+* human acceptance or correction.
+
+Generated explanations should be treated as navigational and analytical aids, not as authoritative replacements for evidence.
+
+=== Cost and capacity management
+
+Large-scale ingestion, storage, replay, graph processing, and AI analysis can become expensive.
+
+The chapter therefore tracks cost by:
+
+* source;
+* connector;
+* pipeline;
+* storage tier;
+* metric or feature product;
+* experiment;
+* serving consumer;
+* model and inference workload.
+
+This allows platform cost to be evaluated against decision value using the economic methods in <<boardman2018>> and Chapter 2.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* purpose-bound Engineering Intelligence instrumentation;
+* canonical Engineering Change event contracts;
+* explicit separation of observed evidence, reconstruction, inference, generated explanation, and decision;
+* temporal identity and ownership as mandatory analytical context;
+* reconstruction confidence as a platform-quality dimension;
+* outcome-maturity states derived from late-data semantics;
+* data-quality and semantic SLOs;
+* metric and evidence incidents with decision-impact review;
+* purpose-aware serving and re-identification isolation;
+* replay of metric, reconstruction, and decision products after correction;
+* integrated source, metric, model, experiment, evidence, and decision registries.
+
+These extensions should be validated through platform SLO performance, correction history, audit results, practitioner trust, and the quality of decisions they support.
