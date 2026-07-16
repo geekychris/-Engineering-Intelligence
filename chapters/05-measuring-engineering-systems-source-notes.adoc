@@ -1,0 +1,302 @@
+== Research foundations and source notes
+
+The measurement framework in this chapter draws on classical measurement theory, psychometrics, construct validity, indicator governance, developer-productivity research, and statistical reasoning. It extends those foundations into a governed metric system for software engineering.
+
+=== Measurement scales and permissible operations
+
+Stevens’s classification of nominal, ordinal, interval, and ratio scales provides the basic framework for understanding which mathematical operations are meaningful for a measure. See <<stevens1946>>.
+
+The practical implication is that engineering data types that look numeric are not automatically interchangeable.
+
+Examples include:
+
+* severity classes may be ordinal rather than interval;
+* confidence bands may be ordered categories rather than probabilities;
+* counts may be ratio-scale values but still require exposure or population normalization;
+* ranks preserve order but not meaningful distance;
+* composite scores may not support multiplication or ratio interpretation.
+
+The chapter therefore requires every metric specification to identify its unit, scale, aggregation behavior, and interpretation.
+
+=== Construct definition
+
+A construct is the underlying concept an organization seeks to understand, such as maintainability, cognitive load, delivery responsiveness, review effectiveness, or quality.
+
+Messick’s treatment of validity emphasizes that validity concerns the evidence supporting an intended interpretation and use, not merely the mechanical correctness of a score. See <<messick1995>>.
+
+Hand provides a broader treatment of how measurement choices shape what can be observed and concluded. See <<hand2004>>.
+
+This supports a central rule in the chapter:
+
+[quote]
+A metric is not valid in the abstract. It is more or less valid for a specific construct, population, decision, and consequence.
+
+=== Reliability
+
+Reliability concerns the consistency and reproducibility of measurement.
+
+Cronbach’s coefficient alpha is one influential method for evaluating internal consistency among indicators. See <<cronbach1951>>. The broader principle is that a measure should behave consistently enough for its intended use.
+
+Engineering examples include:
+
+* whether independent labelers agree on review findings;
+* whether a reconstruction model produces stable Engineering Change membership;
+* whether a survey scale behaves consistently across repeated administrations;
+* whether a metric changes because the system changed or because instrumentation changed;
+* whether identical evidence produces the same metric version.
+
+Reliability is necessary but not sufficient. A consistently wrong measure can be highly reliable and invalid.
+
+=== Content, criterion, and construct evidence
+
+The chapter’s validation model includes several forms of evidence.
+
+*Content evidence* asks whether the metric covers the important dimensions of the construct.
+
+*Criterion evidence* asks whether the metric relates appropriately to an external outcome or reference.
+
+*Convergent evidence* asks whether it agrees with different measures of the same construct.
+
+*Discriminant evidence* asks whether it remains distinct from related but different constructs.
+
+*Predictive evidence* asks whether it forecasts relevant future outcomes.
+
+*Consequential evidence* asks what happens when the metric is used in practice.
+
+This integrated treatment follows the use-oriented validity perspective in <<messick1995>>.
+
+=== Measurement invariance
+
+A metric may not mean the same thing across teams, technologies, work types, or time.
+
+Examples include:
+
+* story points with different local semantics;
+* pull-request size under different repository strategies;
+* review latency where review policies differ;
+* incident counts where reporting culture differs;
+* AI acceptance where tools expose different suggestion units;
+* survey responses across organizational cultures.
+
+The chapter therefore requires subgroup, temporal, and workflow checks before cross-population comparison.
+
+Measurement invariance is not guaranteed by a shared column name or dashboard label.
+
+=== Multidimensional engineering productivity
+
+The SPACE framework argues that developer productivity should be considered across satisfaction and well-being, performance, activity, communication and collaboration, and efficiency and flow. See <<forsgren2021-space>>.
+
+The DevEx framework emphasizes feedback loops, cognitive load, and flow state. See <<noda2023-devex>>.
+
+Developer-experience research also supports the importance of practitioner perception and context. See <<fagerholm2012>> and <<meyer2014>>.
+
+These foundations support the chapter’s metric-bundle approach rather than a universal productivity score.
+
+A useful bundle often includes:
+
+* primary outcome;
+* quality and safety guardrails;
+* mechanism indicators;
+* attention or experience measures;
+* adoption and exposure measures;
+* economic measures;
+* data-quality measures.
+
+=== Delivery performance
+
+Delivery-performance measures such as deployment frequency, lead time, restoration time, and change-failure behavior are important system-level outcomes. The research synthesis in <<forsgren2018>> provides the principal foundation used by this book.
+
+These measures should still be interpreted with care:
+
+* definitions differ across systems;
+* repository and service boundaries matter;
+* release and deployment are not always identical;
+* work mix and risk vary;
+* averages may conceal tails and subgroups;
+* local optimization can damage another outcome.
+
+The chapter therefore treats delivery measures as governed metrics within a larger system rather than complete proxies for engineering performance.
+
+=== Queue and flow measurement
+
+Little’s Law relates average work in progress, throughput, and flow time. See <<little1961>>.
+
+Kingman’s work and the operations literature describe the nonlinear effect of utilization and variability on waiting. See <<kingman1961>> and <<hopp2011>>.
+
+These foundations support measures such as:
+
+* queue depth;
+* wait time;
+* service time;
+* blocked time;
+* work in progress;
+* throughput;
+* arrival and service variability;
+* tail latency;
+* utilization of constrained resources.
+
+They also explain why reducing one stage’s average duration may not improve end-to-end flow.
+
+=== Indicator corruption and gaming
+
+Campbell warned that when a quantitative indicator is used heavily for social decision-making, it becomes vulnerable to corruption and can distort the process it is intended to monitor. See <<campbell1979>>.
+
+Goodhart’s Law expresses a related principle: once a measure becomes a target, it may cease to function as a useful measure. See <<goodhart1984>>.
+
+Engineering examples include:
+
+* increasing commit count by splitting trivial changes;
+* reducing review time by approving superficially;
+* reducing incident counts by discouraging incident declaration;
+* improving story-point velocity by changing estimates;
+* increasing AI acceptance by suggesting trivial edits;
+* reducing cycle time by excluding blocked or failed work.
+
+The chapter therefore requires gaming analysis, balancing measures, and prohibited uses in the metric specification.
+
+=== Missing data
+
+Missing values have different meanings.
+
+A field may represent:
+
+* true zero;
+* not applicable;
+* not instrumented;
+* not observed;
+* delayed evidence;
+* unresolved linkage;
+* suppressed data;
+* failed processing;
+* outcome not yet mature.
+
+Collapsing these states into zero or null can materially bias a metric.
+
+The chapter treats missingness as part of metric semantics and quality rather than a downstream cleanup issue.
+
+=== Denominators and eligibility
+
+A rate is only meaningful when its denominator is governed.
+
+For example, AI-finding acceptance may be defined over:
+
+* all generated findings;
+* findings shown to a human;
+* findings eligible for disposition;
+* unique findings after deduplication;
+* findings with mature outcomes;
+* findings within supported languages or repositories.
+
+Different denominators answer different questions.
+
+The chapter therefore requires executable eligibility and denominator definitions for every rate or proportion.
+
+=== Aggregation and ecological error
+
+Group-level patterns do not automatically describe individuals, and aggregate comparisons can reverse when population composition changes.
+
+The chapter’s work-mix adjustment, subgroup analysis, and restriction on individual interpretation are designed to reduce ecological and compositional errors.
+
+A team with longer cycle time may handle more complex, risky, or cross-system changes. A portfolio average can improve because easy work increased rather than because the process improved.
+
+=== Distributions rather than averages
+
+Engineering measures are often skewed, heavy-tailed, censored, or multimodal.
+
+The chapter therefore recommends reporting:
+
+* medians and quantiles;
+* tail probabilities;
+* distribution plots;
+* stratification by relevant work classes;
+* uncertainty intervals;
+* sample and eligibility counts;
+* mature versus immature outcomes.
+
+Averages remain useful, but they should not be the sole representation of flow, cost, review effort, or incident impact.
+
+=== Precision, recall, and ranking
+
+When engineering tools produce findings or ranked recommendations, information-retrieval measures become relevant.
+
+Precision and recall are grounded in the standard information-retrieval treatment in <<manning2008>>.
+
+Discounted cumulative gain and normalized discounted cumulative gain support evaluation of ranked results where the position and graded relevance of findings matter. See <<jarvelin2002>>.
+
+The chapter’s evaluation approach also requires:
+
+* adjudication rules;
+* duplicate handling;
+* partial relevance;
+* severity weighting;
+* finding-level and change-level analysis;
+* confidence intervals;
+* disagreement review.
+
+=== Calibration
+
+A probabilistic score should be interpreted through calibration as well as discrimination.
+
+A model assigning 0.8 probability should be correct approximately 80 percent of the time in the relevant calibrated population.
+
+The chapter extends this principle beyond predictive models to:
+
+* Engineering Change linkage confidence;
+* defect-risk estimates;
+* blast-radius predictions;
+* finding-confidence scores;
+* automated policy thresholds.
+
+Calibration must be evaluated by population and over time because drift can invalidate earlier interpretations.
+
+=== Metric lineage and reproducibility
+
+A published metric should be traceable to:
+
+* source evidence;
+* source and schema versions;
+* identity and linkage logic;
+* transformations;
+* metric version;
+* quality state;
+* publication time;
+* correction history.
+
+This requirement is compatible with the provenance concepts in <<moreau2013>> and the replayable data-system principles in <<kleppmann2017>> and <<akidau2018>>.
+
+A metric without a reproducible definition and evidence path is a report, not decision-grade evidence.
+
+=== Metric governance
+
+Metric governance is part of measurement quality because access, purpose, interpretation, and consequence affect the validity of use.
+
+The chapter therefore requires:
+
+* accountable owner;
+* decision purpose;
+* permitted and prohibited uses;
+* quality threshold;
+* review cadence;
+* versioning and deprecation;
+* correction procedure;
+* privacy and aggregation controls.
+
+Privacy-risk principles are informed by <<nist2020-privacy>>, while professional concerns around harm, fairness, honesty, and accountability are informed by <<acm2018-ethics>>.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* a metric as a versioned decision product rather than a query;
+* a required decision-purpose field;
+* executable eligibility and denominator contracts;
+* explicit prohibited-use declarations;
+* a quality state published with every metric result;
+* policy-grade metric maturity;
+* integration of source, linkage, identity, and outcome maturity into metric quality;
+* metric incidents and rollback;
+* decision-specific validity thresholds;
+* metric bundles connecting outcomes, guardrails, mechanisms, economics, exposure, and quality;
+* mandatory distinction among observed, reconstructed, inferred, predicted, and causal values.
+
+These constructs should be validated through practical use, correction records, decision outcomes, practitioner review, and periodic independent audit.
