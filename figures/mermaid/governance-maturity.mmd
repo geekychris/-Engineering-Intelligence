@@ -1,0 +1,11 @@
+flowchart LR
+    A[Ad hoc] --> S[Standardized]
+    S --> T[Trusted]
+    T --> E[Experimental]
+    E --> AD[Adaptive]
+
+    A1[Local dashboards and inconsistent definitions] -.-> A
+    S1[Canonical events, catalogue, published principles] -.-> S
+    T1[Lineage, corrections, privacy, participation] -.-> T
+    E1[Registered experiments and causal evaluation] -.-> E
+    AD1[Validated policies, monitoring, retirement, rollback] -.-> AD
