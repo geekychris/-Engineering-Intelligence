@@ -70,4 +70,7 @@ include::appendices/d-governance-privacy-and-acceptable-use-standard.adoc[]
 [appendix]
 include::appendices/e-economic-evaluation-and-business-case-standard.adoc[]
 
+[appendix]
+include::appendices/f-technical-reference-architecture.adoc[]
+
 // Additional appendices are added here as they are written.
