@@ -1,0 +1,13 @@
+flowchart LR
+    P0[Phase 0: Charter and safeguards] --> P1[Phase 1: Evidence foundation]
+    P1 --> P2[Phase 2: Engineering Change reconstruction]
+    P2 --> P3[Phase 3: Governed metrics]
+    P3 --> P4[Phase 4: Experimentation]
+    P4 --> P5[Phase 5: Decision products]
+    P5 --> P6[Phase 6: Scale and federation]
+
+    V[Decision value, trust, data quality, and governance readiness] -. gate .-> P2
+    V -. gate .-> P3
+    V -. gate .-> P4
+    V -. gate .-> P5
+    V -. gate .-> P6
