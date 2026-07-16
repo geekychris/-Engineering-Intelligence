@@ -1,0 +1,43 @@
+flowchart LR
+    subgraph Sources
+      PLAN[Planning]
+      SCM[Source control]
+      IDE[IDE and agents]
+      AI[AI systems]
+      CI[CI and tests]
+      CD[Deployment]
+      PROD[Production]
+      ORG[Organization]
+    end
+
+    PLAN --> INGEST[Canonical event ingestion]
+    SCM --> INGEST
+    IDE --> INGEST
+    AI --> INGEST
+    CI --> INGEST
+    CD --> INGEST
+    PROD --> INGEST
+    ORG --> INGEST
+
+    INGEST --> RAW[Immutable raw evidence]
+    INGEST --> STREAM[Stream processing]
+    RAW --> BATCH[Batch and lakehouse processing]
+
+    STREAM --> ID[Identity resolution]
+    BATCH --> ID
+    ID --> CHANGE[Engineering Change reconstruction]
+    CHANGE --> GRAPH[Temporal knowledge graph]
+    GRAPH --> FEATURES[Versioned feature store]
+    STREAM --> FEATURES
+    BATCH --> FEATURES
+
+    FEATURES --> METRICS[Metric engine]
+    FEATURES --> MODELS[Statistical and ML models]
+    METRICS --> EXP[Experiment analysis]
+    MODELS --> EXP
+    EXP --> PRODUCTS[Dashboards, APIs, alerts, and reports]
+
+    GOV[Schema, quality, privacy, security, lineage] -. governs .-> INGEST
+    GOV -. governs .-> RAW
+    GOV -. governs .-> FEATURES
+    GOV -. governs .-> PRODUCTS
