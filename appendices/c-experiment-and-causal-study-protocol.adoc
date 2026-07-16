@@ -1,0 +1,882 @@
+= Experiment and Causal Study Protocol
+
+[abstract]
+This appendix defines a practical protocol for randomized experiments, phased rollouts, natural experiments, and other causal studies in software engineering organizations. It standardizes how questions are framed, units are assigned, treatment is delivered, exposure is observed, outcomes and guardrails are measured, interference is handled, analyses are predeclared, and decisions are recorded. The objective is not statistical ceremony. It is to make consequential engineering interventions testable, auditable, reproducible, and safe.
+
+== Scope
+
+The protocol applies to interventions such as:
+
+* AI coding, review, testing, and operational tools;
+* review-routing or approval-policy changes;
+* CI, build, and test infrastructure changes;
+* merge queues and release controls;
+* developer-environment improvements;
+* architecture and ownership changes;
+* reliability practices;
+* platform migrations;
+* organizational and process policies.
+
+The same protocol can be adapted for randomized trials, cluster-randomized studies, stepped-wedge rollouts, switchback experiments, regression discontinuity, difference-in-differences, interrupted time series, matched observational studies, and synthetic controls.
+
+== The experiment lifecycle
+
+image::../figures/mermaid/experiment-causal-study-lifecycle.mmd[Experiment and causal study lifecycle]
+
+A causal study moves through question definition, design, readiness, assignment, exposure, monitoring, analysis, decision, follow-up, and replication.
+
+== Start with a decision
+
+The study should name the decision it will inform.
+
+Examples:
+
+* Should the AI reviewer become the default for medium-risk pull requests?
+* Should low-risk repositories use automated approval instead of mandatory specialist review?
+* Should the organization fund a larger CI cache tier?
+* Should a merge queue be required for highly coupled services?
+
+A study without a decision owner or decision rule risks becoming informative but operationally irrelevant.
+
+== Study charter
+
+Every study should have a charter containing:
+
+* study identifier;
+* title;
+* sponsor;
+* accountable decision owner;
+* study owner;
+* domain partners;
+* hypothesis;
+* intervention;
+* eligible population;
+* assignment unit;
+* primary outcome;
+* guardrails;
+* expected duration;
+* stopping criteria;
+* privacy classification;
+* approval status.
+
+Example:
+
+[source,yaml]
+----
+study_id: exp_ai_review_2026_04
+name: AI review for medium-risk changes
+sponsor: developer_productivity
+owner: engineering_intelligence
+decision_owner: vp_engineering_platform
+hypothesis: AI review reduces human validation effort without increasing severe escaped defects
+assignment_unit: repository
+primary_outcome: ei.review.human_effort_minutes@2.1.0
+guardrails:
+  - ei.quality.severe_escape_rate@1.3.0
+  - ei.change.rollback_rate@2.0.0
+  - ei.review.author_rework_minutes@1.0.0
+----
+
+== Causal question
+
+Frame the question in counterfactual terms.
+
+For an eligible Engineering Change, compare the outcome under treatment with the outcome that would have occurred without treatment.
+
+Because both cannot be observed for the same change at the same time, the study design must create a credible comparison.
+
+== Hypothesis specification
+
+A useful hypothesis defines:
+
+* population;
+* treatment;
+* comparator;
+* primary outcome;
+* expected direction or minimum effect;
+* guardrails;
+* observation window;
+* decision consequence.
+
+Example:
+
+[quote]
+For eligible medium-risk Engineering Changes, enabling AI review will reduce median active human review effort by at least 15 percent over eight weeks, without increasing severe escaped defects or rollback probability during the following thirty days.
+
+== Theory of change
+
+Document the proposed mechanism.
+
+For an AI reviewer, the theory may be:
+
+. the tool identifies actionable defects before human review;
+. authors correct some defects earlier;
+. human reviewers spend less time finding routine issues;
+. specialist attention shifts toward architecture and domain risk;
+. quality remains stable or improves.
+
+Possible counter-mechanisms include:
+
+* reviewers spend time validating low-value findings;
+* authors create more rework;
+* reviewers become less attentive;
+* comment volume increases queue congestion;
+* the tool performs poorly for particular languages or change types.
+
+Mechanism measures should be selected before launch.
+
+== Eligibility
+
+Eligibility rules must be executable and versioned.
+
+Specify:
+
+* inclusion criteria;
+* exclusions;
+* risk and complexity boundaries;
+* domain or repository scope;
+* actor requirements;
+* temporal constraints;
+* prior treatment restrictions;
+* minimum evidence quality.
+
+Eligibility should be evaluated before assignment using only information available at that time.
+
+== Unit of assignment
+
+The assignment unit may be:
+
+* Engineering Change;
+* pull request;
+* engineer;
+* repository;
+* team;
+* service;
+* organization;
+* time period;
+* deployment wave.
+
+Choose the lowest unit that limits interference and operational complexity without sacrificing statistical efficiency.
+
+Assigning individual changes may fail when treatment changes reviewer behavior across the entire repository. In that case, repository or team assignment may be more defensible.
+
+== Unit of analysis
+
+The analysis unit may differ from the assignment unit.
+
+For example:
+
+* repositories are assigned;
+* Engineering Changes produce outcomes;
+* standard errors are clustered by repository.
+
+The analysis must respect the assignment structure.
+
+== Treatment specification
+
+A treatment is more than a feature-flag value.
+
+Record:
+
+* tool and version;
+* model and version;
+* prompt or policy configuration;
+* permissions;
+* user-interface behavior;
+* rollout state;
+* training or communication;
+* fallback behavior;
+* treatment start and end;
+* configuration changes during the study.
+
+A material treatment change may require a new study phase or treatment variant.
+
+== Comparator
+
+The comparator may be:
+
+* current workflow;
+* placebo or sham intervention;
+* alternative tool;
+* alternative configuration;
+* delayed treatment;
+* historical or synthetic control.
+
+The comparator must be described with the same precision as the treatment.
+
+== Randomization
+
+Randomization should be deterministic, reproducible, and auditable.
+
+A common pattern is:
+
+[source,text]
+----
+assignment = hash(study_id || unit_id || salt) mod number_of_variants
+----
+
+The assignment service should record:
+
+* eligible unit;
+* assignment timestamp;
+* variant;
+* algorithm and version;
+* salt or seed reference;
+* strata;
+* override status;
+* exclusion reason.
+
+Manual overrides should be rare, logged, and analyzed.
+
+== Stratification and blocking
+
+Stratification can improve balance for important predictors such as:
+
+* repository size;
+* baseline cycle time;
+* programming language;
+* risk class;
+* business domain;
+* prior tool usage;
+* change volume;
+* team size.
+
+Strata should be selected before outcome inspection and kept limited enough to avoid sparse cells.
+
+== Cluster randomization
+
+Cluster assignment is appropriate when treatment or behavior spreads within a group.
+
+Potential clusters include teams, repositories, services, or review groups.
+
+Cluster trials must account for:
+
+* intracluster correlation;
+* fewer effective independent units;
+* cluster-size imbalance;
+* cross-cluster dependencies;
+* cluster attrition;
+* cluster-level implementation differences.
+
+Power calculations based only on the number of Engineering Changes will be overly optimistic.
+
+== Switchback experiments
+
+A switchback alternates treatment by time window.
+
+It is useful when:
+
+* capacity or system behavior changes globally;
+* simultaneous treatment and control are operationally difficult;
+* effects are expected to occur quickly;
+* carryover can be bounded.
+
+Specify window length, washout period, seasonality controls, and treatment schedule before launch.
+
+== Stepped-wedge rollout
+
+In a stepped-wedge design, clusters adopt treatment in randomized or defensible waves until all receive it.
+
+This design can fit enterprise rollouts, but requires care because calendar time is correlated with treatment. Analysis must adjust for time trends and rollout-wave effects.
+
+== Exposure
+
+Assignment does not prove treatment exposure.
+
+Record whether the treatment was:
+
+* available;
+* invoked;
+* visible to the user;
+* completed successfully;
+* used before the relevant decision;
+* overridden or bypassed;
+* configured as assigned.
+
+Example exposure record:
+
+[source,json]
+----
+{
+  "study_id": "exp_ai_review_2026_04",
+  "unit_id": "ec_01J...",
+  "assigned_variant": "ai_review_enabled",
+  "exposure_status": "completed_before_human_review",
+  "exposed_at": "2026-07-18T10:14:03Z",
+  "treatment_version": "reviewer-4.2/model-x-2026-07",
+  "configuration_hash": "sha256:...",
+  "failure_reason": null
+}
+----
+
+== Intention-to-treat and treatment-on-treated
+
+The primary randomized analysis should usually be intention-to-treat: compare units according to assignment.
+
+This preserves the causal benefit of randomization and includes real adoption friction.
+
+Treatment-on-treated or per-protocol analyses may be useful as secondary analyses, but require stronger assumptions because exposure is not random.
+
+== Noncompliance
+
+Noncompliance includes:
+
+* treatment assigned but unavailable;
+* user bypass;
+* treatment contamination in control;
+* partial configuration;
+* treatment delivered too late;
+* model or service failure.
+
+Report noncompliance by variant and reason. Do not silently remove noncompliant units from the primary analysis.
+
+== Interference
+
+Standard causal inference often assumes one unit’s treatment does not affect another unit’s outcome. Engineering systems frequently violate this assumption.
+
+Examples include:
+
+* reviewers work across treatment and control repositories;
+* CI capacity is shared;
+* a treated platform changes all dependent teams;
+* knowledge learned from treatment spreads;
+* one deployment contains both treatment and control changes.
+
+The study should identify plausible interference pathways and choose assignment boundaries accordingly.
+
+== Spillover measurement
+
+Where spillover is likely, record:
+
+* shared reviewers;
+* shared services and dependencies;
+* cross-team contribution;
+* treatment-related communication;
+* common queue utilization;
+* control units receiving treatment artifacts.
+
+Spillover may be an important outcome rather than only a nuisance.
+
+== Primary outcome
+
+Select one primary outcome whenever possible.
+
+The primary metric must be:
+
+* versioned;
+* decision-relevant;
+* observable within the study window;
+* sufficiently reliable;
+* resistant to obvious gaming;
+* accompanied by uncertainty.
+
+Multiple equally primary outcomes increase ambiguity and false-positive risk.
+
+== Secondary outcomes
+
+Secondary outcomes may capture:
+
+* mechanisms;
+* distributional effects;
+* adoption;
+* cost;
+* experience;
+* longer-term quality;
+* exploratory signals.
+
+They should be labeled confirmatory or exploratory.
+
+== Guardrails
+
+Guardrails protect against harmful optimization.
+
+A guardrail specification should include:
+
+* metric and version;
+* acceptable boundary;
+* monitoring cadence;
+* maturity delay;
+* escalation owner;
+* pause or stop rule.
+
+Examples include severe defects, security incidents, rollback, latency, cost, reviewer overload, and subgroup harm.
+
+== Outcome windows
+
+Different outcomes mature at different rates.
+
+Examples:
+
+* review effort: immediate;
+* cycle time: at acceptance or release;
+* rollback: days;
+* escaped defects: weeks;
+* skill development: months;
+* architecture effects: quarters.
+
+The study should distinguish launch duration from outcome-follow-up duration.
+
+== Baseline period
+
+A baseline helps assess balance, seasonality, power assumptions, and data quality.
+
+Do not use post-assignment baseline variables in ways that introduce bias.
+
+Useful baseline features include prior outcome distributions, change mix, repository activity, team size, and source coverage.
+
+== Sample-size and power planning
+
+Power planning should specify:
+
+* minimum detectable effect;
+* expected variance;
+* significance or posterior decision criterion;
+* desired power;
+* assignment ratio;
+* cluster correlation;
+* attrition or missingness;
+* sequential design adjustments;
+* expected eligible volume.
+
+Power should be based on the decision consequence, not only on what sample size is convenient.
+
+== Rare outcomes
+
+Severe incidents and critical defects may be too rare for conventional experiment duration.
+
+Possible strategies include:
+
+* composite guardrails with careful interpretation;
+* longer follow-up;
+* Bayesian hierarchical models;
+* severity-weighted outcomes;
+* validated leading indicators;
+* noninferiority margins;
+* pooled replication across cohorts.
+
+Absence of observed severe events does not establish safety.
+
+== Noninferiority
+
+A noninferiority design may be appropriate when treatment is expected to reduce cost or effort while preserving quality.
+
+The noninferiority margin must represent the largest acceptable quality degradation and should be justified before the study.
+
+A poorly chosen wide margin can make an unsafe tool appear acceptable.
+
+== Economic outcomes
+
+Include direct and indirect economics:
+
+* vendor and inference cost;
+* infrastructure cost;
+* human validation effort;
+* implementation and support cost;
+* released capacity;
+* defect or incident cost;
+* delay cost;
+* switching and migration cost.
+
+Distinguish realized savings, avoided cost, and modeled capacity value.
+
+== External-factor registry
+
+Record events that may affect interpretation:
+
+* release freezes;
+* reorganizations;
+* major incidents;
+* staffing changes;
+* model upgrades;
+* platform migrations;
+* policy changes;
+* holidays;
+* outages;
+* business-cycle changes.
+
+This registry should be created continuously, not reconstructed only after surprising results.
+
+== Readiness review
+
+Before launch, verify:
+
+. eligibility is executable;
+. assignment is deterministic;
+. treatment is deployable;
+. exposure is observable;
+. primary and guardrail metrics are publishable;
+. data-quality alerts exist;
+. privacy approval is complete;
+. power assumptions are documented;
+. stop and rollback mechanisms work;
+. decision owner accepts the analysis plan.
+
+No study should launch if exposure or guardrails are unobservable.
+
+== Pre-analysis plan
+
+The plan should specify:
+
+* estimand;
+* population;
+* assignment and analysis units;
+* treatment variants;
+* primary and secondary outcomes;
+* guardrails;
+* covariates;
+* exclusion rules;
+* missing-data policy;
+* model specification;
+* clustering and weighting;
+* multiplicity handling;
+* subgroup analyses;
+* sequential monitoring;
+* decision criteria;
+* robustness checks.
+
+Version and timestamp the plan before unblinded outcome analysis.
+
+== Estimand
+
+State exactly what effect is being estimated.
+
+Examples include:
+
+* average treatment effect for all eligible changes;
+* intention-to-treat effect for assigned repositories;
+* effect among changes exposed before human review;
+* noninferiority of severe-defect risk;
+* distributional effect at the 90th percentile.
+
+The estimand must match the decision.
+
+== Covariate adjustment
+
+Pre-treatment covariates can improve precision.
+
+Useful covariates include baseline outcome, repository, complexity, risk class, language, and prior volume.
+
+Avoid selecting covariates based on post-treatment correlation or adjusting for mediators unless estimating a specific direct effect.
+
+== Missing outcomes
+
+Classify missingness by reason:
+
+* source failure;
+* outcome window incomplete;
+* unit abandoned;
+* treatment failure;
+* unresolved linkage;
+* domain withdrawal;
+* true absence of outcome.
+
+Report missingness by variant. Use sensitivity analyses where missingness could depend on treatment or outcome.
+
+== Sequential monitoring
+
+Operational studies often monitor before the planned end.
+
+Predeclare whether monitoring is for:
+
+* safety only;
+* futility;
+* efficacy;
+* data quality;
+* operational failure.
+
+Repeated significance testing without adjustment inflates false positives. Use appropriate group-sequential, alpha-spending, Bayesian, or always-valid methods.
+
+== Stop rules
+
+Possible stop conditions include:
+
+* severe guardrail breach;
+* treatment security incident;
+* exposure failure above threshold;
+* irrecoverable data-quality failure;
+* overwhelming benefit under the declared rule;
+* futility;
+* external change invalidating the design.
+
+Stopping should trigger a documented decision, not automatic broad rollout.
+
+== Analysis principles
+
+The analysis should:
+
+* follow the pre-analysis plan;
+* preserve assignment structure;
+* report effect sizes and uncertainty;
+* show absolute and relative effects;
+* report population and missingness;
+* include quality and exposure status;
+* distinguish confirmatory from exploratory results;
+* assess practical as well as statistical significance.
+
+== Distributional effects
+
+Means and medians can hide important effects.
+
+Inspect:
+
+* percentiles;
+* variance;
+* tail latency;
+* zero-inflation;
+* severe-event concentration;
+* subgroup distributions;
+* probability of improvement.
+
+An intervention may help routine changes while harming the most complex work.
+
+== Heterogeneous treatment effects
+
+Predeclare important subgroups such as:
+
+* complexity band;
+* risk class;
+* language;
+* repository maturity;
+* team experience;
+* change type;
+* reviewer specialization.
+
+Subgroup findings should include interaction uncertainty and should not be based only on separate significance tests.
+
+Unexpected subgroup results are hypotheses for replication unless strongly supported.
+
+== Multiple comparisons
+
+When many outcomes, variants, or subgroups are tested, specify how false discoveries are controlled or how posterior decisions are made.
+
+Do not hide the total number of analyses performed.
+
+== Robustness checks
+
+Useful checks include:
+
+* unadjusted and adjusted estimates;
+* alternative missing-data assumptions;
+* alternative outcome definitions;
+* exclusion of rollout anomalies;
+* cluster-robust and random-effects models;
+* randomization inference;
+* placebo outcomes;
+* pre-trend checks;
+* sensitivity to linkage-confidence thresholds.
+
+Robustness checks should test assumptions, not search for a preferred answer.
+
+== Quasi-experimental studies
+
+When randomization is unavailable, document the identification strategy explicitly.
+
+=== Difference-in-differences
+
+Requires credible parallel trends absent treatment. Show pre-treatment trends and account for staggered adoption carefully.
+
+=== Interrupted time series
+
+Model baseline trend, seasonality, autocorrelation, intervention timing, and simultaneous events.
+
+=== Regression discontinuity
+
+Document assignment threshold, manipulation risk, bandwidth, continuity, and local interpretation.
+
+=== Instrumental variables
+
+Justify relevance, exclusion, and monotonicity assumptions. The effect often applies only to compliers affected by the instrument.
+
+=== Synthetic control
+
+Document donor pool, pre-treatment fit, predictor selection, and placebo comparisons.
+
+=== Matching and weighting
+
+Show overlap, balance, weight stability, and sensitivity to unmeasured confounding.
+
+Causal language should reflect the credibility of the assumptions.
+
+== Decision framework
+
+A decision should combine:
+
+* primary effect;
+* guardrails;
+* uncertainty;
+* economics;
+* treatment fidelity;
+* subgroup effects;
+* operational feasibility;
+* external validity;
+* reversibility.
+
+Possible decisions are adopt, bounded adopt, extend study, modify, reject, or reverse.
+
+== Decision record
+
+Example:
+
+[source,yaml]
+----
+decision_id: dec_2026_081
+study_id: exp_ai_review_2026_04
+decision: bounded_adoption
+population: medium_risk_java_and_kotlin_repositories
+rationale:
+  primary_effect: -18_percent_human_review_effort
+  uncertainty: 95_percent_interval_-24_to_-11
+  quality_guardrails: noninferior_with_current_follow_up
+  economics: positive_expected_value
+limitations:
+  - insufficient_security_repository_sample
+  - long_term_skill_effect_unknown
+conditions:
+  - continue_30_day_quality_follow_up
+  - exclude_high_risk_services
+  - repeat_for_python_repositories
+review_date: 2026-11-01
+----
+
+== Reporting package
+
+The final package should include:
+
+* executive decision summary;
+* charter and theory of change;
+* protocol and analysis plan;
+* assignment and exposure report;
+* data-quality report;
+* population flow diagram;
+* primary and guardrail results;
+* economic analysis;
+* subgroup and robustness results;
+* limitations;
+* decision record;
+* reproducibility assets.
+
+== Reproducibility
+
+Preserve:
+
+* protocol version;
+* metric versions;
+* assignment code;
+* treatment configuration;
+* analysis code;
+* data-extraction logic;
+* environment and package versions;
+* synthetic or de-identified fixtures;
+* result tables;
+* decision record.
+
+Where raw data cannot be shared, provide executable specifications and aggregate checksums.
+
+== Follow-up
+
+After a decision, continue measuring:
+
+* longer-term quality;
+* adoption and treatment drift;
+* cost;
+* model or tool changes;
+* behavioral adaptation;
+* subgroup performance;
+* skill and capability effects.
+
+A positive pilot does not permanently validate a changing intervention.
+
+== Replication
+
+Replicate across relevant variations:
+
+* teams;
+* repositories;
+* languages;
+* complexity;
+* risk;
+* time periods;
+* model versions;
+* organizational contexts.
+
+Replication should test the mechanism and boundary conditions, not merely repeat the headline metric.
+
+== Study maturity levels
+
+=== Level 0: observational signal
+
+A pattern suggests a question but supports no intervention claim.
+
+=== Level 1: designed observational study
+
+Population, confounders, and assumptions are documented.
+
+=== Level 2: credible quasi-experiment
+
+A defensible identification strategy estimates a local causal effect.
+
+=== Level 3: randomized evaluation
+
+Assignment supports a causal estimate for the study population.
+
+=== Level 4: replicated causal evidence
+
+Effects and boundary conditions are reproduced across relevant settings.
+
+=== Level 5: governed operational policy
+
+Evidence has been translated into monitored policy with rollback and revalidation.
+
+== Anti-patterns
+
+=== Adoption as treatment
+
+Users who choose a tool are compared with those who do not, and selection bias is ignored.
+
+=== Assignment without exposure
+
+The organization cannot tell whether the configured treatment actually operated.
+
+=== Moving outcome definitions
+
+Metrics change after results become visible.
+
+=== Success metric without guardrails
+
+Speed improves while quality or human burden is ignored.
+
+=== Unit mismatch
+
+Changes are analyzed as independent even though teams were assigned.
+
+=== Post-treatment filtering
+
+Units are removed based on behavior caused by treatment.
+
+=== Dashboard significance testing
+
+Repeated informal checks generate a favorable result by chance.
+
+=== Rare-event safety claim
+
+No severe event occurred in a small sample, so safety is declared.
+
+=== Experiment without decision
+
+Results are presented, but no owner adopts, modifies, or stops the intervention.
+
+== Protocol checklist
+
+. Name the consequential decision and accountable owner.
+. State the causal question, hypothesis, and theory of change.
+. Define eligibility, assignment unit, analysis unit, treatment, and comparator.
+. Make assignment deterministic and exposure observable.
+. Predeclare primary outcome, guardrails, windows, and economic measures.
+. Account for clustering, interference, spillover, noncompliance, and missingness.
+. Conduct power and readiness reviews before launch.
+. Version the pre-analysis plan before unblinded outcome analysis.
+. Monitor safety and quality under declared sequential rules.
+. Report effect sizes, uncertainty, population, exposure, and limitations.
+. Record an explicit adopt, modify, extend, reject, or reverse decision.
+. Preserve reproducibility assets and continue long-term follow-up.
+. Replicate before universal policy adoption.
