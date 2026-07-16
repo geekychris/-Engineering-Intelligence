@@ -1,30 +1,128 @@
 = Engineering Intelligence
+Chris Collins
 
-*A Quantitative Framework for Measuring, Understanding, and Optimizing Modern Software Engineering*
+_A Quantitative Framework for Measuring, Understanding, and Optimizing Modern Software Engineering_
 
-This repository contains the source manuscript and companion technical assets for _Engineering Intelligence_. The book develops a rigorous framework for observing software delivery as a socio-technical and economic system: people, AI participants, repositories, review processes, build systems, deployment pipelines, production outcomes, and organizational constraints.
+This repository contains the publication source for _Engineering Intelligence_, a book about measuring software engineering as a socio-technical and economic system.
 
-== Build targets
+== Manuscript structure
 
-The manuscript is authored in AsciiDoc and is intended to produce:
+* `book.adoc` — master publication file
+* `chapters/` — principal manuscript chapters
+* `appendices/` — standards, reference models, templates, glossary, and bibliography
+* `figures/mermaid/` — Mermaid diagram sources
+* `scripts/` — publication and validation scripts
+* `build/` — generated editions; not committed
 
-* HTML
-* PDF
-* EPUB
-* a searchable companion website
+== Editions
 
-== Repository layout
+The publication pipeline produces:
 
-[source,text]
+* `build/engineering-intelligence.html`
+* `build/engineering-intelligence.pdf`
+
+Mermaid source diagrams are rendered to SVG during the build. The manuscript continues to reference the `.mmd` source files; the build creates a temporary publication tree in which those references point to generated SVG files.
+
+== Local prerequisites
+
+The standard local build requires:
+
+* Ruby 3.2 or later
+* Bundler
+* Node.js 20 or later
+* npm
+* a Chromium-compatible browser installed by Mermaid CLI
+
+Install dependencies:
+
+[source,shell]
 ----
-book.adoc                 Main book entry point
-chapters/                 Numbered manuscript chapters
-figures/mermaid/           Standalone Mermaid source diagrams
-bibliography/              Bibliographic data and source notes
-appendices/                Metric catalogue, glossary, schemas, and methods
-examples/                  Worked examples, SQL, and event definitions
+bundle install
+npm install
 ----
 
-== Current status
+Build all editions:
 
-The manuscript is being developed incrementally. Chapter 1 establishes the discipline, defines the Engineering Change as the principal unit of analysis, and explains why measurement must support decisions and experiments rather than merely populate dashboards.
+[source,shell]
+----
+make all
+----
+
+Build one edition:
+
+[source,shell]
+----
+make html
+make pdf
+----
+
+Validate the publication:
+
+[source,shell]
+----
+make validate
+----
+
+Remove generated files:
+
+[source,shell]
+----
+make clean
+----
+
+== Container build
+
+A reproducible container build can be run with:
+
+[source,shell]
+----
+docker build -t engineering-intelligence .
+docker run --rm -v "$PWD/build:/book/build" engineering-intelligence
+----
+
+== Publication pipeline
+
+The build:
+
+. verifies that chapter and appendix includes resolve;
+. verifies that referenced Mermaid sources exist;
+. renders every Mermaid diagram to SVG;
+. creates an isolated temporary publication tree;
+. rewrites `.mmd` image references to generated `.svg` references only in that tree;
+. compiles HTML using Asciidoctor;
+. compiles PDF using Asciidoctor PDF;
+. fails on unresolved includes, missing diagrams, or publication errors;
+. writes a manifest containing output checksums and build metadata.
+
+== Continuous integration
+
+GitHub Actions builds and validates both editions for pushes and pull requests. Successful builds upload the HTML, PDF, manifest, and generated diagrams as workflow artifacts.
+
+A tagged release matching `v*` additionally attaches the HTML and PDF editions to the GitHub release.
+
+== Editorial conventions
+
+The manuscript uses:
+
+* AsciiDoc book semantics;
+* one top-level title per included chapter or appendix;
+* stable headings and cross-reference identifiers where required;
+* Mermaid sources under `figures/mermaid/`;
+* semantic terms from the controlled vocabulary;
+* versioned references for metrics, studies, models, evidence, and decisions;
+* primary or authoritative sources wherever practical.
+
+== Publication checks
+
+Before publishing an edition:
+
+. run `make validate`;
+. review warnings for unresolved cross-references;
+. verify generated diagrams visually;
+. confirm bibliography links and time-sensitive standards;
+. review changes to metric, model, governance, and economic definitions;
+. confirm generated artifacts identify the intended edition and commit.
+
+== Source of truth
+
+AsciiDoc and Mermaid files in this repository are the source of truth. Generated HTML, PDF, SVG, and temporary transformed sources are build artifacts and should not be edited directly.
