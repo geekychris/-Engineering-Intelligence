@@ -1,0 +1,434 @@
+= Implementation and Rollout
+
+[abstract]
+Engineering Intelligence should not begin as a multi-year data-platform program. It should begin with a small number of consequential decisions, a narrow evidence path, and a governance model that earns trust. This chapter presents a phased rollout strategy for large organizations. It covers pilot selection, team structure, technical sequencing, data quality, change management, value proof, operating cadence, scaling criteria, and failure recovery.
+
+== Start with decisions, not completeness
+
+A common failure pattern is to attempt universal instrumentation before demonstrating value. The program spends months connecting tools, designing schemas, and building dashboards while practitioners see little improvement.
+
+A better starting point is a decision that is important, repeated, measurable, and currently made with weak evidence.
+
+Examples include:
+
+* whether to adopt an AI pull-request reviewer;
+* where review queues create the greatest delay;
+* whether CI acceleration justifies its infrastructure cost;
+* which specialist approvals should be risk-routed;
+* whether a merge queue improves quality-adjusted integration time.
+
+The initial platform should collect only the evidence needed to answer the selected decision credibly.
+
+== Pilot selection criteria
+
+A good pilot domain has:
+
+* a meaningful operational or economic problem;
+* sufficient event volume for analysis;
+* willing engineering partners;
+* stable enough workflows to define treatment and outcomes;
+* manageable security and privacy risk;
+* accessible source-control, CI, and deployment evidence;
+* a plausible intervention within one or two quarters.
+
+Avoid pilots chosen only because their data is easy. A technically convenient pilot with no decision consequence will not establish legitimacy.
+
+== The minimum viable evidence path
+
+For many pilots, the minimum viable path includes:
+
+. source-control events;
+. CI and test outcomes;
+. deployment or accepted-outcome evidence;
+. canonical actor, repository, and team identities;
+. a basic Engineering Change linkage strategy;
+. a small metric catalogue;
+. experiment assignment and exposure when applicable.
+
+This is enough to answer substantial questions without first building every graph, model, and dashboard described in the reference architecture.
+
+image::../figures/mermaid/implementation-roadmap.mmd[Engineering Intelligence implementation roadmap]
+
+== Phase 0: charter and safeguards
+
+Before instrumentation, define:
+
+* the decisions the program will support;
+* acceptable and prohibited uses;
+* privacy and retention principles;
+* pilot owners and stakeholders;
+* success and stopping criteria;
+* data-access boundaries;
+* correction and dispute processes.
+
+The charter should explicitly state that system telemetry will not be used for unsupported individual productivity ranking.
+
+== Phase 1: evidence foundation
+
+The first technical phase should establish:
+
+* canonical event envelopes;
+* immutable raw storage;
+* schema ownership;
+* source freshness monitoring;
+* deduplication and replay;
+* temporal identity resolution;
+* lineage from source event to metric.
+
+The goal is not broad coverage. It is trustworthy evidence for the pilot.
+
+== Phase 2: Engineering Change reconstruction
+
+Introduce explicit Engineering Change identifiers where teams can adopt them with low friction. Use deterministic and probabilistic reconstruction for legacy workflows.
+
+Measure:
+
+* explicit-ID coverage;
+* inferred-link coverage;
+* linkage confidence;
+* correction rate;
+* orphan artifact rate;
+* event-to-change latency.
+
+Do not hide weak coverage behind polished dashboards.
+
+== Phase 3: governed metrics
+
+Implement a small metric bundle tied to the pilot decision.
+
+For an AI review pilot, the first bundle might include:
+
+* human review effort;
+* AI validation burden;
+* finding precision and ranking;
+* cycle time;
+* severe quality outcomes;
+* tool and inference cost;
+* data freshness and linkage coverage.
+
+Each metric requires a version, owner, formula, population, uncertainty method, and guardrails.
+
+== Phase 4: experimentation
+
+Add:
+
+* eligibility service;
+* deterministic assignment;
+* treatment configuration;
+* exposure logging;
+* external-factor registry;
+* predeclared analysis plan;
+* sequential monitoring;
+* decision record.
+
+An experiment should not launch until exposure and guardrails are observable.
+
+== Phase 5: operational decision products
+
+Deliver views tailored to the pilot users:
+
+* engineers need current change and queue state;
+* team leads need bottlenecks and work-mix context;
+* platform owners need source freshness and tool economics;
+* leaders need causal evidence and rollout decisions.
+
+Avoid one dashboard attempting to serve every audience.
+
+== Phase 6: scale and federation
+
+Scale only after the pilot demonstrates:
+
+* credible decision impact;
+* acceptable data quality;
+* practitioner trust;
+* stable metric definitions;
+* manageable operating cost;
+* repeatable onboarding;
+* governance capacity.
+
+Federation becomes important at scale. Central teams should own canonical contracts, identity, lineage, and experimentation foundations, while domain teams own source semantics, local metrics, and interpretation.
+
+== Team structure
+
+A cross-functional implementation team typically needs:
+
+* platform engineering;
+* data engineering;
+* applied statistics or causal inference;
+* ML or information retrieval;
+* developer experience;
+* security and privacy;
+* domain representatives;
+* product or program leadership.
+
+A small team with these capabilities is often more effective than a large dashboard organization lacking statistical or domain depth.
+
+== Product management for measurement
+
+Engineering Intelligence should be managed as a product.
+
+The product backlog should include:
+
+* decisions to improve;
+* user workflows;
+* evidence gaps;
+* metric quality;
+* experiments;
+* source reliability;
+* governance debt;
+* adoption and trust.
+
+Usage is not the primary success metric. Decision quality and realized outcome improvement are.
+
+== Proving value
+
+Early value should be demonstrated through concrete cases:
+
+* a tool purchase avoided or justified;
+* a queue bottleneck removed;
+* specialist attention redirected;
+* CI spend reduced without quality loss;
+* an ineffective policy retired;
+* an experiment prevented a costly enterprise rollout.
+
+Value claims should distinguish realized savings, avoided future cost, released capacity, expected quality benefit, and theoretical model estimates.
+
+== Baseline before intervention
+
+Before changing a workflow, establish:
+
+* current metric distributions;
+* work-mix and complexity features;
+* source coverage and missingness;
+* seasonality and release cycles;
+* existing tool exposure;
+* quality and economic baselines;
+* external events.
+
+A rushed intervention without baseline evidence may make causal interpretation impossible.
+
+== Data quality gates
+
+High-level metrics should not publish when evidence falls below declared thresholds.
+
+Possible gates include:
+
+* minimum event completeness;
+* maximum source lag;
+* minimum Engineering Change linkage confidence;
+* maximum unresolved identity rate;
+* sufficient sample size;
+* stable metric version;
+* no known processing incident.
+
+A visible unavailable state is better than a precise-looking but invalid number.
+
+== Onboarding new domains
+
+A repeatable onboarding process should include:
+
+. identify domain owners and decisions;
+. inventory source systems and semantics;
+. map canonical identities;
+. establish Engineering Change boundaries;
+. validate event completeness;
+. calibrate work-mix and complexity features;
+. review privacy and access;
+. run metrics in shadow mode;
+. compare with domain expert understanding;
+. publish only after validation.
+
+== Shadow mode
+
+New metrics and policies should initially operate without affecting decisions.
+
+Shadow mode allows teams to inspect:
+
+* reconstructed changes;
+* predicted risk;
+* routing recommendations;
+* metric values;
+* false positives and omissions;
+* likely behavioral effects.
+
+Corrections gathered during shadow mode improve both data and trust.
+
+== Rollout patterns
+
+Useful rollout patterns include:
+
+* opt-in pilot;
+* selected representative teams;
+* staged repository cohorts;
+* risk-bounded populations;
+* shadow recommendations;
+* advisory before blocking policy;
+* regional or organizational waves.
+
+The rollout pattern should support both operational safety and causal learning.
+
+== Change communication
+
+Communication should explain:
+
+* the decision and problem;
+* what data is collected;
+* what is not collected;
+* metric definitions and uncertainty;
+* prohibited uses;
+* pilot duration and review points;
+* correction paths;
+* how success will be judged.
+
+Avoid framing the initiative as a way to measure which engineers are productive.
+
+== Operating cadence
+
+A sustainable cadence may include:
+
+=== Weekly operational review
+
+Source failures, queue anomalies, experiment exposure, and data-quality incidents.
+
+=== Monthly metric review
+
+Definition changes, quality, drift, dashboard use, and action outcomes.
+
+=== Quarterly governance review
+
+New uses, privacy, retention, model performance, fairness, and metric retirement.
+
+=== Experiment decision reviews
+
+Held when predeclared evidence or stopping conditions are met.
+
+== Scaling source integrations
+
+Source integrations should use reusable connector contracts and centralized reliability patterns.
+
+Connector responsibilities include:
+
+* source authentication;
+* pagination and rate limits;
+* event deduplication;
+* schema translation;
+* source cursor management;
+* backfill;
+* retry and dead-letter handling;
+* freshness and completeness reporting.
+
+Avoid embedding business metric logic inside connectors.
+
+== Build economics
+
+The platform itself should be economically evaluated.
+
+Track:
+
+* engineering and operating cost;
+* infrastructure and vendor cost;
+* source onboarding cost;
+* metric maintenance cost;
+* experiment cycle time;
+* realized or expected decision value;
+* unused platform capabilities.
+
+A comprehensive platform that does not change decisions is not successful.
+
+== Failure recovery
+
+The program should be prepared to pause or reverse:
+
+* a metric that creates gaming;
+* a model with poor subgroup calibration;
+* a policy that increases quality risk;
+* an invasive data source;
+* a dashboard used for an unapproved purpose;
+* an experiment with guardrail breach.
+
+Rollback should include technical, policy, communication, and data-retention actions.
+
+== Anti-patterns
+
+=== Enterprise-wide launch first
+
+The organization attempts universal coverage before any decision is improved.
+
+=== Data platform as the product
+
+Infrastructure milestones replace user and decision outcomes.
+
+=== Dashboard proliferation
+
+Every stakeholder receives a custom scorecard with inconsistent definitions.
+
+=== Hidden quality problems
+
+Coverage and freshness are omitted from executive views.
+
+=== No local ownership
+
+Central analysts interpret domain-specific workflows without practitioners.
+
+=== Scaling before trust
+
+Mandatory use expands after technical success but before governance and legitimacy exist.
+
+== A ninety-day pilot outline
+
+=== Days 1–30
+
+* finalize charter and safeguards;
+* select pilot and intervention;
+* connect core source systems;
+* establish baseline event quality;
+* define initial Engineering Change linkage;
+* register metrics and experiment design.
+
+=== Days 31–60
+
+* run reconstruction and metrics in shadow mode;
+* validate with practitioners;
+* correct identity and linkage errors;
+* complete power and readiness review;
+* deliver pilot decision products.
+
+=== Days 61–90
+
+* launch bounded experiment or intervention;
+* monitor exposure and guardrails;
+* publish data quality and preliminary operational findings;
+* record adoption, issues, and next-stage criteria.
+
+Many outcome effects will require longer follow-up, especially rare quality events.
+
+== Key takeaways
+
+* Begin with a consequential decision, not universal instrumentation.
+* Build the minimum trustworthy evidence path for a bounded pilot.
+* Establish safeguards, identity, lineage, and data quality before advanced models.
+* Scale only after proving decision value, trust, and repeatable onboarding.
+* Use shadow mode and staged rollout to improve safety and calibration.
+* Treat Engineering Intelligence as a product with operating costs and measurable value.
+* Maintain rollback paths for metrics, models, policies, and data collection.
+
+== Open questions
+
+* What pilot characteristics best predict successful enterprise adoption?
+* How much platform architecture should be standardized before local pilots begin?
+* Which forms of practitioner participation most improve trust and metric validity?
+* How should platform value be attributed when benefits are distributed across many decisions?
+* When should an organization stop investing in Engineering Intelligence infrastructure?
+
+== Implementation checklist
+
+. Select one high-value decision and willing pilot domain.
+. Publish charter, safeguards, and prohibited uses.
+. Build canonical events, raw evidence, identity, and lineage.
+. Establish Engineering Change linkage and quality measures.
+. Implement one small governed metric bundle.
+. Run in shadow mode and validate with practitioners.
+. Launch only when exposure and guardrails are observable.
+. Record decision impact and realized value.
+. Scale through repeatable domain onboarding and federation.
+. Maintain operating cadence, governance, and rollback procedures.
