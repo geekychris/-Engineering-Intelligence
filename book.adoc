@@ -87,6 +87,8 @@ include::chapters/16-the-science-of-engineering-intelligence-source-notes.adoc[]
 
 include::chapters/17-the-learning-engineering-organization.adoc[]
 
+include::chapters/17-the-learning-engineering-organization-source-notes.adoc[]
+
 include::chapters/18-the-future-of-engineering-intelligence.adoc[]
 
 [appendix]
