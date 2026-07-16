@@ -16,6 +16,7 @@ command -v ruby >/dev/null 2>&1 || fail "Ruby is required"
 command -v bundle >/dev/null 2>&1 || fail "Bundler is required"
 command -v node >/dev/null 2>&1 || fail "Node.js is required"
 command -v npx >/dev/null 2>&1 || fail "npx is required"
+command -v python3 >/dev/null 2>&1 || fail "Python 3 is required"
 [[ -f "$BOOK" ]] || fail "book.adoc was not found"
 
 mkdir -p "$BUILD_DIR"
@@ -28,13 +29,24 @@ from pathlib import Path
 import re
 import sys
 
-root = Path(sys.argv[1])
+root = Path(sys.argv[1]).resolve()
 book = root / "book.adoc"
 errors = []
 visited = set()
 
 include_re = re.compile(r"include::([^\[]+)\[")
 image_re = re.compile(r"image::([^\[]+)\[")
+anchor_re = re.compile(r"\[\[([^\],]+)(?:,[^\]]*)?\]\]")
+xref_re = re.compile(r"<<([^,>]+)(?:,[^>]*)?>>")
+citation_key_re = re.compile(r"^[a-z][a-z0-9-]*\d{4}(?:-[a-z0-9-]+)?$")
+
+
+def relative(path: Path) -> str:
+    try:
+        return str(path.relative_to(root))
+    except ValueError:
+        return str(path)
+
 
 def walk(path: Path):
     path = path.resolve()
@@ -42,21 +54,62 @@ def walk(path: Path):
         return
     visited.add(path)
     if not path.exists():
-        errors.append(f"missing included file: {path}")
+        errors.append(f"missing included file: {relative(path)}")
         return
+    if not path.is_file():
+        errors.append(f"included path is not a file: {relative(path)}")
+        return
+
     text = path.read_text(encoding="utf-8")
     for match in include_re.finditer(text):
-        target = (path.parent / match.group(1)).resolve()
-        walk(target)
+        raw = match.group(1).strip()
+        if "{" in raw or "}" in raw:
+            # Attribute-expanded includes cannot be resolved safely by this
+            # lightweight validator; Asciidoctor validates them during build.
+            continue
+        walk((path.parent / raw).resolve())
+
     for match in image_re.finditer(text):
-        raw = match.group(1)
+        raw = match.group(1).strip()
         if raw.startswith(("http://", "https://", "data:")):
+            continue
+        if "{" in raw or "}" in raw:
             continue
         target = (path.parent / raw).resolve()
         if not target.exists():
-            errors.append(f"missing image source referenced by {path.relative_to(root)}: {raw}")
+            errors.append(
+                f"missing image source referenced by {relative(path)}: {raw}"
+            )
+
 
 walk(book)
+
+anchors = {}
+citation_references = []
+for path in sorted(visited):
+    if not path.exists() or path.suffix != ".adoc":
+        continue
+    text = path.read_text(encoding="utf-8")
+    for match in anchor_re.finditer(text):
+        key = match.group(1).strip()
+        if key in anchors:
+            errors.append(
+                f"duplicate explicit anchor '{key}' in {relative(path)} and "
+                f"{relative(anchors[key])}"
+            )
+        else:
+            anchors[key] = path
+
+    for match in xref_re.finditer(text):
+        key = match.group(1).strip()
+        if citation_key_re.fullmatch(key):
+            citation_references.append((key, path))
+
+for key, path in citation_references:
+    if key not in anchors:
+        errors.append(
+            f"unresolved citation anchor '{key}' referenced by {relative(path)}"
+        )
 
 mmd_sources = set((root / "figures" / "mermaid").glob("*.mmd"))
 referenced_mmd = set()
@@ -65,11 +118,13 @@ for path in visited:
         continue
     text = path.read_text(encoding="utf-8")
     for match in image_re.finditer(text):
-        raw = match.group(1)
+        raw = match.group(1).strip()
         if raw.endswith(".mmd"):
             referenced_mmd.add((path.parent / raw).resolve())
 
-unused = sorted(p.relative_to(root) for p in mmd_sources if p.resolve() not in referenced_mmd)
+unused = sorted(
+    p.relative_to(root) for p in mmd_sources if p.resolve() not in referenced_mmd
+)
 if unused:
     print("WARNING: unreferenced Mermaid sources:")
     for path in unused:
@@ -80,13 +135,21 @@ if errors:
         print(f"ERROR: {error}", file=sys.stderr)
     raise SystemExit(1)
 
-print(f"Validated {len(visited)} AsciiDoc files and {len(referenced_mmd)} Mermaid references")
+print(
+    f"Validated {len(visited)} AsciiDoc files, "
+    f"{len(referenced_mmd)} Mermaid references, "
+    f"{len(anchors)} explicit anchors, and "
+    f"{len(citation_references)} citation references"
+)
 PY
 }
 
 render_diagrams() {
   local source output
   mkdir -p "$BUILD_DIR/figures/mermaid"
+
+  # Python provides deterministic null-delimited sorting on both macOS and
+  # Linux, avoiding the GNU-only `sort -z` dependency.
   while IFS= read -r -d '' source; do
     output="$BUILD_DIR/figures/mermaid/$(basename "${source%.mmd}.svg")"
     npx --no-install mmdc \
@@ -94,7 +157,18 @@ render_diagrams() {
       --output "$output" \
       --backgroundColor transparent \
       --quiet
-  done < <(find "$ROOT/figures/mermaid" -type f -name '*.mmd' -print0 | sort -z)
+  done < <(
+    python3 - "$ROOT/figures/mermaid" <<'PY'
+from pathlib import Path
+import os
+import sys
+
+source_dir = Path(sys.argv[1])
+for path in sorted(source_dir.glob("*.mmd")):
+    sys.stdout.buffer.write(os.fsencode(path))
+    sys.stdout.buffer.write(b"\0")
+PY
+  )
 }
 
 prepare_sources() {
@@ -102,7 +176,10 @@ prepare_sources() {
   cp -R "$ROOT/chapters" "$WORK_DIR/chapters"
   cp -R "$ROOT/appendices" "$WORK_DIR/appendices"
   mkdir -p "$WORK_DIR/figures/mermaid"
-  cp "$BUILD_DIR"/figures/mermaid/*.svg "$WORK_DIR/figures/mermaid/"
+
+  if compgen -G "$BUILD_DIR/figures/mermaid/*.svg" >/dev/null; then
+    cp "$BUILD_DIR"/figures/mermaid/*.svg "$WORK_DIR/figures/mermaid/"
+  fi
 
   python3 - "$WORK_DIR" <<'PY'
 from pathlib import Path
@@ -152,12 +229,14 @@ import sys
 root = Path(sys.argv[1])
 build = Path(sys.argv[2])
 
+
 def digest(path):
     h = sha256()
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             h.update(chunk)
     return h.hexdigest()
+
 
 try:
     commit = subprocess.check_output(
@@ -170,11 +249,13 @@ files = []
 for name in ("engineering-intelligence.html", "engineering-intelligence.pdf"):
     path = build / name
     if path.exists():
-        files.append({
-            "name": name,
-            "bytes": path.stat().st_size,
-            "sha256": digest(path),
-        })
+        files.append(
+            {
+                "name": name,
+                "bytes": path.stat().st_size,
+                "sha256": digest(path),
+            }
+        )
 
 manifest = {
     "title": "Engineering Intelligence",
@@ -183,7 +264,9 @@ manifest = {
     "files": files,
     "diagram_count": len(list((build / "figures" / "mermaid").glob("*.svg"))),
 }
-(build / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+(build / "manifest.json").write_text(
+    json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+)
 PY
 }
 
