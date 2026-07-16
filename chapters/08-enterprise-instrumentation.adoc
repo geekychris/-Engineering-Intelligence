@@ -1,0 +1,430 @@
+= Enterprise Instrumentation
+
+[abstract]
+Engineering Intelligence depends on reliable, explainable, and governable telemetry across source control, planning, CI, deployment, AI, production, and organizational systems. This chapter describes the infrastructure required to capture that data at enterprise scale. It defines event contracts, identity resolution, event-time processing, immutable logs, stream and batch responsibilities, Engineering Change reconstruction, knowledge graphs, feature stores, metric computation, lineage, data quality, privacy, and operational architecture.
+
+== Instrument the system, not the dashboard
+
+Many engineering analytics programs begin with dashboards and work backward toward data. This often produces brittle queries, inconsistent definitions, and local extracts that cannot support experimentation or historical recomputation.
+
+A stronger approach begins with a measurement architecture:
+
+. identify decisions and constructs;
+. define canonical entities and events;
+. capture raw evidence immutably;
+. normalize identity and time;
+. reconstruct Engineering Changes;
+. compute versioned features and metrics;
+. expose evidence through decision products.
+
+The dashboard is the final presentation layer, not the foundation.
+
+== Source domains
+
+A complete implementation commonly integrates:
+
+[cols="1,3"]
+|===
+|Domain |Representative evidence
+
+|Planning
+|Initiatives, issues, priority, intent, ownership, status, deadlines
+
+|Source control
+|Repositories, branches, commits, pull requests, reviews, comments, approvals
+
+|Developer environment
+|Builds, tests, branch context, agent interactions, explicit work sessions
+
+|AI systems
+|Model, prompt, context, findings, suggestions, actions, cost, latency
+
+|Continuous integration
+|Jobs, steps, tests, scans, retries, queues, artifacts, runner resources
+
+|Deployment
+|Releases, environments, flags, rollout waves, approvals, rollback
+
+|Production
+|Metrics, traces, incidents, alerts, customer and business outcomes
+
+|Organization
+|Teams, roles, ownership, reporting boundaries, expertise, calendars
+|===
+
+No source should be treated as universally authoritative. Each system is authoritative for a bounded type of evidence.
+
+== Canonical event envelope
+
+Every source event should be wrapped in a common envelope while preserving the original payload.
+
+[source,json]
+----
+{
+  "eventId": "01J9K3...",
+  "eventType": "pull_request.review.submitted",
+  "schemaVersion": "1.3",
+  "eventTime": "2026-07-15T21:42:13Z",
+  "ingestionTime": "2026-07-15T21:42:15Z",
+  "source": "github-enterprise",
+  "sourceTenant": "corp",
+  "sourceEntityId": "repo-a#1842/review/7781",
+  "actor": {"type": "human", "id": "person-392"},
+  "engineeringChangeId": "EC-01J8...",
+  "changeLinkConfidence": 1.0,
+  "correlationIds": ["ticket:PAY-431", "deploy:rel-991"],
+  "classification": "internal",
+  "payload": {}
+}
+----
+
+Required properties include uniqueness, source identity, event time, schema version, actor type, provenance, classification, and optional Engineering Change linkage.
+
+== Event time, ingestion time, and processing time
+
+These timestamps answer different questions:
+
+* *event time* — when the source activity occurred;
+* *ingestion time* — when the platform received it;
+* *processing time* — when a computation used it.
+
+Late events are normal. A deployment system may publish after completion, an incident link may be added days later, and batch imports may arrive out of order.
+
+Stream processors should use event-time windows and watermarks. Historical metrics must support correction and recomputation.
+
+== Delivery semantics and idempotency
+
+At-least-once delivery is usually the practical default for enterprise event ingestion. Consumers must therefore be idempotent.
+
+Use stable event identifiers, source sequence numbers where available, deduplication windows, deterministic upserts, and replay-safe side effects.
+
+Exactly-once marketing claims do not remove the need for end-to-end idempotency across source APIs, brokers, processors, and sinks.
+
+== Immutable raw evidence
+
+Raw source events should be retained in an immutable, partitioned store before transformation. This provides:
+
+* auditability;
+* replay;
+* recovery from processing defects;
+* metric recomputation;
+* schema migration;
+* forensic analysis;
+* model retraining.
+
+Store both the canonical envelope and original source payload, subject to retention and privacy rules.
+
+image::../figures/mermaid/enterprise-instrumentation-architecture.mmd[Enterprise instrumentation architecture]
+
+== Schema management
+
+Event schemas are contracts. A registry should track name, version, owner, compatibility, classification, retention, example payloads, and quality rules.
+
+Backward-compatible evolution is preferable. Breaking changes should create new versions and dual-read migration periods.
+
+Semantic changes can be more dangerous than structural changes. If a source redefines "review submitted," the event may remain syntactically valid while corrupting historical comparisons.
+
+== Identity resolution
+
+Engineering systems use different identifiers for the same person, repository, service, team, and environment.
+
+Identity resolution creates canonical entities and time-bounded aliases:
+
+[stem]
+++++
+alias(source, sourceId, canonicalId, [t_s,t_e], confidence)
+++++
+
+Relevant entities include people, AI actors, repositories, services, teams, tools, environments, artifacts, and Engineering Changes.
+
+Organizational membership changes over time. A pull request should be attributed using the team and ownership state that existed when the event occurred, not today's organization chart.
+
+== Human identity and privacy
+
+Named identity is unnecessary for many system-level questions. Use pseudonymous identifiers, role or team aggregation, and minimum-access principles.
+
+Identity mapping should be a controlled service with audit logs. Downstream datasets should receive only the level of identity required for the decision.
+
+== Stream processing responsibilities
+
+Near-real-time processing is appropriate for:
+
+* current Engineering Change state;
+* review, CI, and approval queues;
+* aging and stalled work;
+* experiment assignment and exposure;
+* AI interaction state;
+* deployment progression;
+* operational alerts;
+* rapidly changing guardrails.
+
+Stateful stream processors should support event-time ordering, deduplication, late-event correction, schema evolution, state snapshots, and replay.
+
+== Batch processing responsibilities
+
+Batch or incremental lakehouse processing is appropriate for:
+
+* repository and dependency topology;
+* semantic code features;
+* historical Engineering Change reconstruction;
+* ownership and collaboration networks;
+* code-complexity analysis;
+* incident attribution;
+* cost recomputation;
+* model training and calibration;
+* long-window experiments.
+
+The distinction is not real-time versus accurate. Both paths must be accurate. It is operational latency versus computational breadth.
+
+== Lambda, kappa, and hybrid designs
+
+A pure streaming architecture simplifies conceptual flow but can make large historical recomputation expensive. A pure batch architecture is simpler for history but cannot support current queues and experiment exposure.
+
+Most enterprises need a hybrid architecture with immutable events, stream-derived operational state, batch-derived historical features, and reconciliation between them.
+
+The same metric definition should produce equivalent results in both paths within declared tolerances.
+
+== Engineering Change reconstruction service
+
+The reconstruction service consumes normalized events and identity mappings, applies deterministic links, computes probabilistic relationships, and maintains temporal Engineering Change graphs.
+
+It should expose:
+
+* create, merge, split, and close operations;
+* membership and confidence;
+* parent-child relationships;
+* evidence and explanation;
+* temporal state;
+* correction history;
+* versioned graph snapshots.
+
+High-confidence explicit identifiers should override weak inferred links unless contradictory authoritative evidence exists.
+
+== Engineering knowledge graph
+
+The knowledge graph connects Engineering Changes to people, AI actors, repositories, services, teams, dependencies, builds, deployments, incidents, and outcomes.
+
+Useful graph queries include:
+
+* find the critical path across repositories;
+* identify services repeatedly involved in failed changes;
+* locate scarce reviewers bridging many teams;
+* trace an incident to contributing artifacts;
+* discover repository boundaries causing coordination delay;
+* identify shared dependencies with high blast radius.
+
+The graph should preserve temporal state. Current ownership and historical ownership are distinct facts.
+
+== Feature store
+
+A feature store provides versioned, reusable inputs for metrics, experiments, and models.
+
+Feature groups may include:
+
+* change complexity;
+* repository topology;
+* blast radius;
+* author and reviewer familiarity;
+* queue conditions;
+* AI exposure;
+* organizational boundaries;
+* historical quality;
+* cost assumptions.
+
+Every feature requires definition, entity key, event-time semantics, freshness, owner, source lineage, and version.
+
+Point-in-time correctness is essential. Experiment analysis must use features known before treatment, not information that arrived afterward.
+
+== Metric engine
+
+The metric engine should separate semantic definitions from execution.
+
+A metric specification includes:
+
+* identifier and version;
+* construct and decision;
+* population and exclusions;
+* formula;
+* required features;
+* aggregation and time window;
+* uncertainty method;
+* guardrails;
+* lineage;
+* owner.
+
+The engine can compile specifications into stream, SQL, or batch execution plans while preserving one canonical definition.
+
+== Experiment data plane
+
+Experiment infrastructure requires deterministic assignment, eligibility snapshots, exposure events, treatment versions, outcome joins, guardrails, external-factor annotations, and reproducible analysis datasets.
+
+Assignment should be independent from outcome computation. Exposure must record what actually happened rather than assume that assignment caused use.
+
+== Data quality
+
+Data quality should be measured as a product outcome.
+
+Recommended measures include:
+
+* event completeness;
+* duplicate rate;
+* late-event rate;
+* schema-conformance rate;
+* identity-resolution confidence;
+* Engineering Change linkage coverage;
+* contradictory-link rate;
+* source freshness;
+* event-to-metric latency;
+* replay divergence;
+* orphan entity rate.
+
+A metric should display or internally enforce minimum quality thresholds before publication.
+
+== Lineage and reproducibility
+
+Every reported value should be traceable to:
+
+* metric version;
+* feature versions;
+* model version;
+* source schemas;
+* source partitions;
+* computation code;
+* execution time;
+* correction history.
+
+A decision made from a dashboard six months ago should be reproducible even if definitions have since changed.
+
+== Storage layers
+
+A common layered design is:
+
+[cols="1,3"]
+|===
+|Layer |Purpose
+
+|Raw
+|Immutable canonical envelopes and original payloads
+
+|Normalized
+|Resolved identities, standardized entities, validated event schemas
+
+|Graph and state
+|Engineering Change lifecycle, relationships, current operational state
+
+|Feature
+|Versioned point-in-time features for metrics and models
+
+|Metric
+|Governed aggregates, intervals, and experiment outcomes
+
+|Decision product
+|Dashboards, alerts, APIs, reports, and recommendations
+|===
+
+Layer names matter less than clear contracts and lineage.
+
+== Retention and deletion
+
+Retention should be defined by purpose and sensitivity. Raw behavioral telemetry may require shorter retention than aggregated system metrics. Legal holds and incident evidence may require longer retention.
+
+Deletion must propagate through raw data, indexes, graphs, features, models where applicable, and cached decision products. Retention policy should be testable.
+
+== Security model
+
+Controls should include encryption, least privilege, tenant isolation, data classification, row and column security, audit logs, secrets management, export controls, and anomaly detection.
+
+AI telemetry may contain prompts, source snippets, secrets, or sensitive business context. Treat it as potentially high sensitivity.
+
+== Operational reliability
+
+The platform itself requires service-level objectives.
+
+Examples include event-ingestion availability, maximum source lag, metric freshness, reconstruction latency, replay completion, data-quality alerting, and recovery-point objectives.
+
+Measurement systems that silently lose events create misleading confidence. Fail visibly and publish freshness.
+
+== Build versus buy
+
+Commercial engineering-intelligence products can accelerate source integration and dashboards. Internal platforms may be needed for custom Engineering Change reconstruction, proprietary AI telemetry, causal experimentation, and enterprise governance.
+
+A hybrid strategy is common: purchase standard connectors and visualization while retaining canonical events, identity, metric definitions, and experiment data in organizational control.
+
+== Incremental adoption
+
+A practical roadmap is:
+
+. choose a small set of decisions and metrics;
+. capture source-control, CI, and deployment events;
+. create canonical identities;
+. introduce Engineering Change IDs for selected workflows;
+. add AI interaction telemetry;
+. establish immutable storage and replay;
+. build a versioned metric catalogue;
+. add experiment assignment and exposure;
+. expand to production outcomes and economic models.
+
+Instrumentation should create visible value at each stage.
+
+== Common failure modes
+
+=== Dashboard-first architecture
+
+Local queries become the unofficial data model and cannot support reproducibility.
+
+=== Centralizing transformed data without raw evidence
+
+Processing defects cannot be replayed or audited.
+
+=== Ignoring temporal identity
+
+Current teams and owners are incorrectly applied to historical work.
+
+=== Mixing event and processing time
+
+Late data creates unstable and unexplained metric changes.
+
+=== Unversioned schemas and metrics
+
+Historical comparisons become irreproducible.
+
+=== Collecting excessive behavioral telemetry
+
+Privacy risk increases while trust and validity decline.
+
+=== Treating one source as universal truth
+
+No tool contains complete intent, implementation, deployment, and outcome evidence.
+
+== Key takeaways
+
+* Enterprise instrumentation should be designed around evidence, entities, and decisions—not dashboards.
+* Canonical event envelopes, immutable raw storage, and replay are foundational.
+* Event time, identity, schema, metric, and model versions are required for reproducibility.
+* Stream and batch processing serve different latency and breadth needs and must reconcile.
+* Engineering Change reconstruction and a temporal knowledge graph connect fragmented enterprise evidence.
+* Feature stores require point-in-time correctness for valid experimentation.
+* Data quality, privacy, security, lineage, and reliability are first-class platform capabilities.
+
+== Open questions
+
+* How much raw behavioral telemetry is necessary for useful cognitive models?
+* Which graph storage and computation patterns scale best to very large repository estates?
+* How should semantic schema changes be detected automatically?
+* What is the right balance between centralized governance and team-owned instrumentation?
+* How can feature and metric definitions remain portable across stream and batch engines?
+
+== Implementation checklist
+
+. Define a canonical event envelope and schema registry.
+. Store immutable source evidence with replay support.
+. Separate event, ingestion, and processing time.
+. Implement canonical temporal identity resolution.
+. Establish stream and batch responsibilities with reconciliation tests.
+. Build Engineering Change reconstruction with confidence and provenance.
+. Create a temporal engineering knowledge graph.
+. Introduce a versioned, point-in-time-correct feature store.
+. Create a governed metric catalogue and execution engine.
+. Add experiment assignment, exposure, and external-factor records.
+. Publish data-quality and freshness indicators.
+. Apply privacy, retention, security, and deletion policies end to end.
