@@ -1,4 +1,3 @@
-[chapter]
 = Reader’s Guide
 
 _Engineering Intelligence_ can be read sequentially, but it is also designed as a working reference. Different readers can enter through different paths depending on the decision they face.
