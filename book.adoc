@@ -55,4 +55,7 @@ include::chapters/17-the-learning-engineering-organization.adoc[]
 
 include::chapters/18-the-future-of-engineering-intelligence.adoc[]
 
-// Planned chapters are added here as they are written.
+[appendix]
+include::appendices/a-engineering-change-reference-model.adoc[]
+
+// Additional appendices are added here as they are written.
