@@ -1,0 +1,388 @@
+= Experimentation and Causal Inference
+
+[abstract]
+Engineering organizations frequently introduce new tools, review policies, repository structures, and AI-assisted workflows, then compare before-and-after averages and declare success. This chapter explains why that approach is often misleading. It develops an experimentation framework for Engineering Intelligence, covering randomized trials, cluster assignment, staggered rollout, switchback designs, difference-in-differences, interrupted time series, synthetic controls, matching, heterogeneous treatment effects, statistical power, guardrails, interference, compliance, and the infrastructure required to evaluate engineering interventions at enterprise scale.
+
+== Why observation is not enough
+
+Suppose review latency falls after an AI reviewer is introduced. The tool may have caused the improvement, but several alternatives are plausible:
+
+* the organization entered a quieter release period;
+* repositories with simpler work adopted first;
+* reviewer staffing increased;
+* CI became faster at the same time;
+* teams changed pull-request slicing conventions;
+* engineers were temporarily more attentive because the tool was new;
+* low-performing teams declined to participate.
+
+The causal question is not whether the metric changed. It is whether the metric would have changed differently without the intervention.
+
+For unit stem:[i], define potential outcomes:
+
+[stem]
+++++
+Y_i(1) = \text{outcome under treatment}
+++++
+
+[stem]
+++++
+Y_i(0) = \text{outcome without treatment}
+++++
+
+The individual treatment effect is:
+
+[stem]
+++++
+\tau_i = Y_i(1) - Y_i(0)
+++++
+
+Only one potential outcome is observed. Experimentation and causal inference provide disciplined ways to estimate the missing counterfactual.
+
+== Define the intervention precisely
+
+"Use AI review" is not a sufficiently precise treatment definition. An experiment must specify:
+
+* vendor, model, and model version;
+* prompt and policy configuration;
+* repositories and file types in scope;
+* whether findings are advisory or blocking;
+* when findings appear;
+* ranking and suppression rules;
+* human-review requirements;
+* exposure start and end;
+* fallback behavior during failures.
+
+Without treatment fidelity, results cannot be reproduced or generalized.
+
+== Unit of assignment and unit of analysis
+
+The assignment unit receives treatment. The analysis unit contributes an outcome. They may differ.
+
+Possible assignment units include engineer, pull request, Engineering Change, repository, team, organization, or time interval.
+
+Individual randomization is statistically efficient but can suffer contamination when reviewers and repositories are shared. Team-level randomization reduces contamination but requires more clusters. Pull-request assignment can work for isolated tool behavior, while Engineering Change assignment is preferable for multi-repository outcomes.
+
+The choice must account for interference: one unit's treatment may affect another unit's outcome.
+
+== Randomized controlled experiments
+
+Random assignment balances observed and unobserved confounders in expectation.
+
+image::../figures/mermaid/engineering-experiment-lifecycle.mmd[Engineering experiment lifecycle]
+
+A basic estimator of average treatment effect is:
+
+[stem]
+++++
+\widehat{ATE} = \bar{Y}_T - \bar{Y}_C
+++++
+
+where stem:[\bar{Y}_T] and stem:[\bar{Y}_C] are treatment and control means.
+
+Randomization should be stratified when important dimensions strongly predict outcomes. Examples include language, repository size, change risk, team, and baseline review latency.
+
+== Cluster-randomized experiments
+
+When treatment is shared within a team or repository, randomize clusters rather than individuals.
+
+Clustered outcomes are correlated, reducing effective sample size. The design effect is approximately:
+
+[stem]
+++++
+DE = 1 + (m-1)\rho
+++++
+
+where stem:[m] is average cluster size and stem:[\rho] is intra-cluster correlation.
+
+Ignoring clustering produces confidence intervals that are too narrow.
+
+== Switchback experiments
+
+In a switchback design, the same population alternates between treatment and control across time blocks. This can be useful for merge-queue policies, CI routing, review prioritization, or operational processes.
+
+Switchbacks control for stable differences between units but require attention to carryover effects, learning, and seasonality. Time blocks must be long enough for the treatment to operate and short enough to avoid major external drift.
+
+== Staggered rollout
+
+A staggered rollout introduces treatment to groups at different times. It supports operational safety and can create useful causal variation.
+
+Analysis must account for changing treatment effects and calendar-time shocks. Naive two-way fixed-effects estimators can be misleading when adoption timing and effects vary. Cohort-aware estimators or modern event-study methods are preferable.
+
+== Difference-in-differences
+
+Difference-in-differences compares the before-after change in a treatment group with the change in a comparison group:
+
+[stem]
+++++
+\widehat{\tau}_{DiD} = (\bar{Y}_{T,after}-\bar{Y}_{T,before})-(\bar{Y}_{C,after}-\bar{Y}_{C,before})
+++++
+
+The key assumption is parallel trends: absent treatment, the groups would have changed similarly.
+
+Analysts should inspect pre-treatment trends, include relevant covariates, test alternative windows, and report sensitivity to plausible violations.
+
+== Interrupted time series
+
+Interrupted time series evaluates whether an intervention changed the level or slope of a metric relative to its previous trend.
+
+It is useful for enterprise-wide changes where no untreated population exists. It is vulnerable to concurrent events, autocorrelation, seasonality, and anticipatory behavior.
+
+An external-events registry is essential. Reorganizations, release freezes, major incidents, staffing changes, acquisitions, and platform migrations should be recorded and incorporated into analysis.
+
+== Synthetic controls and matched comparisons
+
+Synthetic control constructs a weighted combination of untreated units that resembles the treated unit before intervention. It is useful for large team, organization, or platform changes with few treated units.
+
+Matching selects comparison units with similar pre-treatment characteristics. Useful features include baseline flow, work mix, repository topology, team size, domain, and adoption propensity.
+
+Matching does not remove unobserved confounding. Balance diagnostics and sensitivity analysis remain necessary.
+
+== Regression discontinuity
+
+If treatment is assigned using a threshold, such as mandatory review above a risk score, outcomes just above and below the threshold may be compared.
+
+This design can estimate a credible local effect when the threshold cannot be manipulated precisely and other processes remain continuous around it.
+
+== Primary outcomes and guardrails
+
+Experiments should have a small number of predeclared primary outcomes. Examples include quality-adjusted cycle time, human review effort, severe escaped-defect rate, or cost per accepted Engineering Change.
+
+Guardrails prevent local optimization. For an AI reviewer experiment, guardrails might include:
+
+* severe defects;
+* security escapes;
+* rollback rate;
+* author understanding;
+* reviewer learning;
+* cognitive reload;
+* tool trust;
+* infrastructure cost.
+
+A faster process is not successful if important guardrails deteriorate beyond tolerance.
+
+== Effect size and practical significance
+
+Statistical significance does not establish practical value. With very large samples, trivial effects can become statistically significant.
+
+Define a minimum practically important difference before the experiment. For example, a tool may need to reduce quality-adjusted human effort by at least five percent to justify migration and governance costs.
+
+Report absolute effects, relative effects, uncertainty intervals, and economic consequences.
+
+== Power and sample size
+
+Power is the probability of detecting an effect of a specified size when it exists.
+
+For a two-group comparison of means, required sample size grows with outcome variance and shrinks with larger expected effect. Cluster assignment, rare defects, and heavy-tailed outcomes often require much larger samples than teams expect.
+
+For rare severe defects, use longer observation windows, composite severity-weighted outcomes, Bayesian models, or historical augmentation. Do not replace meaningful rare outcomes with easy but weak proxies solely to obtain significance.
+
+== Sequential testing
+
+Engineering experiments often run continuously and are inspected repeatedly. Repeated naive testing inflates false positives.
+
+Use group-sequential boundaries, alpha-spending, always-valid confidence sequences, or Bayesian stopping rules. Stopping criteria should be declared before observing results.
+
+== Multiple comparisons
+
+Testing many metrics, subgroups, prompts, and tools increases the chance of false discoveries.
+
+Approaches include family-wise error control, false-discovery-rate procedures, hierarchical testing, and predeclared primary hypotheses. Exploratory results should be labeled as exploratory and replicated.
+
+== Treatment exposure and compliance
+
+Assignment is not the same as exposure. A developer assigned an AI reviewer may never open its findings. A control team may use another AI tool.
+
+Record:
+
+* assignment;
+* eligibility;
+* actual exposure;
+* intensity of use;
+* failures and fallback;
+* cross-over;
+* protocol deviations.
+
+Intent-to-treat analysis estimates the effect of offering or assigning treatment. Per-protocol and treatment-on-the-treated analyses answer different questions and require stronger assumptions.
+
+== Interference and network effects
+
+The stable-unit-treatment-value assumption often fails in engineering systems. Reviewers work across teams, shared libraries affect many repositories, and treated engineers influence untreated peers.
+
+Possible strategies include cluster randomization, graph-cluster randomization, saturation designs, explicit spillover estimation, and excluding highly connected shared infrastructure from simple experiments.
+
+Interference is not merely a nuisance. Spillover may be a valuable effect, such as knowledge transfer from AI-assisted reviewers to the wider team.
+
+== Heterogeneous treatment effects
+
+Average effects can conceal important variation. Estimate effects by:
+
+* change complexity;
+* blast radius;
+* programming language;
+* repository topology;
+* domain;
+* author and reviewer experience;
+* AI finding type;
+* baseline process maturity.
+
+Subgroup analysis should be predeclared when possible and regularized to avoid noisy conclusions. Hierarchical models can partially pool estimates.
+
+== External factors
+
+Engineering cycles are affected by factors outside the measured loop:
+
+* product launches;
+* seasonal demand;
+* organizational restructuring;
+* staffing and attrition;
+* regulatory deadlines;
+* incidents;
+* infrastructure outages;
+* new coding assistants;
+* changes in work mix;
+* macroeconomic constraints.
+
+The experimentation platform should maintain an external-factor timeline with scope, severity, start and end time, affected populations, and evidence. These factors can be modeled as covariates, exclusions, stratification variables, or explicit interruptions.
+
+== Experiment registry
+
+Every experiment should be registered before launch with:
+
+* hypothesis;
+* intervention definition;
+* owner;
+* assignment and analysis units;
+* eligible population;
+* primary outcomes;
+* guardrails;
+* expected effect;
+* power analysis;
+* start, stop, and stopping rules;
+* exposure telemetry;
+* concurrent changes;
+* analysis plan;
+* decision rule.
+
+[source,json]
+----
+{
+  "experimentId": "EXP-AI-REVIEW-014",
+  "hypothesis": "Ranked AI findings reduce human review effort without increasing severe defects",
+  "assignmentUnit": "engineering_change",
+  "primaryOutcome": "quality_adjusted_human_review_minutes",
+  "guardrails": ["severe_escape_rate", "rollback_rate", "cognitive_reload"],
+  "minimumPracticalEffect": -0.05,
+  "analysis": "cluster_randomized_hierarchical",
+  "status": "registered"
+}
+----
+
+== Experiment infrastructure
+
+A mature platform requires:
+
+* population and eligibility service;
+* deterministic assignment;
+* configuration delivery;
+* exposure logging;
+* metric and guardrail computation;
+* external-events registry;
+* sequential-monitoring service;
+* analysis notebooks or pipelines;
+* decision and rollout records;
+* audit and reproducibility controls.
+
+Assignment should be stable, versioned, and independent of outcome pipelines. Exposure must be joined to the Engineering Change graph.
+
+== Example experiment: AI comment prioritization
+
+Hypothesis: showing only the highest-ranked five AI findings reduces validation burden while preserving severe-defect detection.
+
+Treatment: top-five ranked findings with expandable remainder. Control: all findings displayed chronologically.
+
+Assignment: Engineering Change, clustered by repository to reduce contamination.
+
+Primary outcome: human validation minutes per accepted change.
+
+Guardrails: severe finding recall, post-merge defects, unresolved blocking comments, and author action latency.
+
+Secondary outcomes: comment duplication, rejection reasons, tool trust, and inference cost.
+
+The analysis should estimate average and heterogeneous effects by change complexity and finding volume.
+
+== Example experiment: specialist review routing
+
+Hypothesis: risk-based routing of database specialists reduces queue delay without increasing migration incidents.
+
+Treatment: specialist approval required only above a preregistered risk threshold. Control: specialist approval required for all schema changes.
+
+Possible design: regression discontinuity around the risk threshold, supplemented by randomized review for a subset near the boundary.
+
+Primary outcome: quality-adjusted time to release.
+
+Guardrails: severe migration incidents, rollback, data repair, and false-negative risk classification.
+
+== Common failure modes
+
+=== Before-and-after attribution
+
+A metric changed after rollout, therefore the tool caused it. Concurrent changes make this claim weak.
+
+=== Self-selection bias
+
+Early adopters differ from non-adopters. Comparing them directly confounds treatment with adoption propensity.
+
+=== Underpowered rare outcomes
+
+A short test cannot establish that severe defects are unchanged when only a handful occur.
+
+=== Metric substitution
+
+Teams replace an important but difficult outcome with an easy proxy, then optimize the proxy.
+
+=== Peeking and optional stopping
+
+Repeatedly checking significance and stopping on a favorable day inflates false positives.
+
+=== Ignoring noncompliance
+
+Assignment without actual exposure dilutes treatment and obscures operational failures.
+
+=== Global averages
+
+A positive average can hide harm to high-risk or specialized populations.
+
+=== Unrecorded concurrent interventions
+
+Multiple tools and policies change simultaneously, making attribution impossible.
+
+== Key takeaways
+
+* Causal evaluation asks what would have happened without the intervention.
+* Treatment, assignment unit, analysis unit, exposure, and outcomes must be defined precisely.
+* Randomization is preferred when feasible; quasi-experimental designs are valuable when it is not.
+* Clustered engineering systems require clustered designs and standard errors.
+* Primary outcomes, practical effect thresholds, and guardrails should be declared in advance.
+* External factors, noncompliance, interference, and heterogeneous effects are central—not peripheral—to engineering experiments.
+* Experimentation requires durable platform infrastructure and a versioned registry.
+
+== Open questions
+
+* Which assignment units best balance statistical efficiency and contamination in shared repositories?
+* How can severe quality outcomes be evaluated without impractically long experiments?
+* What designs best estimate long-term skill and trust effects of AI assistance?
+* How should network spillovers across reviewers and shared libraries be modeled?
+* When should experimentation stop because ethical, safety, or regulatory constraints dominate?
+
+== Implementation checklist
+
+. Create a mandatory experiment registry for material workflow interventions.
+. Define assignment, analysis, exposure, primary outcomes, and guardrails before launch.
+. Use randomization where practical and document why when it is not.
+. Calculate power using clustering, baseline variance, and expected compliance.
+. Record external events and concurrent interventions.
+. Instrument actual treatment exposure and protocol deviations.
+. Use valid sequential-testing methods for continuous monitoring.
+. Report practical significance, uncertainty, and heterogeneous effects.
+. Preserve analysis code, metric versions, and population snapshots.
+. Record the final decision and whether rollout matched the evidence.
