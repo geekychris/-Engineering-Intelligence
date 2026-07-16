@@ -1,0 +1,7 @@
+build/
+.build-src/
+.bundle/
+vendor/bundle/
+node_modules/
+*.log
+.DS_Store
