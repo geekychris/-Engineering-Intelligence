@@ -1,0 +1,267 @@
+== Research foundations and source notes
+
+The scientific framework in this chapter draws on measurement theory, causal inference, reproducibility, open science, cumulative evidence, and organizational learning. It extends those foundations into a research discipline for studying software engineering systems in production.
+
+=== Measurement theory
+
+The distinction among nominal, ordinal, interval, and ratio scales originates with <<stevens1946>>.
+
+Construct validity is grounded in <<messick1995>>, while broader concerns about how measurement choices shape interpretation are discussed in <<hand2004>>.
+
+The chapter therefore requires every scientific claim to state:
+
+* the construct;
+* the observed indicators;
+* the scale and unit;
+* the eligible population;
+* the intended interpretation;
+* the permitted use;
+* known limitations.
+
+A numerical output is not automatically a valid measure of the underlying construct.
+
+=== Reliability
+
+Reliability concerns the consistency of a measurement process.
+
+The chapter draws on <<cronbach1951>> to distinguish repeatability from validity.
+
+Relevant reliability questions include:
+
+* Would the same source evidence produce the same metric version?
+* Would independent labelers agree?
+* Would reconstruction logic produce stable linkage?
+* Would the result remain similar under repeated measurement where stability is expected?
+
+A reliable measure can still be invalid if it consistently measures the wrong thing.
+
+=== Causal inference
+
+The chapter’s causal foundation comes from <<rubin1974>>, <<holland1986>>, <<pearl2009>>, <<imbens2015>>, and <<hernan2020>>.
+
+These traditions support explicit separation among:
+
+* observed association;
+* prediction;
+* intervention effect;
+* mediation;
+* mechanism;
+* transportability.
+
+Engineering Intelligence should not describe a temporal correlation as causal merely because the explanation is plausible.
+
+=== Experimental design
+
+The design-first approach is informed by <<shadish2002>>, <<angrist2009>>, and <<kohavi2020>>.
+
+Scientific practice therefore includes:
+
+* declared estimands;
+* assignment and analysis units;
+* primary outcomes and guardrails;
+* power analysis;
+* missing-data plans;
+* treatment-version control;
+* stopping rules;
+* reproducible analysis.
+
+The research question and decision should determine the design rather than the available dashboard determining the question.
+
+=== Preregistration
+
+Preregistration and pre-analysis planning help distinguish confirmatory analysis from exploration. See <<nosek2018>>.
+
+The chapter therefore recommends registering:
+
+* hypotheses;
+* causal assumptions;
+* outcomes;
+* exclusions;
+* subgroup analyses;
+* analysis methods;
+* decision thresholds.
+
+Exploratory analysis remains valuable, but its evidential status should be reported honestly.
+
+=== Reproducibility
+
+The reproducibility concerns illustrated by <<open-science2015>> support retaining enough evidence and computation to recreate published results.
+
+The chapter requires preservation of:
+
+* source snapshots or durable references;
+* schemas and transformations;
+* identity and reconstruction versions;
+* metric and model versions;
+* experiment assignment and exposure;
+* analysis code;
+* generated tables and figures;
+* deviations and corrections.
+
+A result that can be viewed but not reconstructed is weak scientific evidence.
+
+=== FAIR evidence stewardship
+
+The FAIR principles emphasize making research objects findable, accessible, interoperable, and reusable. See <<wilkinson2016>>.
+
+In an enterprise context, accessibility remains subject to privacy, security, and contractual constraints.
+
+The chapter therefore interprets FAIR as governed discoverability and reuse with metadata, provenance, identifiers, and access controls.
+
+=== Replication
+
+Replication tests whether a finding persists across teams, repositories, task classes, time periods, and treatment versions.
+
+A result from one group or one model version should not become universal policy automatically.
+
+The chapter distinguishes:
+
+* exact computational reproduction;
+* direct replication;
+* conceptual replication;
+* operational replication in a new context.
+
+Contradictory replication results are evidence about boundary conditions rather than failures to be hidden.
+
+=== Cumulative evidence
+
+Individual studies should contribute to a cumulative evidence base.
+
+The chapter therefore records:
+
+* intervention and comparator;
+* population;
+* context;
+* effect estimate and uncertainty;
+* treatment version;
+* guardrails;
+* study quality;
+* replication status;
+* realized outcome.
+
+This enables later synthesis across studies rather than repeated isolated pilots.
+
+=== Heterogeneity
+
+Engineering effects are likely to vary by language, architecture, team structure, task complexity, developer experience, and organizational context.
+
+The chapter therefore treats heterogeneity as scientifically important rather than as noise to average away.
+
+Subgroup findings should be predeclared where possible, adequately powered, and replicated before policy use.
+
+=== External validity
+
+A causal result is local to its population, treatment, comparator, period, and operating conditions.
+
+The internal- and external-validity tradition in <<shadish2002>> supports the chapter’s requirement to document boundary conditions.
+
+Transporting a result requires evidence that the relevant causal mechanisms and populations are sufficiently similar.
+
+=== Model evaluation
+
+Models used for reconstruction, classification, ranking, prediction, or routing require evaluation appropriate to their function.
+
+Relevant foundations include precision and recall from <<manning2008>> and ranked relevance from <<jarvelin2002>>.
+
+The chapter also requires:
+
+* calibration;
+* subgroup performance;
+* uncertainty;
+* drift monitoring;
+* abstention behavior;
+* downstream decision impact.
+
+Offline predictive performance alone is insufficient when model output changes human behavior or policy.
+
+=== Negative and null results
+
+Scientific practice is distorted when only positive findings are retained.
+
+The chapter therefore treats null, negative, and contradictory outcomes as first-class evidence.
+
+These results can reveal:
+
+* interventions that do not generalize;
+* hidden costs;
+* weak mechanisms;
+* boundary conditions;
+* invalid metrics;
+* insufficient power;
+* implementation failure.
+
+Preserving these findings reduces repeated waste and supports cumulative learning.
+
+=== Measurement drift
+
+Source systems, workflows, models, and organizational structures change over time.
+
+A metric can continue computing successfully while its meaning changes.
+
+The chapter therefore requires:
+
+* semantic versioning;
+* drift monitoring;
+* periodic revalidation;
+* correction and replay;
+* retirement of invalid measures.
+
+This extends ordinary data-drift practice into construct and policy drift.
+
+=== Research ethics
+
+Engineering research may involve practitioner behavior, sensitive telemetry, and consequential AI systems.
+
+Relevant foundations include <<nist2020-privacy>>, <<nist2023-airmf>>, <<nist2024-genai>>, and <<acm2018-ethics>>.
+
+The chapter therefore requires:
+
+* purpose limitation;
+* minimization;
+* proportionality;
+* transparent governance;
+* human accountability;
+* restrictions on punitive individual use;
+* retention and deletion plans.
+
+Scientific value does not override privacy, fairness, or professional responsibility.
+
+=== Open science within enterprise constraints
+
+Organizations may be unable to publish raw source code, telemetry, or personnel data.
+
+The chapter therefore promotes layered openness:
+
+* publish definitions and protocols where possible;
+* share synthetic or de-identified fixtures;
+* preserve internal reproducibility;
+* publish aggregate findings and limitations;
+* enable independent internal review;
+* document unavailable evidence honestly.
+
+This is an Engineering Intelligence-specific interpretation of open-science principles for enterprise settings.
+
+=== Organizational learning
+
+Argyris and Schön’s double-loop learning supports questioning the assumptions behind measurement and policy. See <<argyris1978>>.
+
+Senge’s systems-thinking perspective supports learning across technical and organizational boundaries. See <<senge1990>>.
+
+The scientific program should therefore review not only whether an intervention worked, but whether the original causal model and decision process were sound.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* Engineering Intelligence as a cumulative applied science of software engineering systems;
+* Engineering Change as a common observational and experimental unit;
+* explicit evidence states for observed, reconstructed, inferred, predicted, and causal claims;
+* treatment-version drift as a scientific validity threat;
+* integrated metric, model, experiment, evidence, and decision registries;
+* outcome maturity as part of evidential status;
+* enterprise-compatible open science;
+* scientific retention of null, negative, and contradictory findings;
+* replication across Engineering Change classes before policy generalization;
+* post-decision study of realized value and unintended consequence.
+
+These contributions should be evaluated by reproducibility, replication success, forecast calibration, decision quality, correction history, and the organization’s ability to learn from accumulated evidence.
