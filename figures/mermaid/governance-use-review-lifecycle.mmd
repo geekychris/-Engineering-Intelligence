@@ -1,0 +1,21 @@
+flowchart LR
+    A[Propose use and decision purpose] --> B[Classify consequence, data, and population]
+    B --> C[Review necessity, validity, privacy, security, and legal risk]
+    C --> D{Approve?}
+    D -->|No| E[Reject or redesign]
+    E --> A
+    D -->|Yes| F[Register use, controls, owner, and expiration]
+    F --> G[Implement least privilege, quality gates, notice, and appeal]
+    G --> H[Monitor access, drift, misuse, subgroup effects, and incidents]
+    H --> I{Continue use?}
+    I -->|Modify| A
+    I -->|Suspend| J[Contain, investigate, and correct]
+    J --> H
+    I -->|Retire| K[Revoke access, delete or archive data, preserve decision record]
+    I -->|Yes| L[Periodic recertification]
+    L --> H
+
+    Q[Audit, provenance, correction, rollback, and practitioner participation] -. applies throughout .-> B
+    Q -. applies throughout .-> G
+    Q -. applies throughout .-> H
+    Q -. applies throughout .-> K
