@@ -1,0 +1,15 @@
+flowchart LR
+    DATA[Data platform investment] --> API[Unified data API]
+    API --> PRODUCT1[Product initiative A]
+    API --> PRODUCT2[Product initiative B]
+    SECURITY[Security remediation] --> PRODUCT1
+    MIGRATION[Legacy migration] --> SAVINGS[Operating cost reduction]
+    MIGRATION --> PRODUCT2
+
+    DB[Database specialists] -. constrained resource .-> DATA
+    DB -. constrained resource .-> MIGRATION
+    REVIEW[Security review capacity] -. constrained resource .-> SECURITY
+
+    PRODUCT1 --> VALUE[Customer and business value]
+    PRODUCT2 --> VALUE
+    SAVINGS --> VALUE
