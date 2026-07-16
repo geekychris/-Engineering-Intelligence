@@ -13,117 +13,117 @@
 :table-caption: Table
 
 [preface]
-= Preface
+== Preface
 
 Software engineering organizations are increasingly instrumented, yet they often remain poorly understood. They can report pull-request counts, deployment frequency, incident volume, and tool usage, but still struggle to explain where expert attention is spent, which process changes create value, or whether an AI-assisted workflow genuinely improves engineering outcomes.
 
 _Engineering Intelligence_ develops a framework for answering those questions. It treats engineering as a measurable socio-technical system and integrates engineering economics, human cognition, software architecture, queueing theory, causal inference, and AI-assisted development.
 
-include::frontmatter/executive-summary.adoc[]
+include::frontmatter/executive-summary.adoc[leveloffset=+1]
 
-include::frontmatter/readers-guide.adoc[]
+include::frontmatter/readers-guide.adoc[leveloffset=+1]
 
-include::chapters/01-introduction.adoc[]
+include::chapters/01-introduction.adoc[leveloffset=+1]
 
-include::chapters/02-engineering-economics.adoc[]
+include::chapters/02-engineering-economics.adoc[leveloffset=+1]
 
-include::chapters/02-engineering-economics-source-notes.adoc[]
+include::chapters/02-engineering-economics-source-notes.adoc[leveloffset=+1]
 
-include::chapters/03-engineering-change.adoc[]
+include::chapters/03-engineering-change.adoc[leveloffset=+1]
 
-include::chapters/03-engineering-change-source-notes.adoc[]
+include::chapters/03-engineering-change-source-notes.adoc[leveloffset=+1]
 
-include::chapters/04-human-attention.adoc[]
+include::chapters/04-human-attention.adoc[leveloffset=+1]
 
-include::chapters/04-human-attention-source-notes.adoc[]
+include::chapters/04-human-attention-source-notes.adoc[leveloffset=+1]
 
-include::chapters/05-measuring-engineering-systems.adoc[]
+include::chapters/05-measuring-engineering-systems.adoc[leveloffset=+1]
 
-include::chapters/05-measuring-engineering-systems-source-notes.adoc[]
+include::chapters/05-measuring-engineering-systems-source-notes.adoc[leveloffset=+1]
 
-include::chapters/06-experimentation-and-causal-inference.adoc[]
+include::chapters/06-experimentation-and-causal-inference.adoc[leveloffset=+1]
 
-include::chapters/06-experimentation-and-causal-inference-source-notes.adoc[]
+include::chapters/06-experimentation-and-causal-inference-source-notes.adoc[leveloffset=+1]
 
-include::chapters/07-ai-assisted-engineering.adoc[]
+include::chapters/07-ai-assisted-engineering.adoc[leveloffset=+1]
 
-include::chapters/07-ai-assisted-engineering-source-notes.adoc[]
+include::chapters/07-ai-assisted-engineering-source-notes.adoc[leveloffset=+1]
 
-include::chapters/08-enterprise-instrumentation.adoc[]
+include::chapters/08-enterprise-instrumentation.adoc[leveloffset=+1]
 
-include::chapters/08-enterprise-instrumentation-source-notes.adoc[]
+include::chapters/08-enterprise-instrumentation-source-notes.adoc[leveloffset=+1]
 
-include::chapters/09-complexity-and-blast-radius.adoc[]
+include::chapters/09-complexity-and-blast-radius.adoc[leveloffset=+1]
 
-include::chapters/09-complexity-and-blast-radius-source-notes.adoc[]
+include::chapters/09-complexity-and-blast-radius-source-notes.adoc[leveloffset=+1]
 
-include::chapters/10-engineering-intelligence-platform.adoc[]
+include::chapters/10-engineering-intelligence-platform.adoc[leveloffset=+1]
 
-include::chapters/10-engineering-intelligence-platform-source-notes.adoc[]
+include::chapters/10-engineering-intelligence-platform-source-notes.adoc[leveloffset=+1]
 
-include::chapters/11-engineering-metrics-catalogue.adoc[]
+include::chapters/11-engineering-metrics-catalogue.adoc[leveloffset=+1]
 
-include::chapters/11-engineering-metrics-catalogue-source-notes.adoc[]
+include::chapters/11-engineering-metrics-catalogue-source-notes.adoc[leveloffset=+1]
 
-include::chapters/12-experiment-playbooks.adoc[]
+include::chapters/12-experiment-playbooks.adoc[leveloffset=+1]
 
-include::chapters/12-experiment-playbooks-source-notes.adoc[]
+include::chapters/12-experiment-playbooks-source-notes.adoc[leveloffset=+1]
 
-include::chapters/13-governance-ethics-and-adoption.adoc[]
+include::chapters/13-governance-ethics-and-adoption.adoc[leveloffset=+1]
 
-include::chapters/13-governance-ethics-and-adoption-source-notes.adoc[]
+include::chapters/13-governance-ethics-and-adoption-source-notes.adoc[leveloffset=+1]
 
-include::chapters/14-portfolio-and-executive-decision-making.adoc[]
+include::chapters/14-portfolio-and-executive-decision-making.adoc[leveloffset=+1]
 
-include::chapters/14-portfolio-and-executive-decision-making-source-notes.adoc[]
+include::chapters/14-portfolio-and-executive-decision-making-source-notes.adoc[leveloffset=+1]
 
-include::chapters/15-implementation-and-rollout.adoc[]
+include::chapters/15-implementation-and-rollout.adoc[leveloffset=+1]
 
-include::chapters/15-implementation-and-rollout-source-notes.adoc[]
+include::chapters/15-implementation-and-rollout-source-notes.adoc[leveloffset=+1]
 
-include::chapters/16-the-science-of-engineering-intelligence.adoc[]
+include::chapters/16-the-science-of-engineering-intelligence.adoc[leveloffset=+1]
 
-include::chapters/16-the-science-of-engineering-intelligence-source-notes.adoc[]
+include::chapters/16-the-science-of-engineering-intelligence-source-notes.adoc[leveloffset=+1]
 
-include::chapters/17-the-learning-engineering-organization.adoc[]
+include::chapters/17-the-learning-engineering-organization.adoc[leveloffset=+1]
 
-include::chapters/17-the-learning-engineering-organization-source-notes.adoc[]
+include::chapters/17-the-learning-engineering-organization-source-notes.adoc[leveloffset=+1]
 
-include::chapters/18-the-future-of-engineering-intelligence.adoc[]
+include::chapters/18-the-future-of-engineering-intelligence.adoc[leveloffset=+1]
 
-include::chapters/18-the-future-of-engineering-intelligence-source-notes.adoc[]
-
-[appendix]
-include::appendices/a-engineering-change-reference-model.adoc[]
+include::chapters/18-the-future-of-engineering-intelligence-source-notes.adoc[leveloffset=+1]
 
 [appendix]
-include::appendices/b-metric-specification-standard.adoc[]
+include::appendices/a-engineering-change-reference-model.adoc[leveloffset=+1]
 
 [appendix]
-include::appendices/c-experiment-and-causal-study-protocol.adoc[]
+include::appendices/b-metric-specification-standard.adoc[leveloffset=+1]
 
 [appendix]
-include::appendices/d-governance-privacy-and-acceptable-use-standard.adoc[]
+include::appendices/c-experiment-and-causal-study-protocol.adoc[leveloffset=+1]
 
 [appendix]
-include::appendices/e-economic-evaluation-and-business-case-standard.adoc[]
+include::appendices/d-governance-privacy-and-acceptable-use-standard.adoc[leveloffset=+1]
 
 [appendix]
-include::appendices/f-technical-reference-architecture.adoc[]
+include::appendices/e-economic-evaluation-and-business-case-standard.adoc[leveloffset=+1]
 
 [appendix]
-include::appendices/g-operating-templates-and-records.adoc[]
+include::appendices/f-technical-reference-architecture.adoc[leveloffset=+1]
 
 [appendix]
-include::appendices/h-glossary-and-controlled-vocabulary.adoc[]
+include::appendices/g-operating-templates-and-records.adoc[leveloffset=+1]
 
 [appendix]
-include::appendices/i-evidence-base-and-bibliography.adoc[]
+include::appendices/h-glossary-and-controlled-vocabulary.adoc[leveloffset=+1]
 
 [appendix]
-include::appendices/j-maturity-assessment-and-adoption-roadmap.adoc[]
+include::appendices/i-evidence-base-and-bibliography.adoc[leveloffset=+1]
 
 [appendix]
-include::appendices/k-chapter-source-notes-and-citation-map.adoc[]
+include::appendices/j-maturity-assessment-and-adoption-roadmap.adoc[leveloffset=+1]
+
+[appendix]
+include::appendices/k-chapter-source-notes-and-citation-map.adoc[leveloffset=+1]
 
 // Additional appendices are added here as they are written.
