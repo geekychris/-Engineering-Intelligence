@@ -1,0 +1,180 @@
+== Research foundations and source notes
+
+The Engineering Change model combines established ideas from modularity, socio-technical systems, provenance, event-sourced data architecture, and temporal modeling with a domain-specific analytical unit proposed by this book.
+
+=== Observable artifacts versus semantic work
+
+The distinction between a tool artifact and the engineering intent it helps realize is rooted in a broader systems principle: implementation boundaries do not necessarily match conceptual or organizational boundaries.
+
+Parnas’s information-hiding work established that useful modular boundaries should be organized around design decisions and likely sources of change rather than merely around execution steps or file structure. See <<parnas1972>>.
+
+Conway’s observation that system structures reflect organizational communication structures, together with later work on socio-technical congruence, explains why repository, team, and coordination boundaries affect how work is represented and executed. See <<conway1968>>, <<cataldo2006>>, and <<herbsleb2007>>.
+
+These foundations support the chapter’s argument that pull-request boundaries are useful source-control artifacts but unreliable universal proxies for engineering consequence.
+
+=== The Engineering Change as original synthesis
+
+The *Engineering Change* is a domain-specific construct introduced in this book. It is not a renamed pull request, ticket, release, work item, or deployment.
+
+Its defining contribution is to connect:
+
+* intent;
+* human and machine actors;
+* artifacts and activities;
+* validation and decisions;
+* builds, deployments, and releases;
+* incidents and operational evidence;
+* economic, user, quality, and learning outcomes;
+* confidence and provenance across the complete lifecycle.
+
+The model is intended to provide a stable unit of consequence even when tool topology, repository strategy, or organizational structure changes.
+
+=== Provenance entities, activities, and agents
+
+The W3C PROV data model defines a general framework involving entities, activities, agents, derivation, generation, attribution, and association. See <<moreau2013>>.
+
+The Engineering Change graph is compatible with this foundation:
+
+* artifacts and records are provenance entities;
+* authoring, review, validation, build, deployment, and operation are activities;
+* people, services, automation, assistants, and agents are actors;
+* edges represent generation, use, attribution, derivation, delegation, and domain-specific relationships.
+
+The chapter adds engineering-specific lifecycle semantics such as `IMPLEMENTS`, `VERIFIES`, `DEPLOYS`, `ROLLS_BACK`, `REMEDIATES`, and `PART_OF`.
+
+=== Event logs and reconstructable state
+
+The architecture described in this chapter follows the durable-log principle developed in modern data-intensive systems. Source evidence is preserved as immutable or append-oriented events, while current state is derived through replayable transformations. See <<kleppmann2017>>.
+
+Streaming-systems research provides the formal distinction among event time, processing time, late data, watermarks, and corrections. See <<akidau2018>>.
+
+These principles support several requirements in the chapter:
+
+* lifecycle state should be derived from events rather than overwritten without history;
+* late incident and deployment evidence must be incorporated;
+* reconstruction rules must be versioned;
+* corrected relationships must trigger recomputation;
+* historical metrics must remain reproducible;
+* ingestion time must not be mistaken for occurrence time.
+
+=== Temporal identity and ownership
+
+Ownership, membership, and artifact relationships change over time. A repository’s current owner may not have owned it when an earlier decision or incident occurred.
+
+The temporal representation in this chapter is therefore an architectural requirement rather than an optional analytical detail. Events, relationships, ownership, and membership should carry effective intervals or as-of semantics.
+
+This treatment is consistent with slowly changing dimensions and temporal data patterns common in data-intensive system design, as described broadly in <<kleppmann2017>>. The Engineering Change model extends these patterns to organizational and lifecycle evidence.
+
+=== Explicit identifiers and propagated context
+
+The strongest linkage is created when a stable change identifier is propagated through planning, source control, CI, artifacts, deployment, release, telemetry, and incident systems.
+
+This design is compatible with distributed tracing and provenance practices: a durable identifier creates a causal and operational thread across otherwise separate systems. The chapter’s specific `engineering.change.id` convention is a proposed domain standard rather than an externally established specification.
+
+The adoption strategy deliberately begins with optional propagation because mandatory metadata can create friction before sufficient organizational value has been demonstrated.
+
+=== Deterministic and probabilistic reconstruction
+
+When explicit identifiers are absent, reconstruction becomes an entity-resolution and graph-linkage problem.
+
+The chapter distinguishes:
+
+* authoritative declared relationships;
+* deterministic lineage from commits, artifacts, builds, and manifests;
+* rule-based inference;
+* probabilistic or model-based inference;
+* human correction.
+
+This hierarchy reflects a general evidence principle: not all links have equal authority. Provenance, feature values, model version, and confidence must therefore accompany inferred membership.
+
+The probability expression in the chapter is illustrative. It does not prescribe logistic regression as the universal reconstruction method. Practical systems may use rules, supervised classifiers, graph clustering, correlation clustering, retrieval models, or hybrid methods.
+
+=== Negative evidence
+
+Entity-resolution systems often fail when they use only evidence of similarity. Shared contributors, active repositories, common libraries, and nearby timestamps can create false giant clusters.
+
+The chapter therefore requires negative evidence such as incompatible intent, distinct release trains, explicit independence, temporal separation, or non-change-specific shared dependencies.
+
+This is an Engineering Intelligence-specific operational principle, but it follows standard classification and record-linkage reasoning: valid inference requires evidence both for and against membership.
+
+=== Confidence and calibration
+
+A numeric confidence score has value only when its meaning is defined and calibrated for the target population.
+
+The chapter’s confidence bands—declared, strongly inferred, inferred, tentative, and rejected—are controlled operational categories. They should be calibrated against adjudicated Engineering Change samples and reviewed by decision type.
+
+Exploratory dependency analysis can tolerate lower-confidence relationships than financial attribution, causal studies, or governance investigations.
+
+Measurement-validity principles in <<messick1995>> support this use-specific treatment: the acceptability of a relationship depends on the interpretation and consequence of its use.
+
+=== Graph structure and critical paths
+
+The chapter represents multi-repository work as a dependency graph rather than an unordered collection of pull requests.
+
+Graph measures such as dependency depth, fan-in, fan-out, ownership boundaries, cycles, synchronization points, and critical-path length help characterize topological and coordination difficulty.
+
+The broader rationale is consistent with modularity and socio-technical research in <<parnas1972>>, <<conway1968>>, and <<cataldo2006>>. The specific Engineering Change graph schema and measures are domain-specific extensions.
+
+=== Repository topology and organizational context
+
+A monorepo and a polyrepo environment can encode the same intent into radically different numbers and shapes of pull requests. Raw artifact counts therefore cannot be compared without topology context.
+
+Team Topologies emphasizes the relationship among team boundaries, cognitive load, interaction modes, and fast flow. See <<skelton2019>>. This supports the chapter’s separation of:
+
+* intrinsic implementation complexity;
+* repository and dependency topology;
+* organizational ownership and coordination complexity.
+
+The Engineering Change creates a common semantic layer across these different implementation structures.
+
+=== Shared artifacts and cost allocation
+
+A shared library, platform capability, or deployment artifact can support several Engineering Changes. Assigning its full cost to every change would double count cost; assigning it to none would hide shared investment.
+
+The chapter therefore presents several allocation choices, including equal allocation, usage weighting, causal attribution, primary ownership, and separate shared-platform reporting.
+
+This is consistent with the decision-specific cost perspective developed in Chapter 2 and the cost-benefit methods summarized in <<boardman2018>>. No allocation rule is universally correct; the method must match the decision.
+
+=== Reconstruction quality as a first-class metric
+
+Every metric derived from Engineering Changes inherits the quality of change reconstruction.
+
+The chapter therefore treats the following as core platform-quality measures:
+
+* explicit identifier coverage;
+* artifact and deployment linkage coverage;
+* precision and recall against adjudicated examples;
+* confidence calibration;
+* unresolved identity and ownership rate;
+* correction volume;
+* reconstruction drift;
+* recomputation latency.
+
+This follows the broader measurement principle that source and transformation quality are part of metric validity, not separate implementation details. See <<messick1995>> and <<hand2004>>.
+
+=== Privacy and acceptable use
+
+The Engineering Change model can expose detailed individual and team activity. That capability creates governance obligations.
+
+Privacy-risk and security-management principles are informed by <<nist2020-privacy>> and <<nist2024-csf>>. The book’s governance standard further restricts individual employment use, requires purpose-bound access, and provides correction and appeal mechanisms.
+
+The analytical graph should use pseudonymous actor identifiers by default, isolate re-identification, and avoid making inferred relationships appear more authoritative than their evidence supports.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific standards proposed by this book:
+
+* the Engineering Change as the primary unit of consequence;
+* the formal tuple connecting intent, activities, relationships, outcomes, time, and provenance;
+* a temporal Engineering Change property graph;
+* explicit merge, split, and supersession history;
+* confidence-aware artifact membership;
+* negative-evidence requirements for reconstruction;
+* Engineering Change identifier propagation across the delivery and operational toolchain;
+* lifecycle-state derivation from versioned events;
+* multi-repository critical-path and coordination analysis;
+* decision-dependent confidence thresholds;
+* correction-triggered metric and decision impact analysis;
+* integration of human and AI participation within one provenance model.
+
+These contributions should be validated empirically through labeled reconstruction datasets, practitioner review, linkage-quality studies, and decision-outcome analysis.
