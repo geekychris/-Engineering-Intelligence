@@ -1,0 +1,217 @@
+== Research foundations and source notes
+
+The implementation and rollout framework in this chapter draws on reliable delivery, site reliability engineering, staged experimentation, organizational learning, developer experience, and governance. It extends those foundations into a decision-first adoption model for Engineering Intelligence.
+
+=== Incremental delivery
+
+Continuous-delivery practices emphasize small batches, automated validation, deployment safety, and rapid feedback. See <<humble2010>> and <<kim2021-devops>>.
+
+The chapter therefore recommends:
+
+* narrow initial scope;
+* reversible changes;
+* automated validation;
+* shadow operation;
+* progressive exposure;
+* explicit rollback;
+* short learning cycles.
+
+A large platform launch that attempts to solve every measurement problem at once increases technical, organizational, and governance risk.
+
+=== Reliability engineering
+
+SRE principles concerning service-level objectives, error budgets, incident response, and operational toil are grounded in <<beyer2016>> and <<beyer2018>>.
+
+The rollout treats the Engineering Intelligence platform as a production system with objectives for:
+
+* freshness;
+* completeness;
+* linkage quality;
+* metric latency;
+* correction propagation;
+* serving availability;
+* auditability.
+
+Evidence integrity is as important as infrastructure availability because incorrect metrics can influence consequential decisions.
+
+=== Pilot design
+
+A pilot should test both technical feasibility and decision usefulness.
+
+The causal and experimental foundations are described in <<shadish2002>>, <<imbens2015>>, <<hernan2020>>, and <<kohavi2020>>.
+
+A credible pilot includes:
+
+* a declared decision;
+* baseline and comparator;
+* eligible population;
+* primary outcomes and guardrails;
+* instrumentation quality checks;
+* treatment and metric versions;
+* stopping and expansion criteria.
+
+A pilot is not successful merely because connectors run or dashboards render.
+
+=== Shadow mode
+
+Shadow operation allows a new reconstruction, metric, model, or policy to run without controlling production decisions.
+
+This supports comparison of:
+
+* old and new definitions;
+* missed and additional links;
+* score calibration;
+* operational cost;
+* disagreement cases;
+* unintended policy effects.
+
+Shadow mode is an Engineering Intelligence-specific rollout control informed by reliable-change and experimentation practices.
+
+=== Progressive rollout
+
+Progressive exposure limits consequence while evidence accumulates.
+
+Approaches include:
+
+* selected repositories or teams;
+* low-risk Engineering Change classes;
+* advisory-only output;
+* restricted populations;
+* stepped-wedge introduction;
+* feature flags;
+* explicit autonomy tiers.
+
+Expansion should depend on evidence quality, usefulness, governance readiness, and guardrail performance rather than calendar commitment alone.
+
+=== Organizational adoption
+
+Developer-experience research emphasizes feedback loops, cognitive load, flow, and practitioner perception. See <<forsgren2021-space>>, <<noda2023-devex>>, <<fagerholm2012>>, and <<meyer2014>>.
+
+The chapter therefore begins adoption with problems practitioners already experience, such as unreliable CI, review queues, ownership ambiguity, or repeated manual reporting.
+
+Local usefulness creates a stronger basis for trust than executive ranking dashboards.
+
+=== Complementary organizational change
+
+Technology investment often requires changes in workflow, roles, incentives, and skills before productivity benefits are realized. See <<brynjolfsson1993>> and <<brynjolfsson2017>>.
+
+Implementation planning therefore includes:
+
+* process redesign;
+* training;
+* governance capacity;
+* ownership and support;
+* integration with decision forums;
+* value-realization follow-up.
+
+Installing the platform is not the same as changing organizational capability.
+
+=== Organizational learning
+
+Argyris and Schön’s double-loop learning supports reconsidering assumptions and policies, not only correcting execution. See <<argyris1978>>.
+
+Senge’s systems-thinking perspective supports learning across technical and organizational boundaries. See <<senge1990>>.
+
+The rollout therefore preserves:
+
+* pilot findings;
+* null and negative results;
+* disputes and corrections;
+* invalid assumptions;
+* retired metrics;
+* decision outcomes.
+
+=== Governance before scale
+
+Measurement validity and indicator corruption provide the basis for establishing governance before broad adoption. See <<messick1995>>, <<campbell1979>>, and <<goodhart1984>>.
+
+The chapter requires early publication of:
+
+* intended purposes;
+* acceptable and prohibited uses;
+* metric ownership;
+* privacy controls;
+* correction and appeal;
+* retention;
+* model and AI governance.
+
+Scaling instrumentation before these boundaries exist can make later trust recovery difficult.
+
+=== Privacy and security readiness
+
+Privacy and cybersecurity foundations are provided by <<nist2020-privacy>> and <<nist2024-csf>>.
+
+Rollout readiness includes:
+
+* purpose limitation;
+* minimization;
+* pseudonymization;
+* least privilege;
+* secrets management;
+* audit logging;
+* retention and deletion;
+* incident response;
+* vendor-risk review.
+
+Detailed behavioral telemetry should not be retained indefinitely merely because it was useful during a pilot.
+
+=== AI rollout
+
+AI-enabled features require additional lifecycle governance informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+
+The chapter recommends progressing from:
+
+. offline evaluation;
+. shadow evaluation;
+. advisory use;
+. bounded automation;
+. higher autonomy only after repeated evidence.
+
+Model, prompt, retrieval, tool, and policy versions should remain traceable throughout rollout.
+
+=== Operating model
+
+A sustainable implementation requires explicit roles for:
+
+* platform ownership;
+* source stewardship;
+* metric governance;
+* experiment review;
+* privacy and security;
+* model governance;
+* practitioner representation;
+* executive decision ownership.
+
+These responsibilities may be combined in smaller organizations, but accountability should remain visible.
+
+=== Value realization
+
+The chapter distinguishes deployment from realized value.
+
+A rollout should track:
+
+* adoption;
+* workflow change;
+* capacity released;
+* capacity redeployed;
+* quality and risk outcomes;
+* avoided cost;
+* realized financial or customer value.
+
+The economic foundation is provided by <<boardman2018>> and the productivity-realization literature above.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* rollout organized around bounded decision products rather than connector count;
+* evidence-quality, governance, and trust gates for expansion;
+* shadow comparison for reconstruction, metrics, models, and policies;
+* progressive autonomy tiers for engineering agents;
+* explicit transition from pilot evidence to value realization;
+* correction and dispute rates used as rollout-learning signals;
+* semantic SLOs and evidence incidents included in operational readiness;
+* practitioner-local value required before executive-scale reporting;
+* maturity based on reproducibility and governance, not dashboard breadth.
+
+These practices should be adapted to organizational context and evaluated through reliability, adoption quality, practitioner trust, governance outcomes, and realized decision value.
