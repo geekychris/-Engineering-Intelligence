@@ -1,0 +1,332 @@
+== Research foundations and source notes
+
+The metric catalogue in this chapter draws on software-delivery research, multidimensional productivity frameworks, queueing theory, information retrieval, measurement validity, and indicator-governance research. It extends those foundations into a governed system of Engineering Intelligence measures tied to explicit decisions and Engineering Change evidence.
+
+=== Delivery performance
+
+The catalogue’s delivery and reliability measures build on the research synthesized in <<forsgren2018>>.
+
+Measures such as deployment frequency, lead time, restoration behavior, and change-failure outcomes are useful because they describe system-level delivery capability rather than individual activity.
+
+Their interpretation still depends on:
+
+* service and repository boundaries;
+* release and deployment definitions;
+* work mix;
+* risk class;
+* observation window;
+* outcome maturity;
+* data quality.
+
+The catalogue therefore treats delivery measures as governed metric products rather than universally comparable raw numbers.
+
+=== Multidimensional productivity
+
+The SPACE framework argues that productivity should be considered across satisfaction and well-being, performance, activity, communication and collaboration, and efficiency and flow. See <<forsgren2021-space>>.
+
+The DevEx framework emphasizes feedback loops, cognitive load, and flow state. See <<noda2023-devex>>.
+
+These foundations support the catalogue’s refusal to collapse engineering performance into one score.
+
+Instead, the catalogue groups measures across:
+
+* flow;
+* quality;
+* attention;
+* coordination;
+* architecture;
+* AI participation;
+* economics;
+* experimentation;
+* governance;
+* evidence quality.
+
+=== Queueing and flow
+
+Little’s Law relates average work in progress, throughput, and average flow time. See <<little1961>>.
+
+Kingman’s work and the operations literature explain why utilization and variability can create nonlinear waiting. See <<kingman1961>> and <<hopp2011>>.
+
+These foundations support measures such as:
+
+* work in progress;
+* queue depth;
+* arrival rate;
+* service rate;
+* service time;
+* wait time;
+* blocked time;
+* tail latency;
+* utilization of constrained resources;
+* flow efficiency.
+
+The catalogue distinguishes these measures because elapsed time alone cannot explain whether work is active, queued, blocked, or waiting for scarce attention.
+
+=== Quality-adjusted flow
+
+Faster delivery can be harmful when it increases rework, incidents, security findings, or operational burden.
+
+The catalogue therefore pairs speed measures with guardrails such as:
+
+* escaped defect rate;
+* rollback rate;
+* incident consequence;
+* rework share;
+* support burden;
+* security and privacy findings;
+* outcome durability.
+
+This approach is consistent with the system-level delivery perspective in <<forsgren2018>> and the reliability principles in <<beyer2016>> and <<beyer2018>>.
+
+=== Precision and recall
+
+AI review tools, static analyzers, classifiers, and retrieval systems often produce findings that can be evaluated through precision and recall. See <<manning2008>>.
+
+The catalogue requires explicit definitions for:
+
+* what constitutes a finding;
+* duplicate handling;
+* relevance;
+* severity;
+* eligible population;
+* adjudication;
+* mature outcome window.
+
+Without these definitions, precision and recall from different evaluations are not comparable.
+
+=== Ranking metrics
+
+When findings are ordered by importance, rank-sensitive measures become relevant.
+
+Discounted cumulative gain and normalized discounted cumulative gain account for graded relevance and position. See <<jarvelin2002>>.
+
+The catalogue uses ranking metrics where reviewer attention is scarce and high-value findings should appear early.
+
+NDCG should not be interpreted as defect prevention by itself. It measures ranking quality against a defined relevance judgment.
+
+=== Validity
+
+Messick’s use-specific view of validity provides the foundation for requiring every metric to identify its intended interpretation and use. See <<messick1995>>.
+
+Hand’s broader treatment of measurement reinforces the point that definitions and representation choices shape what can be concluded. See <<hand2004>>.
+
+The catalogue therefore records:
+
+* construct;
+* decision purpose;
+* eligible population;
+* unit of analysis;
+* scale and unit;
+* computation;
+* quality requirements;
+* limitations;
+* permitted and prohibited uses.
+
+=== Reliability
+
+A metric must be sufficiently consistent for its intended use.
+
+Reliability concerns include:
+
+* stable source semantics;
+* reproducible transformation;
+* labeler agreement;
+* reconstruction consistency;
+* metric-version determinism;
+* temporal stability where expected.
+
+Cronbach’s reliability work provides one important psychometric foundation. See <<cronbach1951>>.
+
+Reliability alone is insufficient: a consistently biased metric can remain reliable while invalid.
+
+=== Indicator gaming
+
+Campbell’s Law and Goodhart’s Law describe the risk that indicators become corrupted when used as targets. See <<campbell1979>> and <<goodhart1984>>.
+
+Catalogue measures can be gamed through:
+
+* change slicing;
+* superficial approvals;
+* suppressed incident reporting;
+* altered eligibility;
+* trivial AI suggestions;
+* exclusion of blocked work;
+* shifted work outside the measured boundary.
+
+Each high-consequence metric should therefore include a gaming analysis and balancing measures.
+
+=== Denominators and exposure
+
+Rates depend on governed denominators.
+
+For example, an AI acceptance rate can be computed over all generated suggestions, displayed suggestions, actionable suggestions, unique suggestions, or suggestions with mature outcomes.
+
+The catalogue requires explicit eligibility, exposure, and denominator contracts because each version answers a different question.
+
+=== Distributions and tails
+
+Engineering measures are often skewed or heavy-tailed.
+
+The catalogue therefore favors:
+
+* medians;
+* quantiles;
+* tail probabilities;
+* distributions;
+* subgroup views;
+* uncertainty intervals;
+* sample counts.
+
+Average incident cost, review latency, or change size can be dominated by a small number of extreme observations.
+
+=== Attention measures
+
+The catalogue’s attention measures draw on cognitive-load theory and interruption research. See <<sweller1988>> and <<mark2008>>.
+
+Relevant measures include:
+
+* review and validation effort;
+* context-recovery proxies;
+* fragmentation;
+* scarce-specialist demand;
+* queue delay;
+* interruption frequency;
+* attention yield.
+
+These measures are latent or model-based and should be reported with uncertainty and privacy controls.
+
+=== Coordination measures
+
+Coordination metrics are informed by Conway’s Law, socio-technical congruence, and distributed-development research. See <<conway1968>>, <<cataldo2006>>, and <<herbsleb2007>>.
+
+Relevant measures include:
+
+* team and ownership boundaries;
+* handoffs;
+* approval boundaries;
+* synchronization points;
+* owner-discovery time;
+* dependency-related waiting;
+* ownership entropy.
+
+These measures should describe system structure rather than serve as team rankings.
+
+=== Architecture measures
+
+Architecture metrics are informed by information hiding and modularity in <<parnas1972>> and team cognitive-load concepts in <<skelton2019>>.
+
+The catalogue includes measures for:
+
+* dependency depth;
+* fan-in and fan-out;
+* change coupling;
+* cycles;
+* validation surface;
+* reversibility;
+* blast radius;
+* cognitive surface.
+
+Structural measures should be calibrated against observed flow, effort, incidents, and rework.
+
+=== AI measures
+
+The AI metric family is informed by coding-assistant studies in <<peng2023>>, <<vaithilingam2022>>, and <<barke2023>>, and repository-level agent benchmarks in <<jimenez2024>>.
+
+The catalogue distinguishes:
+
+* generation;
+* exposure;
+* interaction;
+* acceptance;
+* contribution;
+* validation burden;
+* downstream quality;
+* net attention effect;
+* economic realization.
+
+Acceptance rate alone is treated as insufficient evidence of value.
+
+=== Economic measures
+
+Economic measures draw on cost-benefit analysis in <<boardman2018>> and productivity-realization research in <<brynjolfsson1993>> and <<brynjolfsson2017>>.
+
+The catalogue distinguishes:
+
+* cash savings;
+* avoided cost;
+* released capacity;
+* modeled outcome value;
+* risk reduction;
+* option value;
+* realized value.
+
+This separation reduces the risk of presenting theoretical time savings as actual financial savings.
+
+=== Causal status
+
+A metric movement is not automatically a causal effect.
+
+The catalogue labels values as:
+
+* observed;
+* reconstructed;
+* inferred;
+* predicted;
+* experimentally estimated;
+* causally estimated under declared assumptions.
+
+The methodological foundation comes from <<rubin1974>>, <<holland1986>>, <<pearl2009>>, <<imbens2015>>, and <<hernan2020>>.
+
+=== Data-quality metrics
+
+Metric quality depends on source and linkage quality.
+
+The catalogue therefore includes:
+
+* source freshness;
+* completeness;
+* schema conformance;
+* identity-resolution rate;
+* Engineering Change linkage coverage;
+* confidence calibration;
+* outcome maturity;
+* correction rate;
+* drift.
+
+This follows the validity principle that evidence quality is part of interpretation rather than a separate implementation concern.
+
+=== Governance metrics
+
+Governance measures track whether the measurement system is being used responsibly.
+
+Examples include:
+
+* percentage of metrics with owners;
+* percentage with prohibited-use declarations;
+* access-review completion;
+* correction and appeal resolution;
+* metric incidents;
+* stale or deprecated definitions;
+* unsupported individual-level uses;
+* decision follow-up completion.
+
+Privacy and professional principles are informed by <<nist2020-privacy>> and <<acm2018-ethics>>.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* the unified metric catalogue spanning flow, quality, attention, economics, AI, architecture, governance, and evidence quality;
+* Engineering Change as the default aggregation unit;
+* net attention effect;
+* cognitive offload and reload;
+* accepted-contribution share;
+* validation surface and cognitive surface;
+* ownership entropy;
+* outcome-maturity metrics;
+* reconstruction-quality metrics;
+* explicit causal-status labels;
+* value-realization measures linked to decision records;
+* prohibited-use and quality-state fields as part of every metric definition.
+
+These measures should be calibrated, versioned, and validated in each organizational context rather than treated as universal constants.
