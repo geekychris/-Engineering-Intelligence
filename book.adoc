@@ -27,4 +27,6 @@ include::chapters/03-engineering-change.adoc[]
 
 include::chapters/04-human-attention.adoc[]
 
+include::chapters/05-measuring-engineering-systems.adoc[]
+
 // Planned chapters are added here as they are written.
