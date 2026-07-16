@@ -1,0 +1,12 @@
+flowchart LR
+    D[Decision and hypothesis] --> T[Treatment and control]
+    T --> U[Assignment and analysis units]
+    U --> O[Primary outcome and guardrails]
+    O --> I[Instrumentation and exposure]
+    I --> X[External factors and contamination]
+    X --> A[Statistical analysis]
+    A --> R[Decision rule and rollout]
+
+    Q[Ethics, security, power, and rollback readiness] -. govern .-> T
+    Q -. govern .-> O
+    Q -. govern .-> R
