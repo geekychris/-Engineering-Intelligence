@@ -1,3 +1,85 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1054" height="1492" viewBox="0 0 1054 1492">
-  <image width="1054" height="1492" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////2wBDAf//////////////////////////////////////////////////////////////////////////////////////wAARCAW0BB4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqs7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6erx8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD/2Q=="/>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9d9ef"/>
+      <stop offset="0.48" stop-color="#f8e8c8"/>
+      <stop offset="1" stop-color="#17365d"/>
+    </linearGradient>
+    <linearGradient id="river" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dcecf4"/>
+      <stop offset="1" stop-color="#245a88"/>
+    </linearGradient>
+    <linearGradient id="desk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5b3a24"/>
+      <stop offset="1" stop-color="#21150f"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity="0.32"/>
+    </filter>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M28 0H0V28" fill="none" stroke="#8fc0e8" stroke-width="1" opacity=".36"/>
+    </pattern>
+  </defs>
+
+  <rect width="1054" height="1492" fill="url(#sky)"/>
+  <circle cx="876" cy="468" r="120" fill="#ffd67a" opacity=".7"/>
+  <path d="M0 610 Q180 480 360 620 T720 610 T1054 585 V900 H0Z" fill="#58734a"/>
+  <path d="M0 690 Q180 560 360 690 T720 675 T1054 650 V930 H0Z" fill="#324f3c"/>
+  <path d="M505 570 C520 690 468 790 430 930 C520 860 610 850 664 930 C616 790 606 675 650 570Z" fill="url(#river)"/>
+
+  <g fill="#38536a">
+    <rect x="45" y="520" width="52" height="132"/><rect x="107" y="476" width="60" height="176"/>
+    <rect x="178" y="505" width="44" height="147"/><rect x="231" y="448" width="72" height="204"/>
+    <rect x="314" y="495" width="48" height="157"/>
+  </g>
+  <g stroke="#e8f0f5" stroke-width="4" opacity=".82">
+    <path d="M40 734 C210 522 390 522 540 734" fill="none"/>
+    <path d="M514 734 C684 522 864 522 1014 734" fill="none"/>
+    <path d="M32 734 H1022"/>
+    <path d="M88 734V810M158 708V810M228 670V810M298 636V810M368 612V810M438 634V810M584 636V810M654 610V810M724 636V810M794 670V810M864 708V810M934 734V810"/>
+  </g>
+  <rect x="520" y="570" width="534" height="390" fill="#17365d" opacity=".82"/>
+  <rect x="520" y="570" width="534" height="390" fill="url(#grid)"/>
+  <g fill="none" stroke="#d7ecff" stroke-width="3" opacity=".92">
+    <path d="M550 760 C680 590 850 590 1000 760"/>
+    <path d="M558 760H1002M620 760V900M700 700V900M780 660V900M860 700V900M940 760V900"/>
+    <path d="M570 884 l70-62 66 44 66-92 78 48 84-104"/>
+    <circle cx="884" cy="842" r="54"/><circle cx="884" cy="842" r="30"/><circle cx="884" cy="842" r="8"/>
+  </g>
+
+  <rect y="1030" width="1054" height="462" fill="url(#desk)"/>
+  <g filter="url(#shadow)">
+    <rect x="66" y="1022" width="210" height="54" rx="6" fill="#111820"/>
+    <rect x="54" y="1078" width="222" height="54" rx="6" fill="#151d26"/>
+    <rect x="44" y="1134" width="232" height="54" rx="6" fill="#111820"/>
+    <rect x="34" y="1190" width="242" height="54" rx="6" fill="#151d26"/>
+    <text x="78" y="1057" font-family="Arial, sans-serif" font-size="20" fill="#d5a13f">SYSTEMS THINKING</text>
+    <text x="68" y="1113" font-family="Arial, sans-serif" font-size="20" fill="#d5a13f">MEASUREMENT</text>
+    <text x="58" y="1169" font-family="Arial, sans-serif" font-size="20" fill="#d5a13f">DECISION ANALYSIS</text>
+    <text x="48" y="1225" font-family="Arial, sans-serif" font-size="20" fill="#d5a13f">ENGINEERING ECONOMICS</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <path d="M292 1110 Q500 1058 708 1110 V1390 Q500 1338 292 1390Z" fill="#eee2c8"/>
+    <path d="M500 1074V1360" stroke="#8d7c65" stroke-width="3"/>
+    <g stroke="#7c6a56" stroke-width="2" fill="none" opacity=".75">
+      <path d="M320 1165H466M320 1192H452M320 1219H470M320 1246H438"/>
+      <path d="M530 1165H680M530 1192H664M530 1219H690M530 1246H646"/>
+      <path d="M338 1304 C392 1234 438 1234 478 1304M522 1304 C574 1234 624 1234 672 1304"/>
+    </g>
+  </g>
+  <g transform="translate(728 1070) rotate(8)" filter="url(#shadow)">
+    <rect width="260" height="238" rx="8" fill="#17365d"/>
+    <rect width="260" height="238" rx="8" fill="url(#grid)"/>
+    <path d="M28 180 C84 96 166 96 230 180M40 180H222M70 180V216M118 138V216M166 138V216M214 180V216" fill="none" stroke="#d7ecff" stroke-width="3"/>
+  </g>
+
+  <text x="527" y="126" text-anchor="middle" font-family="Georgia, serif" font-size="84" letter-spacing="5" fill="#0e294d">ENGINEERING</text>
+  <text x="527" y="220" text-anchor="middle" font-family="Georgia, serif" font-size="84" letter-spacing="5" fill="#0e294d">INTELLIGENCE</text>
+  <line x1="340" y1="254" x2="714" y2="254" stroke="#b78331" stroke-width="3"/>
+  <text x="527" y="302" text-anchor="middle" font-family="Georgia, serif" font-size="25" letter-spacing="2" fill="#6c371f">A QUANTITATIVE FRAMEWORK FOR MEASURING,</text>
+  <text x="527" y="338" text-anchor="middle" font-family="Georgia, serif" font-size="25" letter-spacing="2" fill="#6c371f">UNDERSTANDING, AND OPTIMIZING</text>
+  <text x="527" y="374" text-anchor="middle" font-family="Georgia, serif" font-size="25" letter-spacing="2" fill="#6c371f">MODERN SOFTWARE ENGINEERING</text>
+  <text x="527" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" letter-spacing="5" fill="#17365d">SYSTEMS  •  EVIDENCE  •  DECISIONS  •  VALUE</text>
+  <text x="527" y="1440" text-anchor="middle" font-family="Georgia, serif" font-size="34" letter-spacing="6" fill="#f0c36f">CHRISTOPHER J. COLLINS</text>
 </svg>
