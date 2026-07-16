@@ -35,4 +35,6 @@ include::chapters/07-ai-assisted-engineering.adoc[]
 
 include::chapters/08-enterprise-instrumentation.adoc[]
 
+include::chapters/09-complexity-and-blast-radius.adoc[]
+
 // Planned chapters are added here as they are written.
