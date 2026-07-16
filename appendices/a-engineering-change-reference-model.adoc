@@ -1,0 +1,871 @@
+= Engineering Change Reference Model
+
+[abstract]
+This appendix defines a practical reference model for representing Engineering Changes across heterogeneous enterprise systems. It specifies the core entities, relationships, lifecycle states, identifiers, confidence measures, provenance requirements, and implementation rules needed to reconstruct change activity without tying the model to a particular source-control, planning, CI, deployment, or incident platform.
+
+== Purpose
+
+The Engineering Change reference model provides a stable semantic layer across changing tools and workflows.
+
+It is intended to support:
+
+* lifecycle reconstruction;
+* cycle-time and queue analysis;
+* review and validation measurement;
+* experiment assignment and exposure;
+* complexity and blast-radius analysis;
+* AI-participant evaluation;
+* cost and value attribution;
+* audit and governance;
+* longitudinal comparison across tool migrations.
+
+The model should preserve uncertainty rather than implying perfect linkage where none exists.
+
+== Design principles
+
+=== Tool independence
+
+The model describes engineering meaning, not vendor objects. A pull request, merge request, change list, patch set, or direct commit may all contribute to the same semantic role.
+
+=== Event-derived state
+
+State should be reconstructible from immutable events wherever possible. Mutable snapshots may accelerate queries but should not replace source evidence.
+
+=== Temporal correctness
+
+Ownership, identity, team membership, service boundaries, and model configuration must be resolved as of the time of the event.
+
+=== Explicit uncertainty
+
+Inferred relationships require confidence, method, and provenance.
+
+=== Many-to-many reality
+
+One intent may produce several code changes. One deployment may contain several Engineering Changes. One incident may involve multiple changes. The model must not force false one-to-one relationships.
+
+=== Human and machine participation
+
+People, bots, CI services, AI assistants, and autonomous agents are all actors with distinguishable identity and provenance.
+
+=== Outcome orientation
+
+Artifacts are intermediate evidence. The model should connect them to accepted, deployed, operational, user, and business outcomes where possible.
+
+== Core entity model
+
+image::../figures/mermaid/engineering-change-reference-model.mmd[Engineering Change reference model]
+
+=== EngineeringChange
+
+The central unit representing an intended modification and its observed consequences.
+
+Recommended fields:
+
+[source,yaml]
+----
+engineering_change_id: ec_01J...
+title: Reduce checkout authorization latency
+change_type: product_feature | defect_fix | reliability | security | platform | compliance | experiment | maintenance
+created_at: 2026-07-15T18:42:11Z
+first_activity_at: 2026-07-15T19:10:02Z
+accepted_at: 2026-07-18T16:31:44Z
+completed_at: 2026-07-21T09:03:15Z
+state: operating
+risk_class: high
+primary_domain_id: domain_payments
+primary_owner_team_id: team_checkout
+linkage_confidence: 0.94
+linkage_method: explicit_id_plus_graph_reconstruction
+schema_version: 1.0.0
+----
+
+The identifier should be globally unique, durable, opaque, and independent of any single source system.
+
+=== Intent
+
+Represents the desired outcome, problem, constraint, or hypothesis that motivated the change.
+
+Fields may include:
+
+* intent identifier;
+* statement of desired outcome;
+* acceptance criteria;
+* constraints;
+* expected value;
+* affected population;
+* risk tolerance;
+* originating actor;
+* source-system references;
+* creation and revision timestamps.
+
+An Engineering Change may have multiple intents when work is consolidated, but a primary intent should be identified where meaningful.
+
+=== Actor
+
+Represents a participant capable of taking or initiating action.
+
+Actor types include:
+
+* human;
+* service account;
+* deterministic automation;
+* AI assistant;
+* autonomous agent;
+* external vendor system;
+* organizational unit.
+
+Recommended actor properties:
+
+* canonical actor identifier;
+* actor type;
+* source identities;
+* organization and team membership over time;
+* role at event time;
+* model or automation version where applicable;
+* authentication and delegation context;
+* confidence of identity resolution.
+
+=== Artifact
+
+Represents a created, modified, reviewed, executed, or deployed object.
+
+Artifact types include:
+
+* source file;
+* commit;
+* branch;
+* pull request;
+* test;
+* build;
+* package;
+* container image;
+* infrastructure plan;
+* schema migration;
+* model;
+* configuration;
+* documentation;
+* deployment manifest;
+* feature flag;
+* incident record.
+
+Artifacts should retain native source identifiers and immutable content identifiers where available.
+
+=== Activity
+
+Represents an action performed by an actor or system.
+
+Examples include:
+
+* authoring;
+* generating;
+* editing;
+* reviewing;
+* commenting;
+* approving;
+* testing;
+* building;
+* deploying;
+* rolling back;
+* diagnosing;
+* acknowledging;
+* accepting;
+* rejecting.
+
+An activity should contain event time, ingestion time, actor, source, affected artifacts, related Engineering Change, and provenance.
+
+=== Review
+
+Represents a structured validation interaction rather than merely a comment stream.
+
+A review may contain:
+
+* requested reviewers;
+* participating reviewers;
+* reviewer type;
+* findings;
+* severity;
+* ranking position;
+* disposition;
+* response latency;
+* approval or rejection;
+* human validation effort;
+* AI model and configuration.
+
+=== Finding
+
+Represents a specific concern, recommendation, defect, policy violation, or observation produced during review or analysis.
+
+Recommended fields:
+
+* finding identifier;
+* producer actor;
+* category;
+* severity;
+* confidence;
+* rank;
+* affected artifact and location;
+* first observed time;
+* disposition;
+* accepted, rejected, duplicate, or unresolved state;
+* remediation activity;
+* later outcome linkage.
+
+=== ValidationRun
+
+Represents execution intended to establish evidence about correctness, quality, safety, or fitness.
+
+Examples include:
+
+* unit tests;
+* integration tests;
+* security scans;
+* static analysis;
+* performance tests;
+* simulations;
+* canary analysis;
+* manual verification;
+* compliance checks.
+
+A validation run should record configuration, inputs, environment, results, duration, cost, and reliability of the evidence.
+
+=== Build
+
+Represents creation of a deployable or distributable artifact.
+
+Important fields include:
+
+* build identifier;
+* source inputs;
+* dependency resolution;
+* environment;
+* output artifacts;
+* result;
+* duration;
+* queue time;
+* resource consumption;
+* cache behavior;
+* reproducibility metadata.
+
+=== Deployment
+
+Represents movement of one or more artifacts into an environment.
+
+A deployment may contain several Engineering Changes, and one Engineering Change may reach several environments through separate deployments.
+
+Fields include:
+
+* deployment identifier;
+* environment;
+* artifact set;
+* included Engineering Changes;
+* start and completion times;
+* strategy;
+* actor;
+* approval evidence;
+* result;
+* rollback relationship;
+* exposure population.
+
+=== Release
+
+Represents intentional availability to a user or consuming system.
+
+Deployment and release must remain distinct because feature flags, staged exposure, mobile distribution, or customer entitlements may separate them in time.
+
+=== Outcome
+
+Represents an observed consequence.
+
+Outcome types include:
+
+* accepted functionality;
+* user behavior;
+* business result;
+* reliability change;
+* incident;
+* defect;
+* rollback;
+* support burden;
+* cost change;
+* performance change;
+* learning result;
+* capability change.
+
+Outcomes should record observation method, attribution confidence, time horizon, and uncertainty.
+
+=== Incident
+
+Represents an operational failure, degradation, security event, or significant near miss.
+
+Incident linkage to Engineering Changes should be many-to-many and time-aware. The model should distinguish suspected, contributing, triggering, and corrective relationships.
+
+=== Experiment
+
+Represents a predeclared comparison intended to estimate an intervention effect.
+
+Fields include:
+
+* experiment identifier;
+* hypothesis;
+* eligibility;
+* assignment unit;
+* treatment variants;
+* outcome and guardrail definitions;
+* analysis plan;
+* start and end conditions;
+* owner;
+* decision record.
+
+=== Exposure
+
+Represents the treatment actually experienced by an actor, Engineering Change, repository, team, or other unit.
+
+Exposure must include treatment configuration, timestamp, duration, and evidence that the treatment was operationally available.
+
+=== Decision
+
+Represents an explicit organizational choice informed by evidence.
+
+A decision record should contain:
+
+* question;
+* options considered;
+* evidence references;
+* assumptions;
+* uncertainty;
+* expected benefit and cost;
+* chosen action;
+* owner;
+* decision date;
+* review date;
+* reversal criteria.
+
+== Relationship vocabulary
+
+Relationships should be typed, directed, temporal where needed, and versioned.
+
+Recommended relationship types include:
+
+* `MOTIVATES`: Intent to EngineeringChange;
+* `IMPLEMENTS`: Artifact to EngineeringChange;
+* `PARTICIPATES_IN`: Actor to EngineeringChange;
+* `PERFORMS`: Actor to Activity;
+* `AFFECTS`: Activity to Artifact;
+* `REVIEWS`: Review to Artifact or EngineeringChange;
+* `PRODUCES`: Review to Finding;
+* `ADDRESSES`: Activity or Artifact to Finding;
+* `VALIDATES`: ValidationRun to Artifact or EngineeringChange;
+* `BUILDS_FROM`: Build to Artifact;
+* `PRODUCES_ARTIFACT`: Build to Artifact;
+* `DEPLOYS`: Deployment to Artifact;
+* `INCLUDES_CHANGE`: Deployment to EngineeringChange;
+* `EXPOSES`: Release or Exposure to population;
+* `RESULTS_IN`: EngineeringChange to Outcome;
+* `CONTRIBUTES_TO`: EngineeringChange to Incident;
+* `CORRECTS`: EngineeringChange to Incident or prior EngineeringChange;
+* `ASSIGNED_TO`: Experiment to unit;
+* `RECEIVES`: unit to Exposure;
+* `INFORMS`: evidence to Decision;
+* `SUPERSEDES`: entity version to earlier version;
+* `DELEGATES_TO`: Actor to Actor;
+* `OWNS`: Team to domain, service, repository, or EngineeringChange.
+
+Free-form relationships should be avoided in canonical storage because they undermine interoperability.
+
+== Lifecycle model
+
+The lifecycle is not a universal workflow. It is a semantic state model that can be mapped from different operational processes.
+
+=== Proposed
+
+Intent exists, but implementation has not begun.
+
+=== Active
+
+Implementation or substantive investigation is underway.
+
+=== In validation
+
+The change is being reviewed, tested, simulated, or otherwise evaluated.
+
+=== Accepted
+
+The organization has accepted the change for integration or delivery.
+
+=== Integrated
+
+The change has entered the primary shared artifact or release branch.
+
+=== Deployed
+
+Artifacts containing the change have reached at least one target environment.
+
+=== Released
+
+The intended population can experience the change.
+
+=== Operating
+
+The change is active and outcome observation is underway.
+
+=== Completed
+
+The declared completion condition has been met and no further active lifecycle work is expected.
+
+=== Reverted
+
+The effect was intentionally removed.
+
+=== Abandoned
+
+The work stopped before acceptance or release.
+
+=== Superseded
+
+A later Engineering Change replaced the original intent or implementation.
+
+An Engineering Change may revisit earlier states. State transitions should be derived from events, and both current state and transition history should be retained.
+
+== State transition rules
+
+Example transition rules:
+
+[source,text]
+----
+PROPOSED -> ACTIVE
+ACTIVE -> IN_VALIDATION
+IN_VALIDATION -> ACTIVE
+IN_VALIDATION -> ACCEPTED
+ACCEPTED -> INTEGRATED
+INTEGRATED -> DEPLOYED
+DEPLOYED -> RELEASED
+RELEASED -> OPERATING
+OPERATING -> COMPLETED
+ANY_NONTERMINAL -> ABANDONED
+DEPLOYED|RELEASED|OPERATING|COMPLETED -> REVERTED
+ANY -> SUPERSEDED
+----
+
+Organizations should configure local mappings rather than modify the canonical semantics casually.
+
+== Identity strategy
+
+=== Explicit identifiers
+
+The preferred approach is to propagate an Engineering Change identifier through:
+
+* planning records;
+* branch or change metadata;
+* commits;
+* pull requests;
+* CI runs;
+* build provenance;
+* deployment manifests;
+* feature flags;
+* incident and decision records.
+
+Explicit identifiers reduce reconstruction ambiguity but should not be mandatory for every legacy or emergency workflow.
+
+=== Deterministic reconstruction
+
+Use exact relationships such as:
+
+* commit contained in pull request;
+* build references commit SHA;
+* deployment references image digest;
+* release references deployment;
+* incident references deployment identifier.
+
+=== Probabilistic reconstruction
+
+When exact links are absent, use evidence such as:
+
+* temporal proximity;
+* shared actor;
+* textual references;
+* branch naming;
+* repository and service ownership;
+* artifact similarity;
+* deployment composition;
+* dependency graph;
+* issue and commit semantics.
+
+Probabilistic links require confidence and explanation.
+
+== Link confidence
+
+A link should include:
+
+[source,yaml]
+----
+relationship: INCLUDES_CHANGE
+source_entity_id: deployment_8842
+target_entity_id: ec_01J...
+confidence: 0.91
+confidence_band: high
+method: artifact_digest_and_commit_graph
+rule_version: 3.2.1
+evidence:
+  - image_digest: sha256:...
+  - build_id: build_771
+  - commit_sha: 93ab...
+created_at: 2026-07-18T16:33:10Z
+----
+
+Suggested confidence bands:
+
+* `confirmed`: explicit, cryptographically or transactionally grounded;
+* `high`: strong deterministic evidence with negligible ambiguity;
+* `medium`: multiple consistent signals but plausible alternatives;
+* `low`: weak inference suitable only for exploration;
+* `rejected`: reviewed and determined incorrect.
+
+Published metrics should define which bands are eligible.
+
+== Provenance model
+
+Every canonical record should preserve:
+
+* source system;
+* source tenant or instance;
+* native entity identifier;
+* source event identifier;
+* source event time;
+* ingestion time;
+* schema version;
+* transformation version;
+* identity-resolution version;
+* reconstruction rule or model version;
+* confidence;
+* correction history;
+* retention classification.
+
+Derived metrics should remain traceable to these records.
+
+== Temporal ownership
+
+Ownership must be represented as a time interval.
+
+[source,yaml]
+----
+owner_team_id: team_checkout
+owned_entity_type: service
+owned_entity_id: payment_authorizer
+valid_from: 2026-01-10T00:00:00Z
+valid_to: 2026-09-30T23:59:59Z
+source: service_catalog
+confidence: confirmed
+----
+
+Using current ownership to interpret historical events can misattribute work, incidents, and outcomes.
+
+== Work decomposition and aggregation
+
+Engineering Changes may form a hierarchy or graph.
+
+Useful relationships include:
+
+* parent and child;
+* split from;
+* merged into;
+* depends on;
+* blocks;
+* enables;
+* corrective follow-up;
+* experiment variant of;
+* rollout wave of.
+
+The model should preserve atomic changes while allowing aggregation into initiatives, programs, releases, and portfolios.
+
+== Change boundaries
+
+A boundary should reflect shared intent and consequence, not merely implementation convenience.
+
+Possible indicators of one Engineering Change include:
+
+* one coherent intended outcome;
+* common acceptance decision;
+* shared rollout and rollback unit;
+* common exposure population;
+* unified outcome observation.
+
+A large initiative should generally contain multiple Engineering Changes rather than becoming one indefinitely open record.
+
+== AI and agent provenance
+
+For machine participants, record:
+
+* provider;
+* model family and version;
+* deployment or endpoint identifier;
+* system configuration;
+* prompt or instruction version;
+* retrieval sources and context policy;
+* tool permissions;
+* initiating actor;
+* delegation chain;
+* sampling and inference parameters where relevant;
+* response or action identifier;
+* safety and policy configuration;
+* cost and latency.
+
+Sensitive prompt content may require restricted storage or hashing, but configuration identity should remain auditable.
+
+== Correction model
+
+Canonical evidence must support correction without erasing history.
+
+A correction should record:
+
+* corrected entity or relationship;
+* previous value;
+* new value;
+* reason;
+* correcting actor;
+* timestamp;
+* evidence;
+* downstream metrics requiring recomputation.
+
+Corrections should create a new version or event rather than silently mutate historical facts.
+
+== Deletion and retention
+
+Deletion policy should distinguish:
+
+* immutable operational evidence required for audit;
+* sensitive detailed telemetry;
+* derived aggregates;
+* model inputs;
+* generated explanations;
+* employment-related records;
+* experiment data.
+
+Where hard deletion is required, lineage should indicate that source evidence was removed under policy without retaining prohibited content.
+
+== Canonical event envelope
+
+A minimal event envelope may use the following structure:
+
+[source,json]
+----
+{
+  "event_id": "evt_01J...",
+  "event_type": "review.finding.created",
+  "event_version": "1.1.0",
+  "occurred_at": "2026-07-18T12:44:08.217Z",
+  "observed_at": "2026-07-18T12:44:09.004Z",
+  "source": {
+    "system": "code_review",
+    "instance": "enterprise-main",
+    "native_event_id": "884391"
+  },
+  "actor": {
+    "actor_id": "agent_security_review_v4",
+    "actor_type": "ai_agent"
+  },
+  "engineering_change_id": "ec_01J...",
+  "subject": {
+    "entity_type": "finding",
+    "entity_id": "finding_9201"
+  },
+  "payload": {},
+  "provenance": {
+    "connector_version": "2.4.0",
+    "schema_mapping_version": "1.8.2"
+  },
+  "classification": "internal_restricted"
+}
+----
+
+Payload schemas should be registered and versioned separately.
+
+== Data quality dimensions
+
+The reference model should report:
+
+=== Completeness
+
+Are expected source events and entities present?
+
+=== Timeliness
+
+How long after occurrence did evidence become available?
+
+=== Uniqueness
+
+Are duplicate events or entities controlled?
+
+=== Consistency
+
+Do related sources agree?
+
+=== Validity
+
+Do values satisfy semantic and schema rules?
+
+=== Linkage coverage
+
+What fraction of relevant artifacts and outcomes connect to an Engineering Change?
+
+=== Linkage confidence
+
+How strong are those relationships?
+
+=== Temporal correctness
+
+Were identities and ownership resolved for the correct time?
+
+=== Provenance completeness
+
+Can each derived result be traced to source evidence and transformation versions?
+
+== Minimum viable implementation
+
+A practical first implementation should support:
+
+. canonical actors, teams, repositories, and services;
+. immutable source events;
+. Engineering Change identifiers;
+. commit and pull-request linkage;
+. CI and build linkage;
+. deployment linkage;
+. basic lifecycle state;
+. linkage confidence and provenance;
+. correction workflow;
+. metric lineage.
+
+Intent, outcomes, incidents, experiments, AI provenance, and business linkage can then be added according to decision need.
+
+== Storage patterns
+
+No single storage technology is required.
+
+A common architecture uses:
+
+* object storage for immutable raw events;
+* a stream or log for canonical events;
+* relational or lakehouse tables for governed facts;
+* a graph projection for relationships and dependency traversal;
+* a search index for evidence discovery;
+* a metric store for versioned aggregates;
+* a registry for schemas, models, experiments, and decisions.
+
+The semantic contract is more important than choosing one universal database.
+
+== Query examples
+
+=== Changes released without confirmed validation
+
+[source,sql]
+----
+SELECT ec.engineering_change_id,
+       ec.title,
+       r.released_at
+FROM engineering_change ec
+JOIN release_change r
+  ON r.engineering_change_id = ec.engineering_change_id
+LEFT JOIN validation_summary v
+  ON v.engineering_change_id = ec.engineering_change_id
+WHERE r.released_at >= CURRENT_DATE - INTERVAL '30' DAY
+  AND COALESCE(v.confirmed_required_checks, 0) = 0;
+----
+
+=== Human validation burden by AI model version
+
+[source,sql]
+----
+SELECT ai.model_version,
+       COUNT(DISTINCT ai.engineering_change_id) AS changes,
+       SUM(rv.human_validation_minutes) AS validation_minutes,
+       AVG(rv.human_validation_minutes) AS avg_minutes_per_change
+FROM ai_participation ai
+JOIN review_effort rv
+  ON rv.engineering_change_id = ai.engineering_change_id
+GROUP BY ai.model_version;
+----
+
+=== Deployment linkage quality
+
+[source,sql]
+----
+SELECT confidence_band,
+       COUNT(*) AS links,
+       COUNT(DISTINCT deployment_id) AS deployments,
+       COUNT(DISTINCT engineering_change_id) AS changes
+FROM deployment_change_link
+WHERE deployed_at >= CURRENT_DATE - INTERVAL '7' DAY
+GROUP BY confidence_band;
+----
+
+== Conformance levels
+
+=== Level 1: identifiable
+
+Engineering Changes have durable identifiers and basic artifact linkage.
+
+=== Level 2: traceable
+
+CI, builds, deployments, releases, and provenance are connected.
+
+=== Level 3: measurable
+
+Governed lifecycle, effort, quality, complexity, and cost metrics are supported.
+
+=== Level 4: experimental
+
+Assignment, exposure, outcomes, and decision records enable causal evaluation.
+
+=== Level 5: adaptive
+
+Agent provenance, policy actions, continuous evaluation, and closed-loop learning are represented.
+
+Conformance should be evaluated per domain rather than claimed once for the entire enterprise.
+
+== Reference-model anti-patterns
+
+=== Pull request as the universal change
+
+This excludes direct commits, configuration updates, data changes, infrastructure actions, and multi-repository outcomes.
+
+=== Mutable current-state tables only
+
+These make historical reconstruction and audit unreliable.
+
+=== One change, one deployment
+
+Real delivery systems are many-to-many.
+
+=== Current ownership applied historically
+
+This creates systematic attribution errors.
+
+=== Inferred links without confidence
+
+Consumers cannot judge whether metrics are trustworthy.
+
+=== Machine actors collapsed into bot
+
+This prevents evaluation of model, agent, configuration, and policy differences.
+
+=== Outcome equals deployment success
+
+A technically successful deployment may still fail to produce the intended outcome.
+
+=== Silent correction
+
+Historical evidence changes without traceability.
+
+== Reference-model checklist
+
+. Use a durable, vendor-independent Engineering Change identifier.
+. Preserve immutable source evidence and canonical event provenance.
+. Represent human, automation, AI, and agent actors distinctly.
+. Model artifacts, activities, validations, deployments, releases, and outcomes separately.
+. Support many-to-many relationships.
+. Record event time, ingestion time, and temporal ownership.
+. Attach confidence and method to inferred links.
+. Keep observed evidence distinct from model inference.
+. Version schemas, transformations, metrics, and reconstruction logic.
+. Support corrections without erasing history.
+. Publish linkage coverage and quality with every dependent metric.
+. Expand the model according to consequential decisions, not abstract completeness.
