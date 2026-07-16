@@ -6,6 +6,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="$ROOT/build"
 WORK_DIR="$ROOT/.build-src"
 EDITION_STAGING_DIR="$BUILD_DIR/.edition-staging"
+DIAGRAM_STAGING_DIR="$BUILD_DIR/figures/.mermaid-staging"
+DIAGRAM_FINAL_DIR="$BUILD_DIR/figures/mermaid"
 BOOK="$ROOT/book.adoc"
 PDF_THEME="$ROOT/themes/engineering-intelligence-theme.yml"
 HTML_STYLESHEET="$ROOT/styles/engineering-intelligence.css"
@@ -78,8 +80,8 @@ initialize_publication_identity() {
 
 initialize_publication_identity
 
-mkdir -p "$BUILD_DIR"
-rm -rf "$WORK_DIR" "$EDITION_STAGING_DIR"
+mkdir -p "$BUILD_DIR/figures"
+rm -rf "$WORK_DIR" "$EDITION_STAGING_DIR" "$DIAGRAM_STAGING_DIR"
 mkdir -p "$WORK_DIR"
 if [[ "$MODE" != "diagrams" ]]; then
   mkdir -p "$EDITION_STAGING_DIR"
@@ -91,17 +93,14 @@ validate_sources() {
 
 render_diagrams() {
   local source output
-  local final_dir="$BUILD_DIR/figures/mermaid"
-  local staging_dir="$BUILD_DIR/figures/.mermaid-staging"
 
-  rm -rf "$staging_dir"
-  mkdir -p "$staging_dir"
+  rm -rf "$DIAGRAM_STAGING_DIR"
+  mkdir -p "$DIAGRAM_STAGING_DIR"
 
-  # Render the complete set into a staging directory. The published directory
-  # is replaced only after every Mermaid source succeeds, preventing partial or
-  # stale figure sets when a source is removed, renamed, or fails to render.
+  # Render the complete set into staging. Publication modes do not expose these
+  # figures until every requested edition and the manifest have also succeeded.
   while IFS= read -r -d '' source; do
-    output="$staging_dir/$(basename "${source%.mmd}.svg")"
+    output="$DIAGRAM_STAGING_DIR/$(basename "${source%.mmd}.svg")"
     npx --no-install mmdc \
       --input "$source" \
       --output "$output" \
@@ -119,9 +118,11 @@ for path in sorted(source_dir.glob("*.mmd")):
     sys.stdout.buffer.write(b"\0")
 PY
   )
+}
 
-  rm -rf "$final_dir"
-  mv "$staging_dir" "$final_dir"
+publish_diagrams() {
+  rm -rf "$DIAGRAM_FINAL_DIR"
+  mv "$DIAGRAM_STAGING_DIR" "$DIAGRAM_FINAL_DIR"
 }
 
 prepare_sources() {
@@ -140,8 +141,8 @@ prepare_sources() {
 
   mkdir -p "$WORK_DIR/figures/mermaid"
 
-  if compgen -G "$BUILD_DIR/figures/mermaid/*.svg" >/dev/null; then
-    cp "$BUILD_DIR"/figures/mermaid/*.svg "$WORK_DIR/figures/mermaid/"
+  if compgen -G "$DIAGRAM_STAGING_DIR/*.svg" >/dev/null; then
+    cp "$DIAGRAM_STAGING_DIR"/*.svg "$WORK_DIR/figures/mermaid/"
   fi
 
   python3 - "$WORK_DIR" <<'PY'
@@ -183,7 +184,7 @@ build_pdf() {
 }
 
 write_manifest() {
-  python3 - "$EDITION_STAGING_DIR" "$BUILD_DIR" "$MODE" <<'PY'
+  python3 - "$EDITION_STAGING_DIR" "$DIAGRAM_STAGING_DIR" "$MODE" <<'PY'
 from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
@@ -192,7 +193,7 @@ import os
 import sys
 
 editions = Path(sys.argv[1])
-build = Path(sys.argv[2])
+diagrams = Path(sys.argv[2])
 build_mode = sys.argv[3]
 
 
@@ -228,7 +229,7 @@ manifest = {
     "source_date_epoch": epoch,
     "source_commit": commit,
     "files": files,
-    "diagram_count": len(list((build / "figures" / "mermaid").glob("*.svg"))),
+    "diagram_count": len(list(diagrams.glob("*.svg"))),
 }
 (editions / "manifest.json").write_text(
     json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
@@ -236,12 +237,14 @@ manifest = {
 PY
 }
 
-publish_editions() {
+publish_publication() {
   local name
 
-  # All rendering and manifest generation must succeed before any prior edition
-  # is replaced. The manifest moves last so it never advertises a partially
-  # published artifact set.
+  # Rendering, edition generation, and manifest generation all complete before
+  # the public artifact set is touched. The manifest is moved last so it never
+  # advertises a figure or edition set that has not yet been installed.
+  publish_diagrams
+
   for name in engineering-intelligence.html engineering-intelligence.pdf; do
     if [[ -f "$EDITION_STAGING_DIR/$name" ]]; then
       mv -f "$EDITION_STAGING_DIR/$name" "$BUILD_DIR/$name"
@@ -262,24 +265,25 @@ case "$MODE" in
     build_html
     build_pdf
     write_manifest
-    publish_editions
+    publish_publication
     ;;
   diagrams)
     render_diagrams
+    publish_diagrams
     ;;
   html)
     render_diagrams
     prepare_sources
     build_html
     write_manifest
-    publish_editions
+    publish_publication
     ;;
   pdf)
     render_diagrams
     prepare_sources
     build_pdf
     write_manifest
-    publish_editions
+    publish_publication
     ;;
   all)
     render_diagrams
@@ -287,7 +291,7 @@ case "$MODE" in
     build_html
     build_pdf
     write_manifest
-    publish_editions
+    publish_publication
     ;;
 esac
 
