@@ -1,0 +1,20 @@
+flowchart LR
+    A[Decision and credible alternatives] --> B[Define counterfactual, horizon, and population]
+    B --> C[Estimate incremental costs and benefits]
+    C --> D[Model bottlenecks, risk, adoption, and realization]
+    D --> E[Scenario, sensitivity, break-even, and uncertainty analysis]
+    E --> F{Approve?}
+    F -->|No| G[Reject, defer, or redesign]
+    G --> A
+    F -->|Yes| H[Implement with value-realization plan]
+    H --> I[Measure adoption, cost, outcomes, and released capacity]
+    I --> J[Realization ledger and post-implementation review]
+    J --> K{Continue?}
+    K -->|Expand| H
+    K -->|Modify or renegotiate| A
+    K -->|Retire or replace| L[Decommission and preserve evidence]
+
+    Q[Evidence strength, provenance, metric versions, and decision record] -. applies throughout .-> B
+    Q -. applies throughout .-> E
+    Q -. applies throughout .-> I
+    Q -. applies throughout .-> L
