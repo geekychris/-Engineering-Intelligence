@@ -55,6 +55,8 @@ include::chapters/08-enterprise-instrumentation-source-notes.adoc[]
 
 include::chapters/09-complexity-and-blast-radius.adoc[]
 
+include::chapters/09-complexity-and-blast-radius-source-notes.adoc[]
+
 include::chapters/10-engineering-intelligence-platform.adoc[]
 
 include::chapters/11-engineering-metrics-catalogue.adoc[]
