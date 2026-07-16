@@ -79,6 +79,8 @@ include::chapters/14-portfolio-and-executive-decision-making-source-notes.adoc[]
 
 include::chapters/15-implementation-and-rollout.adoc[]
 
+include::chapters/15-implementation-and-rollout-source-notes.adoc[]
+
 include::chapters/16-the-science-of-engineering-intelligence.adoc[]
 
 include::chapters/17-the-learning-engineering-organization.adoc[]
