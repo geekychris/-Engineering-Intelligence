@@ -1,0 +1,379 @@
+== Research foundations and source notes
+
+The portfolio and executive decision-making framework in this chapter draws on cost-benefit analysis, capital allocation, real-options reasoning, productivity economics, decision analysis, causal inference, and organizational learning. It extends those foundations into an Engineering Intelligence operating model for prioritizing investments under uncertainty.
+
+=== Cost-benefit analysis
+
+The chapter’s economic framing is grounded in standard cost-benefit analysis. See <<boardman2018>>.
+
+This supports explicit treatment of:
+
+* implementation and operating cost;
+* avoided cost;
+* released capacity;
+* quality and risk effects;
+* timing of benefits;
+* discounting;
+* uncertainty;
+* distribution of costs and benefits;
+* opportunity cost.
+
+The relevant question is not whether an initiative produces activity or local improvement, but whether it creates net value relative to credible alternatives.
+
+=== Opportunity cost
+
+Every engineering investment consumes scarce capital, specialist attention, organizational capacity, and calendar time.
+
+The chapter therefore treats the cost of an initiative as including the value of the best feasible alternative that cannot be pursued simultaneously.
+
+Examples include:
+
+* platform work displacing a product initiative;
+* migration work delaying reliability improvements;
+* AI-tool integration consuming security and procurement capacity;
+* specialist review assigned to low-risk changes rather than high-risk work.
+
+Opportunity cost is often omitted from engineering business cases because it is not recorded in a purchase order. It remains economically real.
+
+=== Net present value
+
+Benefits and costs occurring at different times should not be treated as equivalent.
+
+The chapter uses discounted cash-flow logic to compare future costs and benefits in present-value terms.
+
+A simplified net-present-value expression is:
+
+[stem]
+++++
+NPV = \sum_{t=0}^{T} \frac{Benefits_t - Costs_t}{(1+r)^t}
+++++
+
+where stem:[r] is the selected discount rate.
+
+The choice of horizon and discount rate should be visible because long-lived architecture, capability, and risk investments can appear unattractive under short horizons.
+
+=== Real options and staged commitment
+
+Real-options reasoning treats flexibility as valuable under uncertainty.
+
+An organization may create value by preserving the option to expand, defer, switch, stop, or reverse an investment after learning more.
+
+The chapter applies this through:
+
+* pilots;
+* phased rollout;
+* reversible architecture;
+* vendor exit paths;
+* shadow evaluation;
+* modular contracts;
+* stop conditions;
+* staged funding.
+
+The option value is not identical to expected cash flow. It reflects the value of learning before making an irreversible commitment.
+
+This treatment is an Engineering Intelligence-specific synthesis of real-options principles and reliable-change practices.
+
+=== Productivity realization
+
+Information-technology investments often require complementary organizational changes before productivity benefits appear. See <<brynjolfsson1993>> and <<brynjolfsson2017>>.
+
+This supports the chapter’s distinction among:
+
+* technical capability delivered;
+* adoption;
+* workflow change;
+* capacity released;
+* capacity redeployed;
+* financial or customer value realized.
+
+A tool can be deployed successfully without creating measurable enterprise value.
+
+=== Released capacity versus savings
+
+The chapter distinguishes released engineering time from realized cash savings.
+
+Released capacity may produce value when it is used for:
+
+* additional customer outcomes;
+* reliability work;
+* reduced backlog;
+* faster learning;
+* reduced contractor or hiring demand;
+* avoided overtime;
+* lower operational risk.
+
+It should not be reported automatically as payroll savings when staffing cost remains unchanged.
+
+This distinction is an original Engineering Intelligence operating rule grounded in cost-benefit principles from <<boardman2018>>.
+
+=== Risk-adjusted value
+
+Expected value combines possible outcomes with their probabilities, but executives should also examine tail consequence, reversibility, and uncertainty.
+
+A risk-adjusted decision should consider:
+
+* expected benefit;
+* probability of failure;
+* downside magnitude;
+* detectability;
+* reversibility;
+* correlated risk;
+* strategic dependence;
+* uncertainty in the estimate itself.
+
+A high expected return may still be inappropriate when downside is catastrophic and recovery is weak.
+
+=== Portfolio diversification
+
+Engineering portfolios can become concentrated by vendor, platform, architecture, skill, or model provider.
+
+Diversification can reduce correlated failure and preserve strategic flexibility, but excessive diversity increases integration and operating cost.
+
+The chapter therefore treats diversification as a tradeoff among:
+
+* correlated operational risk;
+* vendor concentration;
+* model monoculture;
+* skill concentration;
+* platform complexity;
+* purchasing leverage;
+* exit cost.
+
+The optimal portfolio is not necessarily the one with the fewest technologies or vendors.
+
+=== Decision analysis under uncertainty
+
+Executive decisions frequently involve incomplete evidence and multiple plausible futures.
+
+The chapter uses:
+
+* scenario analysis;
+* sensitivity analysis;
+* break-even analysis;
+* expected-value ranges;
+* confidence intervals;
+* decision thresholds;
+* value-of-information analysis.
+
+The purpose is not to manufacture precision. It is to expose which assumptions drive the decision and where additional evidence could change the choice.
+
+=== Value of information
+
+Additional research or experimentation is valuable when it has a meaningful chance of changing a consequential decision.
+
+The expected value of information depends on:
+
+* current uncertainty;
+* cost of obtaining evidence;
+* reversibility of the decision;
+* consequence of choosing incorrectly;
+* time available;
+* decision sensitivity.
+
+This supports investing in better evidence for large, irreversible, high-risk decisions while avoiding endless analysis for small reversible choices.
+
+=== Causal evidence
+
+A portfolio decision should distinguish correlation, prediction, and causal effect.
+
+The methodological foundations are described in <<rubin1974>>, <<holland1986>>, <<pearl2009>>, <<imbens2015>>, and <<hernan2020>>.
+
+The chapter therefore labels evidence according to causal status and avoids treating a metric improvement after rollout as proof that the intervention caused it.
+
+Randomized or quasi-experimental evidence receives greater weight when the decision depends on attributable impact.
+
+=== Evidence maturity
+
+Evidence varies in maturity.
+
+The chapter distinguishes:
+
+* hypothesis;
+* benchmark evidence;
+* pilot evidence;
+* controlled causal evidence;
+* replicated production evidence;
+* realized financial or operational outcome.
+
+This maturity ladder is an original Engineering Intelligence construct.
+
+It prevents early benchmark or vendor evidence from being presented as proven enterprise value.
+
+=== Delivery and capability outcomes
+
+Portfolio decisions should consider system-level delivery performance and developer experience.
+
+Relevant foundations include <<forsgren2018>>, <<forsgren2021-space>>, and <<noda2023-devex>>.
+
+The chapter therefore includes outcomes related to:
+
+* delivery responsiveness;
+* reliability;
+* quality;
+* feedback loops;
+* cognitive load;
+* flow;
+* collaboration;
+* practitioner experience.
+
+These measures should remain multidimensional rather than collapsed into a single productivity index.
+
+=== Architecture as capital
+
+Architecture can create durable capability by reducing the recurring cost and risk of future change.
+
+The chapter treats architecture investment as a form of productive capital whose return may appear through:
+
+* lower coordination cost;
+* smaller validation surface;
+* reduced blast radius;
+* faster deployment;
+* easier substitution;
+* improved resilience;
+* greater strategic optionality.
+
+The modularity foundation is provided by <<parnas1972>>, while socio-technical implications are informed by <<conway1968>>, <<cataldo2006>>, and <<skelton2019>>.
+
+Architectural benefit should be evaluated longitudinally through Engineering Change outcomes rather than assumed from design intent.
+
+=== Reliability and resilience investment
+
+Reliability work often creates value by reducing expected loss and preserving customer trust rather than by increasing visible feature output.
+
+SRE and resilience foundations are described in <<beyer2016>>, <<beyer2018>>, and <<woods2015>>.
+
+Portfolio evaluation should therefore include:
+
+* expected incident loss;
+* recovery capability;
+* tail-risk reduction;
+* detection and rollback improvement;
+* reduced operational toil;
+* graceful degradation;
+* preserved adaptive capacity.
+
+A low incident count does not prove that resilience investment lacks value.
+
+=== AI investment decisions
+
+AI investment should include more than license or inference cost.
+
+The chapter includes:
+
+* integration;
+* security and governance;
+* retrieval and indexing;
+* human validation;
+* false-positive handling;
+* rework;
+* switching and exit;
+* model drift;
+* skill and dependency effects.
+
+Empirical foundations include <<peng2023>>, <<vaithilingam2022>>, <<barke2023>>, and <<jimenez2024>>, while AI risk governance is informed by <<nist2023-airmf>> and <<nist2024-genai>>.
+
+The decision should be based on quality-adjusted net outcomes in the organization’s own workflow.
+
+=== Portfolio comparability
+
+Initiatives differ in scale, maturity, risk, and evidence quality.
+
+The chapter therefore recommends a common decision record rather than a universal score.
+
+Comparable fields include:
+
+* decision objective;
+* baseline;
+* cost range;
+* benefit mechanism;
+* evidence maturity;
+* uncertainty;
+* risk and reversibility;
+* dependencies;
+* time to value;
+* owner;
+* follow-up date.
+
+The common structure improves comparison without pretending that all investments can be reduced credibly to one number.
+
+=== Sensitivity and break-even analysis
+
+Business cases often depend on uncertain assumptions such as adoption, time saved, defect reduction, or value per unit of capacity.
+
+The chapter therefore requires sensitivity analysis and break-even thresholds.
+
+For example:
+
+* What adoption level makes the investment worthwhile?
+* How much validation effort can be added before an AI tool loses value?
+* What incident reduction justifies a reliability investment?
+* How long can a migration take before its NPV becomes negative?
+
+This makes assumptions testable and supports post-decision learning.
+
+=== Decision records
+
+A high-consequence decision should preserve:
+
+* alternatives considered;
+* evidence and versions;
+* assumptions;
+* uncertainty;
+* expected mechanisms;
+* economic model;
+* risks and guardrails;
+* decision authority;
+* review date;
+* eventual outcome.
+
+The provenance foundation is provided by <<moreau2013>>.
+
+Decision records create institutional memory and allow later evaluation of both outcomes and reasoning quality.
+
+=== Organizational learning
+
+Argyris and Schön’s distinction between single-loop and double-loop learning supports reviewing not only whether an initiative succeeded but whether the organization’s assumptions and decision process were sound. See <<argyris1978>>.
+
+Senge’s systems-thinking perspective supports learning across interconnected technical and organizational effects. See <<senge1990>>.
+
+The chapter therefore recommends post-investment review of:
+
+* realized outcomes;
+* invalid assumptions;
+* unanticipated consequences;
+* evidence gaps;
+* decision-process quality;
+* reusable lessons.
+
+=== Governance and incentive effects
+
+Executive scorecards can distort behavior when portfolio measures become targets.
+
+Campbell’s Law and Goodhart’s Law provide the relevant foundation. See <<campbell1979>> and <<goodhart1984>>.
+
+The chapter therefore recommends:
+
+* metric bundles;
+* narrative context;
+* uncertainty;
+* independent guardrails;
+* periodic retirement;
+* prohibition of unsupported individual ranking;
+* explicit review of gaming surfaces.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* portfolio decisions organized around Engineering Change outcomes;
+* explicit separation of released capacity, avoided cost, cash savings, modeled value, and realized value;
+* an evidence-maturity ladder from hypothesis to realized outcome;
+* value-realization plans linked to investment decisions;
+* attention-adjusted and quality-adjusted economic cases;
+* architecture and reversibility treated as strategic option value;
+* portfolio concentration analysis for vendors, models, platforms, and skills;
+* decision records connected to metrics, experiments, models, and evidence;
+* post-investment review of both outcomes and decision reasoning;
+* executive decision products that preserve uncertainty rather than hide it.
+
+These constructs should be evaluated through realized outcomes, forecast accuracy, decision reversals, portfolio resilience, and the organization’s ability to learn from both successful and unsuccessful investments.
