@@ -46,6 +46,23 @@ if [[ "$MODE" == "pdf" || "$MODE" == "all" || "$MODE" == "validate" ]]; then
   [[ -f "$PDF_THEME" ]] || fail "PDF theme was not found"
 fi
 
+initialize_reproducible_time() {
+  if [[ -n "${SOURCE_DATE_EPOCH:-}" ]]; then
+    export SOURCE_DATE_EPOCH
+    return
+  fi
+
+  if command -v git >/dev/null 2>&1 && git -C "$ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    SOURCE_DATE_EPOCH="$(git -C "$ROOT" log -1 --format=%ct)"
+  else
+    SOURCE_DATE_EPOCH="0"
+  fi
+
+  export SOURCE_DATE_EPOCH
+}
+
+initialize_reproducible_time
+
 mkdir -p "$BUILD_DIR"
 rm -rf "$WORK_DIR"
 mkdir -p "$WORK_DIR"
@@ -185,6 +202,13 @@ try:
 except Exception:
     commit = os.environ.get("GITHUB_SHA", "unknown")
 
+try:
+    epoch = int(os.environ["SOURCE_DATE_EPOCH"])
+except (KeyError, ValueError):
+    epoch = 0
+
+publication_time = datetime.fromtimestamp(epoch, timezone.utc).isoformat()
+
 files = []
 for name in ("engineering-intelligence.html", "engineering-intelligence.pdf"):
     path = build / name
@@ -199,13 +223,14 @@ for name in ("engineering-intelligence.html", "engineering-intelligence.pdf"):
 
 manifest = {
     "title": "Engineering Intelligence",
-    "generated_at": datetime.now(timezone.utc).isoformat(),
+    "publication_time": publication_time,
+    "source_date_epoch": epoch,
     "source_commit": commit,
     "files": files,
     "diagram_count": len(list((build / "figures" / "mermaid").glob("*.svg"))),
 }
 (build / "manifest.json").write_text(
-    json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+    json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
 )
 PY
 }
