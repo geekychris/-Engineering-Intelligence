@@ -45,38 +45,27 @@ validate_sources() {
 }
 
 clean_edition_outputs() {
-  case "$MODE" in
-    html)
-      rm -f \
-        "$BUILD_DIR/engineering-intelligence.html" \
-        "$BUILD_DIR/engineering-intelligence.pdf" \
-        "$BUILD_DIR/manifest.json"
-      ;;
-    pdf)
-      rm -f \
-        "$BUILD_DIR/engineering-intelligence.html" \
-        "$BUILD_DIR/engineering-intelligence.pdf" \
-        "$BUILD_DIR/manifest.json"
-      ;;
-    all|validate)
-      rm -f \
-        "$BUILD_DIR/engineering-intelligence.html" \
-        "$BUILD_DIR/engineering-intelligence.pdf" \
-        "$BUILD_DIR/manifest.json"
-      ;;
-    diagrams)
-      ;;
-  esac
+  if [[ "$MODE" != "diagrams" ]]; then
+    rm -f \
+      "$BUILD_DIR/engineering-intelligence.html" \
+      "$BUILD_DIR/engineering-intelligence.pdf" \
+      "$BUILD_DIR/manifest.json"
+  fi
 }
 
 render_diagrams() {
   local source output
-  mkdir -p "$BUILD_DIR/figures/mermaid"
+  local final_dir="$BUILD_DIR/figures/mermaid"
+  local staging_dir="$BUILD_DIR/figures/.mermaid-staging"
 
-  # Python provides deterministic null-delimited sorting on both macOS and
-  # Linux, avoiding the GNU-only `sort -z` dependency.
+  rm -rf "$staging_dir"
+  mkdir -p "$staging_dir"
+
+  # Render the complete set into a staging directory. The published directory
+  # is replaced only after every Mermaid source succeeds, preventing partial or
+  # stale figure sets when a source is removed, renamed, or fails to render.
   while IFS= read -r -d '' source; do
-    output="$BUILD_DIR/figures/mermaid/$(basename "${source%.mmd}.svg")"
+    output="$staging_dir/$(basename "${source%.mmd}.svg")"
     npx --no-install mmdc \
       --input "$source" \
       --output "$output" \
@@ -94,6 +83,9 @@ for path in sorted(source_dir.glob("*.mmd")):
     sys.stdout.buffer.write(b"\0")
 PY
   )
+
+  rm -rf "$final_dir"
+  mv "$staging_dir" "$final_dir"
 }
 
 prepare_sources() {
