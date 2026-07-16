@@ -1,0 +1,19 @@
+flowchart LR
+    subgraph MONO[Monorepo representation]
+      MPR[One pull request]
+      MPR --> MS1[Service A]
+      MPR --> MS2[Service B]
+      MPR --> ML[Shared library]
+      MPR --> MI[Infrastructure]
+    end
+
+    subgraph POLY[Polyrepo representation]
+      EC[One Engineering Change]
+      EC --> PR1[PR: Service A]
+      EC --> PR2[PR: Service B]
+      EC --> PR3[PR: Shared library]
+      EC --> PR4[PR: Infrastructure]
+    end
+
+    INTENT[Same engineering intent] --> MONO
+    INTENT --> POLY
