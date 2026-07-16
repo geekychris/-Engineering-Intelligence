@@ -1,0 +1,275 @@
+== Research foundations and source notes
+
+The future-facing framework in this chapter draws on AI risk management, autonomous-system governance, resilience engineering, organizational learning, software-delivery research, and cumulative scientific evidence. Because many claims concern emerging capabilities and organizational forms, this section distinguishes established foundations from forward-looking Engineering Intelligence synthesis.
+
+=== Established foundations versus forecasts
+
+The chapter’s predictions should not be read as settled facts.
+
+Established evidence supports several broad directions:
+
+* software delivery is a socio-technical capability rather than an individual-output problem;
+* architecture, workflow, culture, and management practices interact;
+* AI assistance can affect bounded task performance and human workflow;
+* automation creates verification, trust, governance, and failure-mode concerns;
+* organizational benefits often require complementary process and capability change;
+* reliable operation requires observability, bounded change, and recovery capability.
+
+Relevant foundations include <<forsgren2018>>, <<forsgren2021-space>>, <<noda2023-devex>>, <<peng2023>>, <<vaithilingam2022>>, <<barke2023>>, <<beyer2016>>, and <<beyer2018>>.
+
+Claims about future agent autonomy, organizational structure, and labor composition remain hypotheses that require ongoing empirical validation.
+
+=== AI capability and repository-level agents
+
+Repository-level benchmarks such as SWE-bench provide evidence that software agents can perform increasingly complex issue-resolution tasks in existing codebases. See <<jimenez2024>>.
+
+These benchmarks do not establish unrestricted production autonomy.
+
+Future capability assessment must include:
+
+* operational permissions;
+* security and privacy boundaries;
+* side effects;
+* human oversight;
+* cost;
+* reliability across heterogeneous repositories;
+* long-term maintainability;
+* rollback and recovery.
+
+The chapter therefore treats benchmark progress as capability evidence, not as a complete deployment decision.
+
+=== Human–AI collaboration
+
+Empirical studies of coding assistants show that AI changes not only production speed but also comprehension, debugging, expectation, and interaction behavior. See <<peng2023>>, <<vaithilingam2022>>, and <<barke2023>>.
+
+This supports a future in which engineering work is organized around mixed human and machine participation rather than simple substitution.
+
+Relevant future research questions include:
+
+* Which tasks should remain human-led?
+* Which tasks can be delegated safely?
+* How does verification burden evolve as generation quality improves?
+* Which skills strengthen or atrophy?
+* How should apprenticeship and mentoring change?
+* How should accountability be assigned across human and machine actors?
+
+=== AI risk management
+
+The NIST AI Risk Management Framework and its generative-AI profile provide foundations for governing, mapping, measuring, and managing AI risk. See <<nist2023-airmf>> and <<nist2024-genai>>.
+
+Management-system and risk-process standards are represented by <<iso42001>> and <<iso23894>>.
+
+These foundations support future requirements for:
+
+* model and prompt registries;
+* treatment-version control;
+* bounded authority;
+* continuous evaluation;
+* human accountability;
+* incident response;
+* retirement and rollback;
+* vendor and concentration risk.
+
+The standards guide governance but do not determine the correct autonomy level for a specific organization.
+
+=== Delegation and autonomy
+
+Future engineering systems may involve agents that inspect, modify, test, merge, deploy, and coordinate with other agents.
+
+The chapter therefore models autonomy as a spectrum rather than a binary state.
+
+Authority should be separated into permissions to:
+
+* observe;
+* recommend;
+* modify;
+* execute tests;
+* approve;
+* merge;
+* deploy;
+* alter data or infrastructure;
+* delegate further authority.
+
+The autonomy-tier and delegation-graph concepts are original Engineering Intelligence extensions compatible with provenance in <<moreau2013>> and AI risk-governance principles above.
+
+=== Provenance in machine-rich engineering
+
+W3C PROV provides a foundation for representing entities, activities, agents, generation, use, and derivation. See <<moreau2013>>.
+
+Future Engineering Intelligence systems should preserve:
+
+* human and machine actors;
+* delegation chains;
+* model, prompt, retrieval, and tool versions;
+* evidence used;
+* actions performed;
+* approvals and overrides;
+* downstream outcomes.
+
+Without this provenance, organizations may be unable to explain why an autonomous action occurred or which configuration produced it.
+
+=== Resilience and graceful extensibility
+
+Future engineering organizations will face model failures, vendor outages, correlated errors, adversarial inputs, and novel operating conditions.
+
+Resilience foundations are provided by <<woods2015>>, while high-reliability organizing is discussed in <<weick2007>>.
+
+The chapter therefore emphasizes:
+
+* bounded failure domains;
+* alternate operating paths;
+* human fallback;
+* degraded modes;
+* rapid isolation;
+* preserved expert capability;
+* tested rollback;
+* attention to weak signals.
+
+A system that performs well only under expected conditions is not necessarily resilient.
+
+=== Model monoculture and correlated failure
+
+Concentrating engineering work on one provider, model family, or toolchain can create correlated risk.
+
+Potential effects include:
+
+* repeated insecure patterns;
+* common reasoning blind spots;
+* synchronized service interruption;
+* shared policy or licensing changes;
+* reduced diversity of solutions;
+* strategic switching difficulty.
+
+The model-monoculture concept is a forward-looking Engineering Intelligence synthesis. It should be evaluated through provider-concentration analysis, red-team studies, fallback exercises, and cross-model disagreement testing.
+
+=== Future architecture and organizational structure
+
+Conway’s Law suggests continuing interaction between communication structure and system design. See <<conway1968>>.
+
+Socio-technical congruence and distributed-development research further support studying technical and organizational dependencies together. See <<cataldo2006>> and <<herbsleb2007>>.
+
+As agents participate more deeply, organizations may need to redesign:
+
+* ownership boundaries;
+* review responsibility;
+* escalation paths;
+* platform interfaces;
+* decision rights;
+* evidence and audit systems.
+
+The exact future structure remains an empirical question rather than a predetermined outcome.
+
+=== Cognitive load and skill
+
+Team cognitive load is an important design consideration in <<skelton2019>>.
+
+AI may reduce some local cognitive burden while increasing verification, coordination, or oversight burden elsewhere.
+
+The chapter therefore treats future skill and attention effects as multidimensional:
+
+* cognitive offload;
+* cognitive reload;
+* learning acceleration;
+* skill atrophy;
+* dependency on machine availability;
+* changes in mentoring;
+* redistribution of expert attention.
+
+Longitudinal evidence is required before concluding that AI universally augments or degrades engineering skill.
+
+=== Productivity and complementary change
+
+The productivity effects of new technology may be delayed while organizations redesign processes, roles, and complementary capabilities. See <<brynjolfsson1993>> and <<brynjolfsson2017>>.
+
+This supports the chapter’s claim that future engineering value will depend on more than model capability.
+
+Organizations may need:
+
+* new validation practices;
+* new architecture boundaries;
+* new governance roles;
+* new learning systems;
+* new economic and attention measures;
+* new incident and recovery capabilities.
+
+Capability adoption without complementary redesign may create cost without proportional value.
+
+=== Scientific evaluation of future systems
+
+Future claims should be tested using the causal and reproducibility foundations in <<shadish2002>>, <<imbens2015>>, <<hernan2020>>, <<kohavi2020>>, <<nosek2018>>, <<open-science2015>>, and <<wilkinson2016>>.
+
+This requires:
+
+* preregistered hypotheses where appropriate;
+* versioned treatments;
+* representative populations;
+* quality and safety guardrails;
+* replication across task classes;
+* preservation of negative findings;
+* long observation windows for downstream consequence.
+
+Fast-moving technology increases rather than reduces the need for rigorous evaluation.
+
+=== Governance and professional responsibility
+
+Future systems remain subject to privacy, cybersecurity, and professional obligations.
+
+Relevant foundations include <<nist2020-privacy>>, <<nist2024-csf>>, and <<acm2018-ethics>>.
+
+Organizations should not treat technical feasibility as sufficient justification for:
+
+* covert surveillance;
+* unrestricted autonomous action;
+* opaque employment decisions;
+* indefinite retention of behavioral telemetry;
+* delegation without accountability;
+* removal of meaningful human correction or appeal.
+
+=== Organizational learning
+
+Argyris and Schön’s double-loop learning and Senge’s systems thinking provide the foundation for continuously revising assumptions about future engineering work. See <<argyris1978>> and <<senge1990>>.
+
+The chapter therefore treats future-readiness as the ability to learn safely rather than the ability to predict one fixed destination.
+
+A future-ready organization should be able to:
+
+* test new capabilities;
+* detect harm;
+* reverse decisions;
+* retain contradictory evidence;
+* update governance;
+* preserve institutional knowledge;
+* redeploy human attention deliberately.
+
+=== Scenario planning
+
+The chapter’s future scenarios are not forecasts with assigned certainty.
+
+They are structured possibilities intended to expose decisions under different assumptions about:
+
+* AI capability growth;
+* cost;
+* autonomy;
+* regulation;
+* workforce adaptation;
+* concentration risk;
+* architecture and platform maturity.
+
+Scenario analysis should be paired with signposts that indicate which future is becoming more plausible and what reversible actions preserve strategic options.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or forward-looking extensions proposed by this book:
+
+* machine actors as first-class participants in Engineering Changes;
+* autonomy tiers and delegation graphs for engineering agents;
+* machine-contribution provenance spanning model, prompt, retrieval, tools, policy, and action;
+* model-monoculture and correlated-risk analysis;
+* organizational attention as a strategic resource allocated across humans and machines;
+* long-horizon skill and capability guardrails;
+* evidence-maturity gates for expanding autonomy;
+* future scenarios linked to observable signposts and reversible decisions;
+* continuous scientific evaluation embedded in engineering operations;
+* future-readiness defined as safe learning and adaptation rather than prediction accuracy.
+
+These claims should be treated as a research agenda. Their validity depends on future empirical work, replication, operational evidence, governance outcomes, and the observed consequences of increasingly autonomous engineering systems.
