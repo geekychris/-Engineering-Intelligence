@@ -1,0 +1,304 @@
+== Research foundations and source notes
+
+The governance, ethics, and adoption framework in this chapter draws on measurement validity, indicator corruption, privacy engineering, professional ethics, cybersecurity governance, AI risk management, organizational learning, and socio-technical change. It extends those foundations into a practical operating model for legitimate Engineering Intelligence.
+
+=== Measurement changes behavior
+
+Campbell’s Law describes how indicators used for consequential decision-making become vulnerable to corruption and can distort the process they are intended to monitor. See <<campbell1979>>.
+
+Goodhart’s Law expresses a related principle: when a measure becomes a target, it can cease to function as a useful measure. See <<goodhart1984>>.
+
+These foundations support the chapter’s treatment of behavioral adaptation as part of the measured system rather than as misconduct by default.
+
+Examples include:
+
+* splitting work to improve visible throughput;
+* suppressing incident declaration;
+* optimizing AI acceptance rather than contribution;
+* avoiding difficult work;
+* moving coordination outside instrumented channels;
+* reducing review depth to improve latency.
+
+The governance response is to design incentive-aware metric bundles, guardrails, periodic validity review, and retirement mechanisms.
+
+=== Use-specific validity
+
+Messick’s validity framework emphasizes that validity concerns the evidence supporting a score’s intended interpretation and use, including consequences. See <<messick1995>>.
+
+The chapter therefore treats governance as part of measurement validity rather than as an external compliance layer.
+
+A metric may be appropriate for diagnosing a queue and invalid for ranking individuals. The same computation can have different validity depending on population, decision, and consequence.
+
+=== Purpose limitation and data minimization
+
+The NIST Privacy Framework provides a risk-based foundation for identifying, governing, controlling, communicating, and protecting privacy risk. See <<nist2020-privacy>>.
+
+The chapter applies these principles through:
+
+* declared purposes;
+* collection minimization;
+* proportional granularity;
+* retention limits;
+* pseudonymization;
+* restricted re-identification;
+* correction and appeal;
+* purpose-bound access.
+
+The preferred design is to collect the least detailed data capable of supporting the declared decision.
+
+=== Privacy by architecture
+
+Policy alone is insufficient when broad raw access makes misuse easy.
+
+The chapter therefore requires structural controls such as:
+
+* separate identity vaults;
+* pseudonymous analytical data;
+* aggregation by default;
+* minimum group-size thresholds;
+* row- and column-level authorization;
+* audited identity lookup;
+* deletion propagation;
+* short retention for detailed behavioral telemetry.
+
+This is an Engineering Intelligence-specific implementation of privacy engineering principles informed by <<nist2020-privacy>>.
+
+=== Professional ethics
+
+The ACM Code of Ethics emphasizes contributing to society, avoiding harm, honesty, fairness, privacy, competence, and accountability. See <<acm2018-ethics>>.
+
+These principles support the chapter’s restrictions on:
+
+* covert surveillance;
+* unsupported individual productivity scoring;
+* automated employment decisions from engineering telemetry;
+* punitive use of experimental metrics;
+* opaque or unchallengeable classifications;
+* use beyond the original declared purpose.
+
+Professional responsibility applies to the designers, operators, analysts, managers, and decision-makers using the system.
+
+=== Cybersecurity governance
+
+The NIST Cybersecurity Framework provides a foundation for governing, identifying, protecting, detecting, responding to, and recovering from cybersecurity risk. See <<nist2024-csf>>.
+
+Engineering Intelligence systems can reveal sensitive source metadata, organizational structure, vulnerabilities, and strategic work.
+
+The chapter therefore treats security controls as governance controls, including:
+
+* least privilege;
+* secrets management;
+* encryption;
+* audit logging;
+* environment isolation;
+* incident response;
+* vendor-risk review;
+* tested recovery.
+
+=== AI and model governance
+
+The NIST AI Risk Management Framework and its generative-AI profile provide foundations for governing, mapping, measuring, and managing AI risk. See <<nist2023-airmf>> and <<nist2024-genai>>.
+
+Management-system and risk-process standards are represented by <<iso42001>> and <<iso23894>>.
+
+The chapter operationalizes these principles through model records containing:
+
+* accountable owner;
+* intended and prohibited uses;
+* training and evaluation evidence;
+* feature and sensitive-attribute review;
+* subgroup performance;
+* calibration and uncertainty;
+* drift monitoring;
+* human override;
+* rollback and retirement criteria;
+* version history.
+
+These standards guide governance but do not prove that a model is suitable for a particular decision.
+
+=== Human accountability
+
+AI systems, classifiers, risk scores, and generated explanations may inform decisions, but responsibility remains with accountable human roles.
+
+The chapter distinguishes between:
+
+* evidence generation;
+* automated recommendation;
+* delegated action;
+* policy approval;
+* consequential decision.
+
+The person or body making the decision should be able to inspect evidence, understand uncertainty, override the system, and document rationale.
+
+=== Contestability and correction
+
+A legitimate measurement system must permit challenge and correction.
+
+The chapter’s metric-rights model includes the ability to:
+
+* know what is measured;
+* understand definitions;
+* inspect relevant data where appropriate;
+* correct factual errors;
+* challenge inferred links or classifications;
+* understand retention and access;
+* know whether data affects consequential decisions.
+
+Contestability improves both fairness and data quality because affected practitioners often possess context unavailable to centralized instrumentation.
+
+=== Fairness and disparate impact
+
+Fairness cannot be reduced to equal raw metric values across populations performing different work.
+
+Potential sources of disparate impact include:
+
+* legacy-system ownership;
+* role and tenure;
+* accessibility-related workflows;
+* distributed time zones;
+* specialist responsibilities;
+* repository and domain complexity;
+* unequal access to tools or support.
+
+The chapter therefore evaluates error rates, burden distribution, policy effects, and decision consequence by relevant subgroup.
+
+The goal is not identical averages; it is avoidance of unjustified harm from invalid comparison or routing.
+
+=== Individual-level measurement
+
+Some actor identity is needed for provenance, permissions, handoffs, and correction.
+
+That need does not justify named productivity scorecards.
+
+The chapter’s default controls—pseudonymization, aggregation, restricted lookup, minimum group sizes, and explicit review of new uses—follow the use-specific validity and privacy principles in <<messick1995>> and <<nist2020-privacy>>.
+
+Individual data may support private self-reflection or factual correction without becoming managerial ranking data.
+
+=== Experiment ethics
+
+Experiments involving practitioners can alter workload, security, review quality, or access to tools.
+
+The causal-design foundations in <<shadish2002>>, <<imbens2015>>, <<hernan2020>>, and <<kohavi2020>> support the chapter’s requirements for:
+
+* risk and reversibility review;
+* guardrails;
+* treatment transparency appropriate to the design;
+* burden analysis;
+* post-study retention decisions;
+* separation from punitive employment action.
+
+Low-risk interface experiments are ethically different from experiments that alter security review or collect detailed behavioral traces.
+
+=== Agent governance
+
+Agentic systems introduce questions of permission, delegation, evidence, shutdown, and side-effect accountability.
+
+The chapter therefore requires explicit autonomy tiers and distinguishes authority to:
+
+* inspect;
+* recommend;
+* modify;
+* execute tests;
+* merge;
+* deploy;
+* alter infrastructure or data;
+* delegate to other agents.
+
+This is an Engineering Intelligence-specific extension of provenance and AI risk-governance principles in <<moreau2013>>, <<nist2023-airmf>>, and <<nist2024-genai>>.
+
+=== Trust as a system dependency
+
+Trust affects whether practitioners correct data, participate in experiments, disclose problems, and accept conclusions.
+
+The chapter’s trust model is conceptual rather than a mechanically optimized score.
+
+Trust is strengthened by:
+
+* accuracy;
+* transparency;
+* visible local benefit;
+* correction mechanisms;
+* fair process;
+* restraint;
+* reliable enforcement of prohibited uses.
+
+Trust is weakened by opaque, punitive, surprising, or obviously incomplete measurement.
+
+=== Organizational learning
+
+Argyris and Schön distinguish single-loop learning from double-loop learning, where organizations reconsider the assumptions and governing values behind their actions. See <<argyris1978>>.
+
+Senge’s learning-organization work emphasizes systems thinking, shared learning, and collective capability. See <<senge1990>>.
+
+The chapter therefore treats disputes, null results, corrections, and metric retirement as learning mechanisms rather than governance failures.
+
+=== Practitioner participation
+
+Engineering Intelligence is a socio-technical system. Practitioner participation improves construct definition, acceptable-use policy, error correction, and adoption.
+
+The broader socio-technical context is informed by <<conway1968>>, <<cataldo2006>>, and <<herbsleb2007>>.
+
+The chapter recommends including affected engineers in metric councils, experiment review, model governance, and policy design.
+
+This reduces the risk that centrally designed measures misunderstand local workflow or redistribute burden invisibly.
+
+=== Adoption sequencing
+
+The chapter recommends beginning with visible system problems that already matter to practitioners, such as unreliable CI, review queues, ownership ambiguity, or incident linkage.
+
+This sequencing is consistent with developer-experience research emphasizing feedback loops, cognitive load, and flow. See <<forsgren2021-space>>, <<noda2023-devex>>, and <<fagerholm2012>>.
+
+Adoption should expand only after the system demonstrates usefulness, accuracy, transparency, and restraint.
+
+=== Governance as versioned change
+
+Metric, model, and policy changes should follow software-like lifecycle discipline:
+
+* proposal;
+* review;
+* validation;
+* versioned release;
+* migration;
+* communication;
+* monitoring;
+* rollback;
+* retirement.
+
+This is an original Engineering Intelligence operating principle informed by reliable-change practices in <<humble2010>>, <<beyer2016>>, and <<beyer2018>>.
+
+Silent dashboard or policy changes undermine auditability and trust.
+
+=== Auditability
+
+High-impact decisions should be reconstructable from:
+
+* evidence and metric versions;
+* model and policy versions;
+* experiment records;
+* access history;
+* approvals;
+* external factors;
+* final rationale;
+* later correction or appeal.
+
+The provenance foundation is provided by <<moreau2013>>.
+
+Auditability protects affected practitioners and the organization by making the decision path inspectable.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* metric rights for engineering practitioners;
+* explicit acceptable, heightened-governance, inappropriate, and prohibited use classes;
+* a required gaming-surface analysis for consequential metrics;
+* purpose-bound access combining role, population, classification, and declared use;
+* correction, dispute, and temporary-suspension procedures;
+* governance maturity tied to evidence quality and practitioner trust;
+* versioned metric and policy releases with rollback;
+* autonomy tiers and delegation records for engineering agents;
+* decision audit trails spanning evidence, model, experiment, policy, and rationale;
+* trust treated as a functional dependency of valid measurement;
+* adoption beginning with local practitioner value rather than executive ranking.
+
+These constructs should be evaluated through audit outcomes, dispute resolution, data corrections, practitioner participation, trust evidence, observed incentive effects, and the consequences of decisions made with the system.
