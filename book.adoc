@@ -25,6 +25,8 @@ include::frontmatter/readers-guide.adoc[leveloffset=+1]
 
 include::chapters/01-introduction.adoc[leveloffset=+1]
 
+include::chapters/01-introduction-source-notes.adoc[leveloffset=+2]
+
 include::chapters/02-engineering-economics.adoc[leveloffset=+1]
 
 include::chapters/02-engineering-economics-source-notes.adoc[leveloffset=+2]
