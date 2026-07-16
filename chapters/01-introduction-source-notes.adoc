@@ -1,0 +1,77 @@
+== Research foundations and source notes
+
+This introductory chapter establishes the scope and decision principles of Engineering Intelligence. It combines established measurement, software-delivery, developer-experience, cognitive-load, organizational, and causal-learning research with an original synthesis that treats engineering as an observable socio-technical and economic system.
+
+=== Measurement validity and intended use
+
+The distinction between a reproducible number and a valid interpretation is grounded in measurement theory. Messick’s unified account of construct validity emphasizes that validity concerns the evidential and consequential basis for interpreting and using measurements. Hand similarly cautions that measurement is a model-based act rather than a neutral reading of reality. See <<messick1995>> and <<hand2004>>.
+
+These foundations support the chapter’s central claim that a metric is not inherently useful or valid. Its meaning depends on the construct, population, boundary, context, and decision for which it is used.
+
+=== Software delivery performance
+
+The chapter’s discussion of deployment frequency, lead time for changes, change-failure rate, and restoration time builds on the software-delivery research synthesized in <<forsgren2018>>.
+
+That body of work supports using delivery outcomes as system-level indicators, but it does not justify converting them into universal individual targets. Engineering Intelligence therefore treats them as contextual outcomes that must be interpreted alongside architecture, work type, risk, quality, and organizational constraints.
+
+=== Multidimensional developer productivity
+
+The rejection of a single universal productivity score is consistent with the SPACE framework. SPACE organizes developer productivity across satisfaction and well-being, performance, activity, communication and collaboration, and efficiency and flow. See <<forsgren2021-space>>.
+
+The chapter extends this multidimensional view by explicitly adding economic cost, human attention, AI participation, architectural complexity, operational risk, and causal evaluation. These additions are an Engineering Intelligence synthesis rather than a replacement for SPACE.
+
+=== Developer experience, flow, and feedback
+
+The emphasis on feedback loops, cognitive load, progress, and flow is informed by developer-experience and software-engineering research. See <<noda2023-devex>>, <<fagerholm2012>>, and <<meyer2014>>.
+
+This literature supports treating delays, interruptions, unclear ownership, fragmented tooling, and slow feedback as substantive properties of the engineering system rather than as individual shortcomings.
+
+=== Cognitive load and interruption
+
+The chapter treats expert attention as a constrained organizational resource. Cognitive-load theory provides a foundation for distinguishing the intrinsic complexity of a task from additional burden imposed by presentation, process, or tooling. See <<sweller1988>>.
+
+Research on interrupted work shows that resumption, context reconstruction, and fragmented attention can impose costs that are not visible in simple activity counts. See <<mark2008>>. These findings support the later distinction between elapsed time, active effort, waiting, and cognitive burden.
+
+=== Metric gaming and target distortion
+
+The warning against turning descriptive measures directly into targets is grounded in Campbell’s Law and the family of ideas commonly associated with Goodhart’s Law. See <<campbell1979>> and <<goodhart1984>>.
+
+These principles do not imply that targets are always inappropriate. They imply that measures used for control or reward should be treated as interventions that can change behavior, data quality, and the system being observed. Guardrails, counter-metrics, qualitative review, and periodic revalidation are therefore necessary.
+
+=== Socio-technical systems and organizational structure
+
+Engineering Intelligence treats software delivery as a socio-technical system rather than a sequence of isolated developer actions. Conway’s observation about the relationship between communication structures and system design provides one foundation for this view. See <<conway1968>>.
+
+Later chapters expand this foundation through socio-technical congruence, coordination, modularity, team cognitive load, and architecture. The introductory claim is deliberately broad: engineering outcomes emerge from interactions among people, tools, code, architecture, process, incentives, and organizational boundaries.
+
+=== Learning systems and causal evaluation
+
+The chapter’s observe–reconstruct–model–explain–experiment–learn loop is an original Engineering Intelligence operating model. Its scientific orientation is consistent with established causal-inference and experimentation practice developed later in the book.
+
+The model distinguishes descriptive monitoring from organizational learning. A dashboard can report a change; a learning system must formulate explanations, test interventions, estimate effects, retain uncertainty, and update future decisions.
+
+=== Original synthesis introduced in this chapter
+
+The following concepts are original organizing constructs of this book rather than established external standards:
+
+* *Engineering Intelligence* as an integrated discipline spanning engineering economics, attention, architecture, delivery, quality, AI participation, governance, and experimentation;
+* the *Engineering Change* as a cross-system unit of analysis broader than a pull request;
+* the closed Engineering Intelligence learning loop;
+* the explicit treatment of expert attention as a scarce operational and economic resource;
+* the requirement that engineering measurement be tied to a decision, intervention, or learning objective;
+* the separation of observation, reconstruction, modeling, explanation, experimentation, and organizational learning.
+
+These constructs are intended to be testable and adaptable. They should not be interpreted as claims that one universal data model, metric set, or maturity path fits every organization.
+
+=== Limits of the evidence
+
+The research cited in this chapter spans different methods, populations, organizations, technologies, and time periods. Several limitations follow:
+
+* delivery-performance associations do not establish that optimizing one metric in isolation will cause improvement;
+* developer-experience findings may depend on team, task, toolchain, and organizational context;
+* cognitive-load and interruption findings do not provide a universal conversion from interruption counts to economic loss;
+* Goodhart- and Campbell-style effects identify risks, not deterministic outcomes;
+* broad socio-technical relationships do not determine the best organizational design for a particular company;
+* the integrated Engineering Intelligence framework remains a synthesis whose value must be evaluated through use, replication, and revision.
+
+The chapter therefore uses these sources as foundations for measurement design and cautious inference, not as justification for deterministic scoring or universal benchmarks.
