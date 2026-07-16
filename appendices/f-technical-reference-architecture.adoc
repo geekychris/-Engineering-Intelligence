@@ -1,0 +1,1232 @@
+= Technical Reference Architecture
+
+[abstract]
+This appendix defines a deployable technical reference architecture for an Engineering Intelligence platform. It describes the responsibilities, contracts, data flows, storage patterns, reliability controls, security boundaries, and staged implementation needed to connect engineering-system evidence to trustworthy metrics, experiments, decisions, and organizational learning. The architecture is intentionally vendor-neutral. Its durable value lies in semantic contracts, provenance, temporal correctness, and governed use rather than any particular database or cloud service.
+
+== Architectural objective
+
+The platform should answer consequential questions such as:
+
+* What happened across the lifecycle of an Engineering Change?
+* Where was human attention consumed?
+* Which queues and architectural constraints limited flow?
+* Did an AI-assisted workflow improve net outcomes?
+* Which intervention caused an observed change?
+* What economic value was realized?
+* Can the result be reproduced from source evidence?
+* Is the data permitted for this decision and audience?
+
+The platform must answer these questions without reducing engineering to artifact counts or creating an unrestricted surveillance system.
+
+== Architectural principles
+
+=== Immutable evidence first
+
+Preserve source events before applying interpretation. Derived state can be recomputed; lost source evidence usually cannot.
+
+=== Canonical semantics
+
+Normalize vendor-specific objects into stable entities and events while retaining native identifiers and payload lineage.
+
+=== Event time over ingestion time
+
+Analysis should reflect when an event occurred. Ingestion time remains essential for freshness and operational diagnosis.
+
+=== Temporal identity and ownership
+
+Resolve people, agents, teams, repositories, services, and ownership as they existed at event time.
+
+=== Confidence-aware linkage
+
+Inferred Engineering Change relationships must expose method and confidence.
+
+=== Version everything consequential
+
+Schemas, transformations, identity rules, reconstruction logic, metrics, models, prompts, experiments, and policies require versions.
+
+=== Separate evidence, inference, and decision
+
+Observed facts, reconstructed relationships, predictions, causal estimates, generated narratives, and organizational decisions should remain distinguishable.
+
+=== Purpose-bound access
+
+Authorization should consider approved use and data sensitivity, not role alone.
+
+=== Progressive capability
+
+The platform should create value from an initial narrow evidence path and grow without requiring a complete enterprise ontology on day one.
+
+== Logical architecture
+
+image::../figures/mermaid/engineering-intelligence-reference-architecture.mmd[Engineering Intelligence technical reference architecture]
+
+The logical architecture contains twelve major capability areas:
+
+. source systems;
+. collection and ingestion;
+. immutable raw evidence;
+. canonicalization and schema management;
+. identity, ownership, and reference data;
+. Engineering Change reconstruction;
+. analytical and graph projections;
+. metric and model computation;
+. experimentation and treatment exposure;
+. governed serving and decision products;
+. evidence, metric, model, and decision registries;
+. platform observability, security, privacy, and governance.
+
+== Source systems
+
+Typical source domains include:
+
+=== Planning and intent
+
+* product planning;
+* issue tracking;
+* request management;
+* architecture decisions;
+* design documents;
+* experiment proposals.
+
+=== Source control and review
+
+* repositories;
+* commits;
+* branches;
+* pull or merge requests;
+* review comments and approvals;
+* code ownership;
+* AI review findings.
+
+=== Build and validation
+
+* CI pipelines;
+* test systems;
+* static analysis;
+* security scanners;
+* performance testing;
+* simulation;
+* artifact repositories.
+
+=== Delivery and operations
+
+* deployment systems;
+* release and feature-flag platforms;
+* service catalogues;
+* runtime observability;
+* incident systems;
+* rollback and recovery systems.
+
+=== Organization and economics
+
+* directory and identity systems;
+* team and ownership records;
+* finance and procurement;
+* cloud and vendor cost;
+* portfolio and business-outcome systems.
+
+=== AI and agent systems
+
+* assistants;
+* agent runtimes;
+* model gateways;
+* prompt registries;
+* tool invocation logs;
+* evaluation systems;
+* policy engines.
+
+Not every source belongs in the first implementation. Sources should be prioritized by the decisions they enable.
+
+== Collection patterns
+
+=== Webhooks
+
+Use webhooks for low-latency event delivery when the source supports reliable signatures, retries, and stable identifiers.
+
+=== Event streams
+
+Use native streams or logs when high-volume ordered evidence is available.
+
+=== Change-data capture
+
+CDC may be appropriate for internally owned relational systems, but database changes still require semantic interpretation.
+
+=== Polling
+
+Polling is acceptable when APIs expose modification timestamps, pagination, and stable cursors. The collector must tolerate repeated records and eventual consistency.
+
+=== Batch export
+
+Large historical backfills, finance data, organizational snapshots, and vendor exports may arrive as files.
+
+=== Client-side instrumentation
+
+Use sparingly. Client telemetry can measure otherwise invisible interactions, but increases privacy, compatibility, and data-quality risk.
+
+== Connector contract
+
+Every connector should provide:
+
+* source-system identity;
+* source instance or tenant;
+* authentication mode;
+* supported entity and event types;
+* cursor or checkpoint behavior;
+* idempotency strategy;
+* ordering guarantees;
+* deletion behavior;
+* rate-limit handling;
+* backfill procedure;
+* expected freshness;
+* schema mapping version;
+* data classification;
+* operational owner.
+
+A connector should not embed business metrics. Its responsibility is faithful collection and source-specific normalization.
+
+== Canonical event envelope
+
+A canonical envelope should include:
+
+[source,json]
+----
+{
+  "event_id": "evt_01J...",
+  "event_type": "review.finding.dispositioned",
+  "event_version": "1.2.0",
+  "occurred_at": "2026-07-18T12:44:08.217Z",
+  "observed_at": "2026-07-18T12:44:09.004Z",
+  "ingested_at": "2026-07-18T12:44:10.221Z",
+  "source": {
+    "system": "code_review",
+    "instance": "enterprise-main",
+    "native_event_id": "884391"
+  },
+  "actor_ref": "actor_01J...",
+  "subject": {
+    "entity_type": "finding",
+    "entity_id": "finding_9201"
+  },
+  "engineering_change_ref": "ec_01J...",
+  "payload": {},
+  "provenance": {
+    "connector_version": "2.4.0",
+    "mapping_version": "1.8.2",
+    "schema_registry_id": "review.finding.dispositioned@1.2.0"
+  },
+  "classification": "restricted"
+}
+----
+
+Unknown Engineering Change references may be null at ingestion and added later through a versioned relationship event.
+
+== Ingestion guarantees
+
+The platform should assume at-least-once delivery unless stronger guarantees are demonstrably available.
+
+Required controls include:
+
+* stable event identifiers;
+* idempotent writes;
+* source cursor checkpoints;
+* duplicate detection;
+* dead-letter handling;
+* replay;
+* backpressure;
+* late-event support;
+* source-specific ordering keys;
+* poison-record quarantine.
+
+Exactly-once marketing language should not replace explicit idempotency and replay design.
+
+== Immutable raw evidence layer
+
+Raw evidence should preserve the received source representation with minimal transformation.
+
+Recommended partition dimensions include:
+
+* source system;
+* source instance;
+* event or entity type;
+* ingestion date;
+* region or classification where required.
+
+Raw evidence should include checksums, encryption, retention class, and ingestion metadata.
+
+Access should be highly restricted because raw payloads may contain source code, messages, identities, security findings, or customer information.
+
+== Schema registry
+
+The schema registry should manage:
+
+* canonical event schemas;
+* entity schemas;
+* compatibility rules;
+* ownership;
+* classification;
+* field descriptions;
+* required provenance;
+* deprecation;
+* consumers;
+* sample fixtures.
+
+Schema changes should be tested against historical and current events before promotion.
+
+== Canonicalization
+
+Canonicalization translates source objects into stable engineering semantics.
+
+Examples include:
+
+* GitHub pull request and GitLab merge request to `CodeReviewChange`;
+* Jenkins job and GitHub Actions run to `ValidationRun` or `Build`;
+* Kubernetes rollout and proprietary release event to `Deployment`;
+* vendor AI comment to `Finding` with machine provenance.
+
+Canonicalization should preserve source-specific extensions rather than forcing all detail into the common schema.
+
+== Data contracts
+
+A producing domain should publish a data contract specifying:
+
+* entity and event semantics;
+* identifiers;
+* event-time behavior;
+* completeness expectations;
+* known exclusions;
+* deletion semantics;
+* compatibility policy;
+* data owner;
+* quality SLOs;
+* change-notification process.
+
+Contracts turn hidden assumptions into operational dependencies.
+
+== Identity resolution service
+
+The identity service maps source identities to canonical actors.
+
+It should support:
+
+* people with multiple accounts;
+* service accounts;
+* deterministic automation;
+* AI assistants and autonomous agents;
+* vendors and external contributors;
+* identity changes over time;
+* uncertain matches;
+* manual correction;
+* restricted re-identification.
+
+Identity mappings should be separated from general analytical storage and accessed through controlled interfaces.
+
+== Temporal organizational model
+
+The organizational model represents:
+
+* team membership;
+* reporting relationships where approved;
+* repository and service ownership;
+* domain ownership;
+* on-call or specialist roles;
+* organization changes;
+* effective intervals;
+* source and confidence.
+
+Every ownership join should specify an as-of time.
+
+== Service and repository catalogue
+
+The catalogue should link:
+
+* repositories;
+* services;
+* libraries;
+* data products;
+* infrastructure components;
+* owners;
+* criticality;
+* runtime environments;
+* dependencies;
+* compliance and data classes.
+
+This catalogue provides essential context for blast radius, portfolio analysis, incident linkage, and risk-based policy.
+
+== Engineering Change reconstruction
+
+The reconstruction service groups intents, artifacts, activities, validations, deployments, releases, and outcomes into Engineering Changes.
+
+It should use a hierarchy of evidence:
+
+. explicit propagated Engineering Change identifier;
+. deterministic artifact lineage;
+. source-native relationships;
+. versioned rule-based inference;
+. probabilistic or model-based inference;
+. manual correction.
+
+Each relationship should retain confidence, method, evidence references, and reconstruction version.
+
+== Reconstruction pipeline
+
+A typical pipeline performs:
+
+. candidate generation;
+. deterministic linking;
+. temporal and ownership filtering;
+. artifact-graph traversal;
+. confidence scoring;
+. conflict resolution;
+. lifecycle derivation;
+. quality assessment;
+. publication of relationship events;
+. correction and recomputation.
+
+Reconstruction must be replayable because improved rules may alter historical linkage.
+
+== Candidate generation
+
+Candidate links may be generated from:
+
+* explicit IDs;
+* commit ancestry;
+* build provenance;
+* artifact digests;
+* branch or issue references;
+* deployment manifests;
+* timestamps;
+* shared actors;
+* ownership;
+* textual similarity;
+* dependency paths.
+
+Candidate generation should favor recall; later scoring and validation control precision.
+
+== Confidence service
+
+Confidence should not be a single unexplained score.
+
+The service should publish:
+
+* score;
+* band;
+* evidence features;
+* rule or model version;
+* calibration date;
+* known ambiguity;
+* manual-review state.
+
+Metrics should declare eligible confidence bands.
+
+== Lifecycle state projection
+
+A state projection derives the semantic lifecycle from events.
+
+It should retain:
+
+* current state;
+* transition history;
+* transition event;
+* derivation rule;
+* time in state;
+* uncertainty;
+* reopened or reversed transitions.
+
+Mutable state tables may serve queries, but transition events remain authoritative.
+
+== Analytical storage
+
+A practical architecture may use several complementary stores.
+
+=== Lakehouse or warehouse
+
+Best suited for governed facts, dimensions, historical analysis, model training, and reproducible metric computation.
+
+=== Graph projection
+
+Best suited for dependency traversal, Engineering Change lineage, ownership networks, blast radius, and multi-hop investigation.
+
+=== Search index
+
+Best suited for finding evidence, decisions, findings, incidents, and metric documentation.
+
+=== Time-series store
+
+Best suited for freshness, operational queues, platform SLOs, and high-frequency runtime signals.
+
+=== Key-value or operational database
+
+Best suited for low-latency assignment, exposure, registry, and serving state.
+
+The canonical semantic model should not depend exclusively on one physical representation.
+
+== Fact and dimension design
+
+Useful governed facts include:
+
+* activity fact;
+* review session fact;
+* finding fact;
+* validation run fact;
+* build fact;
+* deployment fact;
+* release exposure fact;
+* incident-change fact;
+* experiment assignment and exposure fact;
+* cost fact;
+* outcome fact.
+
+Dimensions include actor, team, repository, service, domain, artifact, model, tool, experiment, and calendar.
+
+Slowly changing dimensions should preserve historical context.
+
+== Metric computation layer
+
+The metric layer executes versioned specifications from the metric registry.
+
+It should support:
+
+* batch and incremental computation;
+* reproducible historical restatement;
+* population filters;
+* confidence thresholds;
+* missing-data semantics;
+* quality gates;
+* uncertainty calculation;
+* approved dimensions;
+* privacy suppression;
+* semantic versioning.
+
+Metric code should be reviewed and tested like production software.
+
+== Metric registry
+
+The registry stores:
+
+* metric identity and version;
+* construct and purpose;
+* executable definition;
+* source dependencies;
+* quality requirements;
+* interpretation;
+* prohibited uses;
+* approved dimensions;
+* owner and steward;
+* validation evidence;
+* lifecycle status;
+* dependent products.
+
+A dashboard should resolve metrics through the registry rather than reimplementing formulas locally.
+
+== Feature and model layer
+
+Predictive models may estimate:
+
+* change risk;
+* likely review expertise;
+* expected queue delay;
+* blast radius;
+* defect probability;
+* intervention eligibility;
+* outcome maturity.
+
+The model registry should contain:
+
+* model identity and version;
+* training population;
+* feature versions;
+* evaluation results;
+* calibration;
+* subgroup behavior;
+* intended and prohibited uses;
+* deployment state;
+* owner;
+* rollback target.
+
+Predictions should retain model version and feature-time provenance.
+
+== Experiment assignment service
+
+The assignment service should provide:
+
+* deterministic assignment;
+* unit eligibility;
+* stratification;
+* stable variants;
+* override controls;
+* assignment audit;
+* assignment API;
+* historical reconstruction.
+
+Assignment should occur before treatment-dependent information can affect eligibility.
+
+== Exposure service
+
+The exposure service records the treatment actually received.
+
+It should distinguish:
+
+* assigned;
+* available;
+* invoked;
+* visible;
+* completed;
+* used before decision;
+* bypassed;
+* failed;
+* contaminated control.
+
+Treatment version and configuration hash are required.
+
+== Guardrail monitoring
+
+Experiment and policy guardrails should run through a low-latency monitoring path where harm requires rapid response.
+
+The path should include:
+
+* event ingestion;
+* eligibility and treatment context;
+* current guardrail computation;
+* quality status;
+* threshold logic;
+* alerting;
+* pause or rollback integration;
+* human escalation.
+
+Operational stop rules should not depend solely on a slow analytical warehouse refresh.
+
+== Decision registry
+
+The decision registry connects evidence to action.
+
+It should store:
+
+* decision question;
+* alternatives;
+* studies and metrics;
+* versions;
+* economic analysis;
+* assumptions;
+* uncertainty;
+* chosen action;
+* owner;
+* conditions;
+* review date;
+* reversal criteria;
+* later outcome.
+
+This prevents evidence from disappearing into presentation files.
+
+== Evidence registry
+
+The evidence registry indexes:
+
+* studies;
+* benchmark datasets;
+* annotations;
+* metric validations;
+* incident analyses;
+* architecture studies;
+* business cases;
+* negative results;
+* replication attempts;
+* reproducibility packages.
+
+Search should support construct, intervention, population, outcome, system, and decision.
+
+== Serving layer
+
+Serving patterns include:
+
+=== Metric API
+
+Returns value, version, population, uncertainty, quality, period, and interpretation reference.
+
+=== Engineering Change API
+
+Returns lineage, lifecycle, actors, artifacts, validations, deployments, outcomes, and confidence.
+
+=== Evidence explorer
+
+Supports investigation and correction of linked evidence.
+
+=== Experiment console
+
+Supports assignment, exposure, guardrails, study status, and reproducibility.
+
+=== Decision workbench
+
+Combines evidence, economics, alternatives, uncertainty, and decision records.
+
+=== Practitioner views
+
+Provide locally meaningful team and self-service evidence with correction controls.
+
+=== Executive products
+
+Present decision-oriented summaries rather than unrestricted metric catalogues.
+
+== API design
+
+APIs should expose semantic versions and quality state.
+
+Example metric response:
+
+[source,json]
+----
+{
+  "metric_id": "ei.review.human_effort_minutes",
+  "version": "2.1.0",
+  "value": 37.4,
+  "unit": "minutes",
+  "aggregation": "median",
+  "population_size": 1842,
+  "quality_status": "publishable",
+  "uncertainty": {
+    "lower": 35.9,
+    "upper": 39.2,
+    "level": 0.95
+  },
+  "lineage_ref": "lineage://metric-run/01J...",
+  "interpretation_ref": "metric://ei.review.human_effort_minutes/2.1.0"
+}
+----
+
+A degraded metric should return an explicit unavailable or degraded state rather than a stale unqualified number.
+
+== Data lineage
+
+Lineage should connect:
+
+* published value;
+* metric code version;
+* transformation jobs;
+* canonical facts;
+* Engineering Change links;
+* identity and ownership versions;
+* source events;
+* connector and source instance.
+
+Lineage must support impact analysis when a source, schema, rule, or metric changes.
+
+== Reproducibility
+
+A reproducible metric or study run should preserve:
+
+* input snapshot or immutable references;
+* code and query versions;
+* schema versions;
+* environment;
+* random seeds;
+* configuration;
+* output checksums;
+* execution logs;
+* quality report.
+
+Reproducibility should be tested periodically, not merely documented.
+
+== Privacy architecture
+
+Privacy controls should exist in architecture, not only policy.
+
+Required patterns include:
+
+* isolated identity mapping;
+* pseudonymous analytical IDs;
+* row- and column-level security;
+* purpose-bound access tokens or claims;
+* minimum group suppression;
+* export controls;
+* retention enforcement;
+* deletion propagation;
+* access auditing;
+* restricted secure analysis environments.
+
+Generated summaries should not bypass underlying access restrictions.
+
+== Security architecture
+
+The platform is a high-value target because it contains architecture, code, incident, identity, model, and business evidence.
+
+Controls should include:
+
+* zero-trust service authentication;
+* workload identity;
+* least privilege;
+* encryption in transit and at rest;
+* secrets isolation;
+* network segmentation;
+* tamper-evident audit;
+* dependency and artifact integrity;
+* secure connector execution;
+* data-loss prevention;
+* threat detection;
+* tested incident response.
+
+== Multi-tenancy
+
+Large enterprises may require tenant boundaries for business units, acquisitions, regulated domains, or regions.
+
+The model should define:
+
+* tenant identity;
+* shared versus isolated services;
+* cross-tenant aggregation policy;
+* encryption boundaries;
+* identity federation;
+* regional storage;
+* administrative separation;
+* export and replication controls.
+
+Tenant boundaries should not be simulated only through dashboard filters.
+
+== Regional and regulatory architecture
+
+Support for regional constraints may require:
+
+* local ingestion;
+* regional raw storage;
+* field-level residency;
+* regional identity resolution;
+* approved aggregate export;
+* separate encryption keys;
+* deletion and retention differences;
+* jurisdiction-specific access review.
+
+Global metrics should document when populations are incomplete because evidence cannot cross boundaries.
+
+== Reliability objectives
+
+The platform should define SLOs by product.
+
+Example targets:
+
+* ingestion freshness;
+* source completeness;
+* assignment availability;
+* exposure-write durability;
+* guardrail alert latency;
+* metric publication freshness;
+* API availability;
+* lineage-query success;
+* correction propagation time.
+
+Not every analytical product requires real-time processing. Reliability should match decision need.
+
+== Failure modes
+
+Important failure modes include:
+
+* source API outage;
+* expired credentials;
+* schema drift;
+* replay duplication;
+* delayed events;
+* identity merge error;
+* incorrect ownership interval;
+* reconstruction regression;
+* metric semantic change;
+* experiment contamination;
+* model drift;
+* privacy suppression failure;
+* stale dashboard cache;
+* unauthorized export.
+
+Each critical failure mode should have detection, containment, recovery, and impact analysis.
+
+== Backfill and replay
+
+Backfill is required for historical baselines, source migrations, and corrected logic.
+
+The platform should support:
+
+* bounded source extraction;
+* immutable import manifests;
+* rate-aware execution;
+* idempotent canonicalization;
+* versioned replay;
+* side-by-side comparison;
+* quality reconciliation;
+* consumer impact control.
+
+Historical restatement should be explicit when metric values change.
+
+== Correction workflow
+
+Corrections may originate from practitioners, data owners, source reconciliation, or improved models.
+
+A correction service should:
+
+. record the disputed entity or relationship;
+. preserve previous state;
+. capture evidence and reason;
+. apply approved correction;
+. identify affected metrics, studies, and decisions;
+. recompute dependent products;
+. notify material consumers;
+. retain correction lineage.
+
+== Observability of the intelligence platform
+
+The platform should monitor itself.
+
+Operational signals include:
+
+* connector lag;
+* event volume anomalies;
+* duplicate rate;
+* dead-letter depth;
+* schema rejection;
+* identity-resolution coverage;
+* linkage coverage and confidence;
+* metric quality status;
+* model and feature drift;
+* experiment assignment and exposure mismatch;
+* access anomalies;
+* query and serving latency;
+* cost by pipeline and tenant.
+
+Platform observability should be separate from the engineering metrics it produces.
+
+== Quality SLOs
+
+Example quality SLOs include:
+
+* 99 percent of source events ingested within six hours;
+* fewer than 0.1 percent unresolved duplicate events;
+* at least 95 percent repository ownership coverage;
+* at least 90 percent deployment-to-change linkage coverage;
+* fewer than 2 percent unresolved human identities in governed populations;
+* 100 percent of published metrics accompanied by version and quality state.
+
+Targets must be tailored to source capability and decision consequence.
+
+== Cost architecture
+
+Track platform cost by:
+
+* connector;
+* source domain;
+* storage layer;
+* transformation;
+* graph computation;
+* model inference;
+* metric workload;
+* tenant;
+* serving product;
+* retention class.
+
+High-cardinality raw evidence and graph traversal can become expensive. Retention tiers, incremental computation, and workload isolation should be designed early.
+
+== Technology selection criteria
+
+Technology choices should consider:
+
+* event volume and ordering;
+* replay requirements;
+* schema evolution;
+* temporal joins;
+* graph traversal depth;
+* analytical concurrency;
+* regional constraints;
+* privacy controls;
+* operational expertise;
+* cost predictability;
+* portability;
+* ecosystem integration.
+
+No technology should be chosen solely because it is fashionable or because one source vendor recommends it.
+
+== Deployment topology
+
+A common deployment topology includes:
+
+* isolated connector runtime;
+* regional ingestion endpoints;
+* durable event bus;
+* immutable object store;
+* stream and batch canonicalization;
+* lakehouse or warehouse;
+* graph and search projections;
+* operational registries;
+* policy-enforced APIs;
+* separate production and research workspaces.
+
+Security-sensitive connectors may require dedicated network zones.
+
+== Environment strategy
+
+At minimum, maintain:
+
+* development with synthetic fixtures;
+* integration with representative source contracts;
+* staging with shadow production flows;
+* production;
+* restricted research environment;
+* disaster-recovery path.
+
+Production identity and sensitive source payloads should not be copied casually into lower environments.
+
+== Testing strategy
+
+=== Connector tests
+
+* authentication;
+* pagination;
+* retries;
+* replay;
+* deletion;
+* schema fixtures;
+* rate limits;
+* duplicate behavior.
+
+=== Contract tests
+
+* required fields;
+* event semantics;
+* compatibility;
+* source-to-canonical mapping.
+
+=== Reconstruction tests
+
+* known Engineering Change fixtures;
+* deterministic lineage;
+* ambiguous cases;
+* confidence calibration;
+* temporal ownership;
+* correction.
+
+=== Metric tests
+
+* formula;
+* population;
+* missingness;
+* versioning;
+* quality gates;
+* privacy suppression;
+* historical restatement.
+
+=== Experiment tests
+
+* deterministic assignment;
+* balance;
+* exposure timing;
+* contamination;
+* guardrail alerts;
+* rollback.
+
+=== Security and privacy tests
+
+* authorization;
+* purpose claims;
+* row and field restrictions;
+* export controls;
+* minimum-group suppression;
+* deletion propagation;
+* audit completeness.
+
+== Release management
+
+Platform releases should identify changes to:
+
+* connectors;
+* canonical schemas;
+* reconstruction;
+* identity;
+* metrics;
+* models;
+* policy;
+* APIs;
+* serving products.
+
+High-impact semantic changes should run in shadow mode and include consumer migration plans.
+
+== Disaster recovery
+
+Recovery plans should specify:
+
+* recovery-point objective;
+* recovery-time objective;
+* event-bus recovery;
+* raw evidence restoration;
+* registry restoration;
+* assignment continuity;
+* replay procedure;
+* audit preservation;
+* regional failover;
+* access-control recovery.
+
+The immutable raw layer and registries are foundational recovery assets.
+
+== Staged implementation
+
+=== Stage 1: evidence foundation
+
+Implement source-control, review, CI, deployment, identity, raw evidence, canonical events, and basic quality monitoring.
+
+=== Stage 2: Engineering Change graph
+
+Add explicit identifiers, artifact lineage, temporal ownership, reconstruction, lifecycle state, and confidence.
+
+=== Stage 3: governed metric products
+
+Add metric registry, lineage, quality gates, privacy controls, and decision-oriented serving.
+
+=== Stage 4: experimentation
+
+Add assignment, exposure, guardrails, study registry, and reproducibility.
+
+=== Stage 5: economics and portfolio
+
+Connect cost, business outcomes, realization ledgers, and decision records.
+
+=== Stage 6: AI and agent intelligence
+
+Add model, prompt, agent, delegation, validation burden, and continuous evaluation.
+
+=== Stage 7: bounded adaptive policy
+
+Add prescriptive recommendations and reversible automated actions under strong governance.
+
+== Minimum viable platform
+
+A credible minimum platform should include:
+
+. three to five decision-relevant sources;
+. immutable raw storage;
+. canonical event envelope;
+. actor, team, repository, and service identity;
+. Engineering Change reconstruction for one workflow;
+. source and linkage quality dashboards;
+. a small governed metric registry;
+. metric lineage;
+. purpose-based access;
+. correction workflow;
+. one decision product with an accountable owner.
+
+The minimum should be defined by a complete evidence-to-decision path, not by the number of connectors.
+
+== Build sequence
+
+A practical build sequence is:
+
+. choose a consequential decision;
+. define the required Engineering Change evidence;
+. establish source contracts;
+. ingest and preserve raw events;
+. canonicalize entities and activities;
+. resolve identity and ownership;
+. reconstruct changes and publish confidence;
+. implement governed metrics;
+. expose quality and lineage;
+. deliver the decision product;
+. measure whether the product changed a decision;
+. expand only after the loop works.
+
+== Team topology
+
+A platform team may include:
+
+* product owner;
+* data and streaming engineers;
+* platform engineers;
+* analytics engineers;
+* measurement scientist or statistician;
+* security and privacy engineering;
+* domain representatives;
+* UX or decision-product design;
+* reliability ownership.
+
+Federated domain stewards remain necessary because central teams cannot infer every workflow correctly.
+
+== Ownership boundaries
+
+Recommended ownership boundaries are:
+
+* connector teams own faithful extraction;
+* source domains own source semantics;
+* platform owns canonical contracts and raw durability;
+* identity domain owns canonical identity and temporal mappings;
+* Engineering Intelligence owns reconstruction and metric standards;
+* metric owners own interpretation and quality;
+* study owners own causal protocol;
+* governance owns approved use and access policy;
+* decision owners own action and review.
+
+== Architecture decision records
+
+Major platform choices should record:
+
+* decision context;
+* alternatives;
+* forces and constraints;
+* chosen approach;
+* expected consequences;
+* reversibility;
+* evidence;
+* review trigger.
+
+Architecture decisions should be revisited when scale, privacy, regulation, or tool capability changes.
+
+== Technical anti-patterns
+
+=== Dashboard-first architecture
+
+Charts are built before canonical evidence, metric definitions, and lineage.
+
+=== One giant enterprise table
+
+All sources are flattened into a brittle schema that loses relationships and provenance.
+
+=== Current-state-only ingestion
+
+Historical transitions, correction, and causal ordering become unrecoverable.
+
+=== Tool object as universal unit
+
+Pull requests or tickets become the permanent analytical model.
+
+=== Identity everywhere
+
+Names and email addresses are copied into every table rather than isolated and pseudonymized.
+
+=== Graph database as semantics
+
+A graph technology is adopted without stable relationship definitions or confidence rules.
+
+=== Metric SQL in dashboards
+
+Definitions diverge and cannot be versioned or audited.
+
+=== Experiment flag without exposure
+
+Assignment exists, but actual treatment is unknown.
+
+=== Generated narrative without evidence links
+
+AI summaries appear authoritative but cannot be traced.
+
+=== Real-time everything
+
+Cost and complexity rise even when decisions require only daily or weekly freshness.
+
+=== Raw data access as self-service
+
+Convenience bypasses purpose, interpretation, privacy, and quality controls.
+
+== Technical reference checklist
+
+. Begin from a consequential decision and complete evidence path.
+. Preserve immutable source evidence with provenance and replay.
+. Normalize into versioned canonical events and entities.
+. Resolve identity and ownership temporally.
+. Reconstruct Engineering Changes with explicit confidence.
+. Maintain complementary analytical, graph, search, and operational projections.
+. Compute metrics from registered specifications with quality gates and lineage.
+. Record experiment assignment separately from actual exposure.
+. Store evidence, metrics, models, studies, and decisions in registries.
+. Enforce privacy, purpose-bound access, retention, correction, and audit in the architecture.
+. Define reliability and quality SLOs by decision consequence.
+. Support backfill, replay, historical restatement, and disaster recovery.
+. Introduce AI and autonomous policy only after evidence and governance foundations are operational.
+. Judge platform success by improved, reproducible decisions rather than connector or dashboard count.
