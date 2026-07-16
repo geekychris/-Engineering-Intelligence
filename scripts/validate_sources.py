@@ -17,6 +17,11 @@ IMAGE_RE = re.compile(r"image::([^\[]+)\[")
 ANCHOR_RE = re.compile(r"\[\[([^\],]+)(?:,[^\]]*)?\]\]")
 XREF_RE = re.compile(r"<<([^,>]+)(?:,[^>]*)?>>")
 CITATION_KEY_RE = re.compile(r"^[a-z][a-z0-9-]*\d{4}(?:-[a-z0-9-]+)?$")
+CHAPTER_RE = re.compile(r"^(\d{2})-(.+)\.adoc$")
+SOURCE_NOTES_RE = re.compile(r"^(\d{2})-(.+)-source-notes\.adoc$")
+BOOK_CHAPTER_INCLUDE_RE = re.compile(
+    r"include::chapters/([^\[]+\.adoc)\[leveloffset=\+(\d+)\]"
+)
 
 
 def validate(root: Path) -> int:
@@ -79,6 +84,62 @@ def validate(root: Path) -> int:
 
     walk(book)
 
+    chapters_dir = root / "chapters"
+    chapter_files: dict[str, Path] = {}
+    source_note_files: dict[str, Path] = {}
+
+    for path in sorted(chapters_dir.glob("*.adoc")):
+        source_match = SOURCE_NOTES_RE.fullmatch(path.name)
+        if source_match:
+            source_note_files[source_match.group(1)] = path
+            continue
+
+        chapter_match = CHAPTER_RE.fullmatch(path.name)
+        if chapter_match:
+            chapter_files[chapter_match.group(1)] = path
+
+    for number, chapter_path in sorted(chapter_files.items()):
+        notes_path = source_note_files.get(number)
+        if notes_path is None:
+            errors.append(
+                f"chapter {number} has no matching source-notes sidecar: "
+                f"{relative(chapter_path)}"
+            )
+            continue
+
+        expected_name = chapter_path.stem + "-source-notes.adoc"
+        if notes_path.name != expected_name:
+            errors.append(
+                f"chapter {number} source-notes filename does not match chapter stem: "
+                f"expected chapters/{expected_name}, found {relative(notes_path)}"
+            )
+
+    for number, notes_path in sorted(source_note_files.items()):
+        if number not in chapter_files:
+            errors.append(
+                f"orphaned chapter source-notes sidecar: {relative(notes_path)}"
+            )
+
+    book_text = book.read_text(encoding="utf-8")
+    chapter_includes = [
+        (match.group(1), int(match.group(2)))
+        for match in BOOK_CHAPTER_INCLUDE_RE.finditer(book_text)
+    ]
+
+    expected_include_sequence: list[tuple[str, int]] = []
+    for number, chapter_path in sorted(chapter_files.items()):
+        notes_path = source_note_files.get(number)
+        expected_include_sequence.append((chapter_path.name, 1))
+        if notes_path is not None:
+            expected_include_sequence.append((notes_path.name, 2))
+
+    if chapter_includes != expected_include_sequence:
+        errors.append(
+            "book.adoc chapter includes must list every chapter followed immediately "
+            "by its matching source-notes sidecar, using leveloffset=+1 for chapters "
+            "and leveloffset=+2 for source notes"
+        )
+
     anchors: dict[str, Path] = {}
     citation_references: list[tuple[str, Path]] = []
 
@@ -140,6 +201,7 @@ def validate(root: Path) -> int:
     print(
         "Validated "
         f"{len(visited)} AsciiDoc files, "
+        f"{len(chapter_files)} chapter/source-note pairs, "
         f"{len(referenced_mermaid)} Mermaid references, "
         f"{len(anchors)} explicit anchors, and "
         f"{len(citation_references)} citation references"
