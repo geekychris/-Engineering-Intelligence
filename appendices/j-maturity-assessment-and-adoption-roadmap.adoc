@@ -1,0 +1,926 @@
+= Maturity Assessment and Adoption Roadmap
+
+[abstract]
+This appendix provides a structured method for assessing an organization’s current Engineering Intelligence capability and planning its next stages. It is designed for organizations that already possess substantial engineering telemetry but lack a coherent evidence-to-decision system. The assessment evaluates evidence quality, semantics, measurement, experimentation, economics, governance, platform architecture, organizational learning, and AI readiness. It also provides a practical first-90-day launch plan and a staged roadmap for advancing without attempting an enterprise-wide transformation all at once.
+
+== Assessment philosophy
+
+A maturity model should not become a ranking exercise or a ceremonial scorecard.
+
+Its purpose is to answer three questions:
+
+. Which capabilities are currently strong enough to support consequential decisions?
+. Which missing or weak capabilities create the greatest decision risk?
+. What is the smallest next investment that closes a complete evidence-to-decision loop?
+
+The assessment should evaluate demonstrated operating capability rather than the existence of policies, dashboards, or architecture diagrams.
+
+image::../figures/mermaid/engineering-intelligence-maturity-roadmap.mmd[Engineering Intelligence maturity and adoption roadmap]
+
+== Maturity levels
+
+=== Level 0: fragmented telemetry
+
+The organization has source-specific dashboards and reports but no stable cross-system model.
+
+Typical characteristics:
+
+* metrics are defined locally;
+* pull requests, tickets, deployments, and incidents cannot be connected reliably;
+* current ownership is applied to historical evidence;
+* activity counts dominate;
+* AI tools are evaluated through usage or anecdote;
+* decisions are not linked to evidence versions;
+* data quality is mostly implicit.
+
+Decision risk is high because evidence is incomplete, inconsistent, and difficult to reproduce.
+
+=== Level 1: descriptive visibility
+
+The organization has several useful operational metrics and a basic shared vocabulary.
+
+Typical characteristics:
+
+* major source systems are ingested;
+* some team and repository metrics are standardized;
+* basic lineage and data-quality monitoring exist;
+* leadership can describe broad flow and reliability patterns;
+* privacy and access rules are documented;
+* measurement remains mostly descriptive.
+
+The organization can identify patterns but cannot consistently explain mechanisms or causal effects.
+
+=== Level 2: connected Engineering Change evidence
+
+The organization can connect intent, artifacts, review, validation, deployment, release, and outcomes for a meaningful population.
+
+Typical characteristics:
+
+* Engineering Change relationships are reconstructed;
+* linkage confidence is visible;
+* identity and ownership are temporal;
+* source contracts and quality SLOs exist;
+* metrics are computed from shared evidence;
+* correction and replay are operational;
+* decision products begin to replace dashboard browsing.
+
+The organization can analyze end-to-end flow and consequence rather than isolated tool objects.
+
+=== Level 3: governed decision intelligence
+
+Metrics and analyses are treated as versioned, governed products.
+
+Typical characteristics:
+
+* metric specifications include purpose, population, formula, quality, and prohibited use;
+* uncertainty accompanies consequential measures;
+* governance uses are registered;
+* privacy, access, correction, and appeal operate in practice;
+* economic evaluations distinguish capacity from savings;
+* decision records include evidence, assumptions, and review dates;
+* negative results are retained.
+
+The organization can make defensible portfolio and operational decisions from governed evidence.
+
+=== Level 4: experimental learning system
+
+The organization routinely evaluates interventions causally.
+
+Typical characteristics:
+
+* deterministic assignment and observed exposure are available;
+* guardrails and stop rules are operational;
+* randomized and quasi-experimental methods are used appropriately;
+* pre-analysis plans and reproducibility packages are standard;
+* findings are replicated across contexts;
+* value realization is measured after adoption;
+* intervention versions are tracked over time.
+
+The organization can distinguish plausible improvement from measured causal effect.
+
+=== Level 5: adaptive engineering organization
+
+Engineering Intelligence is embedded in operating policy and organizational learning.
+
+Typical characteristics:
+
+* decisions, evidence, metrics, models, and outcomes form a persistent graph;
+* portfolio investment adapts to evidence maturity and realized value;
+* bounded automated policies operate with audit, appeal, and rollback;
+* AI agents have identity, authority, and validation provenance;
+* long-term capability and skill effects are monitored;
+* learning is preserved across teams and reorganizations;
+* the organization continuously revises assumptions and operating models.
+
+The organization is capable of learning how it engineers, not merely measuring what it did.
+
+== Assessment dimensions
+
+The maturity level should be scored separately for each dimension. A single average can hide critical weaknesses.
+
+== Decision orientation
+
+=== Diagnostic questions
+
+* Are major measurement efforts tied to named decisions?
+* Does every consequential analysis have a decision owner?
+* Are credible alternatives identified?
+* Are decisions recorded with assumptions, conditions, and review dates?
+* Can the organization show cases where evidence changed or stopped a decision?
+
+=== Evidence of maturity
+
+* active decision-question registry;
+* bounded evidence requests;
+* decision records;
+* review-date compliance;
+* examples of reversal or modification based on later evidence.
+
+=== Common failure
+
+Dashboards exist without a clear user, decision, or action.
+
+== Source evidence and data contracts
+
+=== Diagnostic questions
+
+* Are source semantics documented?
+* Are event time and ingestion time both preserved?
+* Can data be replayed?
+* Are connector completeness and freshness measured?
+* Are deletions and corrections propagated?
+* Are source owners accountable for changes?
+
+=== Evidence of maturity
+
+* source inventory;
+* versioned data contracts;
+* immutable raw evidence;
+* connector SLOs;
+* backfill and replay records;
+* schema-change review.
+
+=== Common failure
+
+Source APIs are treated as stable facts while tool semantics change silently.
+
+== Engineering Change semantics
+
+=== Diagnostic questions
+
+* Can the organization connect intent to production outcome?
+* Are relationships explicit, deterministic, or probabilistic?
+* Is linkage confidence visible?
+* Are changes spanning multiple repositories or services represented?
+* Can corrections be applied without deleting history?
+
+=== Evidence of maturity
+
+* canonical Engineering Change identifier;
+* relationship model;
+* confidence bands;
+* reconstruction version;
+* known linkage-coverage metrics;
+* correction workflow.
+
+=== Common failure
+
+The pull request becomes the permanent analytical unit even when consequence spans multiple systems.
+
+== Identity, ownership, and organizational context
+
+=== Diagnostic questions
+
+* Are people, service accounts, bots, assistants, and agents distinguished?
+* Is team and service ownership resolved as of event time?
+* Are reorganizations preserved historically?
+* Can analysts work with pseudonymous identities?
+* Is re-identification restricted and audited?
+
+=== Evidence of maturity
+
+* canonical actor model;
+* temporal ownership intervals;
+* identity-confidence measures;
+* isolated identity mapping;
+* access logs;
+* correction process.
+
+=== Common failure
+
+Current organizational structure is applied retrospectively, distorting historical comparison.
+
+== Metric quality
+
+=== Diagnostic questions
+
+* Does each metric identify its construct and decision purpose?
+* Are unit, population, interval, formula, and aggregation explicit?
+* Are missing data and bot activity handled deliberately?
+* Are uncertainty, validity, and prohibited uses documented?
+* Are metric versions visible in dashboards and APIs?
+
+=== Evidence of maturity
+
+* metric registry;
+* validation records;
+* quality gates;
+* versioned computation;
+* interpretation guidance;
+* deprecation and retirement history.
+
+=== Common failure
+
+A familiar metric name conceals several incompatible implementations.
+
+== Human attention and work-system measurement
+
+=== Diagnostic questions
+
+* Can active effort be separated from elapsed delay?
+* Are queues, interruption, rework, and validation burden measured?
+* Does analysis account for work mix and complexity?
+* Are local experience and qualitative evidence included?
+* Are measures prohibited from unsupported individual ranking?
+
+=== Evidence of maturity
+
+* active-time methods with known limitations;
+* queue-state instrumentation;
+* review and validation sessions;
+* experience sampling or practitioner interviews;
+* work-mix adjustment;
+* acceptable-use controls.
+
+=== Common failure
+
+Visible activity is treated as a substitute for cognitive work or productivity.
+
+== Experimentation and causal inference
+
+=== Diagnostic questions
+
+* Can treatment assignment be reproduced?
+* Is actual exposure observed?
+* Are primary outcomes and guardrails predeclared?
+* Are clustering, spillover, and noncompliance considered?
+* Are observational claims distinguished from causal claims?
+* Are negative and null results preserved?
+
+=== Evidence of maturity
+
+* experiment registry;
+* assignment and exposure service;
+* readiness review;
+* pre-analysis plans;
+* reproducibility packages;
+* replication records.
+
+=== Common failure
+
+Before-and-after movement is reported as causal improvement.
+
+== Economic evaluation
+
+=== Diagnostic questions
+
+* Are alternatives and counterfactuals explicit?
+* Are implementation, validation, migration, support, and exit costs included?
+* Is released capacity separated from savings?
+* Are realization and fragmentation assumptions visible?
+* Are bottlenecks and downstream constraints considered?
+* Are forecast and actual value tracked?
+
+=== Evidence of maturity
+
+* decision-grade business cases;
+* scenario and sensitivity analysis;
+* break-even models;
+* benefit-dependency map;
+* realization ledger;
+* renewal review.
+
+=== Common failure
+
+Minutes saved are multiplied by salary and presented as financial savings.
+
+== Architecture and complexity intelligence
+
+=== Diagnostic questions
+
+* Are repository, service, dependency, deployment, and ownership graphs connected?
+* Can blast radius be estimated and calibrated?
+* Are architectural boundaries linked to change effort and outcomes?
+* Can coupling and ownership fragmentation be analyzed over time?
+* Are architectural decisions linked to later evidence?
+
+=== Evidence of maturity
+
+* service and repository catalogue;
+* dependency graph;
+* change-coupling analysis;
+* incident-change linkage;
+* architecture decision records;
+* longitudinal architecture metrics.
+
+=== Common failure
+
+Static code-complexity measures are interpreted as complete architecture quality.
+
+== Governance, privacy, and trust
+
+=== Diagnostic questions
+
+* Are permitted, restricted, and prohibited uses explicit?
+* Is access purpose-bound and time-limited?
+* Can practitioners inspect and correct attributed evidence?
+* Are small groups and re-identification protected?
+* Are vendor data use and model training constrained contractually?
+* Are governance incidents detectable and handled?
+
+=== Evidence of maturity
+
+* governed-use registry;
+* access recertification;
+* practitioner notice;
+* correction and appeal records;
+* audit logs;
+* incident and exception management.
+
+=== Common failure
+
+Governance exists as policy text but not as enforced architecture and operating practice.
+
+== AI and agent readiness
+
+=== Diagnostic questions
+
+* Are model, prompt, retrieval, tool, and configuration versions captured?
+* Can human and machine contribution be attributed appropriately?
+* Is validation burden measured?
+* Are quality, security, cost, and capability guardrails present?
+* Are agent authority and delegation boundaries explicit?
+* Can a model or agent version be rolled back rapidly?
+
+=== Evidence of maturity
+
+* model and prompt registries;
+* AI activity provenance;
+* contribution and rework measures;
+* continuous evaluation;
+* delegation graph;
+* bounded action policies;
+* rollback tests.
+
+=== Common failure
+
+AI adoption, generated output, or acceptance is reported as productivity or value.
+
+== Platform and operational reliability
+
+=== Diagnostic questions
+
+* Are freshness, completeness, linkage, identity, and serving SLOs defined?
+* Can source or metric incidents be detected quickly?
+* Are environments isolated appropriately?
+* Is cost tracked by source, pipeline, and product?
+* Can the platform recover from corruption or regional failure?
+* Are semantic changes run in shadow mode?
+
+=== Evidence of maturity
+
+* platform SLOs;
+* quality dashboards;
+* incident procedures;
+* disaster-recovery tests;
+* lineage impact analysis;
+* workload and cost controls.
+
+=== Common failure
+
+The system measures engineering reliability without operating as a reliable system itself.
+
+== Organizational learning
+
+=== Diagnostic questions
+
+* Are decisions revisited after implementation?
+* Are negative results and failed interventions preserved?
+* Can learning survive team turnover and reorganization?
+* Are practitioner observations incorporated?
+* Are assumptions and boundary conditions recorded?
+* Does portfolio allocation change based on realized evidence?
+
+=== Evidence of maturity
+
+* learning reviews;
+* decision follow-up;
+* evidence registry;
+* replication agenda;
+* value-realization review;
+* retired or reversed policy records.
+
+=== Common failure
+
+Reports are produced, presented once, and then lost as organizational memory.
+
+== Scoring method
+
+Score each dimension from 0 to 5 using demonstrated evidence.
+
+[cols="1,4",options="header"]
+|===
+|Score |Meaning
+
+|0
+|Capability is absent or entirely informal.
+
+|1
+|Local examples exist, but semantics and ownership are inconsistent.
+
+|2
+|A repeatable process exists for a limited population or workflow.
+
+|3
+|The capability is governed and used for consequential decisions.
+
+|4
+|The capability is validated, monitored, and reproducible across several contexts.
+
+|5
+|The capability is adaptive, integrated, and improves through accumulated evidence.
+|===
+
+A score should cite specific evidence and limitations.
+
+Example:
+
+[source,yaml]
+----
+assessment:
+  dimension: experimentation_and_causal_inference
+  score: 2
+  evidence:
+    - repository_level_randomization_available_for_two_platforms
+    - primary_metrics_versioned
+  limitations:
+    - treatment_exposure_not_consistently_recorded
+    - no_standard_reproducibility_package
+    - limited_guardrail_latency
+  next_capability:
+    - implement_exposure_service
+    - standardize_readiness_and_analysis_records
+----
+
+== Weighting by decision risk
+
+Not every dimension has equal priority for every organization.
+
+A tool-evaluation program may prioritize:
+
+* experimentation;
+* metric quality;
+* AI provenance;
+* economics;
+* governance.
+
+An architecture modernization program may prioritize:
+
+* Engineering Change linkage;
+* service and dependency catalogues;
+* complexity and blast radius;
+* longitudinal outcomes;
+* portfolio economics.
+
+A high-risk automated policy should require strong scores in evidence, governance, causal learning, platform reliability, and rollback before deployment.
+
+== Critical-capability floor
+
+An overall maturity score should never compensate for a dangerous weakness.
+
+Examples:
+
+* strong analytics do not compensate for prohibited-use risk;
+* excellent dashboards do not compensate for missing source lineage;
+* randomized assignment does not compensate for unobserved exposure;
+* high adoption does not compensate for absent quality guardrails;
+* economic upside does not compensate for unacceptable security risk.
+
+For consequential decisions, define minimum dimension scores before use.
+
+== Assessment process
+
+A credible assessment should include:
+
+. executive and decision-owner interviews;
+. practitioner and domain interviews;
+. source and platform architecture review;
+. metric-definition review;
+. sample lineage walkthroughs;
+. experiment and decision record review;
+. governance and access review;
+. economic-model review;
+. live demonstration of correction and replay;
+. evidence-based scoring workshop.
+
+The assessment should not rely solely on self-reported survey scores.
+
+== Assessment outputs
+
+The assessment should produce:
+
+* dimension scores with evidence;
+* decision risks;
+* capability dependencies;
+* quick wins;
+* critical controls;
+* recommended pilot decision;
+* first-90-day plan;
+* 12- to 24-month roadmap;
+* owners and investment assumptions;
+* review date.
+
+== Selecting the first decision
+
+The best first use case is consequential enough to matter but bounded enough to complete.
+
+Strong candidates have:
+
+* a named decision owner;
+* two or more credible alternatives;
+* meaningful cost or risk;
+* an observable workflow;
+* available source evidence;
+* measurable outcomes within months;
+* reversible or bounded implementation;
+* practitioner interest;
+* no need for individual performance use.
+
+Examples include:
+
+* selecting a pull-request review tool;
+* improving CI queue capacity;
+* changing review routing;
+* evaluating a merge queue;
+* prioritizing an architecture bottleneck;
+* comparing an AI coding-assistant configuration;
+* changing deployment policy for low-risk services.
+
+== Poor first decisions
+
+Avoid beginning with:
+
+* universal engineering productivity;
+* individual performance scoring;
+* enterprise-wide agent autonomy;
+* a complete engineering ontology;
+* every source system at once;
+* long-term architecture value with no short-term outcomes;
+* a decision with no accountable owner;
+* a politically predetermined vendor selection.
+
+== First 30 days: define and bound
+
+=== Outcomes
+
+By day 30, the program should have:
+
+* one consequential decision question;
+* an executive decision owner;
+* a cross-functional working group;
+* a mapped Engineering Change lifecycle;
+* a source and evidence inventory;
+* initial governance and prohibited-use agreement;
+* candidate primary metrics and guardrails;
+* identified data-quality gaps;
+* a written pilot charter.
+
+=== Activities
+
+. Interview decision owners and practitioners.
+. Document alternatives and decision timing.
+. Map actors, artifacts, queues, validation, deployment, and outcomes.
+. Identify source systems and source owners.
+. Review privacy, security, and employment-use boundaries.
+. Select the smallest eligible population.
+. Draft metric and experiment specifications.
+. Establish a weekly evidence review.
+
+=== Exit criteria
+
+Do not proceed merely because instrumentation is available.
+
+Proceed when:
+
+* the decision and alternatives are clear;
+* evidence requirements are bounded;
+* owners accept the governance constraints;
+* outcomes and guardrails are observable or can become observable;
+* the pilot can produce a decision.
+
+== Days 31 to 60: build the evidence path
+
+=== Outcomes
+
+By day 60, the program should have:
+
+* immutable ingestion for the required sources;
+* canonical event mapping;
+* actor, repository, service, and ownership references;
+* Engineering Change linkage for the pilot population;
+* linkage and source-quality reporting;
+* draft governed metrics;
+* correction and replay capability;
+* a shadow decision product.
+
+=== Activities
+
+. Implement or harden connectors.
+. Preserve event and ingestion time.
+. Establish source contracts.
+. Reconstruct Engineering Changes.
+. Calibrate linkage confidence on a labeled sample.
+. Implement metric formulas and quality gates.
+. Conduct practitioner validation.
+. Review identity and access controls.
+. Run historical backfills and reconciliation.
+
+=== Exit criteria
+
+Proceed when:
+
+* source completeness and freshness are known;
+* linkage quality is adequate for the declared use;
+* metric semantics are reviewable;
+* missingness is visible;
+* corrections can propagate;
+* practitioners recognize the workflow represented.
+
+== Days 61 to 90: evaluate and decide
+
+=== Outcomes
+
+By day 90, the program should have:
+
+* an approved study or evaluation protocol;
+* deterministic assignment or a defensible comparison design;
+* observed treatment exposure;
+* operational guardrails;
+* an economic model with scenarios;
+* a decision record template;
+* an implementation and value-realization plan.
+
+=== Activities
+
+. Conduct readiness and power review.
+. Register the pre-analysis plan.
+. Begin or complete the bounded evaluation.
+. Monitor data quality and safety.
+. Estimate direct cost, validation burden, and released capacity.
+. Identify realization conditions and bottlenecks.
+. Present effect size, uncertainty, limitations, and alternatives.
+. Record an adopt, modify, extend, reject, or reverse decision.
+
+=== Exit criteria
+
+The first 90 days succeed when the organization closes one complete loop from decision question to governed evidence and recorded action.
+
+A large platform without a decision is not a successful first quarter.
+
+== Months 4 to 6: operationalize
+
+Focus on:
+
+* stabilizing source and metric contracts;
+* expanding to adjacent populations;
+* completing outcome follow-up;
+* tracking value realization;
+* implementing correction and appeal;
+* documenting negative results;
+* onboarding domain stewards;
+* improving publication and decision products;
+* reviewing platform cost and reliability.
+
+The main objective is repeatability, not connector count.
+
+== Months 7 to 12: expand causal and economic capability
+
+Focus on:
+
+* reusable assignment and exposure services;
+* standard experiment templates;
+* quasi-experimental methods for nonrandomized rollouts;
+* business-case and realization ledgers;
+* architecture and blast-radius analysis;
+* cross-team replication;
+* evidence and decision registries;
+* quarterly learning portfolio reviews.
+
+By the end of year one, several decisions should have complete evidence-to-outcome histories.
+
+== Year 2: enterprise learning system
+
+Potential priorities include:
+
+* broader Engineering Change coverage;
+* temporal organizational and service models;
+* governed metric and model marketplaces;
+* multi-region and regulated-domain controls;
+* AI model, prompt, and agent provenance;
+* continuous tool evaluation;
+* architecture digital twins and simulations;
+* bounded automated policy;
+* cross-organization benchmarking under privacy controls.
+
+These capabilities should be justified by demonstrated decision value from earlier stages.
+
+== Capability dependency map
+
+Some capabilities must precede others.
+
+Examples:
+
+* causal analysis depends on stable outcomes, eligibility, assignment, and exposure;
+* economic realization depends on measured effects and operational ownership;
+* automated policy depends on metric quality, model validation, governance, and rollback;
+* architecture intelligence depends on service, dependency, deployment, and ownership data;
+* AI evaluation depends on model and prompt provenance plus human validation evidence;
+* portfolio optimization depends on comparable business cases and realized outcomes.
+
+Skipping dependencies creates false maturity.
+
+== Team and sponsorship model
+
+A launch team should include:
+
+* accountable executive sponsor;
+* Engineering Intelligence product owner;
+* data or platform engineering;
+* measurement or causal expertise;
+* developer-experience or workflow expertise;
+* domain representatives;
+* security and privacy;
+* finance partner for economic evaluation;
+* practitioner representatives.
+
+A large permanent organization is not required initially. Clear ownership and access to these capabilities are required.
+
+== Funding model
+
+Initial funding should be tied to a bounded decision portfolio.
+
+A useful investment structure is:
+
+* foundational platform funding for common evidence and governance;
+* domain funding for source integration and semantic stewardship;
+* decision-owner funding for studies and interventions;
+* central measurement expertise shared across programs;
+* explicit operational ownership after pilot completion.
+
+The platform should not become an unfunded central reporting service with unlimited demand.
+
+== Adoption signals
+
+Healthy adoption is visible when:
+
+* teams request help framing decisions rather than requesting dashboards;
+* metric definitions are challenged constructively;
+* practitioners use correction workflows;
+* decision owners accept uncertainty and bounded rollout;
+* negative results affect investment;
+* finance distinguishes capacity from savings;
+* governance incidents are surfaced rather than hidden;
+* platform priorities follow decision value;
+* prior decisions are revisited using realized outcomes.
+
+== Warning signals
+
+The program is drifting when:
+
+* connector count is the primary progress metric;
+* leaders ask for individual rankings;
+* local teams rebuild metrics outside the registry;
+* experiments lack exposure or guardrails;
+* every result is positive;
+* modeled time becomes reported savings;
+* practitioners do not recognize the evidence model;
+* governance review occurs only after deployment;
+* old decisions are never revisited;
+* AI usage is treated as AI value.
+
+== Maturity reassessment cadence
+
+Reassess at least every six months during the first two years.
+
+Also reassess after:
+
+* major organizational change;
+* new source-control or deployment platform;
+* significant AI model or agent adoption;
+* governance incident;
+* metric or reconstruction redesign;
+* expansion into regulated populations;
+* transition from advisory to automated policy.
+
+Each reassessment should compare promised and demonstrated capability.
+
+== Executive maturity summary template
+
+[source,yaml]
+----
+engineering_intelligence_maturity:
+  assessment_date: 2026-11-01
+  accountable_owner: vp_engineering_platform
+  target_decisions:
+    - enterprise_review_tool_selection
+    - ci_capacity_investment
+  dimensions:
+    decision_orientation: 3
+    source_evidence_and_contracts: 2
+    engineering_change_semantics: 2
+    identity_and_ownership: 2
+    metric_quality: 2
+    attention_measurement: 1
+    experimentation: 2
+    economics: 2
+    architecture_intelligence: 1
+    governance_and_privacy: 3
+    ai_and_agent_readiness: 1
+    platform_reliability: 2
+    organizational_learning: 1
+  critical_gaps:
+    - treatment_exposure
+    - capacity_realization_tracking
+    - temporal_service_ownership
+  next_90_day_outcome: complete_review_tool_decision_loop
+  review_date: 2027-05-01
+----
+
+== Roadmap decision rules
+
+Prioritize work that:
+
+* closes a complete decision loop;
+* improves evidence quality for several decisions;
+* reduces a critical governance or validity risk;
+* enables causal evaluation;
+* creates reusable semantics rather than vendor lock-in;
+* supports correction and reproducibility;
+* can demonstrate value within a bounded horizon.
+
+Deprioritize work that:
+
+* adds data without a purpose;
+* optimizes dashboard aesthetics before semantics;
+* builds universal abstractions before a working use case;
+* automates decisions before governance maturity;
+* requires unsupported individual surveillance;
+* has no owner for realized value.
+
+== Assessment anti-patterns
+
+=== Maturity theater
+
+Scores are inflated to satisfy leadership expectations rather than grounded in evidence.
+
+=== Average-score optimism
+
+Strong dimensions conceal one critical weakness.
+
+=== Tool-based maturity
+
+Owning a warehouse, graph database, experimentation platform, or AI gateway is mistaken for operating capability.
+
+=== Roadmap by connector
+
+The program plans source integrations without specifying which decisions each enables.
+
+=== Enterprise-wide first step
+
+The first release attempts to model every team and workflow.
+
+=== Permanent pilot team
+
+The central team continues running local processes that should have operational owners.
+
+=== Governance last
+
+Privacy and acceptable-use constraints are introduced after detailed individual evidence is already broadly available.
+
+=== No realization review
+
+The program demonstrates metric movement but never determines whether the decision produced value.
+
+== Maturity and adoption checklist
+
+. Assess demonstrated capabilities by dimension rather than relying on one maturity score.
+. Cite concrete evidence, limitations, and decision risks for every score.
+. Define minimum capability floors for consequential uses.
+. Choose one bounded decision with alternatives, an owner, observable outcomes, and reversibility.
+. Complete a full evidence-to-decision loop in the first 90 days.
+. Build only the source, semantic, metric, governance, and analytical capabilities required for that loop.
+. Measure source quality, linkage confidence, uncertainty, and prohibited uses explicitly.
+. Separate released capacity, realized value, and financial savings.
+. Expand through replication and reuse rather than immediate enterprise breadth.
+. Reassess after major technical, organizational, model, or governance change.
+. Judge progress by decisions improved, harmful choices avoided, and learning retained.
