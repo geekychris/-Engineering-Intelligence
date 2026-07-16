@@ -1,0 +1,884 @@
+= Metric Specification Standard
+
+[abstract]
+This appendix defines a complete specification format for Engineering Intelligence metrics. Its purpose is to prevent ambiguous, unstable, or misleading measures from entering dashboards, experiments, procurement decisions, policy systems, or executive reviews. A governed metric is treated as a versioned analytical product with explicit purpose, semantics, population, formula, data lineage, quality thresholds, uncertainty, interpretation limits, and retirement criteria.
+
+== Why a metric standard is necessary
+
+A metric name is not a definition.
+
+Terms such as cycle time, productivity, review effort, deployment frequency, quality, acceptance rate, and AI effectiveness can conceal materially different calculations.
+
+Two teams may publish a metric with the same name while differing in:
+
+* unit of analysis;
+* start and end events;
+* eligible population;
+* treatment of missing data;
+* inclusion of bots and AI agents;
+* aggregation method;
+* time zone;
+* outlier handling;
+* complexity adjustment;
+* confidence requirements;
+* outcome window.
+
+A metric specification makes these choices explicit and reviewable.
+
+== Governing principle
+
+Every metric should answer four questions:
+
+. What decision is this metric intended to support?
+. What construct does it represent?
+. How is it computed from evidence?
+. Under what conditions should it not be used?
+
+A metric that cannot answer these questions should remain exploratory.
+
+== Metric specification lifecycle
+
+image::../figures/mermaid/metric-specification-lifecycle.mmd[Metric specification lifecycle]
+
+The lifecycle includes proposal, design, validation, approval, publication, monitoring, revision, deprecation, and retirement.
+
+== Required specification fields
+
+=== Metric identity
+
+Each metric requires:
+
+* stable metric identifier;
+* human-readable name;
+* semantic version;
+* lifecycle status;
+* owning team;
+* accountable owner;
+* technical steward;
+* date created;
+* last review date;
+* next review date.
+
+Example:
+
+[source,yaml]
+----
+metric_id: ei.review.human_effort_minutes
+name: Human Review Effort
+version: 2.1.0
+status: governed
+owner_team: engineering_intelligence
+accountable_owner: director_developer_productivity
+technical_steward: measurement_platform
+created_at: 2026-01-12
+last_reviewed_at: 2026-07-01
+next_review_at: 2026-10-01
+----
+
+=== Purpose
+
+State the decision or workflow the metric supports.
+
+Good purpose statement:
+
+[quote]
+Estimate the human attention consumed by pull-request validation so that review-routing and AI-review interventions can be evaluated economically.
+
+Weak purpose statement:
+
+[quote]
+Track review productivity.
+
+The purpose should identify the user, decision, and intended action.
+
+=== Construct
+
+Name and define the underlying concept.
+
+For example:
+
+* construct: human validation effort;
+* definition: active human attention spent evaluating and responding to an Engineering Change before acceptance;
+* excluded constructs: calendar delay, author implementation effort, automated review runtime.
+
+The construct definition should remain independent of the current instrumentation method.
+
+=== Claim type
+
+Declare whether the metric is used descriptively, predictively, causally, or prescriptively.
+
+A metric may support several claim types, but each use must be documented separately.
+
+=== Unit of analysis
+
+Examples include:
+
+* Engineering Change;
+* pull request;
+* deployment;
+* incident;
+* review finding;
+* actor-day;
+* team-week;
+* repository-month;
+* experiment assignment unit.
+
+The unit of analysis determines valid aggregation and interpretation.
+
+=== Population
+
+Define eligibility precisely.
+
+A population definition should include:
+
+* organizations or domains;
+* repositories or services;
+* change types;
+* lifecycle states;
+* date range;
+* risk or complexity criteria;
+* actor types;
+* exclusion rules;
+* minimum evidence quality.
+
+Example:
+
+[source,yaml]
+----
+population:
+  unit: engineering_change
+  include:
+    - primary_repository_type: application
+    - accepted_at: not_null
+    - review_mode: pull_request
+  exclude:
+    - generated_only_change: true
+    - emergency_bypass: true
+    - linkage_confidence_below: high
+----
+
+=== Measurement interval
+
+Specify:
+
+* event-time basis;
+* reporting window;
+* observation delay;
+* time zone;
+* partial-period behavior;
+* late-arriving-event policy.
+
+Metrics based on rare outcomes may require a maturity delay before publication.
+
+=== Formula
+
+Provide a mathematical or executable definition.
+
+Example:
+
+[stem]
+++++
+HumanReviewEffort(c) = sum_(r in R_c) ActiveReviewMinutes(r)
+++++
+
+Where stem:[R_c] is the set of eligible human review sessions linked to Engineering Change stem:[c].
+
+The specification must define every term.
+
+=== Numerator and denominator
+
+For rates and ratios, define both explicitly.
+
+Example:
+
+[stem]
+++++
+FindingAcceptanceRate = (AcceptedUniqueFindings) / (EligibleUniqueFindings)
+++++
+
+Questions that must be answered include:
+
+* Are duplicates removed?
+* Are unresolved findings included?
+* Are findings weighted by severity?
+* Is the denominator based on produced or viewed findings?
+* What happens when the denominator is zero?
+
+=== Aggregation
+
+Define valid aggregation functions.
+
+Possible aggregations include:
+
+* count;
+* sum;
+* mean;
+* median;
+* percentile;
+* trimmed mean;
+* weighted mean;
+* rate;
+* hazard;
+* distribution;
+* posterior estimate.
+
+Metrics should declare whether they are additive.
+
+For example, medians cannot be averaged safely across teams without access to the underlying distribution.
+
+=== Dimensions
+
+Declare approved breakdowns such as:
+
+* organization;
+* team;
+* repository;
+* service;
+* change type;
+* complexity band;
+* risk class;
+* language;
+* AI model version;
+* treatment group;
+* deployment environment.
+
+Dimensions with privacy or re-identification risk should be restricted.
+
+=== Source evidence
+
+List all required source entities and events.
+
+Example:
+
+[source,yaml]
+----
+sources:
+  - canonical.review_session
+  - canonical.review_activity
+  - canonical.actor_identity
+  - canonical.engineering_change_link
+  - canonical.pull_request_state
+----
+
+Each source should include freshness, completeness, ownership, and lineage requirements.
+
+=== Transformation lineage
+
+Document the full path from raw source to published metric.
+
+This includes:
+
+* connector version;
+* canonical schema version;
+* transformation jobs;
+* identity-resolution version;
+* Engineering Change reconstruction version;
+* metric SQL or code version;
+* aggregation layer;
+* dashboard or API consumer.
+
+=== Data-quality requirements
+
+Declare minimum publication thresholds.
+
+Possible requirements include:
+
+* source freshness under six hours;
+* event completeness above 98 percent;
+* Engineering Change linkage coverage above 90 percent;
+* high-or-confirmed confidence above 85 percent;
+* unresolved identity below 2 percent;
+* no active processing incident;
+* minimum sample size;
+* stable metric version.
+
+A metric should publish an unavailable state when thresholds fail.
+
+=== Missing-data policy
+
+Missingness must not be silently treated as zero.
+
+The specification should distinguish:
+
+* not applicable;
+* not observed;
+* source unavailable;
+* unresolved linkage;
+* delayed outcome;
+* intentionally excluded;
+* true zero.
+
+Imputation methods, if any, must be stated and sensitivity-tested.
+
+=== Bot and AI treatment
+
+Specify how activity from the following is handled:
+
+* service accounts;
+* deterministic bots;
+* AI assistants;
+* autonomous agents;
+* vendor systems;
+* human actions initiated through automation.
+
+Machine-generated activity should not be combined with human effort unless the construct explicitly requires it.
+
+=== Complexity and work-mix adjustment
+
+If comparisons may be affected by work mix, define adjustment variables.
+
+Examples include:
+
+* code and configuration surface;
+* dependency reach;
+* novelty;
+* risk classification;
+* number of repositories;
+* service criticality;
+* review specialization;
+* change type;
+* ownership fragmentation.
+
+The unadjusted distribution should remain available alongside adjusted results.
+
+=== Uncertainty
+
+Every inferential or sampled metric requires an uncertainty method.
+
+Options include:
+
+* confidence intervals;
+* credible intervals;
+* bootstrap intervals;
+* standard errors;
+* control limits;
+* posterior distributions;
+* sensitivity ranges.
+
+Small populations should not be displayed with false precision.
+
+=== Validity evidence
+
+Document available evidence for:
+
+* construct validity;
+* criterion validity;
+* convergent validity;
+* discriminant validity;
+* ecological validity;
+* measurement invariance.
+
+The specification should state what remains unvalidated.
+
+=== Reliability evidence
+
+Possible evidence includes:
+
+* test-retest stability;
+* inter-rater agreement;
+* identity-resolution consistency;
+* reconstruction agreement;
+* reproducible computation;
+* model stability;
+* source consistency.
+
+=== Interpretation
+
+State what a high or low value may indicate.
+
+Example:
+
+[quote]
+Higher human review effort may reflect greater complexity, poor change preparation, weak automated validation, specialist scarcity, or unusually careful review. It should not be interpreted as reviewer inefficiency without additional evidence.
+
+Interpretation guidance should include plausible alternative explanations.
+
+=== Prohibited interpretations
+
+Every governed metric should list unsupported uses.
+
+Examples include:
+
+* individual performance ranking;
+* direct comparison across teams without work-mix context;
+* causal claims from descriptive movement;
+* cost savings claims without capacity realization;
+* quality claims before the outcome window matures;
+* comparison across metric versions without restatement.
+
+=== Guardrails
+
+Define metrics that must be considered together.
+
+For example, an AI code-generation metric might require guardrails for:
+
+* severe defects;
+* rollback rate;
+* human validation effort;
+* security findings;
+* codebase complexity;
+* long-term maintainability.
+
+A primary metric should never be optimized without its declared guardrails.
+
+=== Privacy classification
+
+Specify:
+
+* data classification;
+* minimum aggregation threshold;
+* approved audiences;
+* permitted purposes;
+* retention period;
+* whether individual-level display is allowed;
+* whether employment use is prohibited.
+
+=== Access policy
+
+Document roles permitted to view:
+
+* raw evidence;
+* row-level metric data;
+* team aggregates;
+* enterprise aggregates;
+* experiment results;
+* restricted dimensions.
+
+=== Behavioral risk
+
+Describe how the metric might be gamed or distort behavior.
+
+Examples include:
+
+* splitting changes to reduce apparent size;
+* delaying status transitions;
+* avoiding difficult work;
+* producing low-value findings;
+* suppressing incident linkage;
+* moving work outside instrumented systems.
+
+The metric owner should define monitoring for these effects.
+
+=== Decision thresholds
+
+Thresholds must be justified.
+
+A threshold may originate from:
+
+* policy requirement;
+* operational capacity;
+* economic break-even;
+* experiment decision rule;
+* historical control limit;
+* risk tolerance;
+* external standard.
+
+Arbitrary red-yellow-green boundaries should be avoided.
+
+=== Versioning rules
+
+Use semantic versioning principles:
+
+* patch: implementation correction without intended semantic change;
+* minor: backward-compatible extension or additional dimension;
+* major: change to construct, population, formula, unit, or interpretation.
+
+Historical results should be restated or clearly separated after a major version change.
+
+=== Monitoring
+
+A production metric should be monitored for:
+
+* source freshness;
+* completeness;
+* distribution shift;
+* sudden discontinuity;
+* missingness;
+* subgroup behavior;
+* usage outside approved purpose;
+* gaming indicators;
+* cost;
+* consumer dependencies.
+
+=== Review and retirement
+
+Retirement criteria may include:
+
+* no active decision use;
+* construct no longer valid;
+* source semantics changed;
+* persistent behavioral distortion;
+* replacement by a better measure;
+* unacceptable privacy risk;
+* maintenance cost exceeds value.
+
+Retired metrics should remain discoverable with a reason and successor where applicable.
+
+== Complete metric template
+
+[source,yaml]
+----
+metric:
+  id: ei.change.quality_adjusted_cycle_time
+  name: Quality-Adjusted Change Cycle Time
+  version: 1.0.0
+  status: proposed
+  owner: engineering_intelligence
+  steward: measurement_platform
+
+purpose:
+  decision: Evaluate workflow interventions that trade speed against quality risk
+  users:
+    - engineering_leaders
+    - developer_experience
+    - platform_owners
+
+construct:
+  name: quality_adjusted_delivery_latency
+  definition: Time required to produce an accepted outcome, adjusted for observed post-release failure consequence
+  exclusions:
+    - individual_productivity
+
+claim_type:
+  - descriptive
+  - causal_when_used_in_registered_experiment
+
+unit_of_analysis: engineering_change
+
+population:
+  include:
+    - released_change: true
+  exclude:
+    - outcome_window_incomplete: true
+    - linkage_confidence_below: high
+
+interval:
+  start_event: first_substantive_activity
+  end_event: release_exposure
+  outcome_window_days: 30
+  time_basis: event_time_utc
+
+formula:
+  expression: cycle_minutes * quality_penalty_multiplier
+  quality_penalty_multiplier:
+    no_adverse_outcome: 1.0
+    minor_defect: 1.2
+    rollback: 2.0
+    severe_incident: 5.0
+
+aggregation:
+  primary: median
+  secondary:
+    - p75
+    - p90
+    - distribution
+  additive: false
+
+sources:
+  - engineering_change
+  - activity_event
+  - release_exposure
+  - incident_change_link
+  - rollback_event
+
+quality_gates:
+  linkage_coverage_min: 0.90
+  confirmed_or_high_link_min: 0.85
+  source_freshness_hours_max: 12
+  minimum_population: 50
+
+missing_data:
+  incomplete_outcome_window: suppress
+  unknown_release_time: exclude_and_report
+  unresolved_incident_link: sensitivity_analysis
+
+uncertainty:
+  method: stratified_bootstrap
+  interval: 95_percent
+
+validity:
+  known_limitations:
+    - penalty_weights_are_policy_values_not_natural_constants
+    - rare_incidents_create_high_variance
+
+prohibited_uses:
+  - individual_performance_ranking
+  - cross_team_comparison_without_complexity_adjustment
+  - financial_savings_without_economic_model
+
+privacy:
+  classification: internal
+  minimum_group_size: 10
+  individual_display: prohibited
+
+review:
+  cadence: quarterly
+  next_review: 2026-10-01
+----
+
+== Metric dependency graph
+
+Metrics should declare dependencies on:
+
+* canonical entities;
+* derived features;
+* models;
+* identity mappings;
+* linkage rules;
+* reference data;
+* other metrics.
+
+A change to a dependency should identify affected metrics and consumers.
+
+== Metric bundles
+
+Important decisions should use bundles rather than isolated measures.
+
+A bundle may contain:
+
+* primary outcome;
+* guardrails;
+* mechanism indicators;
+* data-quality measures;
+* economic measures;
+* adoption or exposure measures.
+
+For an AI review evaluation:
+
+* primary outcome: human review effort;
+* guardrails: severe defect and rollback outcomes;
+* mechanism: actionable finding recall and ranking;
+* economic: inference plus validation cost;
+* exposure: eligible changes receiving the configured reviewer;
+* data quality: change linkage and outcome maturity.
+
+== Metric maturity levels
+
+=== Level 0: draft
+
+The construct and intended purpose are still being explored.
+
+=== Level 1: defined
+
+Population, formula, and source evidence are documented.
+
+=== Level 2: validated
+
+Data quality, reliability, and initial validity evidence are acceptable.
+
+=== Level 3: governed
+
+Ownership, privacy, prohibited uses, versioning, and review are operational.
+
+=== Level 4: decision-grade
+
+The metric has demonstrated usefulness for a consequential decision and includes uncertainty and guardrails.
+
+=== Level 5: policy-grade
+
+The metric may influence automated or formal policy under continuous monitoring, appeal, and rollback controls.
+
+Maturity should be assigned per use case, not universally.
+
+== Validation process
+
+A proposed metric should pass through:
+
+. construct review;
+. domain review;
+. source and lineage review;
+. computation testing;
+. historical backtest;
+. missingness analysis;
+. reliability analysis;
+. practitioner validation;
+. privacy and governance review;
+. shadow publication;
+. decision-use approval.
+
+== Metric tests
+
+Automated tests should include:
+
+* schema tests;
+* unit tests for formulas;
+* population inclusion and exclusion tests;
+* duplicate handling;
+* zero-denominator behavior;
+* time-boundary behavior;
+* late-event handling;
+* version compatibility;
+* known-example fixtures;
+* distribution-change alerts;
+* lineage completeness.
+
+== Publication contract
+
+A published metric response should include more than a value.
+
+Example:
+
+[source,json]
+----
+{
+  "metric_id": "ei.review.human_effort_minutes",
+  "version": "2.1.0",
+  "value": 37.4,
+  "unit": "minutes",
+  "aggregation": "median",
+  "population_size": 1842,
+  "period": {
+    "start": "2026-06-01",
+    "end": "2026-06-30"
+  },
+  "uncertainty": {
+    "lower": 35.9,
+    "upper": 39.2,
+    "level": 0.95
+  },
+  "quality": {
+    "status": "publishable",
+    "source_completeness": 0.992,
+    "change_linkage_coverage": 0.947,
+    "freshness_hours": 2.1
+  },
+  "interpretation_url": "metric://ei.review.human_effort_minutes/2.1.0"
+}
+----
+
+Consumers should not receive a bare number without version and quality context.
+
+== Change management
+
+When a metric changes:
+
+. create a proposal;
+. identify semantic and consumer impact;
+. run old and new versions in parallel;
+. quantify differences;
+. review interpretation changes;
+. communicate the effective date;
+. restate history where appropriate;
+. preserve the previous version;
+. update dashboards, experiments, alerts, and decisions.
+
+== Metric incident management
+
+A metric incident occurs when a published measure is materially wrong, delayed, misused, or semantically invalid.
+
+Incident response should include:
+
+* suppressing affected values;
+* identifying impacted decisions and consumers;
+* preserving erroneous outputs for audit;
+* correcting source or transformation logic;
+* recomputing affected periods;
+* publishing an explanation;
+* reviewing whether controls failed.
+
+== Example: deployment frequency
+
+A weak definition is “number of deployments per week.”
+
+A complete specification must answer:
+
+* What is a deployment?
+* Are retries counted?
+* Are non-production environments included?
+* Is a progressive rollout one deployment or many?
+* Are rollbacks deployments?
+* Are infrastructure and configuration changes included?
+* Is the unit repository, service, team, or enterprise?
+* Are failed deployments counted?
+* How are shared deployments attributed?
+
+The metric may be useful, but only after these choices are explicit.
+
+== Example: AI acceptance rate
+
+Acceptance rate is especially easy to misuse.
+
+A specification must define:
+
+* suggestion unit;
+* whether partial edits count;
+* observation window;
+* duplicate suggestions;
+* invisible accepted content;
+* later rework or deletion;
+* user exposure;
+* eligible denominator;
+* quality outcome linkage.
+
+Acceptance is evidence of immediate use, not proof of correctness or value.
+
+== Example: review precision
+
+Review precision may be defined as:
+
+[stem]
+++++
+Precision = (AcceptedActionableFindings) / (EligibleProducedFindings)
+++++
+
+The specification should additionally define:
+
+* finding deduplication;
+* adjudication process;
+* actionable criteria;
+* severity treatment;
+* unresolved findings;
+* human and AI producer identity;
+* rank-aware variants;
+* annotation agreement.
+
+Precision should be paired with recall or coverage because a system can achieve high precision by producing very few findings.
+
+== Anti-patterns
+
+=== Formula-only definition
+
+The construct, purpose, and interpretation remain ambiguous.
+
+=== Metric without population
+
+Values change because eligibility changed, but consumers interpret the movement as system performance.
+
+=== Missing equals zero
+
+Source failure appears as improvement.
+
+=== Versionless dashboard
+
+Semantic changes silently alter historical trends.
+
+=== Universal threshold
+
+One boundary is applied across domains with different risk and work mix.
+
+=== Bare point estimate
+
+Small or noisy samples are presented with false certainty.
+
+=== Individual ranking by system telemetry
+
+Weak proxies become employment judgments and corrupt behavior.
+
+=== Metric without retirement
+
+Obsolete measures accumulate and continue influencing decisions.
+
+== Metric specification checklist
+
+. Assign a durable identifier, owner, steward, and semantic version.
+. State the decision purpose and underlying construct.
+. Define claim type, unit, population, interval, formula, and aggregation.
+. Document source evidence and full transformation lineage.
+. Publish data-quality thresholds and missing-data behavior.
+. Separate human, automation, and AI activity appropriately.
+. Include complexity adjustment where comparison requires it.
+. Report uncertainty, validity, reliability, and limitations.
+. Define interpretation, prohibited uses, guardrails, and privacy controls.
+. Monitor drift, gaming, misuse, quality, and dependency changes.
+. Review metrics on a declared cadence.
+. Deprecate and retire metrics that no longer improve decisions.
