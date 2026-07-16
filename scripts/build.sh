@@ -7,6 +7,7 @@ BUILD_DIR="$ROOT/build"
 WORK_DIR="$ROOT/.build-src"
 BOOK="$ROOT/book.adoc"
 PDF_THEME="$ROOT/themes/engineering-intelligence-theme.yml"
+HTML_STYLESHEET="$ROOT/styles/engineering-intelligence.css"
 
 fail() {
   printf 'ERROR: %s\n' "$*" >&2
@@ -36,6 +37,10 @@ fi
 
 [[ -f "$BOOK" ]] || fail "book.adoc was not found"
 [[ -f "$ROOT/scripts/validate_sources.py" ]] || fail "source validator was not found"
+
+if [[ "$MODE" == "html" || "$MODE" == "all" || "$MODE" == "validate" ]]; then
+  [[ -f "$HTML_STYLESHEET" ]] || fail "HTML stylesheet was not found"
+fi
 
 if [[ "$MODE" == "pdf" || "$MODE" == "all" || "$MODE" == "validate" ]]; then
   [[ -f "$PDF_THEME" ]] || fail "PDF theme was not found"
@@ -103,6 +108,10 @@ prepare_sources() {
     cp -R "$ROOT/themes" "$WORK_DIR/themes"
   fi
 
+  if [[ -d "$ROOT/styles" ]]; then
+    cp -R "$ROOT/styles" "$WORK_DIR/styles"
+  fi
+
   mkdir -p "$WORK_DIR/figures/mermaid"
 
   if compgen -G "$BUILD_DIR/figures/mermaid/*.svg" >/dev/null; then
@@ -128,6 +137,8 @@ build_html() {
     --attribute reproducible \
     --attribute linkcss! \
     --attribute data-uri \
+    --attribute stylesdir="$WORK_DIR/styles" \
+    --attribute stylesheet=engineering-intelligence.css \
     --destination-dir "$BUILD_DIR" \
     --out-file engineering-intelligence.html \
     "$WORK_DIR/book.adoc"
