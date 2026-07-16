@@ -110,16 +110,19 @@ Build the publication image:
 docker build -t engineering-intelligence-book .
 ```
 
-Generate the editions into a local `build` directory:
+Generate the editions into a local `build` directory. On Linux, run the container with the host user and group so the unprivileged publication process can write to the bind mount:
 
 ```bash
 mkdir -p build
 docker run --rm \
+  --user "$(id -u):$(id -g)" \
   -v "$(pwd)/build:/book/build" \
   engineering-intelligence-book
 ```
 
-The container runs the publication process as an unprivileged user.
+Docker Desktop for macOS generally maps bind-mount permissions automatically; the explicit `--user` option remains safe when `id` is available.
+
+The image itself defaults to a dedicated unprivileged `publisher` user when no user override is supplied.
 
 ## Continuous integration
 
