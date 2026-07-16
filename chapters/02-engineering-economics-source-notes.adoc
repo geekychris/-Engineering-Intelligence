@@ -1,0 +1,160 @@
+== Research foundations and source notes
+
+The economic framework in this chapter combines established cost-benefit, productivity, queueing, operations, and organizational research with several Engineering Intelligence-specific constructs.
+
+=== Technology investment and realized productivity
+
+The distinction between acquiring technology and realizing measurable productivity is central to the information-technology productivity-paradox literature. Solow’s observation that computers were visible everywhere except measured productivity became a concise statement of the problem. Brynjolfsson subsequently examined measurement error, delayed learning, redistribution, and organizational transformation as explanations. Later work on artificial intelligence argued that general-purpose technologies often require substantial complementary innovation before gains appear in aggregate productivity. See <<solow1987>>, <<brynjolfsson1993>>, and <<brynjolfsson2017>>.
+
+This literature supports the chapter’s claim that purchasing an engineering tool, increasing its usage, or observing local time savings does not by itself establish realized organizational value.
+
+=== Cost-benefit analysis and decision alternatives
+
+The chapter’s treatment of incremental cost, credible alternatives, discounting, risk, sensitivity analysis, and uncertainty is grounded in standard cost-benefit-analysis practice. See <<boardman2018>>.
+
+The relevant comparison is the difference between the intervention and a realistic counterfactual—not the gross benefit of the intervention considered in isolation. This is why acquisition, implementation, operating, validation, migration, switching, risk, and opportunity costs must all be included when they differ across alternatives.
+
+=== Opportunity cost and scarce attention
+
+Opportunity cost is the value of the best alternative use of a constrained resource. In Engineering Intelligence, that resource is frequently specialist attention rather than generic labor hours.
+
+The chapter’s attention-scarcity multiplier is an operational construct, not a standard accounting rule. Its purpose is to represent the fact that a scarce reviewer, architect, security specialist, or incident expert can constrain organizational throughput beyond the person’s loaded hourly cost.
+
+Cognitive-load and interruption research supports the distinction between uninterrupted reasoning and fragmented or resumed work. See <<sweller1988>> and <<mark2008>>. Developer research on perceived productivity further supports treating invisible coordination, interruption, and progress as economically meaningful rather than assuming visible activity is the complete work product. See <<meyer2014>>.
+
+=== Queueing, utilization, and work in progress
+
+Little’s Law provides the formal relationship among average work in progress, throughput, and average flow time:
+
+[stem]
+++++
+L = \lambda W
+++++
+
+See <<little1961>>.
+
+The chapter uses this relationship descriptively rather than as a universal target. It applies only when the system boundary and averaging period are coherent and the system is sufficiently stable.
+
+Kingman’s heavy-traffic approximation and the broader operations literature explain why queue delay grows nonlinearly as utilization and variability rise. See <<kingman1961>> and <<hopp2011>>. This supports several important conclusions:
+
+* small increases in constrained capacity can create large delay reductions near saturation;
+* increasing upstream output can destabilize a downstream queue;
+* reducing variability may be as important as increasing average service rate;
+* average service time and end-to-end elapsed time answer different questions;
+* saved minutes create little throughput value when the improved stage is not the bottleneck.
+
+The constraints perspective described in <<goldratt1984>> provides the practitioner-oriented basis for evaluating improvements at the system bottleneck rather than optimizing every component independently.
+
+=== Coordination and socio-technical cost
+
+The chapter’s treatment of team boundaries, handoffs, ownership, and interface negotiation is informed by socio-technical research.
+
+Conway’s observation links organizational communication structures to the systems organizations design. See <<conway1968>>. Socio-technical congruence research examines alignment between technical dependencies and coordination relationships. See <<cataldo2006>>. Distributed-development research explains why distance, organizational boundaries, and communication dependencies create additional coordination difficulty. See <<herbsleb2007>>.
+
+The pairwise communication-path formula in the chapter is illustrative, not a predictive law for engineering effort. Real organizations structure communication through teams, interfaces, roles, and coordination mechanisms. The economic point is that coordination burden can grow nonlinearly when boundaries and dependencies are poorly designed.
+
+=== Architecture as economic infrastructure
+
+The treatment of platform work, modularity, migration, and future change cost is informed by information hiding and modular design. See <<parnas1972>>.
+
+A good boundary can reduce the cost of understanding, changing, testing, deploying, and coordinating future work. A poor boundary can impose repeated costs on every later Engineering Change. Team cognitive load and interaction modes provide another perspective on these costs. See <<skelton2019>>.
+
+The chapter’s capability and option-value categories are intended to capture these durable future effects without forcing them into falsely precise short-term labor savings.
+
+=== Quality economics and expected loss
+
+The chapter models quality prospectively as probability multiplied by consequence and retrospectively through observed rework, incidents, support, remediation, and follow-up change.
+
+This is consistent with standard decision analysis and cost-benefit methods described in <<boardman2018>>. It also aligns with reliability engineering’s emphasis on service objectives, risk, toil, and operational consequence. See <<beyer2016>> and <<beyer2018>>.
+
+Expected value is not sufficient for every decision. Catastrophic tail risk, regulatory constraints, security policy, and ethical boundaries may require explicit limits even when expected monetary loss appears acceptable.
+
+=== Cost of delay
+
+Cost of delay represents value lost while an outcome, capability, risk reduction, or learning opportunity remains unavailable.
+
+The chapter intentionally treats value curves as uncertain and context-specific. Fixed-date, expedite, standard, and exploratory work have different delay profiles. Cost of delay should therefore be reported as assumptions, ranges, or scenarios rather than used to manufacture universal urgency.
+
+Its interaction with queues and constraints is grounded in <<little1961>>, <<kingman1961>>, <<hopp2011>>, and <<goldratt1984>>.
+
+=== Marginal, avoidable, and allocated cost
+
+The chapter distinguishes several cost perspectives:
+
+* *marginal cost* — the additional cost of one more unit of activity;
+* *avoidable cost* — future cost eliminated by a decision;
+* *fully allocated cost* — direct and shared cost assigned across a population;
+* *replacement cost* — cost of recreating or substituting a capability;
+* *opportunity cost* — value of the best displaced alternative.
+
+These perspectives are not interchangeable. The cost of adding one test run may be marginal compute, while a vendor-selection decision must also consider platform staffing, fixed contracts, support, migration, and exit.
+
+=== AI economics
+
+The chapter’s AI cost model extends ordinary tool economics by including:
+
+* inference and infrastructure;
+* indexing and retrieval;
+* validation effort;
+* false-positive handling;
+* rework;
+* administration and governance;
+* downstream quality effects;
+* genuinely avoided human effort.
+
+Controlled and observational research on AI-assisted programming demonstrates that effects depend on task, tool, user behavior, and evaluation boundary. See <<peng2023>>, <<vaithilingam2022>>, and <<barke2023>>.
+
+These studies do not justify a universal conversion from accepted suggestions or generated code into productivity value. The chapter therefore evaluates AI through net attention, quality-adjusted outcomes, and realized capacity rather than gross generation or acceptance.
+
+=== Capacity realization and the productivity paradox
+
+The chapter’s distinction between released capacity and realized savings is consistent with the productivity-paradox literature in <<brynjolfsson1993>> and <<brynjolfsson2017>>.
+
+Technology may release time locally but fail to improve organizational output because:
+
+* the time is fragmented;
+* another stage remains constrained;
+* complementary processes have not changed;
+* incentives direct effort toward low-value activity;
+* quality or validation cost offsets the gain;
+* the organization does not reduce spending or redirect capacity;
+* measured outcomes mature only after a delay.
+
+The *realization factor* and *continuity factor* introduced in this book are operational modeling constructs for making those assumptions explicit.
+
+=== Uncertainty and sensitivity
+
+A decision-grade economic model should expose distributions or scenarios for uncertain inputs rather than present a precise point estimate.
+
+The chapter’s use of scenario analysis, sensitivity analysis, expected value, and Monte Carlo simulation follows standard decision-analysis and cost-benefit practice. See <<boardman2018>>.
+
+The purpose is not to make uncertainty disappear. It is to identify:
+
+* the probability the decision creates positive value;
+* plausible downside;
+* the assumptions that dominate the result;
+* the additional evidence most valuable to collect;
+* the conditions under which the decision should be reversed.
+
+=== Measurement and gaming risk
+
+Economic metrics can change behavior when they become targets. Reporting cost per Engineering Change, review effort, or estimated capacity at individual level can encourage work avoidance, change slicing, under-reporting, or selection of easier tasks.
+
+The chapter’s warning against individual ranking and local cost optimization is supported by the indicator-corruption concerns in <<campbell1979>> and <<goodhart1984>>, and by the use-specific validity framework in <<messick1995>>.
+
+=== Original Engineering Intelligence contributions
+
+The following concepts are original synthesis or domain-specific operational extensions in this book rather than externally established standards:
+
+* total Engineering Change cost as an integrated evidence model;
+* attention-scarcity multipliers;
+* context-recovery cost from engineering event evidence;
+* net AI attention economics;
+* capacity-realization and continuity factors;
+* quality-adjusted engineering economics;
+* value-realization ledgers connected to Engineering Change evidence;
+* explicit labels separating cash impact, avoided cost, released capacity, modeled outcome value, and option value;
+* benefit-dependency maps to prevent double counting;
+* integration of causal effect estimates with engineering business cases.
+
+These constructs should be calibrated, challenged, and validated in each organizational context rather than treated as universal constants.
