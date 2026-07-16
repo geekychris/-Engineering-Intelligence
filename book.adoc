@@ -37,4 +37,6 @@ include::chapters/08-enterprise-instrumentation.adoc[]
 
 include::chapters/09-complexity-and-blast-radius.adoc[]
 
+include::chapters/10-engineering-intelligence-platform.adoc[]
+
 // Planned chapters are added here as they are written.
