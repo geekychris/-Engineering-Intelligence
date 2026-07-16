@@ -6,17 +6,13 @@ page:
   margin: [0.75in, 0.75in, 0.8in, 0.75in]
 
 base:
-  font-family: Noto Serif
+  font-family: Times-Roman
   font-size: 10.5
   line-height-length: 15
   font-color: 222222
 
-font:
-  catalog:
-    merge: true
-
 heading:
-  font-family: Noto Sans
+  font-family: Helvetica
   font-color: 17365D
   font-style: bold
   line-height: 1.15
@@ -51,25 +47,25 @@ prose:
   margin-bottom: 8
 
 caption:
-  font-family: Noto Sans
+  font-family: Helvetica
   font-size: 8.5
   font-style: italic
   font-color: 555555
   align: left
 
 code:
-  font-family: Noto Sans Mono
+  font-family: Courier
   font-size: 8.5
   background-color: F5F7F9
   border-color: D8DEE6
   border-width: 0.5
   padding: 8
 
-literal:
-  font-family: Noto Sans Mono
+codespan:
+  font-family: Courier
   font-size: 8.5
 
-blockquote:
+quote:
   font-color: 444444
   border-color: 8AA4BF
   border-width: 0 0 0 3
@@ -81,7 +77,7 @@ admonition:
   padding: [6, 8, 6, 8]
 
 admonition-label:
-  font-family: Noto Sans
+  font-family: Helvetica
   font-style: bold
   font-color: 17365D
 
@@ -93,7 +89,7 @@ sidebar:
   padding: 10
 
 sidebar-title:
-  font-family: Noto Sans
+  font-family: Helvetica
   font-style: bold
   font-color: 17365D
 
@@ -103,9 +99,6 @@ example:
   border-width: 0.5
   border-radius: 2
   padding: 10
-
-quote:
-  font-color: 444444
 
 list:
   indent: 18
@@ -119,7 +112,7 @@ table:
   cell-padding: 5
   head:
     background-color: E9EFF5
-    font-family: Noto Sans
+    font-family: Helvetica
     font-style: bold
     font-color: 17365D
   body:
@@ -131,7 +124,7 @@ image:
 footer:
   height: 0.45in
   line-height: 1
-  font-family: Noto Sans
+  font-family: Helvetica
   font-size: 8
   font-color: 6B7280
   border-color: D8DEE6
@@ -148,7 +141,7 @@ footer:
       content: '{chapter-title}'
 
 toc:
-  font-family: Noto Sans
+  font-family: Helvetica
   font-size: 9.5
   line-height: 1.25
   dot-leader:
@@ -163,18 +156,18 @@ title-page:
   align: left
   title:
     top: 26%
-    font-family: Noto Sans
+    font-family: Helvetica
     font-size: 32
     font-style: bold
     font-color: 17365D
     line-height: 1.1
   subtitle:
-    font-family: Noto Sans
+    font-family: Helvetica
     font-size: 15
     font-color: 4B5563
     line-height: 1.25
   authors:
     margin-top: 30
-    font-family: Noto Sans
+    font-family: Helvetica
     font-size: 12
     font-color: 374151
