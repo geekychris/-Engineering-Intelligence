@@ -1,0 +1,33 @@
+flowchart TB
+    I[Intent] -->|MOTIVATES| EC[Engineering Change]
+    A[Actor] -->|PARTICIPATES_IN| EC
+    A -->|PERFORMS| ACT[Activity]
+    ACT -->|AFFECTS| AR[Artifact]
+    AR -->|IMPLEMENTS| EC
+
+    REV[Review] -->|REVIEWS| EC
+    REV -->|PRODUCES| F[Finding]
+    ACT -->|ADDRESSES| F
+
+    V[Validation Run] -->|VALIDATES| AR
+    V -->|VALIDATES| EC
+    B[Build] -->|BUILDS_FROM| AR
+    B -->|PRODUCES_ARTIFACT| DA[Deployable Artifact]
+    D[Deployment] -->|DEPLOYS| DA
+    D -->|INCLUDES_CHANGE| EC
+    R[Release] -->|EXPOSES| POP[Population]
+    D --> R
+
+    EC -->|RESULTS_IN| O[Outcome]
+    EC -->|CONTRIBUTES_TO| INC[Incident]
+    EXP[Experiment] -->|ASSIGNS| EC
+    EXP --> EX[Exposure]
+    EX --> EC
+    EVID[Evidence] -->|INFORMS| DEC[Decision]
+    EC --> EVID
+    O --> EVID
+
+    P[Provenance, confidence, time, and version] -. applies to .-> EC
+    P -. applies to .-> ACT
+    P -. applies to .-> D
+    P -. applies to .-> O
