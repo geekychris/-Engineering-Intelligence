@@ -1,0 +1,11 @@
+flowchart TD
+    GOAL[Bounded engineering goal] --> PLAN[Create plan and constraints]
+    PLAN --> SELECT[Select next tool or action]
+    SELECT --> EXEC[Execute in permitted environment]
+    EXEC --> OBSERVE[Observe result and side effects]
+    OBSERVE --> VERIFY{Goal and safety checks pass?}
+    VERIFY -->|No, recoverable| REVISE[Revise plan or rollback]
+    REVISE --> SELECT
+    VERIFY -->|No, uncertain or unsafe| ESC[Escalate to human]
+    VERIFY -->|Yes| REPORT[Report evidence and proposed outcome]
+    REPORT --> APPROVE[Human approval or governed acceptance]
