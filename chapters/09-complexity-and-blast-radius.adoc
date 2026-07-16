@@ -1,0 +1,373 @@
+= Complexity, Blast Radius, and Repository Topology
+
+[abstract]
+Engineering effort cannot be inferred from code size alone. A small change can require advanced domain knowledge, coordinated deployment, or broad operational safeguards, while a large generated change may be routine. This chapter defines a multidimensional model of Engineering Change complexity, separates intrinsic reasoning difficulty from topological and organizational complexity, formalizes blast radius, and explains how repository structure, dependency graphs, release sequencing, and expertise requirements affect cost, latency, and risk.
+
+== Why size is not complexity
+
+Lines changed, files touched, and pull-request count are easy to observe. They are useful descriptive features, but they are weak stand-alone measures of difficulty.
+
+Consider three changes:
+
+* a two-line authorization change affecting every customer;
+* a thousand-line generated API client update;
+* a one-table migration requiring dual writes, backfill, cutover, and rollback.
+
+The first is small but potentially high risk. The second is large but often routine. The third may be modest in code size yet operationally and organizationally complex.
+
+Engineering Intelligence therefore models complexity as a vector rather than a single raw count.
+
+== Complexity dimensions
+
+Let the complexity of Engineering Change stem:[e] be:
+
+[stem]
+++++
+\mathbf{C}(e) = [C_i, C_d, C_a, C_v, C_o, C_t, C_n, C_b]
+++++
+
+where:
+
+* stem:[C_i] is implementation complexity;
+* stem:[C_d] is domain complexity;
+* stem:[C_a] is architectural complexity;
+* stem:[C_v] is verification complexity;
+* stem:[C_o] is organizational complexity;
+* stem:[C_t] is topological and deployment complexity;
+* stem:[C_n] is novelty;
+* stem:[C_b] is potential blast radius.
+
+Each dimension may be represented by multiple features and uncertainty.
+
+== Implementation complexity
+
+Implementation complexity includes algorithmic difficulty, control flow, concurrency, state management, performance constraints, language and framework complexity, and amount of handwritten logic.
+
+Potential static features include cyclomatic complexity, nesting, data-flow complexity, concurrency primitives, state transitions, exception paths, and semantic change size.
+
+Static analysis should not be used blindly. A complex function may be unchanged context, while a small modified expression may alter an invariant. Change-aware analysis is preferable.
+
+== Domain complexity
+
+Domain complexity reflects specialized knowledge required to reason correctly.
+
+Examples include:
+
+* security and cryptography;
+* accounting and taxation;
+* distributed consistency;
+* machine learning and statistics;
+* advanced user interaction;
+* privacy and regulation;
+* database internals;
+* real-time and embedded systems.
+
+Domain complexity can be estimated from code ownership, historical reviewer specialization, topic classification, dependency use, security labels, and expert annotation.
+
+It should not become a fixed ranking of technologies. Complexity depends on the organization’s familiarity and available expertise.
+
+== Architectural complexity
+
+Architectural complexity arises from the number and structure of components affected.
+
+Useful features include:
+
+* services and libraries touched;
+* dependency depth;
+* fan-in and fan-out;
+* API and schema contracts;
+* compatibility windows;
+* shared-state boundaries;
+* synchronous and asynchronous interactions;
+* circular dependencies;
+* hidden runtime coupling.
+
+A change affecting a high-fan-in shared library may have broader consequences than one affecting an isolated service.
+
+== Verification complexity
+
+Verification complexity measures how difficult it is to establish sufficient confidence.
+
+Factors include:
+
+* nondeterministic behavior;
+* production-only conditions;
+* test-data requirements;
+* environment scarcity;
+* observability quality;
+* manual validation;
+* long-running migration states;
+* difficult rollback;
+* security or privacy review.
+
+Verification complexity is often a stronger predictor of cycle time than implementation size.
+
+== Organizational complexity
+
+Organizational complexity includes teams, ownership boundaries, approvals, handoffs, vendors, time zones, and decision rights.
+
+A first-order measure may include:
+
+[stem]
+++++
+C_o(e) = \alpha T_e + \beta H_e + \gamma A_e + \delta X_e
+++++
+
+where stem:[T_e] is teams involved, stem:[H_e] handoffs, stem:[A_e] approvals, and stem:[X_e] external organizational boundaries.
+
+The coefficients must be calibrated from observed delay and effort. The same number of teams can create very different friction depending on interface quality and prior collaboration.
+
+== Novelty
+
+Novelty measures distance from what the author, reviewers, team, and organization already understand.
+
+Useful novelty features include:
+
+* first use of a framework or service;
+* low author familiarity with the code region;
+* low reviewer familiarity;
+* new dependency or protocol;
+* architectural pattern not previously used;
+* sparse historical examples;
+* high semantic distance from prior changes.
+
+Novelty can increase both active reasoning and uncertainty. AI may reduce search and explanation cost while leaving accountability and verification requirements unchanged.
+
+== Repository topology
+
+Repository structure changes how one Engineering Change appears in source-control data.
+
+In a monorepo, one pull request may touch many services and owners. In a polyrepo environment, the same intent may require many linked pull requests. A repository count is therefore a topology feature, not an intrinsic measure of work.
+
+image::../figures/mermaid/repository-topology-comparison.mmd[Monorepo and polyrepo representations of the same Engineering Change]
+
+Relevant topology features include repository count, repository dependency depth, cross-repository build relationships, artifact publication steps, version pinning, release order, and ownership transitions.
+
+== Multi-repository change graphs
+
+Let the multi-repository implementation graph be stem:[G_R=(V_R,E_R)], where nodes are artifacts or repository-local changes and edges represent dependency, compatibility, or ordering constraints.
+
+The critical path duration is:
+
+[stem]
+++++
+T_{critical}(e) = \max_{p \in Paths(G_R)} \sum_{v \in p} d(v)
+++++
+
+Parallel work reduces elapsed time only when dependencies permit it. The parallelism ratio can be approximated as:
+
+[stem]
+++++
+P(e) = \frac{\sum_{v \in V_R} d(v)}{T_{critical}(e)}
+++++
+
+A higher value indicates more potential concurrency, though coordination overhead may limit realizable parallelism.
+
+== Deployment topology
+
+Code topology and deployment topology are not the same. Several repositories may deploy as one unit, while one repository may produce many independently deployed services.
+
+Deployment complexity includes:
+
+* number of environments and regions;
+* rollout waves;
+* ordering constraints;
+* feature flags;
+* schema compatibility;
+* dual-run periods;
+* rollback boundaries;
+* irreversible steps;
+* external dependencies.
+
+A migration may remain operationally active long after all pull requests merge.
+
+== Blast radius
+
+[IMPORTANT]
+====
+*Blast radius* is the set and severity of systems, users, data, business processes, and obligations that could be affected if an Engineering Change behaves incorrectly.
+====
+
+Potential blast radius is distinct from realized impact. A change can have high potential blast radius and no incident because controls succeed.
+
+Let affected dimensions be represented as:
+
+[stem]
+++++
+\mathbf{B}(e) = [U, S, D, F, A, C, R]
+++++
+
+where:
+
+* stem:[U] is users or customers;
+* stem:[S] is services and systems;
+* stem:[D] is data volume and sensitivity;
+* stem:[F] is financial exposure;
+* stem:[A] is availability impact;
+* stem:[C] is compliance and legal exposure;
+* stem:[R] is reversibility and recovery difficulty.
+
+A scalar score may be useful for routing but should preserve component drill-down.
+
+== A blast-radius score
+
+One practical form is:
+
+[stem]
+++++
+BRS(e) = \sum_{k=1}^{K} w_k g_k(B_k(e))
+++++
+
+where stem:[g_k] transforms each dimension and stem:[w_k] reflects organizational priorities.
+
+Because blast-radius dimensions can interact, a nonlinear model may be preferable. For example, sensitive data plus broad customer reach may require stronger controls than either dimension alone.
+
+The score should be calibrated against incidents, expert assessment, and operational policy—not chosen only for numerical convenience.
+
+== Reversibility
+
+Reversibility strongly changes risk. A flagged UI change can be disabled quickly. A destructive data migration may be difficult or impossible to reverse.
+
+Reversibility features include rollback time, rollback completeness, data restoration, compatibility duration, feature-flag coverage, and whether side effects escape organizational control.
+
+A high-blast-radius but highly reversible change may require different controls from a lower-reach irreversible change.
+
+== Change surface versus impact surface
+
+The *change surface* is what was modified. The *impact surface* is what can be affected.
+
+A tiny change in a shared authentication library has a small change surface and large impact surface. A large isolated test rewrite has a large change surface and small impact surface.
+
+Engineering review and experimentation should use both.
+
+== Measuring dependency reach
+
+Static dependency graphs are useful but incomplete. Runtime traces, service calls, message topics, database access, feature flags, and deployment manifests reveal additional reach.
+
+A combined reach graph may include:
+
+* build-time dependencies;
+* runtime calls;
+* data flows;
+* event subscriptions;
+* deployment coupling;
+* ownership relationships;
+* customer and business-process mappings.
+
+Temporal versions are required because dependencies change.
+
+image::../figures/mermaid/blast-radius-propagation.mmd[Blast-radius propagation across technical and business dependencies]
+
+== Complexity-adjusted comparisons
+
+Raw cycle-time comparisons should control for complexity and blast radius.
+
+A hierarchical model might be:
+
+[stem]
+++++
+\log Y_e = \beta_0 + \beta^T \mathbf{C}(e) + u_{team(e)} + v_{repo(e)} + \epsilon_e
+++++
+
+where stem:[Y_e] is an outcome such as review effort or cycle time.
+
+The residual can help identify unexpectedly high or low friction after accounting for work mix. It should not be used as an individual performance ranking.
+
+== Complexity and review routing
+
+Complexity features can route changes to appropriate controls:
+
+* low-risk routine changes receive automated checks and lightweight review;
+* high-domain-complexity changes receive specialist review;
+* high-blast-radius changes require stronger verification and rollout safeguards;
+* high-novelty changes receive additional design and knowledge-sharing support;
+* irreversible changes require explicit recovery planning.
+
+Routing policies should be evaluated experimentally and monitored for false negatives.
+
+== AI and complexity
+
+AI performance varies by complexity dimension. A model may be strong at common framework patterns and weak at novel architecture, distributed state, or organizational context.
+
+Evaluation should therefore stratify by domain, novelty, dependency depth, blast radius, and verification complexity.
+
+A global average can conceal unsafe performance in important subpopulations.
+
+== Estimation methods
+
+Complexity features can be obtained from:
+
+* static and semantic code analysis;
+* repository and dependency graphs;
+* service catalogues;
+* runtime telemetry;
+* ownership and review history;
+* deployment manifests;
+* issue and design-document classification;
+* expert labels;
+* incident history.
+
+Use supervised models only after establishing interpretable baselines. Preserve feature explanations for routing and governance.
+
+== Validation
+
+A complexity model should predict outcomes not used directly in its construction, such as active effort, review duration, defect probability, specialist involvement, or rollback difficulty.
+
+Validate calibration by complexity band and subgroup. A score that predicts average effort but underestimates security changes is not acceptable for risk routing.
+
+== Common failure modes
+
+=== Lines changed as complexity
+
+Size contributes evidence but misses domain, architecture, verification, and impact.
+
+=== Repository count as work count
+
+Repository strategy determines artifact boundaries.
+
+=== One universal complexity score
+
+A scalar can hide why a change is difficult and which control is appropriate.
+
+=== Static dependencies as complete reach
+
+Runtime, data, deployment, and organizational coupling may be absent.
+
+=== Realized incidents as blast radius
+
+Potential impact exists even when controls prevent failure.
+
+=== Ignoring reversibility
+
+Reach alone does not determine operational risk.
+
+== Key takeaways
+
+* Engineering Change complexity is multidimensional and cannot be inferred from code size alone.
+* Domain, architecture, verification, organization, topology, novelty, and blast radius should be modeled separately.
+* Repository and deployment topology shape how work appears and how it must be coordinated.
+* Multi-repository work should be represented as a dependency graph with a critical path.
+* Blast radius measures potential impact, not only realized incidents.
+* Change surface and impact surface are distinct.
+* Complexity models should support adjustment, routing, and experimentation—not individual ranking.
+
+== Open questions
+
+* Which semantic features best capture reasoning difficulty beyond static complexity?
+* How should business-process and regulatory reach be joined to technical dependency graphs?
+* Can reversibility be estimated automatically from deployment and data-migration patterns?
+* What complexity dimensions best predict AI failure modes?
+* How should organizations calibrate risk-routing thresholds when severe failures are rare?
+
+== Implementation checklist
+
+. Define a multidimensional complexity schema.
+. Combine code, dependency, runtime, deployment, organizational, and business evidence.
+. Separate repository topology from intrinsic work complexity.
+. Build multi-repository Engineering Change graphs and critical-path measures.
+. Define blast-radius dimensions and preserve component drill-down.
+. Add reversibility and recovery features.
+. Validate models against effort, quality, and operational outcomes.
+. Stratify AI and workflow evaluations by complexity and blast radius.
+. Use complexity for routing and adjustment, not individual ranking.
+. Version all dependency and ownership graphs temporally.
