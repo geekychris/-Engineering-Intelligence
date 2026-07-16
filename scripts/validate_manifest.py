@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 import json
+import re
 import sys
 
 
@@ -18,6 +19,7 @@ EXPECTED_ARTIFACTS = {
     "html": {"engineering-intelligence.html"},
     "pdf": {"engineering-intelligence.pdf"},
 }
+FULL_GIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 
 
 def digest(path: Path) -> str:
@@ -57,8 +59,8 @@ def validate(build_dir: Path, expected_commit: str | None = None) -> int:
         errors.append("manifest title does not match the publication title")
 
     source_commit = manifest.get("source_commit")
-    if not isinstance(source_commit, str) or not source_commit:
-        errors.append("source_commit must be a non-empty string")
+    if not isinstance(source_commit, str) or not FULL_GIT_SHA_RE.fullmatch(source_commit):
+        errors.append("source_commit must be a full 40-character lowercase Git SHA")
     elif expected_commit is not None and source_commit != expected_commit:
         errors.append(
             "source_commit does not match the expected release commit: "
