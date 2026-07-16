@@ -1,0 +1,15 @@
+flowchart LR
+    H[Hypothesis and mechanism] --> R[Pre-register experiment]
+    R --> P[Define eligible population]
+    P --> A[Randomize or assign treatment]
+    A --> E[Record actual exposure]
+    E --> M[Measure primary outcomes and guardrails]
+    M --> C[Estimate causal effect]
+    C --> D{Decision}
+    D -->|Adopt| O[Operational rollout]
+    D -->|Revise| H
+    D -->|Reject| K[Record learning]
+
+    X[External factors and concurrent changes] -. annotate .-> M
+    Q[Data quality and metric versions] -. govern .-> M
+    O --> K
