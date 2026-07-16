@@ -46,22 +46,36 @@ if [[ "$MODE" == "pdf" || "$MODE" == "all" || "$MODE" == "validate" ]]; then
   [[ -f "$PDF_THEME" ]] || fail "PDF theme was not found"
 fi
 
-initialize_reproducible_time() {
+initialize_publication_identity() {
   if [[ -n "${SOURCE_DATE_EPOCH:-}" ]]; then
-    export SOURCE_DATE_EPOCH
-    return
-  fi
-
-  if command -v git >/dev/null 2>&1 && git -C "$ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    [[ "$SOURCE_DATE_EPOCH" =~ ^[0-9]+$ ]] || \
+      fail "SOURCE_DATE_EPOCH must be a non-negative integer"
+  elif command -v git >/dev/null 2>&1 && git -C "$ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     SOURCE_DATE_EPOCH="$(git -C "$ROOT" log -1 --format=%ct)"
   else
     SOURCE_DATE_EPOCH="0"
   fi
 
-  export SOURCE_DATE_EPOCH
+  if [[ -n "${SOURCE_COMMIT:-}" ]]; then
+    :
+  elif command -v git >/dev/null 2>&1 && git -C "$ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    SOURCE_COMMIT="$(git -C "$ROOT" rev-parse HEAD)"
+  elif [[ -n "${GITHUB_SHA:-}" ]]; then
+    SOURCE_COMMIT="$GITHUB_SHA"
+  else
+    # Canonical sentinel for reproducible source archives that contain no VCS
+    # metadata. Tagged releases still pass an expected commit to the validator,
+    # so this value can never satisfy release identity verification.
+    SOURCE_COMMIT="0000000000000000000000000000000000000000"
+  fi
+
+  [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]] || \
+    fail "SOURCE_COMMIT must be a full 40-character lowercase Git SHA"
+
+  export SOURCE_DATE_EPOCH SOURCE_COMMIT
 }
 
-initialize_reproducible_time
+initialize_publication_identity
 
 mkdir -p "$BUILD_DIR"
 rm -rf "$WORK_DIR"
@@ -174,18 +188,16 @@ build_pdf() {
 }
 
 write_manifest() {
-  python3 - "$ROOT" "$BUILD_DIR" "$MODE" <<'PY'
+  python3 - "$BUILD_DIR" "$MODE" <<'PY'
 from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 import json
 import os
-import subprocess
 import sys
 
-root = Path(sys.argv[1])
-build = Path(sys.argv[2])
-build_mode = sys.argv[3]
+build = Path(sys.argv[1])
+build_mode = sys.argv[2]
 
 
 def digest(path):
@@ -196,18 +208,8 @@ def digest(path):
     return h.hexdigest()
 
 
-try:
-    commit = subprocess.check_output(
-        ["git", "-C", str(root), "rev-parse", "HEAD"], text=True
-    ).strip()
-except Exception:
-    commit = os.environ.get("GITHUB_SHA", "unknown")
-
-try:
-    epoch = int(os.environ["SOURCE_DATE_EPOCH"])
-except (KeyError, ValueError):
-    epoch = 0
-
+commit = os.environ["SOURCE_COMMIT"]
+epoch = int(os.environ["SOURCE_DATE_EPOCH"])
 publication_time = datetime.fromtimestamp(epoch, timezone.utc).isoformat()
 
 files = []
