@@ -16,6 +16,7 @@
 ifdef::backend-pdf[]
 :notitle:
 :front-cover-image: image:figures/front_cover.jpg[fit=fill]
+:back-cover-image: image:figures/back_page.jpg[fit=fill]
 endif::[]
 
 [preface]
