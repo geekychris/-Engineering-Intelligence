@@ -29,4 +29,6 @@ include::chapters/04-human-attention.adoc[]
 
 include::chapters/05-measuring-engineering-systems.adoc[]
 
+include::chapters/06-experimentation-and-causal-inference.adoc[]
+
 // Planned chapters are added here as they are written.
