@@ -27,6 +27,8 @@ include::chapters/01-introduction.adoc[]
 
 include::chapters/02-engineering-economics.adoc[]
 
+include::chapters/02-engineering-economics-source-notes.adoc[]
+
 include::chapters/03-engineering-change.adoc[]
 
 include::chapters/04-human-attention.adoc[]
