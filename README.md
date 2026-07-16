@@ -13,6 +13,7 @@ The master publication file is [`book.adoc`](book.adoc). Authoring, evidence, me
 - `appendices/` — reference models, standards, templates, architecture, bibliography, and maturity guidance
 - `figures/mermaid/` — Mermaid diagram sources
 - `scripts/build.sh` — validation and publication pipeline
+- `schemas/` — machine-readable publication metadata contracts
 - `build/` — generated HTML, PDF, diagrams, and manifest
 
 Each chapter-level source-note file distinguishes established research from original _Engineering Intelligence_ synthesis. Bibliography anchors are maintained in `appendices/i-evidence-base-and-bibliography.adoc`.
@@ -59,6 +60,12 @@ Build and run the complete validation path:
 make validate
 ```
 
+Run the Python regression suite without building the editions:
+
+```bash
+make test
+```
+
 Build one edition:
 
 ```bash
@@ -87,7 +94,19 @@ A successful full build produces:
 - `build/manifest.json`
 - `build/figures/mermaid/*.svg`
 
-The manifest records artifact sizes, SHA-256 digests, source commit, generation time, and diagram count.
+The manifest records the schema version, build mode, artifact sizes, SHA-256 digests, source commit, reproducible publication time, and diagram count. Its public contract is defined by [`schemas/publication-manifest.schema.json`](schemas/publication-manifest.schema.json).
+
+Validate a generated manifest independently:
+
+```bash
+python3 scripts/validate_manifest.py build
+```
+
+To additionally bind the manifest to a specific source revision:
+
+```bash
+python3 scripts/validate_manifest.py build <full-commit-sha>
+```
 
 ## Validation performed
 
@@ -99,6 +118,9 @@ The publication pipeline checks:
 - Mermaid source references;
 - unresolved bibliography-style citation anchors;
 - duplicate explicit anchors;
+- manifest schema and metadata invariants;
+- artifact names, sizes, and SHA-256 hashes;
+- source commit identity and reproducible timestamps;
 - Asciidoctor warnings during HTML and PDF generation.
 
 A validation failure stops publication.
@@ -145,7 +167,7 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-The workflow validates the source, uploads a workflow artifact, and attaches the publication editions to the tagged GitHub release.
+The workflow validates the source, uploads a workflow artifact, revalidates the downloaded artifacts against the tagged commit, and attaches the publication editions to the GitHub release.
 
 ## Editing conventions
 
