@@ -1,0 +1,21 @@
+flowchart LR
+    A[Propose metric and decision purpose] --> B[Define construct, population, and formula]
+    B --> C[Implement lineage and quality controls]
+    C --> D[Validate reliability, validity, privacy, and interpretation]
+    D --> E[Run in shadow mode]
+    E --> F{Approve use?}
+    F -->|No| B
+    F -->|Yes| G[Publish governed metric]
+    G --> H[Monitor quality, drift, gaming, and use]
+    H --> I{Change required?}
+    I -->|Revise| J[Create new version]
+    J --> C
+    I -->|Deprecate| K[Deprecate with successor and migration]
+    K --> L[Retire while preserving history]
+    I -->|No| M[Scheduled review]
+    M --> H
+
+    Q[Owner, steward, governance, and decision record] -. applies throughout .-> A
+    Q -. applies throughout .-> D
+    Q -. applies throughout .-> G
+    Q -. applies throughout .-> L
