@@ -33,4 +33,6 @@ include::chapters/06-experimentation-and-causal-inference.adoc[]
 
 include::chapters/07-ai-assisted-engineering.adoc[]
 
+include::chapters/08-enterprise-instrumentation.adoc[]
+
 // Planned chapters are added here as they are written.
