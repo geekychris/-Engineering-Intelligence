@@ -1,4 +1,4 @@
-[Preface]
+[chapter]
 = Reader’s Guide
 
 _Engineering Intelligence_ can be read sequentially, but it is also designed as a working reference. Different readers can enter through different paths depending on the decision they face.
@@ -37,180 +37,137 @@ Begin with:
 * Chapter 6, _Experimentation and Causal Inference_;
 * Chapter 11, _Engineering Metrics Catalogue_;
 * Chapter 12, _Experiment Playbooks_;
-* Chapter 16, _The Science of Engineering Intelligence_;
-* Appendix B, _Metric Specification Standard_;
-* Appendix C, _Experiment and Causal Study Protocol_;
-* Appendix I, _Evidence Base and Bibliography_.
+* Appendix B, _Metric Definition Standard_;
+* Appendix D, _Experiment and Causal Evaluation Standard_.
 
-This path focuses on constructs, validity, reliability, uncertainty, causal design, replication, and reporting.
+This path focuses on construct validity, estimation, uncertainty, experiment design, and interpretation.
+
+== For engineering managers
+
+Begin with:
+
+* Chapter 4, _Human Attention_;
+* Chapter 5, _Measuring Engineering Systems_;
+* Chapter 8, _Enterprise Instrumentation_;
+* Chapter 11, _Engineering Metrics Catalogue_;
+* Chapter 13, _Governance, Ethics, and Adoption_;
+* Appendix G, _Operating Templates and Records_.
+
+This path focuses on team-level diagnosis, responsible interpretation, workflow improvement, and operating practice.
 
 == For architects and senior engineers
 
 Begin with:
 
 * Chapter 3, _Engineering Change_;
-* Chapter 4, _Human Attention_;
+* Chapter 8, _Enterprise Instrumentation_;
 * Chapter 9, _Complexity and Blast Radius_;
-* Chapter 17, _The Learning Engineering Organization_;
-* Appendix A, _Engineering Change Reference Model_;
+* Chapter 10, _The Engineering Intelligence Platform_;
 * Appendix F, _Technical Reference Architecture_.
 
-This path treats architecture as a determinant of coordination cost, validation burden, change risk, and reversibility.
+This path focuses on technical structure, dependency risk, observability, event models, and platform design.
 
-== For AI engineering and evaluation teams
+== For AI transformation leaders
 
 Begin with:
 
+* Chapter 4, _Human Attention_;
 * Chapter 6, _Experimentation and Causal Inference_;
 * Chapter 7, _AI-Assisted Engineering_;
 * Chapter 12, _Experiment Playbooks_;
-* Chapter 18, _The Future of Engineering Intelligence_;
-* Appendix C, _Experiment and Causal Study Protocol_;
-* Appendix D, _Governance, Privacy, and Acceptable Use Standard_;
+* Chapter 13, _Governance, Ethics, and Adoption_;
 * Appendix E, _Economic Evaluation and Business Case Standard_.
 
-This path focuses on net attention, validation burden, model and agent provenance, quality guardrails, causal evaluation, economics, and governance.
+This path focuses on separating tool activity from capability, testing AI interventions credibly, and converting local productivity effects into organizational value.
 
-== For security, privacy, legal, and governance teams
-
-Begin with:
-
-* Chapter 8, _Enterprise Instrumentation_;
-* Chapter 13, _Governance, Ethics, and Adoption_;
-* Chapter 18, _The Future of Engineering Intelligence_;
-* Appendix D, _Governance, Privacy, and Acceptable Use Standard_;
-* Appendix F, _Technical Reference Architecture_;
-* Appendix G, _Operating Templates and Records_.
-
-This path focuses on purpose limitation, access, identity, retention, automated decisions, correction, appeal, and audit.
-
-== For practitioners and team leaders
+== For finance and strategy partners
 
 Begin with:
 
-* Chapter 1, _Introduction_;
-* Chapter 3, _Engineering Change_;
-* Chapter 4, _Human Attention_;
-* Chapter 11, _Engineering Metrics Catalogue_;
-* Chapter 13, _Governance, Ethics, and Adoption_;
-* Appendix H, _Glossary and Controlled Vocabulary_.
+* Chapter 2, _Engineering Economics_;
+* Chapter 6, _Experimentation and Causal Inference_;
+* Chapter 14, _Portfolio and Executive Decision-Making_;
+* Appendix E, _Economic Evaluation and Business Case Standard_.
 
-This path explains how measurement can improve the work system without reducing people to activity counts.
+This path focuses on cost, capacity, option value, risk, portfolio comparison, and benefit realization.
 
-== How the book is organized
+== How to use the measurement framework
 
-=== Foundations
+The book distinguishes several layers that are often collapsed into a single metric:
 
-Chapters 1 through 4 define the discipline, economic framing, Engineering Change, and human attention.
+. *Activity* — what happened.
+. *Flow* — how work moved through the system.
+. *Quality and risk* — what defects, hazards, or exposure were created or avoided.
+. *Attention* — where scarce human cognitive capacity was spent.
+. *Capability* — what the system became able to do.
+. *Outcome* — what changed for customers, operations, or the business.
+. *Value* — whether the outcome justified the resources and risk involved.
 
-=== Measurement and causal learning
+A useful measurement program does not maximize every layer. It builds enough evidence across the layers to support a particular decision.
 
-Chapters 5 and 6 establish measurement and experimentation principles.
+== How to read metric definitions
 
-=== AI, instrumentation, and architecture
+Metrics in this book are treated as governed analytical products rather than convenient queries. A complete metric should identify:
 
-Chapters 7 through 10 apply the framework to AI-assisted engineering, enterprise data, complexity, blast radius, and platform design.
+* the decision it supports;
+* the construct it claims to represent;
+* the population and unit of analysis;
+* event-time and observation-window semantics;
+* exclusions and missingness behavior;
+* uncertainty and sensitivity;
+* known failure modes;
+* ownership and review cadence.
 
-=== Operational methods
+Appendix B provides the normative metric-definition template.
 
-Chapters 11 through 15 provide metrics, experiment playbooks, governance, executive decision methods, and rollout guidance.
+== How to read evidence claims
 
-=== Scientific and organizational maturity
+The manuscript separates:
 
-Chapters 16 through 18 address research quality, organizational learning, and future human-agent engineering systems.
+* established research findings;
+* emerging empirical evidence;
+* standards and regulatory guidance;
+* practitioner synthesis;
+* original _Engineering Intelligence_ constructs.
 
-=== Reference standards
+Chapter source-note sidecars explain the research foundation and limitations behind each major section. Appendix I provides the consolidated evidence base and bibliography.
 
-The appendices contain implementable reference models, metric and experiment standards, governance, economics, architecture, operating records, vocabulary, and bibliography.
+== How to use the diagrams
 
-== Reading conventions
+The diagrams are not decorative summaries. They express system boundaries, causal relationships, data flows, operating loops, and decision structures. Each Mermaid source is maintained under `figures/mermaid/` and rendered into publication-ready SVG during the build.
 
-The book uses several recurring distinctions.
+== Recommended organizational use
 
-*Observed evidence* is directly recorded from a source system.
+Teams can use the book in several modes:
 
-*Reconstruction* links evidence into entities, relationships, or lifecycle state.
+* as an executive briefing on engineering economics and evidence;
+* as a design reference for an engineering intelligence platform;
+* as a metric governance standard;
+* as an experiment-planning handbook;
+* as a portfolio-review framework;
+* as a maturity roadmap for organizational learning.
 
-*Inference* estimates something not directly observed.
+== A caution about scorecards
 
-*Prediction* estimates an unknown or future result.
+A scorecard is useful only when its measures retain meaning under use. Once a number becomes a target, people and systems adapt to it. The resulting behavioral response may destroy the relationship between the measure and the construct it was intended to represent.
 
-*Causal evidence* estimates how an intervention changed an outcome relative to a counterfactual.
+For that reason, this book favors portfolios of evidence, explicit uncertainty, drill-down paths, and decision records over single composite productivity scores.
 
-*Decision* is the organizational action selected from alternatives.
+== A caution about individual measurement
 
-These categories should not be collapsed.
+The framework is designed primarily for understanding systems, workflows, investments, and organizational conditions. Individual-level data may be necessary for debugging instrumentation or supporting a person’s own work, but it should not be converted casually into surveillance or performance ranking.
 
-== Applying the framework to a real decision
+Chapter 13 and Appendix C define the governance expectations for responsible use.
 
-A practical reading and application sequence is:
+== What success looks like
 
-. Write the decision question.
-. Identify the unit of consequence and affected population.
-. Define the construct rather than beginning with available telemetry.
-. Map the Engineering Change lifecycle and actors.
-. Identify attention, queue, architecture, quality, and economic mechanisms.
-. Specify metrics and guardrails.
-. Assess source, linkage, validity, and privacy quality.
-. Choose descriptive, predictive, experimental, or quasi-experimental analysis.
-. Compare credible alternatives economically.
-. Make a bounded, reversible decision.
-. Record the decision, assumptions, and review date.
-. Measure adoption, exposure, guardrails, and realized outcomes.
-. Preserve corrections, limitations, and negative results.
+An organization practicing engineering intelligence can explain:
 
-Appendix G provides reusable records for this process.
+* what changed;
+* why it probably changed;
+* how confident it is;
+* who benefited or absorbed cost;
+* whether the change should be expanded, modified, or stopped;
+* what the organization learned that can improve the next decision.
 
-== What not to do
-
-The book should not be used as justification for:
-
-* ranking engineers by visible activity;
-* treating one metric as universal productivity;
-* reporting released capacity as booked savings;
-* claiming causation from a before-and-after chart;
-* assuming adoption proves value;
-* deploying AI without measuring validation burden;
-* collecting all available data before defining purpose;
-* allowing generated narratives to replace evidence;
-* automating consequential policy without rollback and appeal.
-
-== A note on context
-
-No metric, model, benchmark, or organizational practice is context-free.
-
-The definitions and standards in this book are designed to make context explicit: population, workflow, architecture, risk, work mix, time, ownership, source quality, treatment version, and decision consequence.
-
-Readers should adapt implementations while preserving these semantic and scientific constraints.
-
-== A note on evidence maturity
-
-Some foundations in this book draw on mature research in measurement, queueing, causal inference, organizational learning, and software delivery. Other areas—particularly long-term AI effects, autonomous engineering agents, skill formation, digital twins, and prescriptive engineering policy—remain active research questions.
-
-The book distinguishes durable principles from emerging possibilities and treats uncertainty as information rather than an editorial weakness.
-
-== A note on terminology
-
-Capitalized terms such as _Engineering Change_ refer to controlled concepts defined in Appendix H. Tool-specific terminology should be mapped to these concepts rather than used as a substitute for them.
-
-== Using the templates
-
-The reference templates are deliberately technology-neutral. They may become:
-
-* versioned files in a repository;
-* forms in a developer portal;
-* registry records;
-* workflow objects;
-* governed documents;
-* API resources.
-
-Their value comes from preserving purpose, ownership, evidence, versions, uncertainty, conditions, and review—not from the storage format.
-
-== The intended outcome
-
-The book succeeds when it helps an organization replace vague claims such as “engineering is faster” or “the AI tool is productive” with more useful statements:
-
-[quote]
-For this population and intervention version, under these evidence-quality conditions, we observed this effect and uncertainty, these guardrails remained within bounds, this amount of capacity was released, this portion became realized value, and this bounded decision will be reviewed on this date.
-
-That is the language of an engineering organization capable of learning.
+That capability—not the number of dashboards—is the goal.
