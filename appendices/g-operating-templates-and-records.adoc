@@ -1,0 +1,812 @@
+= Operating Templates and Records
+
+[abstract]
+This appendix provides reusable templates for running Engineering Intelligence as an operating discipline. The templates translate the concepts in this book into records that can be reviewed, versioned, audited, and reused across teams. They are intentionally concise enough for routine use while preserving the evidence, uncertainty, ownership, governance, and follow-up required for consequential decisions.
+
+== How to use these templates
+
+The templates may be implemented as YAML, JSON, database records, forms, or governed documents.
+
+They should share several conventions:
+
+* durable identifier;
+* owner and accountable decision maker;
+* semantic or document version;
+* creation and review dates;
+* evidence and metric references;
+* explicit uncertainty;
+* privacy and access classification;
+* lifecycle status;
+* correction history;
+* expiration or next-review date.
+
+image::../figures/mermaid/engineering-intelligence-record-flow.mmd[Engineering Intelligence operating-record flow]
+
+== Decision question template
+
+Use this before deciding what to measure.
+
+[source,yaml]
+----
+decision_question:
+  id: dq_01J...
+  title: Select enterprise pull-request review approach
+  owner: vp_engineering_platform
+  decision_due: 2026-10-15
+  context: Current review tooling has low practitioner trust and uncertain economic value
+  population: enterprise_engineering_repositories
+  options:
+    - retain_current_tool
+    - adopt_vendor_a
+    - adopt_vendor_b
+    - build_internal_capability
+    - use_no_enterprise_standard
+  required_evidence:
+    - actionable_finding_precision_and_recall
+    - ranking_quality
+    - human_validation_effort
+    - escaped_defect_guardrails
+    - enterprise_cost
+    - security_and_operational_fit
+  uncertainty_tolerance: medium
+  reversibility: moderate
+  stakeholders:
+    - engineering
+    - security
+    - procurement
+    - finance
+    - developer_experience
+----
+
+== Evidence request template
+
+Use this to turn a decision question into a bounded analytical request.
+
+[source,yaml]
+----
+evidence_request:
+  id: er_01J...
+  decision_question_id: dq_01J...
+  requested_by: developer_productivity
+  question: Which review option produces the highest net decision value for eligible changes?
+  construct_scope:
+    - review_effectiveness
+    - human_attention
+    - quality_risk
+    - economic_value
+  populations:
+    - medium_risk_application_changes
+    - high_risk_application_changes
+  required_time_horizon:
+    operational: 8_weeks
+    quality_follow_up: 30_days
+  acceptable_claim_types:
+    - descriptive
+    - causal
+  exclusions:
+    - individual_performance_use
+  delivery_date: 2026-09-30
+  owner: engineering_intelligence
+----
+
+== Metric proposal template
+
+[source,yaml]
+----
+metric_proposal:
+  id: mp_01J...
+  proposed_metric_id: ei.review.validation_burden_minutes
+  name: Review Validation Burden
+  purpose: Compare the human effort required to validate findings from different review systems
+  construct: active_human_attention_spent_assessing_and_resolving_review_findings
+  decision_users:
+    - developer_productivity
+    - tool_procurement
+  unit_of_analysis: engineering_change
+  proposed_formula: sum(active_validation_session_minutes)
+  population: eligible_reviewed_engineering_changes
+  data_sources:
+    - review_activity
+    - finding_disposition
+    - actor_identity
+    - engineering_change_link
+  known_risks:
+    - inactive_browser_time
+    - unobserved_offline_reasoning
+    - multitasking
+  prohibited_uses:
+    - reviewer_performance_ranking
+  owner: measurement_science
+  validation_plan: compare_instrumentation_with_sampled_experience_reports
+  status: proposed
+----
+
+== Metric validation record
+
+[source,yaml]
+----
+metric_validation:
+  id: mv_01J...
+  metric_id: ei.review.validation_burden_minutes
+  metric_version: 1.0.0
+  construct_validity:
+    evidence:
+      - practitioner_interviews
+      - workflow_walkthroughs
+      - correlation_with_experience_sampling
+    status: supported_with_limitations
+  reliability:
+    test_retest: acceptable
+    source_consistency: acceptable
+  data_quality:
+    completeness: 0.97
+    identity_resolution: 0.99
+    change_linkage: 0.94
+  invariance:
+    reviewed_dimensions:
+      - language
+      - repository_type
+      - team
+    limitations:
+      - mobile_and_offline_review_underobserved
+  approved_uses:
+    - aggregate_tool_evaluation
+    - team_workflow_analysis
+  prohibited_uses:
+    - individual_comparison
+  reviewer: metric_governance_board
+  reviewed_at: 2026-08-10
+  next_review: 2026-11-10
+----
+
+== Data-quality exception record
+
+[source,yaml]
+----
+data_quality_exception:
+  id: dqe_01J...
+  affected_product: ei.review.validation_burden_minutes@1.0.0
+  detected_at: 2026-08-18T09:20:00Z
+  issue: Review-session events missing from one source-control instance
+  affected_population: credit_domain_repositories
+  affected_period:
+    start: 2026-08-16
+    end: null
+  severity: high
+  publication_action: suppress_affected_breakdowns
+  decisions_at_risk:
+    - dq_01J...
+  owner: measurement_platform
+  remediation:
+    - restore_connector_credentials
+    - backfill_events
+    - recompute_metric
+  resolved_at: null
+----
+
+== Engineering Change correction request
+
+[source,yaml]
+----
+change_correction_request:
+  id: ccr_01J...
+  engineering_change_id: ec_01J...
+  submitted_by: practitioner_or_domain_steward
+  correction_type: deployment_link
+  disputed_relationship:
+    source: deployment_8821
+    target: ec_01J...
+    relationship: INCLUDES_CHANGE
+  reason: Deployment contained a reverted build that did not include this change
+  evidence:
+    - artifact_digest
+    - deployment_manifest
+  requested_action: remove_relationship_and_recompute_dependents
+  status: under_review
+  reviewer: deployment_data_steward
+  submitted_at: 2026-08-22T16:05:00Z
+----
+
+== Study charter template
+
+[source,yaml]
+----
+study_charter:
+  id: exp_01J...
+  title: AI review effect on human validation burden
+  sponsor: developer_productivity
+  study_owner: engineering_intelligence
+  decision_owner: vp_engineering_platform
+  hypothesis: AI review reduces median human validation effort by at least 15 percent without degrading severe-defect outcomes
+  theory_of_change:
+    - routine_findings_are_detected_earlier
+    - authors_correct_before_human_review
+    - human_review_focus_shifts_to_domain_and_architecture_risk
+  assignment_unit: repository
+  analysis_unit: engineering_change
+  treatment: ai_reviewer_configuration_4_2
+  comparator: current_review_workflow
+  primary_outcome: ei.review.validation_burden_minutes@1.0.0
+  guardrails:
+    - ei.quality.severe_escape_rate@1.0.0
+    - ei.change.rollback_rate@2.0.0
+  duration: 8_weeks
+  follow_up: 30_days
+  privacy_classification: restricted
+  status: proposed
+----
+
+== Experiment readiness review
+
+[source,yaml]
+----
+experiment_readiness:
+  study_id: exp_01J...
+  eligibility_executable: pass
+  deterministic_assignment: pass
+  treatment_deployable: pass
+  exposure_observable: pass
+  primary_metric_publishable: pass
+  guardrails_publishable: pass
+  power_review: pass
+  privacy_review: pass
+  security_review: pass
+  rollback_tested: pass
+  known_external_events:
+    - annual_release_freeze_during_week_7
+  approval: approved_with_condition
+  conditions:
+    - exclude_release_freeze_from_primary_window
+  reviewers:
+    - measurement_science
+    - security
+    - privacy
+    - domain_owner
+----
+
+== Pre-analysis plan template
+
+[source,yaml]
+----
+pre_analysis_plan:
+  study_id: exp_01J...
+  version: 1.0.0
+  estimand: repository_assignment_intention_to_treat_effect
+  eligible_population: medium_risk_engineering_changes
+  primary_model: covariate_adjusted_cluster_level_regression
+  clustering: repository
+  covariates:
+    - baseline_validation_burden
+    - complexity_band
+    - repository_change_volume
+  missing_data:
+    incomplete_outcome_window: exclude_until_mature
+    source_failure: suppress_and_report
+  subgroup_analyses:
+    confirmatory:
+      - complexity_band
+    exploratory:
+      - programming_language
+  sequential_monitoring: safety_and_data_quality_only
+  decision_rule:
+    benefit: primary_effect_at_least_15_percent
+    quality: severe_escape_noninferior
+  registered_at: 2026-08-20T12:00:00Z
+  registered_by: study_owner
+----
+
+== Study result record
+
+[source,yaml]
+----
+study_result:
+  study_id: exp_01J...
+  analysis_version: 1.0.0
+  population:
+    assigned_clusters: 120
+    engineering_changes: 8240
+  exposure:
+    treatment_completion_rate: 0.91
+    control_contamination_rate: 0.02
+  primary_result:
+    estimate_relative: -0.18
+    interval_95: [-0.24, -0.11]
+  guardrails:
+    severe_escape_rate: noninferior
+    rollback_rate: no_material_difference
+  economics:
+    released_capacity_hours_annualized: 28000
+    realized_value_status: modeled_not_realized
+  limitations:
+    - high_risk_repositories_excluded
+    - long_term_skill_effect_not_measured
+  conclusion: supports_bounded_adoption
+  reproducibility_package: evidence://study/exp_01J...
+  completed_at: 2026-10-01
+----
+
+== Decision record template
+
+[source,yaml]
+----
+decision_record:
+  id: dec_01J...
+  question_id: dq_01J...
+  decision: bounded_adoption
+  decided_at: 2026-10-15
+  owner: vp_engineering_platform
+  scope: medium_risk_application_repositories
+  alternatives_considered:
+    - current_tool
+    - vendor_a
+    - vendor_b
+    - internal_build
+  evidence:
+    studies:
+      - exp_01J...
+    metrics:
+      - ei.review.validation_burden_minutes@1.0.0
+      - ei.quality.severe_escape_rate@1.0.0
+    business_case: bc_01J...
+  rationale:
+    - strongest_actionable_finding_quality
+    - reduced_human_validation_burden
+    - acceptable_security_and_operating_model
+    - positive_expected_economic_value
+  uncertainty:
+    - high_risk_effect_unknown
+    - long_term_capability_effect_unknown
+  conditions:
+    - exclude_high_risk_repositories
+    - continue_quality_monitoring
+    - repeat_evaluation_after_major_model_change
+  reversal_criteria:
+    - severe_escape_guardrail_breach
+    - annual_cost_above_contract_limit
+  review_date: 2027-04-15
+----
+
+== Business-case summary template
+
+[source,yaml]
+----
+business_case_summary:
+  id: bc_01J...
+  intervention: enterprise_ai_review
+  horizon_years: 3
+  alternatives:
+    - current_tool
+    - internal_build
+    - no_standard
+  incremental_costs:
+    vendor: 2200000
+    implementation: 450000
+    operations_and_governance: 600000
+    validation_and_support: 500000
+  benefits:
+    released_capacity_value: 4200000
+    avoided_tool_cost: 1800000
+    quality_risk_reduction: 900000
+  benefit_labels:
+    released_capacity_value: modeled_outcome_value
+    avoided_tool_cost: committed_financial_impact
+    quality_risk_reduction: modeled_outcome_value
+  expected_npv: 6800000
+  conservative_npv: 900000
+  probability_positive_npv: 0.82
+  key_sensitivities:
+    - capacity_realization
+    - eligible_coverage
+    - renewal_price
+  realization_owner: developer_productivity
+  review_date: 2027-01-15
+----
+
+== Value-realization record
+
+[source,yaml]
+----
+value_realization:
+  id: vr_01J...
+  business_case_id: bc_01J...
+  period: 2026_Q4
+  adoption:
+    eligible_coverage: 0.68
+    active_teams: 420
+  actual_cost:
+    vendor: 550000
+    operations: 130000
+  measured_effect:
+    human_validation_minutes_change: -0.16
+  released_capacity:
+    measured_hours: 6400
+    verified_reallocated_hours: 2300
+  financial_effect:
+    booked_savings: 0
+    avoided_cost: 500000
+  quality:
+    severe_guardrails: within_bounds
+  forecast_variance:
+    cause: slower_repository_onboarding
+  action: continue_with_adoption_remediation
+  owner: developer_productivity
+----
+
+== Governance use registration
+
+[source,yaml]
+----
+governed_use:
+  id: use_01J...
+  name: Risk-based specialist review routing
+  owner: secure_development_platform
+  use_class: policy_influence
+  purpose: Direct scarce security-review attention to changes with elevated expected risk
+  affected_population: production_application_repositories
+  data:
+    - complexity_features
+    - dependency_blast_radius
+    - security_sensitive_paths
+  models:
+    - change_risk_model@3.2.0
+  decisions:
+    - review_routing
+  approved_uses:
+    - specialist_queue_assignment
+  prohibited_uses:
+    - engineer_performance_ranking
+    - promotion_decisions
+  access:
+    raw: restricted
+    aggregate: engineering_leaders
+  appeal: governance_portal
+  expiration: 2027-02-01
+----
+
+== Access request template
+
+[source,yaml]
+----
+access_request:
+  id: ar_01J...
+  requester: analyst_identity
+  registered_use: use_01J...
+  requested_resources:
+    - restricted_change_risk_dataset
+  required_dimensions:
+    - repository
+    - complexity_band
+  excluded_fields:
+    - human_name
+    - email
+  access_mode: secure_analysis_workspace
+  export_required: false
+  duration: 60_days
+  sponsor: secure_development_platform
+  status: pending
+----
+
+== Governance exception template
+
+[source,yaml]
+----
+governance_exception:
+  id: ge_01J...
+  requested_by: security_investigations
+  policy_exception: temporary_individual_level_access
+  purpose: Investigate suspected credential compromise affecting deployment approvals
+  scope: named_incident_and_related_events
+  necessity: aggregate_evidence_is_insufficient
+  compensating_controls:
+    - two_person_approval
+    - no_export
+    - restricted_workspace
+    - complete_query_audit
+  expires_at: 2026-09-05T00:00:00Z
+  reviewers:
+    - security
+    - privacy
+    - legal
+  status: approved
+----
+
+== Governance incident record
+
+[source,yaml]
+----
+governance_incident:
+  id: gi_01J...
+  detected_at: 2026-09-12T14:03:00Z
+  type: prohibited_metric_use
+  description: Team-level workflow metric was exported and used to create individual rankings
+  severity: high
+  affected_population: 34_engineers
+  containment:
+    - revoke_export
+    - remove_rankings
+    - suspend_dashboard_access
+  correction:
+    - notify_affected_population
+    - document_invalid_interpretation
+  root_causes:
+    - export_control_gap
+    - insufficient_prohibited_use_notice
+  owner: engineering_intelligence_governance
+  status: under_investigation
+----
+
+== Architecture decision record
+
+[source,yaml]
+----
+architecture_decision:
+  id: adr_ei_014
+  title: Preserve immutable raw events in object storage
+  status: accepted
+  context: Canonical models and reconstruction rules will evolve, requiring replay and audit
+  decision: Store encrypted source events with checksums and retention classification before transformation
+  alternatives:
+    - canonical_tables_only
+    - source_system_requery
+  consequences:
+    positive:
+      - replayable_transformations
+      - source_audit
+      - historical_reconstruction
+    negative:
+      - storage_cost
+      - stronger_access_and_retention_controls_required
+  evidence:
+    - connector_failure_analysis
+    - metric_restatement_requirements
+  owner: engineering_intelligence_architecture
+  review_trigger: major_change_in_privacy_or_storage_cost
+----
+
+== Source onboarding record
+
+[source,yaml]
+----
+source_onboarding:
+  id: source_ci_enterprise
+  source_system: enterprise_ci
+  owner: build_platform
+  connection_pattern: event_stream_plus_backfill_api
+  supported_entities:
+    - validation_run
+    - build
+    - test_result
+  event_time_semantics: source_execution_time
+  ordering_key: pipeline_run_id
+  idempotency_key: source_event_id
+  freshness_slo: 2_hours
+  completeness_slo: 0.99
+  deletion_behavior: tombstone_event
+  classification: confidential
+  connector_version: 1.0.0
+  status: production
+----
+
+== Evidence review agenda
+
+A recurring evidence review should use the following agenda:
+
+. decisions due before the next review;
+. evidence requests and blocked questions;
+. source and linkage quality exceptions;
+. metric proposals, changes, and retirements;
+. active experiments and guardrails;
+. completed results and required decisions;
+. value-realization variances;
+. governance uses, exceptions, appeals, and incidents;
+. architecture and platform risks;
+. prior decision review dates.
+
+The meeting should not become a general dashboard tour.
+
+== Monthly learning review template
+
+[source,yaml]
+----
+learning_review:
+  period: 2026_09
+  consequential_questions:
+    opened: 4
+    closed: 3
+  decisions:
+    adopted: 1
+    bounded_adoption: 1
+    modified: 1
+    stopped: 0
+  evidence_quality:
+    new_exceptions: 2
+    resolved_exceptions: 3
+  studies:
+    launched: 2
+    completed: 1
+    replicated: 0
+  negative_results_retained: 1
+  metrics:
+    promoted_to_governed: 2
+    deprecated: 1
+  realized_value:
+    avoided_cost: 500000
+    booked_savings: 0
+    verified_reallocated_hours: 2300
+  governance:
+    new_uses: 1
+    exceptions: 1
+    incidents: 0
+  changed_assumptions:
+    - ai_review_effect_smaller_for_high_complexity_changes
+  next_actions:
+    - launch_high_complexity_replication
+    - improve_repository_onboarding
+----
+
+== Quarterly portfolio record
+
+[source,yaml]
+----
+learning_portfolio:
+  period: 2026_Q3
+  investments:
+    - id: ai_review
+      evidence_maturity: randomized
+      expected_value: high
+      uncertainty: medium
+      next_decision: bounded_scale
+    - id: ci_cache_expansion
+      evidence_maturity: quasi_experimental
+      expected_value: medium
+      uncertainty: low
+      next_decision: expand
+    - id: architecture_decomposition
+      evidence_maturity: observational
+      expected_value: high
+      uncertainty: high
+      next_decision: pilot
+  portfolio_balance:
+    short_term_workflow: 0.40
+    platform: 0.25
+    architecture: 0.20
+    long_term_capability: 0.15
+  constraints:
+    - security_review_capacity
+    - data_engineering_capacity
+  decisions_required:
+    - fund_architecture_pilot
+    - retire_low_value_metric_program
+----
+
+== Record status vocabulary
+
+Recommended statuses are:
+
+* draft;
+* proposed;
+* under review;
+* approved;
+* approved with conditions;
+* active;
+* degraded;
+* suspended;
+* superseded;
+* deprecated;
+* retired;
+* rejected;
+* completed.
+
+Local systems may map these statuses, but should preserve the canonical meaning.
+
+== Review-date discipline
+
+Every decision, metric, model, governed use, exception, and business case should have a review date.
+
+Review triggers may include:
+
+* elapsed time;
+* model or vendor version change;
+* population shift;
+* metric quality degradation;
+* price or contract change;
+* architecture migration;
+* governance incident;
+* guardrail breach;
+* evidence contradicting the original assumption.
+
+A record without a review condition tends to become permanent by default.
+
+== Evidence references
+
+References should use durable identifiers rather than presentation URLs alone.
+
+Examples include:
+
+* `metric://ei.review.validation_burden_minutes/1.0.0`;
+* `study://exp_01J.../analysis/1.0.0`;
+* `evidence://dataset/review_benchmark/2.1.0`;
+* `decision://dec_01J...`;
+* `model://change_risk_model/3.2.0`;
+* `lineage://metric-run/01J...`;
+* `business-case://bc_01J...`.
+
+The resolver may redirect users to the current governed interface while preserving identity.
+
+== Correction history
+
+Records should not be silently overwritten.
+
+A correction entry should contain:
+
+[source,yaml]
+----
+correction:
+  corrected_record: dec_01J...
+  previous_version: 1.0.0
+  new_version: 1.0.1
+  field: evidence.metrics[0]
+  previous_value: ei.review.validation_burden_minutes@0.9.0
+  new_value: ei.review.validation_burden_minutes@1.0.0
+  reason: final_validated_metric_version_was_used_in_analysis
+  corrected_by: decision_steward
+  corrected_at: 2026-10-16T09:00:00Z
+----
+
+== Minimum operating record set
+
+An organization beginning Engineering Intelligence should implement at least:
+
+. decision question;
+. evidence request;
+. metric specification and validation;
+. data-quality exception;
+. study charter and result;
+. decision record;
+. governed-use registration;
+. correction request;
+. business-case summary;
+. value-realization record.
+
+This set creates a traceable path from question to evidence, action, and realized outcome.
+
+== Template anti-patterns
+
+=== Form without ownership
+
+The record is complete, but nobody is accountable for the decision or follow-up.
+
+=== Required fields with meaningless placeholders
+
+Users enter “N/A” merely to satisfy workflow rather than exposing missing evidence.
+
+=== Record after the decision
+
+A polished template is created retrospectively to justify a choice already made.
+
+=== URLs instead of durable references
+
+Evidence disappears when dashboards or documents move.
+
+=== No review date
+
+Temporary policy becomes permanent.
+
+=== Templates as bureaucracy
+
+Records are collected but never used in reviews, decisions, corrections, or learning.
+
+== Operating-template checklist
+
+. Assign durable identifiers and accountable owners.
+. Start from the decision question rather than the available dashboard.
+. Reference versioned metrics, models, studies, and evidence.
+. State uncertainty, limitations, and prohibited uses.
+. Record data quality and linkage exceptions.
+. Separate forecast, modeled value, released capacity, and realized financial impact.
+. Include conditions, reversal criteria, and review dates in decisions.
+. Preserve correction and supersession history.
+. Use registered purposes for access and governance.
+. Retain negative results and stopped interventions.
+. Review records through an operating cadence rather than storing them passively.
+. Keep templates minimal enough to use and complete enough to support accountability.
