@@ -1,0 +1,944 @@
+= Economic Evaluation and Business Case Standard
+
+[abstract]
+This appendix defines a rigorous method for evaluating the economic value of engineering tools, platforms, architecture investments, workflow changes, and AI-assisted development systems. It distinguishes accounting savings from released capacity, modeled value from realized value, and local efficiency from enterprise outcomes. The standard is designed to prevent inflated return-on-investment claims while still enabling organizations to make timely decisions under uncertainty.
+
+== Purpose
+
+Engineering investments are often justified using incomplete arithmetic.
+
+Common claims include:
+
+* engineers save several hours each week;
+* the tool pays for itself if productivity improves by one percent;
+* automation replaces a fixed amount of labor;
+* faster delivery automatically produces revenue;
+* avoided incidents equal historical incident cost;
+* generated code volume represents productive output.
+
+These claims may be directionally useful, but they are not decision-grade until assumptions, mechanisms, opportunity costs, uncertainty, and realization conditions are explicit.
+
+This standard supports decisions such as:
+
+* purchase or renew a vendor tool;
+* build an internal platform;
+* expand an AI assistant;
+* increase CI capacity;
+* fund an architecture migration;
+* change review policy;
+* retire a legacy system;
+* allocate investment across engineering portfolios.
+
+== Core economic model
+
+The economic value of an intervention is the difference between outcomes under the intervention and outcomes under the credible alternative.
+
+[stem]
+++++
+NetValue = IncrementalBenefits - IncrementalCosts
+++++
+
+The comparison is not against zero. It is against the best realistic counterfactual, such as continuing the current tool, building internally, choosing another vendor, delaying investment, or stopping the activity.
+
+image::../figures/mermaid/economic-evaluation-lifecycle.mmd[Economic evaluation and value-realization lifecycle]
+
+== Economic evaluation principles
+
+=== Compare alternatives
+
+Every business case should evaluate at least:
+
+* proposed intervention;
+* current state;
+* credible alternative;
+* defer or do-nothing option.
+
+=== Count net effects
+
+Savings in one area may create cost elsewhere. AI generation may reduce authoring effort while increasing validation, infrastructure, security, and maintenance costs.
+
+=== Distinguish capacity from cash
+
+Time released does not become financial savings unless the organization changes spending, avoids hiring, delivers additional valuable work, or reduces delay.
+
+=== Value outcomes, not activity
+
+More code, reviews, deployments, or suggestions are not automatically benefits.
+
+=== Include uncertainty
+
+Business cases should use ranges, scenarios, and sensitivity analysis rather than a single precise forecast.
+
+=== Track realization
+
+An approved business case is a hypothesis. Actual costs, adoption, capacity use, outcomes, and benefit realization must be measured after implementation.
+
+=== Include distribution
+
+Benefits and costs may fall on different teams, roles, business units, or time horizons.
+
+== Business-case identity
+
+Each evaluation should contain:
+
+* business-case identifier;
+* intervention and version;
+* decision owner;
+* economic owner;
+* study or evidence references;
+* eligible population;
+* comparison alternatives;
+* evaluation horizon;
+* currency and price basis;
+* discount rate where relevant;
+* approval and review dates.
+
+Example:
+
+[source,yaml]
+----
+business_case_id: bc_ai_review_2026_02
+intervention: enterprise_ai_code_review
+version: 1.0
+decision_owner: vp_engineering_platform
+economic_owner: finance_business_partner
+population: 8000_engineers_and_eligible_repositories
+alternatives:
+  - current_review_tool
+  - internal_build
+  - no_enterprise_standard
+horizon_years: 3
+currency: USD
+price_basis_year: 2026
+review_date: 2027-01-15
+----
+
+== Define the counterfactual
+
+The business case should describe what happens without the investment.
+
+A credible counterfactual includes:
+
+* current operating cost;
+* expected price changes;
+* current adoption and effectiveness;
+* planned hiring or attrition;
+* likely architecture and volume growth;
+* known reliability or security risk;
+* replacement needs;
+* costs already committed;
+* other interventions likely to occur.
+
+Using a static current state as the counterfactual can overstate value when the organization would have improved anyway.
+
+== Cost taxonomy
+
+=== Acquisition cost
+
+Includes licenses, subscriptions, usage charges, committed spend, minimums, support tiers, and taxes.
+
+=== Implementation cost
+
+Includes integration, security review, procurement, migration, configuration, testing, enablement, and rollout labor.
+
+=== Operating cost
+
+Includes infrastructure, inference, storage, networking, observability, support, administration, model evaluation, and governance.
+
+=== Human attention cost
+
+Includes training, validation, review, prompt or policy maintenance, troubleshooting, workflow interruption, and exception handling.
+
+=== Switching cost
+
+Includes contract exit, data migration, retraining, workflow changes, decommissioning, temporary duplication, and productivity loss during transition.
+
+=== Risk cost
+
+Includes expected defects, incidents, security exposure, regulatory failure, vendor dependency, data leakage, and operational concentration.
+
+=== Opportunity cost
+
+Includes valuable work displaced by implementation, migration, or ongoing administration.
+
+=== Residual and terminal cost
+
+Includes decommissioning, archival, contract termination, retained infrastructure, and knowledge-transfer obligations at the end of the horizon.
+
+== Benefit taxonomy
+
+=== Direct cash savings
+
+Examples include:
+
+* lower vendor spend;
+* reduced infrastructure bills;
+* contract consolidation;
+* lower support or outsourcing cost;
+* eliminated duplicated systems.
+
+These are the strongest benefits when they produce an observable budget change.
+
+=== Avoided cost
+
+Examples include:
+
+* hiring avoided because capacity meets growth;
+* future infrastructure expansion avoided;
+* renewal price increase avoided;
+* migration or compliance cost avoided.
+
+Avoided cost requires evidence that the expenditure would otherwise have occurred.
+
+=== Released capacity
+
+Time or attention becomes available for other work.
+
+Released capacity is valuable, but it is not identical to cash savings.
+
+=== Throughput value
+
+The organization delivers additional valuable outcomes with the same resources.
+
+This requires evidence that released capacity reaches constrained, valuable work and that downstream systems can absorb it.
+
+=== Cost-of-delay reduction
+
+Earlier delivery may produce value through earlier revenue, risk reduction, customer retention, regulatory compliance, or learning.
+
+=== Quality and reliability value
+
+Includes fewer defects, incidents, rollbacks, support cases, security failures, and emergency interruptions.
+
+=== Risk reduction
+
+Represents lower probability or consequence of adverse outcomes.
+
+=== Option value
+
+An investment may create future choices, such as easier vendor switching, faster experimentation, reusable platform capability, or access to new markets.
+
+=== Capability value
+
+Includes improved expertise, operational resilience, architecture understanding, and ability to act without external dependency.
+
+Capability value should be described carefully and not converted to cash without a defensible model.
+
+== Labor cost model
+
+A fully loaded labor rate may include:
+
+* salary;
+* bonus;
+* benefits;
+* payroll taxes;
+* facilities and equipment;
+* management and shared services;
+* contractor premiums.
+
+However, multiplying minutes saved by a loaded hourly rate usually estimates capacity value, not cash savings.
+
+[stem]
+++++
+ReleasedCapacityValue = HoursReleased * LoadedHourlyRate * RealizationFactor
+++++
+
+The realization factor reflects how much released time becomes valuable productive capacity.
+
+== Capacity realization
+
+Released time creates value only when several conditions hold:
+
+. the time is truly released rather than shifted;
+. the time appears in usable blocks;
+. engineers recognize and can redirect it;
+. there is valuable queued work;
+. downstream review, testing, product, and release systems can absorb it;
+. incentives do not cause the time to disappear into additional low-value activity.
+
+A realization factor should be explicit and sensitivity-tested.
+
+Example scenarios:
+
+* conservative: 20 percent realized;
+* expected: 45 percent realized;
+* optimistic: 70 percent realized.
+
+These are assumptions, not universal defaults.
+
+== Fragmentation discount
+
+Five minutes saved across many tasks may be less useful than one uninterrupted hour.
+
+A fragmentation discount can reflect whether released capacity is actionable.
+
+[stem]
+++++
+UsableCapacity = GrossHoursReleased * ContinuityFactor
+++++
+
+The continuity factor may depend on task batching, workflow design, interruption, and local control over scheduling.
+
+== Bottleneck adjustment
+
+Improving a non-bottleneck may not increase system throughput.
+
+For example, faster code generation may produce no delivery benefit when specialist review or test environments remain constrained.
+
+Economic models should identify:
+
+* current bottleneck;
+* expected bottleneck after intervention;
+* capacity of adjacent stages;
+* queue and utilization effects;
+* possible congestion created by higher upstream output.
+
+== Queueing effects
+
+Small reductions in service time can produce disproportionate waiting-time benefits near high utilization.
+
+Conversely, a modest increase in work arrival rate can destabilize a queue.
+
+Business cases should consider:
+
+* arrival rate;
+* service rate;
+* variability;
+* utilization;
+* queue discipline;
+* shared specialists;
+* peak periods.
+
+This is especially important for review, CI, test environments, security approval, and release systems.
+
+== Cost of delay
+
+Cost of delay estimates the value lost while an outcome is unavailable.
+
+Possible components include:
+
+* deferred revenue;
+* delayed customer learning;
+* continued operational cost;
+* extended security or compliance exposure;
+* customer dissatisfaction;
+* competitive disadvantage;
+* delayed retirement of legacy systems.
+
+The model must state whether earlier technical completion actually leads to earlier release and benefit.
+
+== Quality economics
+
+Quality value should include frequency and consequence.
+
+[stem]
+++++
+ExpectedLoss = sum_i Probability_i * Consequence_i
+++++
+
+Consequences may include:
+
+* engineering response effort;
+* customer support;
+* service credits;
+* revenue loss;
+* data remediation;
+* regulatory penalties;
+* reputation damage;
+* future prevention work;
+* interruption of planned work.
+
+Historical incident averages may be misleading when severity has a heavy-tailed distribution.
+
+== Risk-adjusted value
+
+For uncertain outcomes, use expected values and scenarios.
+
+Example:
+
+[source,yaml]
+----
+risk_reduction:
+  event: severe_change_related_incident
+  baseline_annual_probability: 0.12
+  treated_annual_probability: 0.08
+  consequence_range_usd:
+    low: 500000
+    expected: 2500000
+    high: 15000000
+----
+
+Rare catastrophic outcomes should also be considered through risk tolerance, not expected value alone.
+
+== AI tool economics
+
+AI systems require a complete net-value model.
+
+Costs may include:
+
+* per-seat license;
+* inference and token usage;
+* premium models;
+* retrieval and indexing;
+* human validation;
+* false-positive handling;
+* generated-code maintenance;
+* security review;
+* model evaluation;
+* vendor integration;
+* policy and governance;
+* incident risk;
+* fallback capability.
+
+Benefits may include:
+
+* reduced routine authoring effort;
+* earlier defect detection;
+* improved test coverage;
+* faster information retrieval;
+* reduced review burden;
+* reduced queue delay;
+* increased accessibility to unfamiliar systems;
+* faster experimentation.
+
+Usage or acceptance rate alone is insufficient for valuation.
+
+== Validation burden
+
+AI-produced output creates validation work.
+
+[stem]
+++++
+NetAttentionChange = AuthoringAttentionReduced - ValidationAttentionAdded - ReworkAttentionAdded
+++++
+
+Validation burden should include:
+
+* reviewing suggestions;
+* checking correctness;
+* resolving false positives;
+* understanding generated code;
+* investigating subtle failures;
+* correcting style or architecture drift;
+* security and compliance checks.
+
+A tool can have high adoption and negative net attention value.
+
+== Vendor pricing models
+
+Compare pricing under realistic scale and usage.
+
+Common models include:
+
+* per seat;
+* per active user;
+* per request or review;
+* token or compute usage;
+* repository tier;
+* enterprise flat fee;
+* committed capacity;
+* outcome-based pricing.
+
+The evaluation should model:
+
+* growth;
+* unused seats;
+* usage concentration;
+* price escalation;
+* minimum commitments;
+* overages;
+* premium-feature dependency;
+* negotiation and renewal risk.
+
+== Build versus buy
+
+A build-versus-buy analysis should compare:
+
+* time to usable capability;
+* product and engineering labor;
+* infrastructure;
+* support burden;
+* model and feature evolution;
+* security and compliance;
+* integration depth;
+* customization;
+* vendor concentration;
+* switching cost;
+* opportunity cost;
+* expected lifetime.
+
+Internal build cost should include ongoing product ownership, not only initial engineering effort.
+
+== Architecture investment economics
+
+Architecture investments often produce indirect, delayed, and distributed value.
+
+Potential benefits include:
+
+* lower coordination cost;
+* reduced change blast radius;
+* fewer incidents;
+* easier testing;
+* faster onboarding;
+* independent deployment;
+* reduced vendor dependency;
+* easier regulatory separation;
+* greater option value.
+
+The evaluation should link architectural mechanisms to observable delivery, quality, and operating outcomes.
+
+== Platform economics
+
+A platform creates shared capability and may exhibit scale economies.
+
+Model:
+
+* fixed platform cost;
+* marginal cost per tenant or workload;
+* adoption curve;
+* avoided duplicated investment;
+* local integration cost;
+* support and reliability obligations;
+* migration cost;
+* value concentration among heavy users;
+* cost of forced standardization.
+
+A platform is not valuable merely because many teams use it.
+
+== Allocation of shared costs
+
+Shared costs should be transparent even when not charged back.
+
+Possible allocation methods include:
+
+* equal allocation;
+* usage-based allocation;
+* active-user allocation;
+* transaction allocation;
+* capacity allocation;
+* business-value allocation;
+* central strategic funding.
+
+The chosen method can change behavior and should not be mistaken for the underlying economic cost.
+
+== Sunk costs
+
+Past spending that cannot be recovered should not determine the forward decision.
+
+However, switching costs, remaining contract obligations, migration effort, and residual value are relevant.
+
+The analysis should distinguish sunk cost from avoidable future cost.
+
+== Evaluation horizon
+
+Choose a horizon appropriate to the intervention.
+
+Examples:
+
+* workflow configuration: 6 to 18 months;
+* vendor platform: 2 to 4 years;
+* architecture migration: 3 to 7 years;
+* foundational platform: longer, with staged decision gates.
+
+Long horizons increase uncertainty and require scenario analysis.
+
+== Discounting
+
+Future costs and benefits may be discounted.
+
+[stem]
+++++
+NPV = sum_(t=0)^T (Benefit_t - Cost_t) / (1+r)^t
+++++
+
+Where stem:[r] is the discount rate and stem:[t] is the time period.
+
+The business case should disclose the rate and whether values are nominal or real.
+
+== Standard financial outputs
+
+Useful outputs include:
+
+* net present value;
+* internal rate of return where meaningful;
+* payback period;
+* annualized cost;
+* cost per eligible Engineering Change;
+* cost per active user;
+* cost per accepted outcome;
+* expected value;
+* break-even adoption;
+* break-even effect size.
+
+No one output should replace the underlying assumptions.
+
+== Break-even analysis
+
+Break-even analysis is often more useful than a single forecast.
+
+Examples:
+
+* How many review minutes must be saved per change to cover the vendor cost?
+* What adoption level is required?
+* How much incident probability reduction is required?
+* How many hires must be avoided?
+* What inference price makes the tool uneconomic?
+
+[stem]
+++++
+BreakEvenMinutesPerChange = AnnualIncrementalCost / (EligibleChanges * LoadedCostPerMinute * RealizationFactor)
+++++
+
+== Scenario analysis
+
+At minimum, provide conservative, expected, and optimistic scenarios.
+
+Scenarios should vary multiple coherent assumptions rather than changing only one number.
+
+Example dimensions include:
+
+* adoption;
+* effect size;
+* realization;
+* price;
+* eligible volume;
+* quality effect;
+* migration duration;
+* staffing growth;
+* vendor discount.
+
+== Sensitivity analysis
+
+Identify which assumptions most affect the decision.
+
+Common high-sensitivity variables include:
+
+* human time saved;
+* realization factor;
+* vendor price;
+* inference usage;
+* outcome attribution;
+* incident consequence;
+* adoption;
+* time to rollout;
+* useful life.
+
+A business case dominated by one weak assumption should be treated cautiously.
+
+== Monte Carlo analysis
+
+For large or uncertain investments, model assumptions as distributions rather than fixed values.
+
+Outputs may include:
+
+* probability of positive NPV;
+* expected NPV;
+* downside percentile;
+* probability of payback within horizon;
+* major value drivers.
+
+Distribution choices and correlations must be documented.
+
+== Evidence strength
+
+Each economic input should be labeled by evidence strength.
+
+Suggested levels:
+
+* observed accounting fact;
+* measured operational fact;
+* randomized causal estimate;
+* credible quasi-experimental estimate;
+* calibrated model estimate;
+* expert assumption;
+* vendor claim;
+* placeholder.
+
+A business case should not present all inputs as equally certain.
+
+== Attribution
+
+Benefits should be attributed only to the incremental effect of the intervention.
+
+Avoid double-counting when several programs influence the same outcome.
+
+Possible methods include:
+
+* randomized experiment;
+* phased rollout;
+* difference-in-differences;
+* contribution model;
+* explicit shared attribution;
+* conservative residual attribution.
+
+== Double-counting controls
+
+Common double-counting includes:
+
+* counting time savings and the same increased throughput separately;
+* counting avoided hiring and labor savings for the same capacity;
+* counting fewer incidents and recovered engineering time separately without adjustment;
+* counting revenue acceleration and total revenue;
+* assigning the full outcome to multiple tools.
+
+The business case should include a benefit-dependency map.
+
+== Capacity, savings, and value labels
+
+Every benefit should use one of these labels:
+
+=== Realized cash impact
+
+An observed budget, spend, or revenue change.
+
+=== Contracted or committed impact
+
+A signed or formally approved future financial change.
+
+=== Avoided planned cost
+
+A documented expenditure no longer required.
+
+=== Released capacity
+
+Measured time or attention available for other work.
+
+=== Modeled outcome value
+
+Estimated value based on causal or predictive assumptions.
+
+=== Strategic or option value
+
+A qualitative or scenario-based future capability.
+
+These labels prevent modeled capacity from being reported as booked savings.
+
+== Value-realization plan
+
+Before approval, define how benefits will become real.
+
+For released capacity, specify:
+
+* which bottleneck is relieved;
+* which work will absorb capacity;
+* who owns reallocation;
+* how utilization will be observed;
+* what downstream constraints must change;
+* when realization will be reviewed.
+
+For cash savings, specify:
+
+* contract action;
+* budget owner;
+* timing;
+* accounting treatment;
+* dependency on migration or decommissioning.
+
+== Realization ledger
+
+Track forecast and actual value over time.
+
+Example:
+
+[source,yaml]
+----
+benefit_id: benefit_review_capacity
+business_case_id: bc_ai_review_2026_02
+benefit_type: released_capacity
+forecast_annual_value_usd: 4200000
+forecast_hours: 28000
+realization_factor: 0.45
+actual_to_date:
+  measured_hours_released: 9100
+  verified_reallocated_hours: 3400
+  booked_cash_savings_usd: 0
+  avoided_hiring_usd: 650000
+confidence: medium
+owner: developer_productivity
+review_date: 2027-01-15
+----
+
+== Post-implementation review
+
+Review actual performance against the case.
+
+Measure:
+
+* implementation cost;
+* operating cost;
+* adoption and eligible coverage;
+* treatment fidelity;
+* measured effect;
+* validation burden;
+* quality outcomes;
+* capacity realization;
+* cash or avoided cost;
+* unanticipated costs;
+* vendor and switching risk;
+* continued strategic relevance.
+
+The review should support expand, modify, renegotiate, replace, or retire decisions.
+
+== Renewal economics
+
+Renewal should not rely on the original purchase case.
+
+Reevaluate:
+
+* current alternatives;
+* actual usage;
+* causal or outcome evidence;
+* realized value;
+* price changes;
+* switching cost;
+* market evolution;
+* model or product changes;
+* concentration risk;
+* contract flexibility.
+
+A successful initial rollout does not imply an indefinitely favorable renewal.
+
+== Portfolio allocation
+
+Compare investments using more than nominal ROI.
+
+Portfolio decisions should consider:
+
+* expected value;
+* downside risk;
+* strategic alignment;
+* time to value;
+* reversibility;
+* evidence strength;
+* dependency on scarce expertise;
+* option value;
+* correlation with other investments;
+* organizational capacity to execute.
+
+A smaller high-confidence investment may be preferable to a larger speculative return.
+
+== Decision thresholds
+
+Possible economic decision rules include:
+
+* positive expected NPV with downside limit;
+* payback within a specified horizon;
+* probability of positive value above threshold;
+* cost per outcome below an alternative;
+* noninferior quality at lower cost;
+* strategic capability under a maximum affordable loss.
+
+Thresholds should reflect organizational risk tolerance and reversibility.
+
+== Decision record
+
+Example:
+
+[source,yaml]
+----
+decision_id: dec_bc_2026_119
+business_case_id: bc_ai_review_2026_02
+decision: approve_bounded_rollout
+financial_summary:
+  expected_three_year_npv_usd: 6800000
+  conservative_npv_usd: 900000
+  optimistic_npv_usd: 14200000
+  probability_positive_npv: 0.82
+key_assumptions:
+  - 45_percent_capacity_realization
+  - 70_percent_eligible_change_coverage
+  - quality_noninferiority
+conditions:
+  - annual_vendor_cost_below_2500000
+  - severe_defect_guardrail_maintained
+  - six_month_realization_review
+  - portability_plan_completed
+owner: vp_engineering_platform
+review_date: 2027-01-15
+----
+
+== Business-case maturity levels
+
+=== Level 0: narrative
+
+Benefits and costs are described qualitatively.
+
+=== Level 1: estimated
+
+Major cost and benefit categories are quantified with visible assumptions.
+
+=== Level 2: evidence-linked
+
+Inputs are connected to operational data, studies, contracts, and metric versions.
+
+=== Level 3: decision-grade
+
+Alternatives, uncertainty, scenarios, break-even, risks, and realization are complete.
+
+=== Level 4: realized
+
+Actual costs and benefits are tracked after implementation.
+
+=== Level 5: adaptive portfolio evidence
+
+Realization history improves future forecasts and portfolio allocation.
+
+== Anti-patterns
+
+=== Salary multiplication as savings
+
+Minutes saved are multiplied by salary and reported as cash savings without a realization mechanism.
+
+=== Vendor usage as value
+
+High invocation or acceptance is treated as proof of economic benefit.
+
+=== Gross benefit without validation cost
+
+Automation savings omit the human work required to trust the output.
+
+=== Static counterfactual
+
+The current state is assumed never to change.
+
+=== Best-case-only forecast
+
+Adoption, effect size, and price all use optimistic assumptions.
+
+=== Double-counted benefit
+
+Time savings, throughput, avoided hiring, and revenue are all claimed from the same effect.
+
+=== Ignored bottleneck
+
+Local efficiency is assumed to improve end-to-end outcomes.
+
+=== Ignored migration and exit
+
+Implementation and switching costs are omitted.
+
+=== Modeled value reported as realized savings
+
+Forecast capacity is presented as booked financial impact.
+
+=== No post-implementation review
+
+The original business case is never tested against reality.
+
+== Economic evaluation checklist
+
+. Define the intervention, decision, horizon, owner, and credible alternatives.
+. Model the changing counterfactual rather than a frozen current state.
+. Include acquisition, implementation, operating, human, switching, risk, and opportunity costs.
+. Separate cash savings, avoided cost, released capacity, outcome value, and option value.
+. Measure validation burden and downstream work created by automation.
+. Identify system bottlenecks and queueing effects.
+. State realization and fragmentation assumptions for released capacity.
+. Link quality and risk value to probability and consequence.
+. Use scenarios, sensitivity, break-even, and uncertainty analysis.
+. Label every major input by evidence strength.
+. Prevent double-counting with a benefit-dependency map.
+. Define a concrete value-realization plan before approval.
+. Track forecast versus actual value in a realization ledger.
+. Reevaluate economics at renewal, expansion, and material treatment change.
+. Report modeled value honestly and reserve “savings” for realized or committed financial impact.
