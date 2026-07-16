@@ -1,0 +1,360 @@
+== Research foundations and source notes
+
+The AI-assisted engineering framework in this chapter draws on empirical studies of coding assistants, human–AI interaction, software-agent benchmarks, information retrieval, causal evaluation, and current AI risk-management standards. It extends those foundations into a production-oriented model centered on Engineering Changes, human validation, provenance, economics, and long-term capability effects.
+
+=== Task-level productivity evidence
+
+Controlled studies have reported that AI coding assistants can reduce completion time for some bounded programming tasks. See <<peng2023>>.
+
+These findings are useful but should be interpreted narrowly. A task-level time reduction does not automatically imply:
+
+* lower end-to-end Engineering Change cost;
+* lower review or validation effort;
+* improved maintainability;
+* fewer production defects;
+* increased portfolio throughput;
+* realized financial savings;
+* durable benefit after novelty and learning effects.
+
+The chapter therefore treats task completion time as one possible mechanism measure rather than as a universal productivity outcome.
+
+=== Usability, comprehension, and debugging
+
+Research on AI code-generation tools has identified challenges involving expectation mismatch, verification, debugging, comprehension, and trust. See <<vaithilingam2022>>.
+
+These findings support the chapter’s distinction between generation and useful contribution. Code that is produced quickly may still require substantial effort to inspect, understand, integrate, test, secure, or maintain.
+
+The relevant work system includes both the machine’s production and the human’s response.
+
+=== Interaction patterns
+
+Studies of programmer interaction with code-generating models describe iterative behaviors such as acceleration, exploration, steering, repair, and evaluation. See <<barke2023>>.
+
+This supports a richer event model than simple accepted-versus-rejected suggestions.
+
+Useful interaction states include:
+
+* requested;
+* generated;
+* displayed;
+* inspected;
+* accepted unchanged;
+* accepted with modification;
+* rejected;
+* ignored;
+* retried;
+* superseded;
+* reverted;
+* independently reimplemented;
+* associated with downstream rework or defect evidence.
+
+=== Repository-level agent benchmarks
+
+Repository-level benchmarks such as SWE-bench evaluate whether software agents can resolve real issue-derived tasks in existing repositories. See <<jimenez2024>>.
+
+These benchmarks provide important capability evidence because they require navigation, localization, editing, and test interaction across realistic codebases.
+
+They still differ from enterprise production in several ways:
+
+* the task and acceptance criterion are predefined;
+* organizational coordination may be absent;
+* production deployment and operational consequence are usually out of scope;
+* security, privacy, and policy constraints differ;
+* repository and tool access may be simplified;
+* long-term maintainability is rarely observed;
+* treatment cost and human oversight may not match production practice.
+
+The chapter therefore treats benchmark performance as one evidence layer rather than as proof of autonomous production readiness.
+
+=== Acceptance is not value
+
+Suggestion acceptance is an adoption or interaction measure.
+
+It does not establish that the accepted contribution:
+
+* was correct;
+* was novel;
+* reduced net human effort;
+* improved code quality;
+* prevented a defect;
+* reduced delivery latency;
+* remained in the final artifact;
+* improved downstream outcomes.
+
+This distinction follows the broader measurement-validity principle in <<messick1995>> and the indicator-gaming concerns in <<campbell1979>> and <<goodhart1984>>.
+
+The chapter therefore separates acceptance, contribution, quality, attention, and outcome measures.
+
+=== Precision, recall, and ranked findings
+
+AI review systems often produce findings or recommendations rather than code.
+
+Precision and recall provide standard measures for evaluating finding relevance and coverage. See <<manning2008>>.
+
+Ranking quality can be measured with discounted cumulative gain or normalized discounted cumulative gain where severity and position matter. See <<jarvelin2002>>.
+
+Production evaluation should also account for:
+
+* duplicate findings;
+* equivalent findings expressed differently;
+* severity calibration;
+* false-positive handling time;
+* findings already known to the author;
+* findings that prompt useful inspection without direct acceptance;
+* defects prevented downstream;
+* unsupported or unverifiable claims.
+
+=== Human validation burden
+
+AI output transfers part of the work from production to verification.
+
+The chapter defines validation burden as the human attention required to determine whether machine output is correct, appropriate, safe, maintainable, and consistent with intent.
+
+This burden can include:
+
+* reading generated code or analysis;
+* checking assumptions;
+* reproducing claims;
+* running tests;
+* consulting domain experts;
+* correcting subtle errors;
+* evaluating security and privacy consequences;
+* documenting why output was accepted.
+
+Cognitive-load and interruption research in <<sweller1988>> and <<mark2008>> provides part of the theoretical basis for treating this work as economically meaningful.
+
+=== Cognitive offload and cognitive reload
+
+The chapter defines paired concepts:
+
+* *cognitive offload* — human reasoning or production work genuinely avoided because a reliable machine contribution performed it;
+* *cognitive reload* — additional human reasoning created by noisy, ambiguous, incomplete, or untrustworthy machine output.
+
+Net attention change can be expressed as:
+
+[stem]
+++++
+NetAttentionChange = AuthoringAttentionReduced - ValidationAttentionAdded - ReworkAttentionAdded
+++++
+
+This is an Engineering Intelligence-specific operational model. It should be calibrated with task observation, event evidence, and practitioner studies rather than assumed from output volume.
+
+=== Provenance and reproducibility
+
+An AI contribution cannot be interpreted correctly without treatment provenance.
+
+The chapter therefore requires capture of:
+
+* provider;
+* model and model version;
+* prompt or instruction version;
+* retrieved context;
+* tool permissions and calls;
+* temperature and relevant configuration;
+* initiating actor;
+* delegation chain;
+* timestamps and latency;
+* input and output size;
+* cost;
+* policy and guardrail version.
+
+This is compatible with the entity, activity, and agent concepts in W3C PROV. See <<moreau2013>>.
+
+Because models and hosted services can change, reproducibility may require retained outputs, evaluation fixtures, configuration snapshots, and vendor version attestations even when exact model weights are unavailable.
+
+=== Causal evaluation
+
+Voluntary adoption creates strong selection bias. Early users may differ in skill, enthusiasm, task mix, or management support.
+
+The chapter therefore relies on the causal methods described in Chapter 6 and grounded in <<rubin1974>>, <<holland1986>>, <<shadish2002>>, <<imbens2015>>, <<hernan2020>>, and <<kohavi2020>>.
+
+A credible AI evaluation distinguishes:
+
+* assignment;
+* access;
+* actual invocation;
+* successful exposure;
+* interaction and disposition;
+* downstream contribution;
+* mature outcomes.
+
+Randomized, clustered, switchback, stepped-wedge, or quasi-experimental designs may be appropriate depending on the intervention.
+
+=== Treatment-version drift
+
+AI systems change rapidly through model updates, prompt changes, retrieval changes, policy changes, and tool integrations.
+
+A study can become difficult to interpret when the treatment changes during the observation period.
+
+The chapter therefore treats treatment version as a first-class causal variable and requires:
+
+* version-effective intervals;
+* exposure linked to exact configuration;
+* shadow evaluation before major changes;
+* separate analysis when treatment changes materially;
+* rollback capability;
+* post-update replication.
+
+=== Quality and security guardrails
+
+Faster completion is not sufficient when quality or safety degrades.
+
+Relevant guardrails include:
+
+* escaped defects;
+* security findings;
+* privacy violations;
+* rollback and incident rates;
+* test adequacy;
+* maintainability and complexity;
+* unsupported dependency introduction;
+* license or provenance risk;
+* reviewer confidence;
+* long-term rework.
+
+AI risk-management principles are supported by the NIST AI Risk Management Framework and its generative-AI profile. See <<nist2023-airmf>> and <<nist2024-genai>>.
+
+Management-system and risk-process standards are represented by <<iso42001>> and <<iso23894>>.
+
+These standards guide governance and control; they do not prove that any particular AI system is effective or safe.
+
+=== Economic evaluation
+
+AI economics should include more than licensing or token cost.
+
+The chapter’s cost model includes:
+
+* subscription and platform cost;
+* inference, retrieval, storage, and indexing;
+* integration and administration;
+* security and governance;
+* human validation;
+* false-positive handling;
+* rework and rollback;
+* migration and switching;
+* vendor concentration and exit risk;
+* quality-adjusted attention released.
+
+The broader cost-benefit framework is grounded in <<boardman2018>>, while delayed productivity realization is informed by <<brynjolfsson1993>> and <<brynjolfsson2017>>.
+
+Released minutes should not be reported as cash savings unless spending is actually avoided or removed.
+
+=== Work-mix and heterogeneity
+
+AI effects are likely to vary across:
+
+* language and framework;
+* repository maturity;
+* change complexity;
+* developer experience;
+* task novelty;
+* domain risk;
+* available tests and documentation;
+* model and prompt version;
+* organization-specific tooling.
+
+Average effects can conceal both high-value and harmful subgroups.
+
+The chapter therefore recommends predeclared subgroup analysis, work-mix adjustment, and replication before broad policy.
+
+=== Skill formation and capability effects
+
+Short-term efficiency may coexist with long-term changes in skill.
+
+Potential outcomes include:
+
+* faster learning through explanation and examples;
+* broader access to unfamiliar domains;
+* reduced practice in core reasoning;
+* weaker debugging or code-reading capability;
+* dependence on model availability;
+* changed mentoring and apprenticeship patterns;
+* convergence toward model-preferred solutions.
+
+The current evidence base is not mature enough to support universal conclusions. The chapter treats skill formation and atrophy as long-horizon research and governance questions requiring longitudinal study.
+
+=== Automation bias and overreliance
+
+Users may accept machine output too readily when it appears authoritative, fluent, or confident.
+
+The chapter addresses this through:
+
+* uncertainty and evidence display;
+* required human accountability for consequential acceptance;
+* independent validation for high-risk actions;
+* calibrated confidence rather than stylistic certainty;
+* logging of overrides and reversals;
+* periodic tests of human capability without assistance.
+
+Professional obligations concerning harm, competence, honesty, and accountability are informed by <<acm2018-ethics>>.
+
+=== Agent authority and delegation
+
+Autonomous agents require a richer governance model than interactive suggestions.
+
+The chapter distinguishes:
+
+* permission to inspect;
+* permission to propose;
+* permission to modify;
+* permission to execute tests;
+* permission to merge;
+* permission to deploy;
+* permission to alter infrastructure or data;
+* permission to delegate to other agents.
+
+Each action should carry actor identity, delegated authority, policy version, evidence, validation responsibility, and rollback path.
+
+The delegation-graph and agent-authority model are original Engineering Intelligence extensions compatible with provenance concepts in <<moreau2013>> and risk-governance principles in <<nist2023-airmf>> and <<nist2024-genai>>.
+
+=== Model monoculture and correlated risk
+
+Broad adoption of one model or provider can create correlated failure modes:
+
+* repeated insecure patterns;
+* common reasoning blind spots;
+* synchronized service disruption;
+* shared supply-chain risk;
+* systemic licensing or policy issues;
+* reduced diversity of solution approaches.
+
+The chapter therefore treats provider concentration, model diversity, fallback, and correlated-error testing as portfolio-level risk concerns.
+
+This is a forward-looking operational extension rather than a settled empirical standard.
+
+=== Continuous evaluation
+
+One-time vendor evaluation is insufficient because models, prompts, repositories, and workflows change.
+
+A continuous evaluation system should include:
+
+* stable golden datasets;
+* representative production samples;
+* shadow comparisons;
+* quality and safety guardrails;
+* drift detection;
+* model and prompt versioning;
+* cost tracking;
+* human disagreement review;
+* downstream outcome follow-up.
+
+Benchmark evidence, online experiment evidence, and production evidence should remain distinct but connected.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* AI as a first-class Engineering Change participant;
+* machine-contribution provenance across model, prompt, retrieval, tools, and delegation;
+* paired cognitive-offload and cognitive-reload measures;
+* net attention economics;
+* accepted-contribution share rather than acceptance alone;
+* validation burden as a primary outcome;
+* treatment-version drift as a causal and operational risk;
+* continuous evaluation linked to downstream Engineering Change outcomes;
+* agent authority and delegation graphs;
+* autonomous-action reversal and rollback measures;
+* model-monoculture and correlated-risk analysis;
+* long-term skill and capability guardrails.
+
+These constructs should be treated as hypotheses and operating standards to validate, not as settled universal laws.
