@@ -166,6 +166,18 @@ class ManifestValidationTests(unittest.TestCase):
             validate_manifest.validate(self.build_dir, "b" * 40), 1
         )
 
+    def test_rejects_abbreviated_source_commit(self) -> None:
+        artifact = self.write_artifact("engineering-intelligence.html", b"<html></html>")
+        self.write_manifest(mode="html", files=[artifact], source_commit="abc1234")
+
+        self.assertEqual(validate_manifest.validate(self.build_dir), 1)
+
+    def test_rejects_non_hex_source_commit(self) -> None:
+        artifact = self.write_artifact("engineering-intelligence.html", b"<html></html>")
+        self.write_manifest(mode="html", files=[artifact], source_commit="z" * 40)
+
+        self.assertEqual(validate_manifest.validate(self.build_dir), 1)
+
 
 if __name__ == "__main__":
     unittest.main()
