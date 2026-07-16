@@ -1,0 +1,721 @@
+= The Science of Engineering Intelligence
+
+[abstract]
+Engineering Intelligence becomes a discipline only when its claims can be tested, reproduced, challenged, and improved. This chapter defines the scientific foundations of the field: its objects of study, theory-building practices, measurement standards, replication requirements, benchmark design, shared datasets, reporting conventions, and research agenda. It argues that engineering organizations should not merely consume metrics, but participate in a cumulative science of software delivery.
+
+== From analytics practice to scientific discipline
+
+Engineering analytics is often local and ephemeral. A team builds a dashboard, answers an immediate question, and then moves on. Definitions remain undocumented, causal assumptions remain implicit, and results cannot be compared across organizations.
+
+A scientific discipline requires more.
+
+It needs:
+
+* explicit constructs;
+* observable units of analysis;
+* falsifiable hypotheses;
+* reliable measurement;
+* transparent uncertainty;
+* reproducible methods;
+* cumulative evidence;
+* mechanisms for correction.
+
+Engineering Intelligence should aspire to these properties while recognizing that software delivery is a changing socio-technical system rather than a controlled physical environment.
+
+== The object of study
+
+The primary object of study is not the individual engineer. It is the production and operation of Engineering Changes within an organizational system.
+
+An Engineering Change connects:
+
+* an intended outcome;
+* human and machine participants;
+* code, configuration, data, and infrastructure artifacts;
+* review and validation activity;
+* deployment and release mechanisms;
+* production consequences;
+* economic cost and value;
+* organizational and architectural context.
+
+This unit permits analysis across tools and workflow implementations while reducing the temptation to equate visible activity with individual performance.
+
+== Levels of explanation
+
+Engineering Intelligence requires explanations at multiple levels.
+
+=== Artifact level
+
+Properties of code, tests, configuration, models, schemas, and infrastructure definitions.
+
+=== Change level
+
+The complete sequence through which an intended modification is designed, implemented, reviewed, validated, deployed, and observed.
+
+=== Queue and workflow level
+
+How work competes for reviewers, CI capacity, environments, approvals, and release windows.
+
+=== Team level
+
+Coordination structure, expertise distribution, ownership, interruptions, and local operating practices.
+
+=== Architecture level
+
+Dependencies, coupling, interfaces, blast radius, and the constraints imposed by the software system.
+
+=== Portfolio level
+
+Allocation of engineering capacity across products, platforms, risk reduction, modernization, compliance, and exploration.
+
+=== Enterprise level
+
+Capital allocation, governance, talent systems, vendor strategy, and the aggregate relationship between engineering investment and organizational outcomes.
+
+A useful theory should state the level at which it operates and the mechanisms that connect it to other levels.
+
+== Constructs and observables
+
+Many important engineering concepts cannot be observed directly.
+
+Examples include:
+
+* cognitive load;
+* change complexity;
+* review quality;
+* coordination cost;
+* architectural risk;
+* developer experience;
+* organizational learning;
+* engineering value.
+
+These are constructs. They must be represented through observable indicators, and those indicators must be validated.
+
+For example, cognitive load might be estimated through interruption frequency, concurrent work, context switching, review span, survey responses, and task-reconstruction studies. No single signal should automatically be treated as the construct itself.
+
+== A theory-to-evidence chain
+
+Every important claim should be traceable through a chain:
+
+. construct;
+. proposed mechanism;
+. observable indicators;
+. measurement model;
+. hypothesis;
+. study design;
+. analysis;
+. decision implication;
+. replication status.
+
+image::../figures/mermaid/science-evidence-cycle.mmd[The Engineering Intelligence scientific evidence cycle]
+
+This chain discourages the common pattern in which a convenient telemetry field becomes a metric, the metric becomes a target, and the target becomes an unsupported claim about performance.
+
+== Falsifiable hypotheses
+
+A hypothesis should describe an expected relationship that evidence could contradict.
+
+Weak statement:
+
+[quote]
+AI code review improves engineering productivity.
+
+Stronger statement:
+
+[quote]
+For eligible medium-risk pull requests, enabling the AI reviewer will reduce median human review effort by at least 15 percent without increasing escaped-severity-one-or-two defects, after controlling for repository and change complexity.
+
+The stronger statement defines:
+
+* population;
+* treatment;
+* expected effect;
+* outcome;
+* guardrail;
+* comparison;
+* adjustment variables.
+
+Falsifiability forces clarity before data is examined.
+
+== Descriptive, predictive, causal, and prescriptive claims
+
+Claims must be labeled by type.
+
+=== Descriptive
+
+What happened?
+
+Example: review wait time increased during the quarter.
+
+=== Predictive
+
+What is likely to happen?
+
+Example: this change has a high probability of requiring rollback.
+
+=== Causal
+
+What would happen under an intervention?
+
+Example: introducing a merge queue reduced integration failures.
+
+=== Prescriptive
+
+What action should be taken given objectives and constraints?
+
+Example: route this change to a security specialist and delay deployment until validation completes.
+
+A predictive model does not establish that acting on its prediction will improve outcomes. A correlation does not establish an intervention effect. A prescriptive recommendation requires explicit objectives, costs, and guardrails.
+
+== Measurement validity
+
+A scientifically useful metric requires several forms of validity.
+
+=== Construct validity
+
+Does the metric represent the intended concept?
+
+=== Content validity
+
+Does it cover the important dimensions of that concept?
+
+=== Criterion validity
+
+Does it agree with a credible external reference or outcome?
+
+=== Convergent validity
+
+Do different measures of the same construct move together where expected?
+
+=== Discriminant validity
+
+Can the metric distinguish the construct from related but different concepts?
+
+=== Ecological validity
+
+Does the measure remain meaningful in real engineering conditions?
+
+A metric can be computed correctly and still be scientifically invalid.
+
+== Reliability and repeatability
+
+Reliability asks whether measurement is stable under equivalent conditions.
+
+Sources of unreliability include:
+
+* inconsistent source events;
+* identity-resolution errors;
+* changing workflow semantics;
+* annotation disagreement;
+* unstable model inference;
+* non-deterministic reconstruction;
+* incomplete deployment linkage;
+* hidden metric-version changes.
+
+Reliability should be reported using suitable methods such as test-retest stability, inter-rater agreement, internal consistency, reconstruction agreement, and confidence intervals.
+
+== Measurement invariance
+
+A metric may behave differently across languages, repositories, teams, business domains, or workflow types.
+
+Before comparing groups, ask whether the measure has equivalent meaning.
+
+For example, pull-request size may be a reasonable complexity indicator in one codebase and nearly meaningless in a generated-code repository. Review count may represent diligence in one workflow and mandatory approval policy in another.
+
+Cross-group comparison requires evidence of measurement invariance or explicit qualification.
+
+== Calibration
+
+Risk scores and probability estimates should be calibrated.
+
+If a model assigns 0.30 defect probability to many changes, approximately 30 percent of comparable changes should exhibit the defined outcome over time.
+
+Calibration should be assessed:
+
+* globally;
+* by repository and domain;
+* by complexity band;
+* by model version;
+* by important subpopulation;
+* under distribution shift.
+
+A highly ranked model can still be operationally misleading when its probabilities are poorly calibrated.
+
+== Ground truth is constructed
+
+Engineering datasets rarely contain perfect truth.
+
+Defect labels may depend on:
+
+* whether an incident was detected;
+* whether it was linked to the correct change;
+* how severity was assigned;
+* whether a rollback represented failure or precaution;
+* whether a reviewer recognized the issue;
+* whether the organization records near misses.
+
+Ground-truth creation should document adjudication rules, uncertainty, disagreement, missing outcomes, and label provenance.
+
+== Annotation science
+
+Human labeling is itself a measurement process.
+
+A rigorous annotation protocol should specify:
+
+* label ontology;
+* inclusion and exclusion rules;
+* examples and counterexamples;
+* annotator qualifications;
+* blinded or non-blinded conditions;
+* calibration exercises;
+* disagreement resolution;
+* confidence capture;
+* periodic drift review.
+
+For difficult judgments, preserve annotator distributions rather than collapsing all disagreement into a single authoritative label.
+
+== Benchmark design
+
+Benchmarks can accelerate progress, but they can also distort it.
+
+A useful Engineering Intelligence benchmark should include:
+
+* a clearly defined task;
+* representative populations;
+* realistic class imbalance;
+* temporal splits;
+* repository separation where appropriate;
+* leakage controls;
+* uncertainty and annotation metadata;
+* cost-sensitive evaluation;
+* subgroup reporting;
+* a protected holdout set.
+
+Benchmarks should reward useful operational behavior, not merely leaderboard optimization.
+
+== Retrieval and ranking evaluation
+
+Many Engineering Intelligence systems rank findings, changes, experts, dependencies, or interventions.
+
+Evaluation should therefore include ranking measures such as:
+
+* precision at k;
+* recall at k;
+* mean reciprocal rank;
+* normalized discounted cumulative gain;
+* average precision;
+* expected utility at review budget;
+* severe-finding recall;
+* time-to-first-actionable result.
+
+A system that finds the right issue but buries it below twenty low-value comments may be technically correct and operationally ineffective.
+
+== Economic evaluation of models
+
+Model quality should be translated into consequences.
+
+Relevant quantities include:
+
+* expert minutes consumed;
+* false-positive validation cost;
+* defect cost avoided;
+* latency introduced;
+* infrastructure and inference cost;
+* opportunity cost;
+* adoption effects;
+* risk concentration.
+
+The best statistical model is not necessarily the best engineering intervention.
+
+== Internal replication
+
+Before broad rollout, an organization should replicate important findings across:
+
+* multiple teams;
+* different repositories;
+* time periods;
+* workflow variants;
+* complexity strata;
+* organizational boundaries.
+
+Internal replication tests whether a result is local, seasonal, policy-dependent, or robust enough to guide enterprise decisions.
+
+== External replication
+
+Cross-organization replication is difficult because data and workflows differ, but it is essential for a cumulative field.
+
+External studies should distinguish:
+
+* exact replication of method;
+* conceptual replication of mechanism;
+* transportability to a new population;
+* adaptation to a different workflow;
+* failure to reproduce.
+
+Non-replication should be treated as evidence about boundary conditions, not merely as embarrassment.
+
+== Reproducibility packages
+
+A publishable Engineering Intelligence study should provide, where privacy and security permit:
+
+* research question and hypotheses;
+* analysis plan;
+* metric definitions and versions;
+* event and entity schemas;
+* code or executable specifications;
+* data-quality report;
+* sample construction logic;
+* statistical model details;
+* robustness checks;
+* synthetic or de-identified example data;
+* decision record.
+
+Where raw data cannot be shared, organizations can still publish transformation logic, schemas, synthetic fixtures, and reproducible aggregate analyses.
+
+== Pre-registration
+
+For consequential experiments, pre-register:
+
+* hypotheses;
+* primary and secondary outcomes;
+* guardrails;
+* eligibility;
+* assignment;
+* exposure definition;
+* exclusion rules;
+* sample-size rationale;
+* stopping criteria;
+* analysis model;
+* subgroup analyses.
+
+Pre-registration does not prevent exploration. It distinguishes confirmatory evidence from discoveries made after inspecting the data.
+
+== Registered reports
+
+A stronger practice is to review the study question and method before results are known.
+
+Registered reports reduce publication bias and encourage organizations to value well-designed negative findings. The result becomes informative because the method was credible, not because the effect was exciting.
+
+== Negative results
+
+Engineering organizations often suppress negative results:
+
+* a tool produced no measurable benefit;
+* an intervention helped only one workflow;
+* a model failed under real operational load;
+* a metric could not be validated;
+* an expected effect disappeared after adjustment.
+
+These findings prevent repeated waste. A mature discipline records them.
+
+== Meta-analysis
+
+As studies accumulate, meta-analysis can estimate effect distributions rather than relying on one headline number.
+
+For example, the effect of AI review on human effort may vary by:
+
+* programming language;
+* change complexity;
+* reviewer expertise;
+* repository maturity;
+* model family;
+* prompting strategy;
+* organizational policy.
+
+A random-effects view is often more realistic than assuming one universal effect.
+
+== Transportability
+
+Decision makers must ask whether evidence from one setting applies to another.
+
+Transportability depends on similarities in:
+
+* population;
+* architecture;
+* workflow;
+* incentives;
+* tooling;
+* risk tolerance;
+* outcome definition;
+* intervention fidelity.
+
+The burden is not to prove that environments are identical, but to identify which differences could alter the causal mechanism.
+
+== Natural experiments
+
+Engineering organizations continually produce quasi-experimental variation:
+
+* phased tool rollouts;
+* policy thresholds;
+* infrastructure outages;
+* team migrations;
+* vendor changes;
+* repository transfers;
+* staggered platform adoption.
+
+With careful assumptions, methods such as difference-in-differences, regression discontinuity, interrupted time series, and instrumental variables can extract useful evidence.
+
+Natural experiments should not be presented as randomized trials. Their identifying assumptions must be explicit and tested where possible.
+
+== Longitudinal research
+
+Many effects appear only over time.
+
+Examples include:
+
+* skill development or atrophy;
+* architectural degradation;
+* review-culture change;
+* accumulated automation debt;
+* model adaptation;
+* organizational learning;
+* delayed quality outcomes.
+
+Longitudinal designs should distinguish short-term novelty effects from sustained change.
+
+== System adaptation
+
+Engineering systems react to measurement and intervention.
+
+People learn the metric. Teams alter workflow. Models change the distribution of work. Policies redirect attention. Vendors update products.
+
+This means an intervention effect is not permanently fixed. Engineering Intelligence requires continuous revalidation and explicit study of adaptation.
+
+== Multi-method research
+
+Telemetry alone cannot explain every mechanism.
+
+Strong studies may combine:
+
+* event data;
+* controlled experiments;
+* repository mining;
+* surveys;
+* interviews;
+* cognitive walkthroughs;
+* diary studies;
+* observational fieldwork;
+* incident review;
+* economic modeling.
+
+Qualitative evidence is especially valuable for discovering mechanisms, interpreting anomalies, and identifying constructs not captured by instrumentation.
+
+== Shared research infrastructure
+
+A cumulative discipline benefits from shared infrastructure:
+
+* canonical event contracts;
+* Engineering Change schemas;
+* metric definition registries;
+* benchmark task specifications;
+* synthetic data generators;
+* experiment templates;
+* analysis libraries;
+* privacy-preserving collaboration methods;
+* replication registries;
+* evidence maps.
+
+Standardization should support comparison without freezing local innovation.
+
+== Privacy-preserving collaboration
+
+Organizations may collaborate without exchanging raw proprietary data.
+
+Possible approaches include:
+
+* federated analysis;
+* secure aggregation;
+* differential privacy;
+* common query packages executed locally;
+* standardized aggregate reporting;
+* synthetic datasets;
+* trusted research enclaves.
+
+Privacy protection must be evaluated against re-identification risk, especially for small teams and rare events.
+
+== Evidence maturity levels
+
+Claims can be classified by maturity.
+
+=== Level 0: anecdote
+
+A plausible observation without systematic measurement.
+
+=== Level 1: descriptive evidence
+
+A measured pattern with documented definitions and data quality.
+
+=== Level 2: replicated association
+
+A relationship observed across populations or periods with relevant adjustment.
+
+=== Level 3: credible causal evidence
+
+A randomized or defensible quasi-experimental estimate.
+
+=== Level 4: replicated causal mechanism
+
+Consistent causal evidence with understood boundary conditions.
+
+=== Level 5: operationally validated policy
+
+A mechanism translated into a governed intervention with durable net benefit.
+
+The maturity level should accompany important recommendations.
+
+== Scientific reporting standard
+
+Every major result should state:
+
+* question;
+* claim type;
+* population;
+* unit of analysis;
+* period;
+* treatment or exposure;
+* outcome definition;
+* metric versions;
+* data coverage;
+* uncertainty;
+* design assumptions;
+* robustness checks;
+* limitations;
+* replication status;
+* decision consequence.
+
+This reporting standard makes results easier to audit and compare.
+
+== An open evidence graph
+
+Over time, studies can be represented as an evidence graph connecting:
+
+* constructs;
+* metrics;
+* datasets;
+* interventions;
+* populations;
+* mechanisms;
+* findings;
+* replications;
+* contradictions;
+* decisions.
+
+Such a graph would allow decision makers to inspect not only the latest result, but the complete provenance and maturity of a claim.
+
+== Research agenda
+
+Important research areas include:
+
+=== Engineering Change reconstruction
+
+How accurately can changes be reconstructed across fragmented enterprise systems?
+
+=== Cognitive load
+
+Which behavioral and self-reported measures best predict harmful overload without becoming surveillance instruments?
+
+=== AI collaboration
+
+When do AI participants substitute for, complement, or increase human effort?
+
+=== Review science
+
+What review structures maximize defect discovery, knowledge transfer, and attention efficiency?
+
+=== Architecture and organizational structure
+
+How do dependency topology, ownership, and team design interact?
+
+=== Value attribution
+
+How can engineering investment be linked to product, reliability, and strategic outcomes without false precision?
+
+=== Metric governance
+
+Which institutional practices prevent gaming while preserving useful accountability?
+
+=== Long-run capability
+
+How do automation and AI affect learning, expertise, and resilience over years rather than weeks?
+
+== Institutional design for research
+
+Large organizations should create mechanisms for cumulative learning:
+
+* a research review board for consequential studies;
+* a registry of experiments and natural experiments;
+* standard evidence packages;
+* reusable benchmark datasets;
+* protected publication of negative findings;
+* practitioner and domain review;
+* periodic synthesis of accumulated evidence.
+
+This need not become academic bureaucracy. Its purpose is to reduce repeated weak studies and unsupported enterprise decisions.
+
+== Anti-patterns
+
+=== Dashboard empiricism
+
+A visible pattern is treated as explanation.
+
+=== Metric essentialism
+
+A proxy is treated as the underlying construct.
+
+=== One-company universalism
+
+A local result is presented as a law of software engineering.
+
+=== Benchmark overfitting
+
+Systems optimize a public test while losing operational usefulness.
+
+=== Causal language without causal design
+
+Associations are described as improvements caused by an intervention.
+
+=== Hidden researcher degrees of freedom
+
+Outcomes, exclusions, and models are selected after results are visible.
+
+=== Publication of winners only
+
+Negative and contradictory findings disappear.
+
+=== Permanent validity
+
+A metric or model is assumed to remain valid after the system adapts.
+
+== Key takeaways
+
+* Engineering Intelligence should develop as a cumulative empirical discipline, not a collection of dashboards.
+* The Engineering Change is the primary unit of study, embedded in workflow, architecture, organizational, and economic context.
+* Constructs must be separated from their observable indicators and validated explicitly.
+* Claims must distinguish description, prediction, causation, and prescription.
+* Reproducibility, replication, negative results, and transportability are essential.
+* Benchmarks must represent operational utility, uncertainty, cost, and realistic populations.
+* Scientific findings require continuous revalidation because engineering systems adapt.
+* Shared schemas, methods, and privacy-preserving collaboration can create an evidence base larger than any one organization.
+
+== Open questions
+
+* Which constructs should become foundational standards for Engineering Intelligence?
+* What minimum evidence package should be required before an enterprise metric influences policy?
+* How can organizations share replication results without exposing proprietary systems or employee data?
+* Which engineering effects are stable enough to generalize across companies?
+* How should contradictory evidence be represented in executive decision products?
+* Can an open evidence graph become a practical foundation for cumulative engineering science?
+
+== Scientific practice checklist
+
+. State the construct, mechanism, population, and unit of analysis.
+. Label the claim as descriptive, predictive, causal, or prescriptive.
+. Version metrics, data, models, and analysis logic.
+. Report coverage, missingness, reliability, validity, and uncertainty.
+. Pre-register consequential confirmatory studies.
+. Preserve exploratory analysis as exploratory.
+. Test calibration, subgroup behavior, and transportability.
+. Replicate before broad policy adoption.
+. Publish negative and contradictory results internally.
+. Revalidate after workflow, model, or incentive changes.
+. Package studies for reproduction without exposing sensitive data.
+. Connect findings to an explicit evidence maturity level and decision record.
