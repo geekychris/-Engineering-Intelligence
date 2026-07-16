@@ -41,4 +41,6 @@ include::chapters/10-engineering-intelligence-platform.adoc[]
 
 include::chapters/11-engineering-metrics-catalogue.adoc[]
 
+include::chapters/12-experiment-playbooks.adoc[]
+
 // Planned chapters are added here as they are written.
