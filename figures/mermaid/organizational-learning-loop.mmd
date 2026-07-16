@@ -1,0 +1,18 @@
+flowchart LR
+    A[Important decision or outcome] --> B[Observe the engineering system]
+    B --> C[Explain constraints and mechanisms]
+    C --> D[Design bounded intervention]
+    D --> E[Evaluate human, quality, economic, and operational effects]
+    E --> F{Decision}
+    F -->|Adopt| G[Scale with guardrails]
+    F -->|Modify| D
+    F -->|Stop| H[Reverse and retain negative result]
+    F -->|Continue learning| B
+    G --> I[Institutional memory]
+    H --> I
+    I --> A
+
+    J[Governance, privacy, practitioner participation, and data quality] -. constrains .-> B
+    J -. constrains .-> D
+    J -. constrains .-> E
+    J -. constrains .-> F
