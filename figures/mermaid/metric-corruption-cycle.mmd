@@ -1,0 +1,9 @@
+flowchart LR
+    M[Metric correlates with desired outcome] --> T[Metric becomes a target]
+    T --> G[Behavior adapts to improve the proxy]
+    G --> D[Proxy diverges from true outcome]
+    D --> B[Decisions become biased]
+    B --> R[Review, redesign, or retire metric]
+    R --> M
+
+    GUARD[Guardrails and outcome measures] -. detect divergence .-> D
