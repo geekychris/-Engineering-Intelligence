@@ -44,6 +44,31 @@ validate_sources() {
   python3 "$ROOT/scripts/validate_sources.py" "$ROOT"
 }
 
+clean_edition_outputs() {
+  case "$MODE" in
+    html)
+      rm -f \
+        "$BUILD_DIR/engineering-intelligence.html" \
+        "$BUILD_DIR/engineering-intelligence.pdf" \
+        "$BUILD_DIR/manifest.json"
+      ;;
+    pdf)
+      rm -f \
+        "$BUILD_DIR/engineering-intelligence.html" \
+        "$BUILD_DIR/engineering-intelligence.pdf" \
+        "$BUILD_DIR/manifest.json"
+      ;;
+    all|validate)
+      rm -f \
+        "$BUILD_DIR/engineering-intelligence.html" \
+        "$BUILD_DIR/engineering-intelligence.pdf" \
+        "$BUILD_DIR/manifest.json"
+      ;;
+    diagrams)
+      ;;
+  esac
+}
+
 render_diagrams() {
   local source output
   mkdir -p "$BUILD_DIR/figures/mermaid"
@@ -172,6 +197,7 @@ PY
 }
 
 validate_sources
+clean_edition_outputs
 
 case "$MODE" in
   validate)
