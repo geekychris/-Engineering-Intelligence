@@ -1,0 +1,79 @@
+flowchart LR
+    subgraph S[Source systems]
+        S1[Planning and intent]
+        S2[Source control and review]
+        S3[CI, test, and security]
+        S4[Deployment, release, and incidents]
+        S5[Identity, organization, finance, and business]
+        S6[AI assistants, agents, and model gateways]
+    end
+
+    subgraph I[Collection and evidence]
+        I1[Connectors, webhooks, streams, CDC, and batch]
+        I2[Durable event bus]
+        I3[Immutable raw evidence]
+        I4[Schema registry and canonicalization]
+    end
+
+    subgraph C[Semantic intelligence core]
+        C1[Identity and temporal ownership]
+        C2[Service and repository catalogue]
+        C3[Engineering Change reconstruction]
+        C4[Confidence and provenance]
+        C5[Lifecycle and relationship projections]
+    end
+
+    subgraph A[Analytical and operational products]
+        A1[Lakehouse or warehouse]
+        A2[Graph projection]
+        A3[Search index]
+        A4[Metric and feature computation]
+        A5[Model registry and inference]
+        A6[Experiment assignment and exposure]
+        A7[Guardrail monitoring]
+    end
+
+    subgraph R[Governed serving and learning]
+        R1[Metric and Engineering Change APIs]
+        R2[Evidence explorer]
+        R3[Experiment console]
+        R4[Decision workbench]
+        R5[Practitioner and executive products]
+        R6[Evidence, metric, study, and decision registries]
+    end
+
+    S --> I1
+    I1 --> I2
+    I1 --> I3
+    I2 --> I4
+    I3 --> I4
+    I4 --> C1
+    I4 --> C2
+    C1 --> C3
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5
+    C5 --> A1
+    C5 --> A2
+    C5 --> A3
+    A1 --> A4
+    A2 --> A4
+    A4 --> A5
+    A4 --> A6
+    A6 --> A7
+    A4 --> R1
+    A5 --> R1
+    A6 --> R3
+    A7 --> R3
+    A2 --> R2
+    A3 --> R2
+    R1 --> R4
+    R2 --> R4
+    R3 --> R4
+    R4 --> R5
+    R4 --> R6
+
+    G[Security, privacy, governance, lineage, observability, quality SLOs, and cost controls] -. applies across all layers .-> I
+    G -. applies across all layers .-> C
+    G -. applies across all layers .-> A
+    G -. applies across all layers .-> R
