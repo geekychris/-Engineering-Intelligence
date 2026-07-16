@@ -4,7 +4,7 @@
 
 _Engineering Intelligence_ is a publication-length AsciiDoc book about measuring software engineering as a socio-technical and economic system. It connects engineering economics, human attention, architecture, queueing, causal inference, AI-assisted development, governance, portfolio decisions, and organizational learning.
 
-The master publication file is [`book.adoc`](book.adoc).
+The master publication file is [`book.adoc`](book.adoc). Authoring, evidence, metric, instrumentation, diagram, and review conventions are defined in [`CONTRIBUTING.adoc`](CONTRIBUTING.adoc).
 
 ## Book structure
 
@@ -94,6 +94,7 @@ The manifest records artifact sizes, SHA-256 digests, source commit, generation 
 The publication pipeline checks:
 
 - recursive AsciiDoc includes;
+- complete and correctly ordered chapter/source-note pairs;
 - referenced local images;
 - Mermaid source references;
 - unresolved bibliography-style citation anchors;
@@ -155,6 +156,8 @@ The workflow validates the source, uploads a workflow artifact, and attaches the
 - Mark emerging evidence, standards, practitioner synthesis, and original constructs honestly.
 - Preserve null, negative, and contradictory evidence where relevant.
 - Add diagrams as Mermaid source under `figures/mermaid/` and reference the `.mmd` file from AsciiDoc; the build converts it to SVG.
+
+See [`CONTRIBUTING.adoc`](CONTRIBUTING.adoc) for the complete publication workflow and review checklist.
 
 ## Publication status
 
