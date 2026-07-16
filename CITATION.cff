@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "Please cite this book using the metadata in this file."
+title: "Engineering Intelligence: A Quantitative Framework for Measuring, Understanding, and Optimizing Modern Software Engineering"
+type: book
+authors:
+  - family-names: Collins
+    given-names: Chris
+repository-code: "https://github.com/geekychris/-Engineering-Intelligence"
+url: "https://github.com/geekychris/-Engineering-Intelligence"
+version: 0.1.0
+abstract: >-
+  Engineering Intelligence presents a quantitative framework for measuring,
+  understanding, and improving modern software engineering as a socio-technical
+  and economic system. It integrates engineering economics, human attention,
+  architecture, delivery performance, causal inference, AI-assisted development,
+  governance, instrumentation, portfolio decision-making, and organizational
+  learning.
+keywords:
+  - software engineering
+  - engineering productivity
+  - developer experience
+  - engineering economics
+  - causal inference
+  - software delivery
+  - artificial intelligence
+  - engineering metrics
+  - socio-technical systems
+  - organizational learning
