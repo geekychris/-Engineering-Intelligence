@@ -1,0 +1,425 @@
+= Governance, Ethics, and Organizational Adoption
+
+[abstract]
+Engineering Intelligence can improve decisions, reduce wasted effort, and make hidden system constraints visible. It can also become a surveillance system, distort incentives, and undermine trust if metrics are misused. This chapter defines the governance, ethical, privacy, and organizational practices required for responsible adoption. It explains purpose limitation, metric rights, acceptable and prohibited uses, incentive effects, model governance, transparency, employee participation, and the operating model needed to sustain legitimate measurement.
+
+== Measurement changes behavior
+
+The act of measurement is not neutral. Once engineers know that a metric exists, they may consciously or unconsciously alter behavior.
+
+Examples include:
+
+* splitting pull requests to improve apparent throughput;
+* delaying issue creation to shorten measured lead time;
+* avoiding complex work that harms personal metrics;
+* accepting AI suggestions to improve an adoption score;
+* reducing review comments to appear efficient;
+* moving coordination into uninstrumented channels;
+* optimizing for deployment count rather than customer value.
+
+This is not evidence that engineers are acting improperly. It is a predictable response to incentives and measurement pressure.
+
+Engineering Intelligence must therefore treat behavioral adaptation as part of the system being measured.
+
+== Goodhart's Law and metric corruption
+
+A familiar principle states that when a measure becomes a target, it often ceases to be a good measure.
+
+The mechanism is straightforward:
+
+. A metric is correlated with a desired outcome.
+. The organization rewards the metric directly.
+. People optimize the observable proxy.
+. The relationship between the proxy and outcome weakens.
+. The metric becomes misleading.
+
+image::../figures/mermaid/metric-corruption-cycle.mmd[Metric corruption cycle]
+
+The appropriate response is not to abandon measurement. It is to design metrics for decisions, use bundles and guardrails, rotate or retire corrupted measures, and avoid turning diagnostic telemetry into individual quotas.
+
+== Foundational governance principles
+
+A responsible Engineering Intelligence program should adopt explicit principles.
+
+=== Purpose limitation
+
+Data should be collected and used only for declared engineering decisions, research, safety, or operational purposes.
+
+=== Data minimization
+
+Collect the least granular data capable of answering the question. Prefer workflow and artifact events over keystrokes, screen capture, or continuous activity monitoring.
+
+=== Proportionality
+
+The intrusiveness, retention, and precision of measurement should be proportional to the decision's importance and risk.
+
+=== Transparency
+
+People affected by measurement should know what is collected, how it is derived, who can access it, and what decisions it may influence.
+
+=== Contestability
+
+Users should be able to challenge incorrect identities, inferred links, classifications, and derived conclusions.
+
+=== Separation of purposes
+
+System-improvement telemetry should not silently become individual performance data.
+
+=== Human accountability
+
+Models may inform decisions, but accountable human roles remain responsible for policy, employment, safety, and accepted engineering outcomes.
+
+== Acceptable and prohibited uses
+
+[cols="1,3"]
+|===
+|Use class |Examples
+
+|Generally appropriate
+|Finding queue bottlenecks, evaluating tools, measuring CI reliability, identifying coordination boundaries, routing specialist review, estimating portfolio cost
+
+|Requires heightened governance
+|Team-level comparisons, workload and cognitive-burden studies, risk prediction, access to named collaboration graphs, AI trust and behavior analysis
+
+|Generally inappropriate
+|Ranking engineers by commits, lines changed, pull requests, review speed, AI acceptance, or inferred cognitive load
+
+|Prohibited without exceptional legal and ethical basis
+|Covert surveillance, screen or keystroke monitoring for productivity scoring, automated employment decisions from engineering telemetry, punitive use of experimental metrics
+|===
+
+The governance body should publish these boundaries before broad instrumentation begins.
+
+== Individual-level measurement
+
+Some events must retain actor identity to reconstruct Engineering Changes, permissions, handoffs, and specialist constraints. That does not justify exposing named individual scorecards.
+
+Recommended controls include:
+
+* pseudonymous identifiers in analytical datasets;
+* team or role aggregation by default;
+* minimum group-size thresholds;
+* restricted named access for operational need;
+* audit logs for identity lookups;
+* prohibition of direct individual productivity ranking;
+* explicit review before any new individual-level use.
+
+Individual data may be appropriate for an engineer's private self-view or for correcting attribution, provided it is not silently repurposed.
+
+== Metric rights
+
+Organizations should define practical rights for people represented in the data:
+
+* the right to know what is measured;
+* the right to understand metric definitions;
+* the right to see relevant personal or team data where legally and operationally appropriate;
+* the right to correct factual errors;
+* the right to challenge derived classifications;
+* the right to know whether data affects consequential decisions;
+* the right to understand retention and access rules.
+
+These rights improve trust and data quality.
+
+== Privacy by architecture
+
+Privacy should be implemented structurally rather than through policy alone.
+
+Design patterns include:
+
+* pseudonymization before analytical processing;
+* separate identity vaults;
+* row- and column-level authorization;
+* aggregation before broad access;
+* short retention for detailed behavioral events;
+* irreversible aggregation for long-term trends;
+* differential access by purpose;
+* deletion propagation across raw, graph, feature, and metric stores;
+* privacy-preserving experiment analysis where practical.
+
+A dashboard cannot leak data that the underlying service never exposes.
+
+== Data retention
+
+Retention should reflect purpose and sensitivity.
+
+Detailed review-interaction events may be useful for a limited experiment but unnecessary after aggregated results are validated. Incident and compliance evidence may require longer retention.
+
+Every data class should specify:
+
+* purpose;
+* retention period;
+* legal basis where applicable;
+* deletion process;
+* archival rules;
+* access level;
+* downstream derived artifacts.
+
+== Model governance
+
+Models used for reconstruction, risk, complexity, cognitive burden, or routing require lifecycle governance.
+
+A model record should include:
+
+* owner and accountable approver;
+* intended and prohibited uses;
+* training and evaluation data;
+* features and sensitive attributes;
+* performance by relevant subgroup;
+* calibration and uncertainty;
+* drift monitoring;
+* human override;
+* rollback and retirement criteria;
+* version history.
+
+Models that affect review requirements, permissions, or workload should receive greater scrutiny than models used only for exploratory analysis.
+
+== Fairness and disparate impact
+
+Engineering populations differ by role, tenure, location, repository assignment, accessibility needs, and work type. Metrics can create unequal effects even without using protected attributes directly.
+
+Examples include:
+
+* teams owning legacy systems appearing slower;
+* new engineers receiving lower familiarity scores;
+* specialists appearing to create delays because they serve as organizational bottlenecks;
+* accessibility-related workflows producing different interaction patterns;
+* globally distributed teams showing longer calendar latency.
+
+Fairness analysis should examine error rates, policy effects, and burden distribution across relevant populations. The goal is not equal raw metrics; it is avoiding unjustified harm from invalid comparisons or routing.
+
+== Incentive-aware metric design
+
+Before operationalizing a metric, ask:
+
+* How could a rational person improve this number without improving the outcome?
+* Which work becomes invisible?
+* Who bears the cost of optimization?
+* What behavior will be discouraged?
+* What guardrail detects distortion?
+* When should the metric be retired?
+
+A metric's gaming surface is part of its specification.
+
+== Governance bodies
+
+A mature program usually requires several forms of oversight.
+
+=== Metric council
+
+Approves high-impact metric definitions, versions, scorecard use, and retirement.
+
+=== Experiment review
+
+Reviews assignment, ethics, guardrails, security, and decision criteria for material interventions.
+
+=== Data governance
+
+Owns classification, retention, identity access, lineage, and deletion.
+
+=== AI and model governance
+
+Approves models, prompts, autonomy tiers, and high-risk routing policies.
+
+=== Employee or practitioner representation
+
+Includes engineers and affected practitioners in policy design and review.
+
+These bodies may be combined, but accountability should remain explicit.
+
+== Organizational adoption
+
+A technically strong platform can fail if introduced as a central surveillance program.
+
+A healthier adoption sequence is:
+
+. begin with visible system problems engineers already experience;
+. publish principles and prohibited uses;
+. deliver local value such as queue visibility and CI diagnosis;
+. involve teams in metric definitions;
+. show uncertainty and data quality openly;
+. allow corrections;
+. evaluate interventions rather than rank teams;
+. expand only after trust and usefulness are demonstrated.
+
+== Trust as a system dependency
+
+Trust is not a communications layer added after implementation. It determines whether people use tools, correct data, participate in experiments, and believe conclusions.
+
+Trust increases when the system is accurate, transparent, useful, corrigible, and restrained. It decreases when metrics are surprising, opaque, punitive, or obviously incomplete.
+
+A useful trust model includes:
+
+[stem]
+++++
+Trust = f(Accuracy, Transparency, Benefit, Control, Fairness, Restraint)
+++++
+
+This is a conceptual model rather than a score to optimize mechanically.
+
+== Communication patterns
+
+Good communication should explain:
+
+* why the system exists;
+* what decisions it supports;
+* what it does not measure;
+* what uses are prohibited;
+* how data is protected;
+* how people can correct errors;
+* what evidence led to a decision;
+* how metrics and models change over time.
+
+Avoid claims that the platform measures "developer productivity" as one objective quantity.
+
+== Governance for experiments
+
+Experiments involving engineering workflows should consider:
+
+* informed organizational notice;
+* whether individual consent is required or practical;
+* risk and reversibility;
+* unequal burden across treatment groups;
+* collection of new behavioral telemetry;
+* employment or performance implications;
+* security and production impact;
+* post-experiment data retention.
+
+Low-risk interface experiments differ materially from experiments that alter security review or collect detailed cognitive proxies.
+
+== Governance for AI agents
+
+Agentic systems introduce additional questions:
+
+* What permissions can the agent receive?
+* Which actions require human approval?
+* Who is accountable for side effects?
+* What evidence must the agent provide?
+* How is untrusted repository content handled?
+* What triggers automatic shutdown or escalation?
+* Can the organization reproduce the agent's actions?
+
+Autonomy should increase only with evidence, bounded scope, and reversible controls.
+
+== Handling metric disputes
+
+Disagreement should be expected. A dispute process should support:
+
+* definition review;
+* source and lineage inspection;
+* data correction;
+* model explanation;
+* alternative interpretation;
+* documented resolution;
+* temporary suspension when validity is uncertain.
+
+Disputes are valuable evidence that the construct, data, or communication may be weak.
+
+== Change management
+
+Metric or policy changes should be managed like software changes:
+
+* proposal;
+* review;
+* test and validation;
+* versioned release;
+* migration plan;
+* communication;
+* monitoring;
+* rollback.
+
+Silent dashboard changes are governance failures.
+
+== Auditability
+
+High-impact decisions should be reconstructable from:
+
+* data and metric versions;
+* model and policy versions;
+* experiment record;
+* access history;
+* approvals;
+* external factors;
+* final decision rationale.
+
+Auditability protects both the organization and affected individuals.
+
+== Adoption maturity model
+
+[cols="1,3"]
+|===
+|Stage |Characteristics
+
+|Ad hoc
+|Local dashboards, inconsistent definitions, limited governance
+
+|Standardized
+|Canonical events, metric catalogue, published principles
+
+|Trusted
+|Transparent lineage, corrections, privacy controls, practitioner participation
+
+|Experimental
+|Registered experiments, guardrails, causal evaluation, external-factor tracking
+
+|Adaptive
+|Validated models and policies, continuous monitoring, formal retirement and rollback
+|===
+
+image::../figures/mermaid/governance-maturity.mmd[Engineering Intelligence governance maturity]
+
+== Common failure modes
+
+=== Starting with executive ranking dashboards
+
+This creates defensive behavior before the platform demonstrates value.
+
+=== Policy without architecture
+
+Rules prohibit misuse, but broad raw access makes misuse easy.
+
+=== Consent theater
+
+People are nominally informed but have no meaningful understanding, correction path, or protection.
+
+=== Treating fairness as equal averages
+
+Different work populations should not be expected to have identical raw metrics.
+
+=== Permanent experimental telemetry
+
+Detailed data collected for one study is retained and reused indefinitely.
+
+=== Governance only after harm
+
+Oversight is created reactively after a metric or model has already shaped behavior.
+
+== Key takeaways
+
+* Engineering measurement changes behavior and incentives.
+* Purpose limitation, minimization, transparency, contestability, and separation of uses are foundational.
+* System telemetry should not silently become individual performance scoring.
+* Privacy and governance should be enforced through architecture, not policy alone.
+* Models and routing policies require lifecycle governance, fairness analysis, and rollback.
+* Trust is a functional dependency of valid Engineering Intelligence.
+* Adoption should begin with local value and practitioner participation.
+
+== Open questions
+
+* What governance structures best balance enterprise consistency and team autonomy?
+* How can organizations evaluate cognitive burden without crossing into surveillance?
+* Which metric uses should require employee or works-council approval in different jurisdictions?
+* How should fairness be defined for teams owning fundamentally different systems?
+* What forms of transparency improve trust without exposing sensitive security or business data?
+
+== Implementation checklist
+
+. Publish principles, acceptable uses, and prohibited uses before broad rollout.
+. Apply pseudonymization and aggregation by default.
+. Establish metric, experiment, data, and model governance ownership.
+. Define correction, dispute, and suspension processes.
+. Record intended and prohibited uses for every metric and model.
+. Review gaming surfaces and incentive effects before operationalization.
+. Set retention and deletion policies for every data class.
+. Include practitioner representation in governance.
+. Separate system improvement from individual performance management.
+. Audit high-impact decisions and maintain rollback capability.
