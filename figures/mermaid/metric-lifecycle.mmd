@@ -1,0 +1,14 @@
+flowchart LR
+    P[Proposed] --> E[Experimental]
+    E --> V[Validated]
+    V --> O[Operational]
+    O --> D[Deprecated]
+    D --> R[Retired]
+
+    E -->|insufficient validity| R
+    V -->|workflow or source change| E
+    O -->|definition revision| E
+
+    Q[Decision relevance, validity, reliability, quality, and ownership] -. review .-> E
+    Q -. review .-> V
+    Q -. review .-> O
