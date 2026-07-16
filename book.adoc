@@ -64,4 +64,7 @@ include::appendices/b-metric-specification-standard.adoc[]
 [appendix]
 include::appendices/c-experiment-and-causal-study-protocol.adoc[]
 
+[appendix]
+include::appendices/d-governance-privacy-and-acceptable-use-standard.adoc[]
+
 // Additional appendices are added here as they are written.
