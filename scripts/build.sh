@@ -5,6 +5,7 @@ MODE="${1:-all}"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="$ROOT/build"
 WORK_DIR="$ROOT/.build-src"
+EDITION_STAGING_DIR="$BUILD_DIR/.edition-staging"
 BOOK="$ROOT/book.adoc"
 PDF_THEME="$ROOT/themes/engineering-intelligence-theme.yml"
 HTML_STYLESHEET="$ROOT/styles/engineering-intelligence.css"
@@ -78,20 +79,14 @@ initialize_publication_identity() {
 initialize_publication_identity
 
 mkdir -p "$BUILD_DIR"
-rm -rf "$WORK_DIR"
+rm -rf "$WORK_DIR" "$EDITION_STAGING_DIR"
 mkdir -p "$WORK_DIR"
+if [[ "$MODE" != "diagrams" ]]; then
+  mkdir -p "$EDITION_STAGING_DIR"
+fi
 
 validate_sources() {
   python3 "$ROOT/scripts/validate_sources.py" "$ROOT"
-}
-
-clean_edition_outputs() {
-  if [[ "$MODE" != "diagrams" ]]; then
-    rm -f \
-      "$BUILD_DIR/engineering-intelligence.html" \
-      "$BUILD_DIR/engineering-intelligence.pdf" \
-      "$BUILD_DIR/manifest.json"
-  fi
 }
 
 render_diagrams() {
@@ -170,7 +165,7 @@ build_html() {
     --attribute data-uri \
     --attribute stylesdir="$WORK_DIR/styles" \
     --attribute stylesheet=engineering-intelligence.css \
-    --destination-dir "$BUILD_DIR" \
+    --destination-dir "$EDITION_STAGING_DIR" \
     --out-file engineering-intelligence.html \
     "$WORK_DIR/book.adoc"
 }
@@ -182,13 +177,13 @@ build_pdf() {
     --attribute reproducible \
     --attribute pdf-themesdir="$WORK_DIR/themes" \
     --attribute pdf-theme=engineering-intelligence \
-    --destination-dir "$BUILD_DIR" \
+    --destination-dir "$EDITION_STAGING_DIR" \
     --out-file engineering-intelligence.pdf \
     "$WORK_DIR/book.adoc"
 }
 
 write_manifest() {
-  python3 - "$BUILD_DIR" "$MODE" <<'PY'
+  python3 - "$EDITION_STAGING_DIR" "$BUILD_DIR" "$MODE" <<'PY'
 from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
@@ -196,8 +191,9 @@ import json
 import os
 import sys
 
-build = Path(sys.argv[1])
-build_mode = sys.argv[2]
+editions = Path(sys.argv[1])
+build = Path(sys.argv[2])
+build_mode = sys.argv[3]
 
 
 def digest(path):
@@ -214,7 +210,7 @@ publication_time = datetime.fromtimestamp(epoch, timezone.utc).isoformat()
 
 files = []
 for name in ("engineering-intelligence.html", "engineering-intelligence.pdf"):
-    path = build / name
+    path = editions / name
     if path.exists():
         files.append(
             {
@@ -234,14 +230,30 @@ manifest = {
     "files": files,
     "diagram_count": len(list((build / "figures" / "mermaid").glob("*.svg"))),
 }
-(build / "manifest.json").write_text(
+(editions / "manifest.json").write_text(
     json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
 )
 PY
 }
 
+publish_editions() {
+  local name
+
+  # All rendering and manifest generation must succeed before any prior edition
+  # is replaced. The manifest moves last so it never advertises a partially
+  # published artifact set.
+  for name in engineering-intelligence.html engineering-intelligence.pdf; do
+    if [[ -f "$EDITION_STAGING_DIR/$name" ]]; then
+      mv -f "$EDITION_STAGING_DIR/$name" "$BUILD_DIR/$name"
+    else
+      rm -f "$BUILD_DIR/$name"
+    fi
+  done
+  mv -f "$EDITION_STAGING_DIR/manifest.json" "$BUILD_DIR/manifest.json"
+  rmdir "$EDITION_STAGING_DIR"
+}
+
 validate_sources
-clean_edition_outputs
 
 case "$MODE" in
   validate)
@@ -250,6 +262,7 @@ case "$MODE" in
     build_html
     build_pdf
     write_manifest
+    publish_editions
     ;;
   diagrams)
     render_diagrams
@@ -259,12 +272,14 @@ case "$MODE" in
     prepare_sources
     build_html
     write_manifest
+    publish_editions
     ;;
   pdf)
     render_diagrams
     prepare_sources
     build_pdf
     write_manifest
+    publish_editions
     ;;
   all)
     render_diagrams
@@ -272,6 +287,7 @@ case "$MODE" in
     build_html
     build_pdf
     write_manifest
+    publish_editions
     ;;
 esac
 
