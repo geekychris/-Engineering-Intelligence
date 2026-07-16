@@ -76,4 +76,7 @@ include::appendices/f-technical-reference-architecture.adoc[]
 [appendix]
 include::appendices/g-operating-templates-and-records.adoc[]
 
+[appendix]
+include::appendices/h-glossary-and-controlled-vocabulary.adoc[]
+
 // Additional appendices are added here as they are written.
