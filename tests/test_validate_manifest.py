@@ -33,13 +33,21 @@ class ManifestValidationTests(unittest.TestCase):
             "sha256": sha256(content).hexdigest(),
         }
 
-    def write_manifest(self, *, mode: str, files: list[dict[str, object]], diagram_count: int = 0) -> None:
+    def write_manifest(
+        self,
+        *,
+        mode: str,
+        files: list[dict[str, object]],
+        diagram_count: int = 0,
+        publication_time: str = "2026-07-16T12:00:00+00:00",
+        source_date_epoch: int = 1784203200,
+    ) -> None:
         manifest = {
             "schema_version": 1,
             "title": "Engineering Intelligence",
             "build_mode": mode,
-            "publication_time": "2026-07-16T12:00:00+00:00",
-            "source_date_epoch": 1784203200,
+            "publication_time": publication_time,
+            "source_date_epoch": source_date_epoch,
             "source_commit": "a" * 40,
             "files": files,
             "diagram_count": diagram_count,
@@ -51,6 +59,16 @@ class ManifestValidationTests(unittest.TestCase):
     def test_valid_html_manifest(self) -> None:
         artifact = self.write_artifact("engineering-intelligence.html", b"<html></html>")
         self.write_manifest(mode="html", files=[artifact])
+
+        self.assertEqual(validate_manifest.validate(self.build_dir), 0)
+
+    def test_valid_equivalent_non_utc_timestamp(self) -> None:
+        artifact = self.write_artifact("engineering-intelligence.html", b"<html></html>")
+        self.write_manifest(
+            mode="html",
+            files=[artifact],
+            publication_time="2026-07-16T05:00:00-07:00",
+        )
 
         self.assertEqual(validate_manifest.validate(self.build_dir), 0)
 
@@ -97,6 +115,34 @@ class ManifestValidationTests(unittest.TestCase):
             "sha256": sha256(content).hexdigest(),
         }
         self.write_manifest(mode="html", files=[artifact])
+
+        self.assertEqual(validate_manifest.validate(self.build_dir), 1)
+
+    def test_rejects_invalid_publication_time(self) -> None:
+        artifact = self.write_artifact("engineering-intelligence.html", b"<html></html>")
+        self.write_manifest(
+            mode="html", files=[artifact], publication_time="not-a-timestamp"
+        )
+
+        self.assertEqual(validate_manifest.validate(self.build_dir), 1)
+
+    def test_rejects_publication_time_without_timezone(self) -> None:
+        artifact = self.write_artifact("engineering-intelligence.html", b"<html></html>")
+        self.write_manifest(
+            mode="html",
+            files=[artifact],
+            publication_time="2026-07-16T12:00:00",
+        )
+
+        self.assertEqual(validate_manifest.validate(self.build_dir), 1)
+
+    def test_rejects_timestamp_epoch_mismatch(self) -> None:
+        artifact = self.write_artifact("engineering-intelligence.html", b"<html></html>")
+        self.write_manifest(
+            mode="html",
+            files=[artifact],
+            publication_time="2026-07-16T12:00:01+00:00",
+        )
 
         self.assertEqual(validate_manifest.validate(self.build_dir), 1)
 
