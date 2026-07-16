@@ -1,0 +1,19 @@
+flowchart LR
+    A[Intent and constraints] --> B[Human or agent planning]
+    B --> C[Delegated objectives]
+    C --> D[Generated and edited artifacts]
+    D --> E[Review, policy, test, and simulation evidence]
+    E --> F[Human acceptance or autonomous approval]
+    F --> G[Deployment and operation]
+    G --> H[User, business, reliability, and cost outcomes]
+    H --> I[Correction, rollback, and organizational learning]
+    I --> A
+
+    P[Model, prompt, context, tools, permissions, and version provenance] -. attached to .-> B
+    P -. attached to .-> C
+    P -. attached to .-> D
+    Q[Identity and delegation graph] -. explains responsibility .-> C
+    Q -. explains responsibility .-> F
+    R[Observed evidence] -. distinct from .-> S[Inference, simulation, and generated explanation]
+    R --> E
+    S --> E
