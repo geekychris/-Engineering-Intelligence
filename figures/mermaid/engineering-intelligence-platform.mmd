@@ -1,0 +1,63 @@
+flowchart LR
+    subgraph Collection
+      CONN[Source connectors]
+      INGEST[Canonical ingestion]
+    end
+
+    subgraph Evidence
+      BUS[Event broker]
+      RAW[Immutable evidence store]
+    end
+
+    subgraph IdentityGraph[Identity and graph]
+      ID[Temporal identity]
+      EC[Engineering Change service]
+      TOPO[Topology service]
+      GRAPH[Knowledge graph]
+    end
+
+    subgraph Computation
+      STREAM[Streaming state]
+      BATCH[Batch and graph processing]
+      FEAT[Feature service]
+      METRIC[Metric service]
+      MODEL[Model service]
+      EXP[Experiment service]
+    end
+
+    subgraph Decision
+      API[APIs]
+      DASH[Dashboards]
+      ALERT[Alerts and reports]
+      POLICY[Policy and routing]
+    end
+
+    CONN --> INGEST
+    INGEST --> BUS
+    INGEST --> RAW
+    BUS --> STREAM
+    RAW --> BATCH
+    STREAM --> ID
+    BATCH --> ID
+    ID --> EC
+    TOPO --> GRAPH
+    EC --> GRAPH
+    GRAPH --> FEAT
+    STREAM --> FEAT
+    BATCH --> FEAT
+    FEAT --> METRIC
+    FEAT --> MODEL
+    FEAT --> EXP
+    METRIC --> API
+    MODEL --> API
+    EXP --> API
+    API --> DASH
+    API --> ALERT
+    API --> POLICY
+    POLICY -. versioned intervention .-> INGEST
+
+    GOV[Governance, lineage, privacy, security, and quality] -. governs .-> Collection
+    GOV -. governs .-> Evidence
+    GOV -. governs .-> IdentityGraph
+    GOV -. governs .-> Computation
+    GOV -. governs .-> Decision
