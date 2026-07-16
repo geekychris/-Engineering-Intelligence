@@ -31,6 +31,8 @@ include::chapters/02-engineering-economics-source-notes.adoc[]
 
 include::chapters/03-engineering-change.adoc[]
 
+include::chapters/03-engineering-change-source-notes.adoc[]
+
 include::chapters/04-human-attention.adoc[]
 
 include::chapters/05-measuring-engineering-systems.adoc[]
