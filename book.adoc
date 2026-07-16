@@ -47,4 +47,6 @@ include::chapters/13-governance-ethics-and-adoption.adoc[]
 
 include::chapters/14-portfolio-and-executive-decision-making.adoc[]
 
+include::chapters/15-implementation-and-rollout.adoc[]
+
 // Planned chapters are added here as they are written.
