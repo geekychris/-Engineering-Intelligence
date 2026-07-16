@@ -66,7 +66,7 @@ jobs:
         run: python3 scripts/validate_manifest.py build "$GITHUB_SHA"
 
       - name: Upload publication artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: engineering-intelligence-${{ github.sha }}
           path: |
