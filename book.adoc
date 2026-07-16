@@ -89,4 +89,7 @@ include::appendices/i-evidence-base-and-bibliography.adoc[]
 [appendix]
 include::appendices/j-maturity-assessment-and-adoption-roadmap.adoc[]
 
+[appendix]
+include::appendices/k-chapter-source-notes-and-citation-map.adoc[]
+
 // Additional appendices are added here as they are written.
