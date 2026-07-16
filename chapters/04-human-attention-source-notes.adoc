@@ -1,0 +1,227 @@
+== Research foundations and source notes
+
+The human-attention model in this chapter combines cognitive psychology, interruption research, developer-experience studies, socio-technical coordination, and queueing theory with several Engineering Intelligence-specific constructs.
+
+=== Cognitive load as a constrained resource
+
+Cognitive-load theory provides the foundational idea that working cognitive capacity is limited and that task structure affects the amount of capacity available for useful reasoning. See <<sweller1988>>.
+
+The chapter applies this principle to software engineering by treating architecture, unfamiliar code, domain semantics, tool interaction, coordination, and validation as competing consumers of limited attention.
+
+This does not imply that cognitive load can be observed directly from telemetry. It is a latent construct that must be inferred cautiously through multiple indicators, practitioner evidence, and validation studies.
+
+=== Interruption and resumption cost
+
+Research on interrupted work shows that interruption can change speed, stress, and work patterns, and that returning to a task can require substantial reconstruction. See <<mark2008>>.
+
+The chapter’s treatment of context recovery, attention residue, interrupted flow, and fragmented capacity builds on this foundation.
+
+Important distinctions include:
+
+* interruption frequency;
+* interruption timing;
+* task complexity at interruption;
+* delay before resumption;
+* number of intervening contexts;
+* state preserved by tools and documentation;
+* familiarity with the work;
+* consequence of lost assumptions.
+
+A short interruption during routine work is not equivalent to an interruption during complex architectural reasoning.
+
+=== Developer perceptions of productivity
+
+Developer studies show that practitioners frequently associate productivity with progress, focus, reduced blockers, meaningful outcomes, and effective collaboration rather than raw activity counts. See <<meyer2014>>.
+
+The SPACE framework formalizes productivity as multidimensional across satisfaction and well-being, performance, activity, communication and collaboration, and efficiency and flow. See <<forsgren2021-space>>.
+
+The DevEx framework emphasizes feedback loops, cognitive load, and flow state as important drivers of developer experience and productivity. See <<noda2023-devex>>.
+
+These frameworks support the chapter’s rejection of a single universal productivity score and its emphasis on measuring the work system rather than ranking individuals.
+
+=== Flow, affect, and progress
+
+Research examining developer emotions and progress indicates that being stuck, frustrated, or in flow is related to perceived progress and work experience. See <<muller2019>>.
+
+The chapter therefore treats flow state as an important but difficult-to-measure condition. It should not be inferred from one behavioral signal such as typing speed, application focus, or uninterrupted keyboard activity.
+
+Useful evidence may combine:
+
+* voluntary experience sampling;
+* task progress;
+* blocked-state evidence;
+* build and test feedback latency;
+* interruption and queue patterns;
+* practitioner interviews;
+* qualitative work reconstruction.
+
+=== Developer experience as a socio-technical construct
+
+Developer experience is produced by interactions among tools, architecture, documentation, ownership, policies, feedback, team practices, and organizational expectations. Early formal work on developer experience is represented by <<fagerholm2012>>, with later operational framing in <<noda2023-devex>>.
+
+This supports the chapter’s claim that cognitive burden is not merely an individual characteristic. It can be created or reduced by system design.
+
+Examples include:
+
+* slow or unreliable feedback;
+* unclear ownership;
+* fragmented documentation;
+* excessive approval boundaries;
+* poorly designed APIs;
+* hidden deployment behavior;
+* noisy AI suggestions;
+* unstable local environments;
+* incompatible team interaction modes.
+
+=== Architecture and cognitive load
+
+Modular design and information hiding reduce the number of concepts that must be understood simultaneously when boundaries are effective. See <<parnas1972>>.
+
+Team Topologies explicitly connects team design and interaction modes with cognitive load and fast flow. See <<skelton2019>>.
+
+The chapter extends these ideas by treating architectural and organizational boundaries as measurable contributors to attention demand at Engineering Change level.
+
+=== Coordination attention
+
+Software engineering is a socio-technical activity. Coordination demand emerges from technical dependencies, team boundaries, communication structure, and distributed work.
+
+Conway’s Law and socio-technical congruence provide relevant foundations. See <<conway1968>> and <<cataldo2006>>. Distributed software-engineering research further documents the importance of coordination across distance and organizational boundaries. See <<herbsleb2007>>.
+
+The chapter’s coordination-attention category includes:
+
+* locating owners;
+* negotiating interfaces;
+* resolving conflicting requirements;
+* sequencing releases;
+* obtaining decisions;
+* maintaining shared situational awareness;
+* transferring context across teams.
+
+This attention can be substantial even when implementation effort is small.
+
+=== Queueing and attention scarcity
+
+Attention demand often appears operationally as a queue for reviewers, architects, security specialists, domain experts, approvers, or incident responders.
+
+Little’s Law connects work in progress, throughput, and average flow time. See <<little1961>>. Kingman’s work and the broader operations literature explain why waiting increases rapidly under high utilization and variability. See <<kingman1961>> and <<hopp2011>>.
+
+This provides the foundation for treating scarce attention pools as constrained service systems rather than simply assigning an hourly labor rate.
+
+A specialist can create high organizational leverage while simultaneously becoming a bottleneck. The appropriate intervention may involve reducing unnecessary demand, creating substitutes, improving routing, standardizing routine cases, or transferring knowledge—not simply asking the specialist to work faster.
+
+=== Recovery, verification, and coordination effort
+
+The chapter distinguishes four forms of attention:
+
+* production effort;
+* verification effort;
+* coordination effort;
+* recovery effort.
+
+This taxonomy is an Engineering Intelligence-specific synthesis. Its purpose is to expose work that is hidden when all effort is collapsed into authoring time or elapsed cycle time.
+
+Verification effort includes review, testing, validation, challenge, and acceptance. Recovery effort includes rebuilding task state after interruption, delay, failure, or handoff. Coordination effort includes the human work required to align dependencies and decisions.
+
+=== Attention quality and attention yield
+
+Not all attention produces equal value.
+
+The chapter distinguishes:
+
+* attention consumed;
+* attention directed toward the actual constraint;
+* useful outcomes produced;
+* rework or risk prevented;
+* knowledge retained;
+* capacity released for other work.
+
+The resulting concepts of *attention yield* and *attention amplification* are original operational constructs in this book.
+
+They are intended to answer questions such as:
+
+* Did specialist review focus on high-risk changes?
+* Did automation remove routine verification while preserving judgment?
+* Did improved tooling reduce reconstruction and search effort?
+* Did an AI assistant reduce net reasoning effort after validation?
+* Did a process change merely move attention to another actor?
+
+=== AI cognitive offload and reload
+
+Studies of AI-assisted programming show that tool effects vary by task, usability, comprehension, debugging burden, and interaction style. See <<peng2023>>, <<vaithilingam2022>>, and <<barke2023>>.
+
+The chapter uses these foundations to distinguish:
+
+* *cognitive offload* — reliable human reasoning or production work genuinely avoided;
+* *cognitive reload* — additional work required to inspect, validate, correct, contextualize, or reverse machine output.
+
+Acceptance rate alone cannot establish offload. A suggestion may be accepted mechanically, may solve a trivial problem, or may create downstream maintenance burden. A rejected suggestion may still create useful inspection or learning.
+
+The relevant measure is the net effect on human attention and quality-adjusted Engineering Change outcomes.
+
+=== Measuring active effort
+
+Active cognitive effort is not directly observable from ordinary engineering telemetry.
+
+The chapter therefore treats active-time reconstruction as a model requiring uncertainty and calibration. Potential inputs include:
+
+* source edits;
+* review interactions;
+* build and test activity;
+* task transitions;
+* repository and file navigation;
+* voluntary work diaries;
+* structured observation;
+* practitioner reconstruction interviews.
+
+Telemetry should not be interpreted as a continuous record of thought. Inactivity may represent reasoning, discussion, design, reading, or work outside the instrumented environment.
+
+=== Privacy and surveillance risk
+
+Attention measurement creates significant privacy and trust risk because the most detailed signals are often individual behavioral traces.
+
+Measurement-validity concerns in <<messick1995>> and indicator-corruption concerns in <<campbell1979>> and <<goodhart1984>> support the chapter’s warning against individual ranking.
+
+Privacy-risk management principles are informed by <<nist2020-privacy>>.
+
+The chapter’s operating position is that attention evidence should normally be used to improve systems, queues, tools, and organizational design—not to infer individual diligence, commitment, or performance.
+
+=== Qualitative evidence and triangulation
+
+Because cognitive burden is latent and context-dependent, quantitative telemetry should be combined with qualitative evidence.
+
+Useful methods include:
+
+* practitioner interviews;
+* workflow walkthroughs;
+* experience sampling;
+* incident and project retrospectives;
+* observation of representative Engineering Changes;
+* review of documentation and ownership paths.
+
+Agreement across several evidence types increases confidence. Disagreement is itself useful because it can expose instrumentation gaps or invalid assumptions.
+
+=== Organizational learning
+
+Attention is not only consumed by delivery; it is also invested in learning, mentoring, reflection, and improvement.
+
+Argyris and Schön distinguish single-loop learning, which changes actions within existing assumptions, from double-loop learning, which revises the assumptions themselves. See <<argyris1978>>.
+
+Senge’s learning-organization work emphasizes systems thinking and collective capability. See <<senge1990>>.
+
+The chapter therefore treats slack, reflection, mentoring, and knowledge transfer as potential investments rather than automatically classifying them as inefficiency.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific constructs proposed in this book:
+
+* the four-part production, verification, coordination, and recovery attention taxonomy;
+* attention scarcity as an Engineering Change economic factor;
+* attention yield and attention amplification;
+* cognitive offload and cognitive reload as paired AI measures;
+* context-recovery estimation from Engineering Change evidence;
+* continuity and fragmentation adjustments for released capacity;
+* attention routing by risk and uncertainty;
+* combined quantitative and qualitative attention validation;
+* explicit prohibition against converting attention telemetry into unsupported individual performance scores.
+
+These constructs require empirical calibration and should be reported with uncertainty, boundaries, and acceptable-use controls.
