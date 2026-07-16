@@ -63,6 +63,8 @@ include::chapters/10-engineering-intelligence-platform-source-notes.adoc[]
 
 include::chapters/11-engineering-metrics-catalogue.adoc[]
 
+include::chapters/11-engineering-metrics-catalogue-source-notes.adoc[]
+
 include::chapters/12-experiment-playbooks.adoc[]
 
 include::chapters/13-governance-ethics-and-adoption.adoc[]
