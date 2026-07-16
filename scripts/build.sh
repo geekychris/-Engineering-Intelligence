@@ -35,6 +35,7 @@ fi
 
 [[ -f "$BOOK" ]] || fail "book.adoc was not found"
 [[ -f "$ROOT/scripts/validate_sources.py" ]] || fail "source validator was not found"
+[[ -f "$ROOT/themes/engineering-intelligence-theme.yml" ]] || fail "PDF theme was not found"
 
 mkdir -p "$BUILD_DIR"
 rm -rf "$WORK_DIR"
@@ -93,6 +94,7 @@ prepare_sources() {
   cp -R "$ROOT/frontmatter" "$WORK_DIR/frontmatter"
   cp -R "$ROOT/chapters" "$WORK_DIR/chapters"
   cp -R "$ROOT/appendices" "$WORK_DIR/appendices"
+  cp -R "$ROOT/themes" "$WORK_DIR/themes"
   mkdir -p "$WORK_DIR/figures/mermaid"
 
   if compgen -G "$BUILD_DIR/figures/mermaid/*.svg" >/dev/null; then
@@ -128,7 +130,8 @@ build_pdf() {
     --failure-level WARN \
     --safe-mode safe \
     --attribute reproducible \
-    --attribute pdf-theme=default \
+    --attribute pdf-themesdir="$WORK_DIR/themes" \
+    --attribute pdf-theme=engineering-intelligence \
     --destination-dir "$BUILD_DIR" \
     --out-file engineering-intelligence.pdf \
     "$WORK_DIR/book.adoc"
