@@ -1,0 +1,241 @@
+= Contributing to Engineering Intelligence
+
+_Engineering Intelligence_ is maintained as a publication, not as a collection of independent notes. Changes should preserve the book’s conceptual coherence, evidentiary discipline, and build integrity.
+
+== Contribution principles
+
+A contribution should improve at least one of the following:
+
+* conceptual clarity;
+* empirical or methodological grounding;
+* practical instrumentation guidance;
+* decision usefulness;
+* publication quality;
+* reproducibility;
+* governance, privacy, or ethical safeguards.
+
+Do not add metrics, maturity stages, scoring systems, or operating guidance merely because they are common in industry. Every addition should state what decision it supports, what construct it represents, how it could be measured, and what misuse it could enable.
+
+== Repository structure
+
+The publication source is organized as follows:
+
+* `book.adoc` — master book assembly and section hierarchy;
+* `frontmatter/` — executive summary and reader guidance;
+* `chapters/` — numbered manuscript chapters and matching source-note sidecars;
+* `appendices/` — standards, reference models, templates, bibliography, and controlled vocabulary;
+* `figures/mermaid/` — Mermaid source diagrams;
+* `scripts/validate_sources.py` — dependency-free structural and citation validation;
+* `scripts/build.sh` — diagram rendering, publication assembly, HTML/PDF generation, and manifest creation.
+
+Generated files under `build/` and `.build-src/` are not source material and must not be edited or committed.
+
+== Chapter structure
+
+Every numbered chapter must have exactly one matching source-note sidecar.
+
+For example:
+
+[source,text]
+----
+chapters/07-ai-assisted-engineering.adoc
+chapters/07-ai-assisted-engineering-source-notes.adoc
+----
+
+The chapter file contains the principal narrative. The source-note sidecar contains:
+
+* established foundations;
+* empirical evidence;
+* standards or practitioner synthesis;
+* original Engineering Intelligence constructs;
+* important evidence limitations and unresolved questions.
+
+The master `book.adoc` must include each chapter at `leveloffset=+1`, followed immediately by its sidecar at `leveloffset=+2`. The validator enforces this pairing and order.
+
+== Claims and evidence
+
+Use the strongest appropriate source for the claim:
+
+. original peer-reviewed research for empirical or methodological claims;
+. official standards and institutional publications for normative requirements;
+. authoritative technical documentation for implementation facts;
+. practitioner books or reports for operating models and synthesis;
+. clearly labeled emerging research for recent AI findings;
+. explicitly labeled original synthesis for constructs introduced by this book.
+
+A citation supports only the nearby claim. Do not cite a source as general authority for conclusions it did not establish.
+
+Preserve negative, null, contradictory, and boundary-setting evidence where it materially affects interpretation.
+
+=== Citation anchors
+
+Bibliography entries live in `appendices/i-evidence-base-and-bibliography.adoc` and use stable explicit anchors:
+
+[source,asciidoc]
+----
+[[forsgren2018]]
+Forsgren, Nicole; Humble, Jez; Kim, Gene. ...
+----
+
+Reference them with AsciiDoc cross-references:
+
+[source,asciidoc]
+----
+See <<forsgren2018>>.
+----
+
+Do not silently rename an established anchor. Anchor changes can invalidate citations throughout the manuscript.
+
+== Original constructs
+
+Engineering Intelligence introduces original or extended constructs throughout the book. When adding one:
+
+* define it precisely;
+* explain the problem it addresses;
+* distinguish it from established external frameworks;
+* state its intended unit and boundary;
+* describe how it could be observed or estimated;
+* identify plausible failure modes and misuse;
+* avoid presenting an unvalidated construct as settled science.
+
+Original synthesis is welcome. Unlabeled invention presented as external consensus is not.
+
+== Metric specifications
+
+A new metric should normally define:
+
+* name and identifier;
+* decision purpose;
+* construct and interpretation;
+* numerator, denominator, and unit;
+* population and inclusion rules;
+* time window and aggregation;
+* source systems and provenance;
+* data-quality conditions;
+* segmentation and comparability limits;
+* uncertainty or confidence treatment;
+* guardrails and counter-metrics;
+* prohibited uses;
+* owner and review cadence.
+
+Use Appendix B as the normative metric-specification standard. Avoid metric definitions that collapse individual, team, service, repository, change, or organizational units without an explicit model.
+
+== Instrumentation guidance
+
+Instrumentation proposals should describe the evidence chain, not only the dashboard output. Include where relevant:
+
+* source event and producer;
+* event-time and processing-time behavior;
+* identity and entity resolution;
+* Engineering Change reconstruction;
+* late, duplicated, missing, or corrected data;
+* model, prompt, and policy versions;
+* confidence and quality state;
+* retention, access, privacy, and purpose restrictions;
+* reproducibility and backfill behavior.
+
+Prefer durable event and provenance models over one-off joins that cannot be reconstructed later.
+
+== Diagrams
+
+Add Mermaid source files under `figures/mermaid/` and reference the `.mmd` file from AsciiDoc:
+
+[source,asciidoc]
+----
+image::../figures/mermaid/example-system.mmd[Example system]
+----
+
+The build renders Mermaid sources to SVG in an atomic staging process. Do not commit generated SVG files.
+
+A diagram should communicate structure, flow, boundaries, or relationships that are difficult to understand from prose alone. Avoid decorative diagrams that repeat the surrounding text without adding information.
+
+== Writing style
+
+Use precise, direct prose appropriate for engineering leaders, practitioners, researchers, and platform teams.
+
+* Define specialized terms before relying on them.
+* Separate observation from explanation and recommendation.
+* State assumptions and boundaries explicitly.
+* Prefer ranges and scenarios to false precision.
+* Avoid universal claims when evidence is context-dependent.
+* Distinguish elapsed time, active effort, waiting, coordination, and cognitive burden.
+* Distinguish activity, released capacity, avoided cost, cash savings, and realized value.
+* Treat AI systems as versioned participants with provenance, validation cost, and failure modes.
+
+== Local validation
+
+Run the dependency-free source checks first:
+
+[source,shell]
+----
+make source-validate
+----
+
+Run the complete publication validation before submitting a change:
+
+[source,shell]
+----
+make validate
+----
+
+This renders diagrams, builds HTML and PDF editions, fails on Asciidoctor warnings, and writes the publication manifest.
+
+Useful narrower targets are:
+
+[source,shell]
+----
+make diagrams
+make html
+make pdf
+----
+
+== Pull-request review checklist
+
+Before requesting review, confirm that:
+
+. the change has a clear reader or decision-making benefit;
+. major factual and methodological claims have appropriate citations;
+. original synthesis is labeled as such;
+. limitations, uncertainty, and counter-evidence are represented;
+. new terminology is aligned with Appendix H;
+. new metrics follow Appendix B;
+. new experiments follow Appendix C;
+. governance implications are consistent with Appendix D;
+. economic claims follow Appendix E;
+. new diagrams have source files and meaningful captions;
+. chapter and source-note files remain paired;
+. `make source-validate` passes;
+. `make validate` passes in an environment with the publication dependencies installed;
+. generated artifacts have not been committed.
+
+== Publication-sensitive changes
+
+The following changes require especially careful review:
+
+* metric definitions or prohibited uses;
+* evidence classifications;
+* governance or privacy policy;
+* economic formulas and business-case rules;
+* maturity scoring;
+* controlled vocabulary;
+* architecture and provenance models;
+* bibliography anchors;
+* causal claims;
+* claims about current AI capabilities, standards, or regulation.
+
+For time-sensitive material, include the verification date in the source notes or bibliography entry when appropriate.
+
+== Build-system changes
+
+Build changes should preserve:
+
+* direct-script and Makefile behavior;
+* Linux and macOS compatibility where practical;
+* unprivileged container execution;
+* deterministic source ordering;
+* atomic diagram publication;
+* clean separation of source and generated files;
+* least-privilege GitHub Actions permissions;
+* accurate manifests that do not mix artifacts from different revisions.
+
+Do not manually fabricate dependency lockfiles. Generate them with the actual package manager, review their contents, and commit them as a separate, auditable change.
