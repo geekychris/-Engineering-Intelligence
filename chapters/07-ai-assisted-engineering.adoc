@@ -1,0 +1,335 @@
+= AI-Assisted Engineering
+
+[abstract]
+AI systems now author code, review changes, generate tests, explain failures, summarize discussions, and increasingly execute multi-step engineering tasks. Treating them merely as software licenses obscures their effect on engineering work. This chapter models AI as a first-class participant in the Engineering Change. It defines contribution, attribution, validation, trust, quality, and economic measures; distinguishes assistance from autonomy; explains how AI can create both cognitive offload and cognitive reload; and provides evaluation patterns for coding assistants, reviewers, and agents.
+
+== From tool to participant
+
+A compiler transforms source code deterministically. An AI reviewer makes judgments, produces ranked findings, and influences human decisions. An agent may inspect repositories, modify files, run tests, and open a pull request. These systems participate in the engineering process in a way that is qualitatively different from passive tooling.
+
+Engineering Intelligence represents every contribution with an actor type:
+
+* human;
+* AI model;
+* agent or orchestration system;
+* deterministic automation;
+* hybrid human-AI action.
+
+The distinction supports attribution without implying that AI and humans are equivalent. Humans remain accountable for organizational decisions, while AI contributions are measured as evidence and work products.
+
+== Levels of AI participation
+
+[cols="1,3"]
+|===
+|Level |Description
+
+|Assistive
+|Suggests text, code, explanations, or tests while a human controls each action.
+
+|Advisory
+|Reviews work, identifies risks, ranks findings, or recommends decisions.
+
+|Delegated
+|Executes a bounded task under explicit constraints, such as updating dependencies or generating tests.
+
+|Agentic
+|Plans and executes multiple steps, uses tools, revises work, and reports outcomes.
+
+|Autonomous
+|Operates with minimal direct supervision within a governed scope and escalation policy.
+|===
+
+Evaluation requirements increase with autonomy. A code completion can be judged at suggestion level; an autonomous migration agent requires task, system, and operational evaluation.
+
+== AI contribution records
+
+Every AI contribution should retain:
+
+* Engineering Change and artifact identifiers;
+* actor, model, provider, and version;
+* prompt, policy, context-selection, and tool versions;
+* input scope and data sources;
+* output artifact or finding;
+* confidence or ranking score;
+* latency, tokens, tool calls, and cost;
+* human actions and validation;
+* downstream revisions and outcomes;
+* governance and permission context.
+
+image::../figures/mermaid/ai-contribution-provenance.mmd[AI contribution provenance]
+
+Without provenance, organizations cannot explain why behavior changed after a model, prompt, retrieval index, or policy update.
+
+== Attribution is a graph problem
+
+AI-generated work is rarely accepted unchanged. A model proposes code, a human edits it, another model reviews it, and a reviewer requests further modification. Simple authorship percentages are misleading.
+
+Represent contribution as a derivation graph with edges such as `GENERATED`, `EDITED`, `VERIFIED`, `REJECTED`, `REPLACED`, `INSPIRED`, and `DUPLICATED`.
+
+A useful distinction is:
+
+* *production attribution* — who or what produced artifact content;
+* *decision attribution* — who or what influenced a decision;
+* *accountability* — which human role accepted responsibility;
+* *causal contribution* — whether the AI changed the final outcome relative to the counterfactual.
+
+Only the last directly supports value claims, and it normally requires experimentation.
+
+== Evaluating AI code generation
+
+Suggestion acceptance is a useful interaction measure but not a complete outcome. Evaluation should include:
+
+* acceptance with and without modification;
+* time to usable result;
+* compilation and test success;
+* defect and security outcomes;
+* maintainability and architectural fit;
+* duplicated or unnecessary code;
+* review burden;
+* downstream rework;
+* author understanding;
+* task completion and abandonment.
+
+At the task level, compare quality-adjusted human effort and accepted outcome, not merely generated lines.
+
+== Evaluating AI review
+
+An AI review finding is an information-retrieval and decision-support object. For labeled findings, use precision and recall:
+
+[stem]
+++++
+Precision = \frac{TP}{TP+FP}
+++++
+
+[stem]
+++++
+Recall = \frac{TP}{TP+FN}
+++++
+
+Severity-weighted versions are often more meaningful:
+
+[stem]
+++++
+Recall_w = \frac{\sum_{i \in TP} w_i}{\sum_{i \in TP \cup FN} w_i}
+++++
+
+Ranking quality matters because human attention is limited. NDCG, precision at k, and severe-finding recall at k measure whether the most important issues appear first.
+
+Operational measures should also include duplication, action type, validation effort, comment latency, suppression quality, and downstream defect prevention.
+
+== Ground truth and golden data
+
+AI review evaluation requires a labeled corpus containing Engineering Changes, known defects and non-defects, severity, category, relevant code context, expected evidence, and acceptable alternative findings.
+
+Golden datasets should include:
+
+* real historical defects;
+* injected or mutation-based defects;
+* clean changes to estimate false positives;
+* security, concurrency, data, UI, API, and operational categories;
+* multiple languages and repository types;
+* ambiguous cases adjudicated by experts.
+
+A fixed golden set risks overfitting. Maintain hidden holdouts, refresh samples, and evaluate on live outcomes.
+
+== Human validation burden
+
+AI output must be interpreted and verified. Define validation burden:
+
+[stem]
+++++
+VB(e) = T_{inspect} + T_{investigate} + T_{correct} + T_{recover}
+++++
+
+High output volume can increase stem:[VB] even when inference cost is low.
+
+Useful proxies include finding views, code navigation after a finding, time to action, independent reproduction, comment discussion, suggestion modification, and rejection reason.
+
+== Trust calibration
+
+The goal is calibrated trust, not maximum trust. Users should rely on the system when it is likely correct and scrutinize it when uncertainty is high.
+
+Over-trust creates automation bias. Under-trust destroys offload value. Trust calibration depends on precision, consistency, explanation quality, confidence honesty, domain fit, and recovery from errors.
+
+Measure:
+
+* reliance conditional on actual correctness;
+* rejection of incorrect findings;
+* acceptance of correct high-value findings;
+* changes in behavior after visible errors;
+* calibration by category and confidence band.
+
+== Cognitive offload and reload
+
+AI creates offload when it reduces human reasoning, search, production, or verification while preserving outcomes. It creates reload when humans must inspect noisy output, reconstruct hidden assumptions, correct generated artifacts, or recover from misplaced trust.
+
+Net cognitive effect:
+
+[stem]
+++++
+NCE = W_{offload} - W_{reload}
+++++
+
+The effect should be estimated experimentally and stratified by task type, expertise, and risk.
+
+== Quality-adjusted AI leverage
+
+A proposed AI Leverage Factor is:
+
+[stem]
+++++
+ALF = \frac{\Delta V + \Delta C_{human} + \Delta C_{quality}}{C_{AI} + C_{validation}}
+++++
+
+where positive numerator terms represent additional value, human cost avoided, and expected quality benefit. The formula is a decision model, not a universal score. Assumptions and uncertainty must be visible.
+
+== Agents and multi-step tasks
+
+Agent evaluation requires additional dimensions:
+
+* task planning quality;
+* tool selection and permission use;
+* state tracking;
+* recovery from failed steps;
+* test and verification discipline;
+* boundedness and escalation;
+* reproducibility;
+* side effects;
+* final task success.
+
+image::../figures/mermaid/agent-task-loop.mmd[Agent task execution loop]
+
+A successful pull request is not sufficient if the agent used unsafe permissions, modified unrelated files, or produced hidden operational risk.
+
+== Autonomy and risk tiers
+
+Recommended tiers include:
+
+[cols="1,3"]
+|===
+|Tier |Controls
+
+|Low risk
+|Advisory output, easy reversal, non-production artifacts, standard validation.
+
+|Moderate risk
+|Bounded writes, required tests, human approval, audit trail, rollback.
+
+|High risk
+|Sensitive data, security, financial logic, infrastructure, or broad blast radius; specialist review and constrained permissions.
+
+|Prohibited or exceptional
+|Actions exceeding policy, legal, safety, or accountability boundaries.
+|===
+
+Risk routing should consider both task risk and model uncertainty.
+
+== Model, prompt, and policy drift
+
+AI behavior can change because of model upgrades, prompt edits, retrieval changes, repository evolution, or policy configuration. Treat each as a versioned intervention.
+
+Production monitoring should detect changes in finding volume, precision proxies, action rates, cost, latency, category mix, failure modes, and guardrail outcomes.
+
+A vendor model update without an experiment record can invalidate historical comparisons.
+
+== Human learning and skill
+
+AI can accelerate learning by explaining code, demonstrating patterns, and exposing defects. It can also reduce learning when users accept outputs without understanding.
+
+Evaluation should include long-term outcomes such as independent task performance, reviewer capability, onboarding speed, knowledge concentration, and ability to operate when AI is unavailable.
+
+Learning is not captured by immediate cycle time.
+
+== Governance and security
+
+AI engineering systems require controls for:
+
+* data access and retention;
+* source-code and secret exposure;
+* identity and authorization;
+* tool-call permissions;
+* model and vendor approval;
+* auditability;
+* generated-code licensing and provenance;
+* prompt injection and untrusted repository content;
+* escalation and shutdown;
+* accountability for accepted changes.
+
+Least privilege should apply to agents. Read, write, execute, deploy, and production-access capabilities should be independently controlled.
+
+== Experiment patterns
+
+Useful experiments include:
+
+* completion versus no completion for bounded tasks;
+* ranked review findings versus full unranked output;
+* AI summary versus raw change after long delays;
+* one model versus another on a shared golden and live evaluation;
+* human-first versus AI-first review order;
+* autonomous patch generation versus advisory findings;
+* different confidence thresholds and suppression policies;
+* agent autonomy levels with equal task populations.
+
+Primary outcomes should be quality-adjusted effort or accepted task outcome. Guardrails should include severe defects, security, validation burden, trust, and learning.
+
+== Common failure modes
+
+=== Counting generated code as productivity
+
+Generated volume can increase review, maintenance, and defect cost.
+
+=== Treating acceptance as correctness
+
+Users can accept incorrect output or reject valuable findings.
+
+=== Ignoring human validation
+
+Inference cost is often small relative to attention spent validating output.
+
+=== Evaluating only synthetic benchmarks
+
+Benchmarks provide control but may not reflect repository context, organizational conventions, or live behavior.
+
+=== Global average performance
+
+AI quality varies substantially by language, domain, complexity, and risk.
+
+=== Silent model changes
+
+Unversioned updates make experiments and trends irreproducible.
+
+=== Automating beyond evidence
+
+Strong advisory performance does not automatically justify autonomous execution.
+
+== Key takeaways
+
+* AI should be modeled as a first-class participant with explicit provenance, cost, and outcomes.
+* Attribution must distinguish production, influence, accountability, and causal contribution.
+* AI review should be evaluated using precision, recall, ranking, validation burden, and downstream quality.
+* Acceptance rate is an interaction measure, not a value measure.
+* Net value depends on cognitive offload minus cognitive reload.
+* Agent evaluation must include planning, permissions, side effects, recovery, and boundedness.
+* Model, prompt, retrieval, and policy versions are part of the treatment definition.
+* Long-term trust, learning, and skill effects require measurement.
+
+== Open questions
+
+* How can causal contribution be attributed across iterative human-AI editing?
+* What live evaluation designs best detect rare but severe AI-induced failures?
+* How should reviewer learning and skill atrophy be valued?
+* Which confidence displays produce the best trust calibration?
+* How should autonomy be increased safely as evidence accumulates?
+
+== Implementation checklist
+
+. Define actor types and versioned AI contribution records.
+. Capture model, prompt, context, tool, policy, latency, and cost metadata.
+. Build labeled golden sets with clean and defective changes.
+. Measure precision, recall, ranking, duplication, action, and validation effort.
+. Link AI contributions to downstream code, defects, incidents, and accepted outcomes.
+. Evaluate cognitive offload and reload experimentally.
+. Establish autonomy tiers and least-privilege permissions.
+. Monitor model and prompt drift as versioned interventions.
+. Add trust, learning, security, and severe-quality guardrails.
+. Preserve human accountability for accepted engineering outcomes.
