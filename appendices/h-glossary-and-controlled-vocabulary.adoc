@@ -1,0 +1,1204 @@
+= Glossary and Controlled Vocabulary
+
+[abstract]
+This appendix defines the core vocabulary used throughout _Engineering Intelligence_. The purpose is not merely editorial consistency. Stable terminology is a prerequisite for valid metrics, interoperable data contracts, reproducible studies, auditable decisions, and trustworthy communication across engineering, product, finance, security, privacy, and executive leadership.
+
+== Vocabulary principles
+
+=== Prefer semantic meaning over tool terminology
+
+Use terms such as _Engineering Change_, _validation run_, and _deployment_ when describing stable concepts. Preserve tool-specific terms such as pull request, workflow run, or release job as source-system implementations.
+
+=== Distinguish observation from interpretation
+
+An event is observed evidence. A reconstructed relationship is an inference. A prediction is a model output. A causal effect is an estimate under assumptions. A decision is an organizational choice.
+
+=== Distinguish people, automation, and agents
+
+Human, deterministic automation, AI assistant, and autonomous agent are separate actor types.
+
+=== Distinguish assignment from exposure
+
+A unit may be assigned to a treatment without receiving it.
+
+=== Distinguish capacity from savings
+
+Released engineering time is not automatically cash savings.
+
+=== Version important semantics
+
+Terms embedded in schemas, metrics, policies, or models should have stable identifiers and versioned definitions.
+
+== A
+
+=== Acceptance
+
+The explicit or inferred decision that an artifact, finding, recommendation, or Engineering Change is suitable to proceed. Acceptance does not necessarily imply deployment, release, correctness, or realized value.
+
+=== Acceptance rate
+
+The proportion of eligible suggestions, findings, or artifacts accepted under a defined disposition rule. The denominator, partial acceptance, later rework, duplicates, and outcome window must be specified.
+
+=== Accountable owner
+
+The person or role responsible for ensuring a decision, metric, study, model, platform capability, or policy achieves its intended purpose and receives review.
+
+=== Active time
+
+Estimated time during which a person or system is substantively engaged in an activity. Active time differs from elapsed time and is often imperfectly observed.
+
+=== Actor
+
+A human, service account, deterministic automation, AI assistant, autonomous agent, vendor system, or organizational unit that initiates or performs an activity.
+
+=== Agent
+
+A software system that selects and performs actions toward a delegated objective, potentially using models, tools, memory, and other agents. An agent is distinguished from a single model invocation and from fixed automation.
+
+=== Agentic workflow
+
+A workflow in which one or more agents plan, delegate, execute, validate, or revise actions across multiple steps.
+
+=== Aggregation
+
+The process of combining observations across units, dimensions, or time. Valid aggregation depends on metric semantics; not all measures are additive.
+
+=== Analysis unit
+
+The unit represented by each analytical observation or error term. It may differ from the assignment unit in an experiment.
+
+=== Annotation
+
+A human- or machine-produced label applied to evidence for evaluation, training, classification, or adjudication.
+
+=== Artifact
+
+A created, modified, reviewed, executed, deployed, or released object, such as source code, configuration, test, package, image, schema, model, document, or deployment manifest.
+
+=== Assignment
+
+The allocation of an eligible unit to an experimental or policy variant. Assignment is not the same as treatment availability, invocation, completion, or use.
+
+=== Assignment unit
+
+The entity randomized or allocated to a treatment, such as an Engineering Change, person, repository, team, service, or time window.
+
+=== Attention
+
+Finite human cognitive capacity applied to understanding, deciding, creating, validating, coordinating, diagnosing, or recovering.
+
+=== Attention cost
+
+The opportunity cost of human attention consumed by an activity, queue, interruption, tool, or policy.
+
+=== Attribution
+
+The assignment of an outcome, cost, activity, or benefit to an intervention, actor, team, system, or Engineering Change. Attribution may be descriptive, probabilistic, causal, or accounting-based and should state which.
+
+=== Audit trail
+
+A durable record of evidence access, transformation, model or metric use, decisions, corrections, overrides, and automated actions.
+
+=== Automation
+
+A deterministic or rule-based system that performs predefined actions. Automation may use software logic without exercising agent-like planning or delegation.
+
+=== Autonomous action
+
+An action executed by a system without immediate human approval. Autonomy should be described by scope, consequence, reversibility, evidence threshold, and override controls.
+
+=== Availability
+
+The degree to which a system, treatment, service, or dataset is operationally accessible when required. Availability does not prove successful use.
+
+== B
+
+=== Backfill
+
+Historical ingestion or recomputation used to populate evidence from a period before normal processing, restore missing data, or apply corrected logic.
+
+=== Baseline
+
+The pre-intervention or comparison state used to describe initial conditions, estimate expected outcomes, or improve analytical precision.
+
+=== Benchmark
+
+A governed set of tasks, examples, artifacts, labels, and evaluation rules used to compare tools, models, systems, or methods.
+
+=== Benefit
+
+A favorable incremental consequence relative to a credible alternative. Benefits may be cash impact, avoided cost, released capacity, quality improvement, risk reduction, option value, or capability value.
+
+=== Blast radius
+
+The set and severity of systems, users, data, dependencies, teams, or business outcomes potentially affected by a change or failure.
+
+=== Blocking time
+
+Elapsed time during which progress cannot continue because a required resource, decision, environment, dependency, or approval is unavailable.
+
+=== Bot
+
+An imprecise umbrella term for nonhuman activity. Canonical systems should instead identify deterministic automation, service account, AI assistant, or autonomous agent.
+
+=== Bottleneck
+
+The constrained stage or resource that limits end-to-end system throughput or responsiveness.
+
+=== Build
+
+The process or result of transforming source artifacts and dependencies into a deployable or distributable artifact.
+
+=== Business case
+
+A structured comparison of alternatives using incremental costs, benefits, uncertainty, risks, realization conditions, and decision criteria.
+
+== C
+
+=== Calibration
+
+Agreement between predicted probability or confidence and observed frequency. A calibrated 70 percent prediction should be correct approximately 70 percent of the time in the relevant population.
+
+=== Canonical event
+
+A source-independent, versioned representation of an observed activity or state transition with preserved provenance.
+
+=== Canonical identity
+
+A stable identity that connects multiple source-system identities belonging to the same actor while preserving temporal validity and confidence.
+
+=== Capacity
+
+The amount of work or attention a system or resource can provide over a period under defined operating conditions.
+
+=== Capacity realization
+
+The proportion of released capacity that becomes valuable productive work, avoided cost, or financial impact.
+
+=== Carryover
+
+An effect of an earlier treatment period that persists into a later comparison period.
+
+=== Causal claim
+
+A claim that an intervention changed an outcome relative to the outcome that would otherwise have occurred.
+
+=== Causal effect
+
+A contrast between potential outcomes under different interventions for a defined population and estimand.
+
+=== Change failure
+
+A failure, degradation, rollback, incident, or material correction associated with a delivered Engineering Change under a specified attribution rule.
+
+=== Change type
+
+A governed classification of an Engineering Change, such as feature, defect fix, reliability, security, compliance, platform, experiment, migration, or maintenance.
+
+=== Closed-loop automation
+
+A system that observes, decides, acts, and evaluates outcomes repeatedly without requiring human approval for every cycle.
+
+=== Cluster
+
+A group assigned or analyzed together, such as a team, repository, service, or organization.
+
+=== Cohort
+
+A population grouped by a shared entry time, exposure, characteristic, or lifecycle condition.
+
+=== Comparator
+
+The alternative condition against which an intervention is evaluated.
+
+=== Completeness
+
+The degree to which expected evidence is present for the intended population and period.
+
+=== Complexity
+
+The cognitive, structural, behavioral, dependency, coordination, or operational difficulty associated with understanding and changing a system.
+
+=== Confidence
+
+A quantified or categorized estimate of how strongly evidence supports a relationship, classification, prediction, or conclusion. Confidence must identify its meaning and calibration.
+
+=== Confidence band
+
+A controlled category such as confirmed, high, medium, low, or rejected used to communicate relationship strength.
+
+=== Confidence interval
+
+A frequentist interval produced by a method that would contain the true parameter at the stated long-run rate under repeated sampling and model assumptions.
+
+=== Confounder
+
+A variable that influences both treatment or exposure and outcome, potentially producing a misleading association.
+
+=== Consequence
+
+The magnitude and type of impact resulting from an outcome, including human, technical, financial, regulatory, customer, or reputational effects.
+
+=== Construct
+
+An underlying concept the organization seeks to understand, such as review effort, maintainability, cognitive load, quality, or delivery responsiveness.
+
+=== Construct validity
+
+The degree to which a measure represents the intended construct rather than a related but different concept.
+
+=== Contamination
+
+Treatment received by a control unit or otherwise crossing the intended experiment boundary.
+
+=== Continuity factor
+
+An economic adjustment representing how much released time appears in usable blocks rather than fragmented moments.
+
+=== Control group
+
+The comparison group that does not receive the intervention of interest or receives the baseline condition.
+
+=== Correction
+
+A versioned change to erroneous or incomplete evidence, identity, linkage, metric, model output, or decision record that preserves prior state and reason.
+
+=== Cost of delay
+
+The value lost while an outcome, capability, risk reduction, or decision remains unavailable.
+
+=== Counterfactual
+
+The outcome that would have occurred under an alternative intervention or decision.
+
+=== Credible interval
+
+A Bayesian interval containing the parameter with a stated posterior probability under the model and prior assumptions.
+
+=== Cycle time
+
+Elapsed time between explicitly defined lifecycle events for a defined unit. The start, end, pauses, population, and calendar basis must be specified.
+
+== D
+
+=== Data contract
+
+A versioned agreement defining source semantics, schemas, identifiers, timing, quality expectations, ownership, change policy, and permitted use.
+
+=== Data lineage
+
+Traceable relationships from a published result back through models, metrics, transformations, canonical records, and source evidence.
+
+=== Data minimization
+
+Collection, retention, and processing of only the evidence necessary for an approved purpose.
+
+=== Data-quality gate
+
+A rule that determines whether a metric, model, study, or decision product may be published or used.
+
+=== Decision-grade
+
+Sufficiently valid, reliable, timely, relevant, and governed for a specified consequential decision. Decision-grade is use-specific, not universal.
+
+=== Decision owner
+
+The accountable person or role authorized to choose among alternatives and responsible for reviewing the outcome.
+
+=== Decision record
+
+A durable statement of the question, alternatives, evidence, assumptions, uncertainty, chosen action, owner, conditions, and review date.
+
+=== Delegation
+
+The transfer of an objective, authority, or task from one actor to another.
+
+=== Delegation graph
+
+A representation of human and machine actors, delegated objectives, authority boundaries, actions, and acceptance responsibility.
+
+=== Deployment
+
+The movement or activation of one or more artifacts in an environment. Deployment is distinct from release to an intended population.
+
+=== Deployment frequency
+
+The number or rate of eligible deployments for a defined unit, environment, result, and period.
+
+=== Descriptive claim
+
+A claim about observed or reconstructed patterns without asserting prediction or causation.
+
+=== Digital twin
+
+A continuously updated computational representation of an engineering system used to simulate or estimate behavior under alternative conditions.
+
+=== Direct cost
+
+A cost traceable to the intervention, such as license, infrastructure, implementation, or support expense.
+
+=== Distributional effect
+
+Variation in benefit, burden, risk, or outcome across populations, subgroups, teams, or units.
+
+=== Drift
+
+A change over time in population, source semantics, feature distribution, model behavior, metric interpretation, treatment, or outcome relationship.
+
+== E
+
+=== Economic value
+
+The incremental benefit of an intervention relative to a credible alternative after accounting for incremental cost, uncertainty, timing, and risk.
+
+=== Effect size
+
+The magnitude of a relationship or intervention effect, expressed in absolute, relative, standardized, or distributional terms.
+
+=== Eligibility
+
+The rules determining which units may enter a metric population, study, treatment, policy, or decision.
+
+=== Engineering Change
+
+A vendor-independent analytical unit representing an intended modification and its implementation, validation, delivery, operation, and observed outcomes.
+
+=== Engineering Change graph
+
+The entities and relationships connecting intent, actors, artifacts, activities, validations, builds, deployments, releases, incidents, and outcomes for Engineering Changes.
+
+=== Engineering Intelligence
+
+The discipline and supporting system for connecting engineering evidence, human attention, architecture, economics, experimentation, governance, and outcomes to improve organizational decisions and learning.
+
+=== Estimand
+
+The exact quantity a study intends to estimate, including population, treatment contrast, outcome, and handling of events such as noncompliance or missingness.
+
+=== Event time
+
+The time an event occurred in the source domain.
+
+=== Evidence
+
+Observed or derived information used to support a claim or decision. Evidence should identify source, provenance, quality, and interpretation level.
+
+=== Evidence graph
+
+A network linking questions, constructs, metrics, datasets, studies, results, decisions, and replications.
+
+=== Evidence maturity
+
+The strength and operational readiness of evidence, ranging from exploratory signal to replicated causal evidence and monitored policy.
+
+=== Exposure
+
+The treatment actually made available, invoked, completed, or used by an eligible unit.
+
+=== External validity
+
+The degree to which a result applies beyond the studied population, setting, intervention version, and period.
+
+== F
+
+=== Fairness
+
+The evaluation and governance of whether benefits, burdens, errors, access, and consequences are acceptably distributed across relevant populations.
+
+=== False negative
+
+An eligible issue, outcome, or condition that exists but is not detected or classified as present.
+
+=== False positive
+
+A finding, prediction, or classification indicating an issue or condition that is not supported under the adjudication rule.
+
+=== Feature
+
+A measured or derived input used by a model, rule, analysis, or policy.
+
+=== Finding
+
+A specific concern, defect, recommendation, policy violation, or observation produced during review or analysis.
+
+=== Finding acceptance
+
+The disposition that a finding is sufficiently valid and actionable to warrant remediation, acknowledgment, or follow-up.
+
+=== Finding recall
+
+The proportion of eligible ground-truth findings detected by a reviewer or system.
+
+=== Finding precision
+
+The proportion of eligible produced findings judged valid and actionable.
+
+=== Flow
+
+The movement of Engineering Changes through planning, implementation, validation, delivery, and operation.
+
+=== Fragmentation
+
+The division of attention or released capacity into small intervals that reduce usability and increase switching cost.
+
+=== Freshness
+
+The delay between source occurrence and evidence or metric availability.
+
+== G
+
+=== Gaming
+
+Behavior that improves a measured value without improving the intended construct or outcome.
+
+=== Generated artifact
+
+An artifact produced wholly or partly by an AI model or agent. Generated status does not imply quality or acceptance.
+
+=== Generated explanation
+
+A machine-produced narrative or summary derived from evidence or other model outputs. It should remain distinguishable from observed evidence.
+
+=== Governance
+
+The roles, policies, controls, reviews, audits, and accountability mechanisms governing evidence, metrics, models, experiments, automated actions, and decisions.
+
+=== Governance incident
+
+A material failure involving access, purpose limitation, prohibited use, privacy, metric misuse, unsafe automated action, or missing accountability.
+
+=== Ground truth
+
+A reference label or outcome treated as authoritative for an evaluation. Ground truth may itself contain uncertainty and should document adjudication.
+
+=== Guardrail
+
+A measure, threshold, or condition intended to detect unacceptable harm or degradation while optimizing another outcome.
+
+== H
+
+=== Hazard
+
+The instantaneous rate at which an event occurs among units that have not yet experienced it.
+
+=== Human-in-the-loop
+
+A system in which a person participates in review, approval, correction, exception handling, or supervision. The phrase should specify the person’s actual authority and timing.
+
+=== Human-on-the-loop
+
+A system that acts autonomously within bounds while a person monitors, audits, or intervenes when necessary.
+
+=== Human validation burden
+
+The attention and effort required to establish sufficient confidence in machine- or human-produced output.
+
+=== Hypothesis
+
+A specific, falsifiable statement about a relationship, mechanism, or intervention effect.
+
+== I
+
+=== Identification strategy
+
+The assumptions and design features allowing an observed contrast to be interpreted causally.
+
+=== Identity resolution
+
+The process of mapping source identities to canonical actors with temporal validity and confidence.
+
+=== Immutable evidence
+
+Source evidence preserved in a form that cannot be silently overwritten and can support replay, audit, or correction.
+
+=== Implementation fidelity
+
+The degree to which an intervention was delivered as designed.
+
+=== Incident
+
+An operational failure, degradation, security event, or significant near miss requiring coordinated response or investigation.
+
+=== Incremental cost
+
+The difference in cost between an intervention and the credible alternative.
+
+=== Incremental value
+
+The difference in value between an intervention and the credible alternative.
+
+=== Inference
+
+A conclusion, estimate, reconstruction, or prediction derived from evidence rather than directly observed.
+
+=== Ingestion time
+
+The time evidence entered the Engineering Intelligence platform.
+
+=== Instrumentation
+
+The technical and procedural mechanisms that create, collect, timestamp, and transmit evidence.
+
+=== Instrumental variable
+
+A variable used to estimate causal effects when it changes treatment, affects outcome only through treatment under assumptions, and satisfies other identification conditions.
+
+=== Intention-to-treat effect
+
+The effect of assignment to treatment regardless of whether treatment was received or completed.
+
+=== Interference
+
+A condition in which one unit’s treatment affects another unit’s outcome.
+
+=== Internal validity
+
+The credibility of a causal or analytical conclusion for the studied population and setting.
+
+=== Intervention
+
+A deliberate change to tool, workflow, policy, architecture, platform, staffing, or operating conditions intended to influence outcomes.
+
+== J
+
+=== Join coverage
+
+The proportion of eligible records that can be linked across source or canonical entities under the declared rules.
+
+== L
+
+=== Latency
+
+Elapsed time between defined events. The term should specify whether it refers to system response, queue delay, cycle time, or evidence freshness.
+
+=== Learning organization
+
+An organization that repeatedly observes, explains, intervenes, evaluates, decides, adapts, and preserves knowledge.
+
+=== Learning velocity
+
+The rate at which consequential uncertainty is reduced and translated into better decisions and retained knowledge.
+
+=== Lifecycle state
+
+A semantic state in the progress of an Engineering Change, such as proposed, active, validating, accepted, integrated, deployed, released, operating, completed, reverted, abandoned, or superseded.
+
+=== Linkage confidence
+
+The strength of evidence that two entities or events belong to the same Engineering Change or relationship.
+
+=== Loaded labor cost
+
+Compensation plus applicable benefits, payroll costs, facilities, equipment, management, and shared overhead used for economic modeling.
+
+=== Longitudinal study
+
+A study that observes units or populations across time to measure change, adaptation, retention, or delayed effects.
+
+== M
+
+=== Maintainability
+
+The ease, safety, and cost with which a system can be understood, modified, validated, operated, and evolved.
+
+=== Mechanism
+
+The process through which an intervention or condition produces an outcome.
+
+=== Measurement invariance
+
+The degree to which a measure represents the same construct across groups, contexts, or time.
+
+=== Measurement model
+
+The explicit relationship between a construct and its observable indicators.
+
+=== Metric
+
+A versioned measure computed for a defined unit, population, interval, formula, and purpose.
+
+=== Metric bundle
+
+A coordinated set containing a primary outcome, guardrails, mechanism indicators, economic measures, adoption or exposure measures, and data-quality measures.
+
+=== Metric incident
+
+A material failure in metric correctness, timeliness, semantics, access, or permitted use.
+
+=== Metric owner
+
+The person or role accountable for a metric’s construct, definition, interpretation, quality, permitted use, review, and retirement.
+
+=== Missingness
+
+The absence of an expected value or relationship. Missingness should distinguish true zero, not applicable, unobserved, unavailable, unresolved, and not yet mature.
+
+=== Model
+
+A statistical, machine-learning, simulation, or rule-based representation used to predict, classify, rank, estimate, or recommend.
+
+=== Model monoculture
+
+Concentration on one model family, provider, or shared failure mode across consequential workflows.
+
+=== Model provenance
+
+The model identity, version, configuration, training or evaluation context, features, prompt, tools, and policy associated with an output.
+
+=== Multi-tenancy
+
+An architecture in which multiple organizational or regulatory tenants share some platform components while preserving defined isolation boundaries.
+
+== N
+
+=== Natural experiment
+
+A situation in which external or operational variation creates a treatment contrast that can support causal inference under defensible assumptions.
+
+=== Net attention change
+
+Human attention reduced by an intervention minus validation, rework, coordination, and exception-handling attention added.
+
+=== Net present value
+
+The discounted value of future incremental benefits minus future incremental costs.
+
+=== Noncompliance
+
+A mismatch between assigned treatment and treatment actually received or followed.
+
+=== Noninferiority
+
+A study objective establishing that a treatment is not worse than a comparator by more than a predeclared acceptable margin.
+
+=== Novelty
+
+The degree to which a change introduces unfamiliar concepts, technologies, dependencies, patterns, or operating conditions.
+
+== O
+
+=== Observable
+
+A value, event, artifact, or behavior that can be directly recorded or reconstructed with stated evidence.
+
+=== Observability
+
+The ability to infer relevant internal system state from available evidence. Engineering Intelligence observability includes data quality and semantic coverage, not only runtime telemetry.
+
+=== Observational study
+
+A study in which treatment or exposure is not assigned by the investigator.
+
+=== Opportunity cost
+
+The value of the best alternative use of money, attention, time, infrastructure, or organizational capacity.
+
+=== Option value
+
+The value created by preserving or enabling useful future choices under uncertainty.
+
+=== Outcome
+
+An observed consequence related to user value, business performance, quality, reliability, security, cost, capability, or learning.
+
+=== Outcome maturity
+
+The point at which sufficient time has elapsed for an outcome to be observed reliably.
+
+=== Ownership
+
+Responsibility for a system, artifact, metric, source, decision, or policy during a defined interval.
+
+== P
+
+=== Policy
+
+A rule or decision framework governing eligibility, access, routing, approval, deployment, treatment, or action.
+
+=== Policy-grade metric
+
+A metric sufficiently mature for formal or automated policy use under continuous quality, monitoring, appeal, and rollback controls.
+
+=== Population
+
+The complete set of eligible units to which a metric, model, study, or conclusion applies.
+
+=== Population drift
+
+A change in the composition or characteristics of the eligible or observed population.
+
+=== Precision
+
+For finding or classification systems, the proportion of positive outputs that are valid under the adjudication rule.
+
+=== Prediction
+
+A model estimate of an unknown or future value, class, rank, or probability.
+
+=== Predictive claim
+
+A claim that available evidence can forecast an outcome for a defined population.
+
+=== Prescriptive claim
+
+A claim that one action should be selected over alternatives to optimize defined objectives under constraints.
+
+=== Primary outcome
+
+The predeclared outcome carrying the main confirmatory interpretation of a study.
+
+=== Privacy
+
+The appropriate control of personal or sensitive information, including collection, purpose, access, inference, retention, correction, and disclosure.
+
+=== Probabilistic linkage
+
+A relationship inferred from multiple uncertain signals rather than an explicit or deterministic reference.
+
+=== Production function
+
+The relationship between inputs such as labor, attention, tools, capital, and infrastructure and resulting engineering outcomes.
+
+=== Prompt provenance
+
+The identity and version of instructions, context policy, retrieved evidence, and configuration used for a model invocation.
+
+=== Propensity score
+
+The estimated probability of receiving treatment given observed pre-treatment characteristics.
+
+=== Provenance
+
+Information describing the origin, transformation, version, actor, time, and evidence chain of a record or result.
+
+=== Proxy
+
+An observable measure used to represent another construct. A proxy is not the construct itself.
+
+=== Purpose limitation
+
+The principle that evidence is collected and used only for declared, reviewed purposes.
+
+== Q
+
+=== Quality
+
+Fitness of an Engineering Change or system for its intended purpose, including correctness, reliability, security, maintainability, usability, and compliance.
+
+=== Quality gate
+
+A condition that must be satisfied before an artifact, metric, model, treatment, or decision may proceed.
+
+=== Queue
+
+Work waiting for a constrained resource or process stage.
+
+=== Queue delay
+
+Elapsed time spent waiting before service begins.
+
+=== Quasi-experiment
+
+A nonrandomized study using a defensible identification strategy to estimate a causal effect.
+
+== R
+
+=== Randomization
+
+Assignment by a chance mechanism designed to make treatment independent of potential outcomes within the target population.
+
+=== Realized value
+
+Benefit observed and verified after implementation. It should be labeled as booked financial impact, avoided cost, reallocated capacity, or observed outcome value.
+
+=== Recall
+
+For finding or classification systems, the proportion of eligible true cases detected.
+
+=== Reconstruction
+
+The derivation of entities, relationships, or lifecycle state from source evidence.
+
+=== Registered use
+
+An approved purpose-bound use of evidence, metrics, models, or automated policy with defined owner, population, access, controls, and review date.
+
+=== Regression discontinuity
+
+A causal design comparing units near a treatment-assignment threshold under continuity assumptions.
+
+=== Reliability
+
+The consistency and reproducibility of a measure, label, relationship, model, or process.
+
+=== Release
+
+The act of making a deployed change available to an intended user or consuming-system population.
+
+=== Released capacity
+
+Human or system capacity made available by an intervention. It is not automatically equivalent to savings or additional output.
+
+=== Replay
+
+Reprocessing preserved evidence through the same or revised transformations, reconstruction, metrics, or models.
+
+=== Replication
+
+Repeating or independently reproducing a study, measure, or finding to test robustness and boundary conditions.
+
+=== Reproducibility
+
+The ability to obtain the same result using the same evidence, code, versions, configuration, and analytical procedure.
+
+=== Retention
+
+The period and conditions under which evidence, identities, model outputs, metrics, and records are preserved.
+
+=== Reversibility
+
+The degree to which an intervention or automated action can be undone with limited cost or harm.
+
+=== Review
+
+A structured validation activity in which one or more actors evaluate an Engineering Change, artifact, finding, or decision.
+
+=== Review effort
+
+Human attention spent performing review. It should distinguish active effort from elapsed review time and queue delay.
+
+=== Risk
+
+The combination of uncertainty, probability, exposure, and consequence associated with an adverse outcome.
+
+=== Risk class
+
+A governed category representing expected consequence or control requirements for an Engineering Change or system.
+
+=== Rollback
+
+An action that removes, disables, or restores the effect of a deployment, release, policy, model, or metric version.
+
+== S
+
+=== Sample
+
+The observed subset of a population used for measurement or inference.
+
+=== Schema registry
+
+A governed repository of versioned event, entity, and payload definitions with compatibility and ownership rules.
+
+=== Sensitivity analysis
+
+Evaluation of how conclusions change under alternative assumptions, parameters, populations, definitions, or missing-data mechanisms.
+
+=== Service time
+
+Time during which a resource actively processes a unit, excluding queue wait.
+
+=== Shadow mode
+
+Operation of a tool, model, metric, or policy without allowing it to affect the primary production decision, used for validation and comparison.
+
+=== Source evidence
+
+The original event, entity, payload, or state obtained from a source system before canonical interpretation.
+
+=== Spillover
+
+An effect of treatment on units other than those directly assigned or exposed.
+
+=== Standard error
+
+An estimate of the sampling variability of an estimator.
+
+=== Statistical significance
+
+A result meeting a predefined probability threshold under a statistical model. It does not imply practical importance, validity, causation, or economic value.
+
+=== Stratification
+
+Partitioning units into groups before assignment or analysis to improve balance, precision, or interpretation.
+
+=== Study
+
+A structured investigation designed to answer a descriptive, predictive, causal, or evaluative question.
+
+=== Study charter
+
+The record defining a study’s decision, ownership, hypothesis, population, intervention, outcomes, guardrails, duration, and governance.
+
+=== Subgroup
+
+A defined subset of a population used to evaluate heterogeneity, fairness, or boundary conditions.
+
+=== Surveillance
+
+Monitoring people or behavior in a way that exceeds a legitimate, proportionate, transparent, and governed purpose.
+
+=== Synthetic control
+
+A weighted combination of untreated units used to approximate the counterfactual outcome of a treated unit.
+
+=== Synthetic evidence
+
+Machine-generated, simulated, or transformed material that resembles observed evidence but must remain labeled as generated or inferred.
+
+=== System of record
+
+The authoritative source for a defined entity or fact. Authority may be split across domains and time.
+
+== T
+
+=== Technical debt
+
+Future cost or constrained choice created by technical decisions that make change, validation, operation, or understanding more difficult.
+
+=== Temporal join
+
+A relationship resolved using values valid at the time of the event rather than current values.
+
+=== Temporal ownership
+
+Ownership represented as effective intervals so historical evidence is attributed to the correct team or role.
+
+=== Treatment
+
+The intervention condition assigned or delivered in a study or policy.
+
+=== Treatment fidelity
+
+The degree to which the actual treatment matches the declared configuration and operational behavior.
+
+=== Treatment-on-treated effect
+
+The estimated effect among units that actually received treatment, requiring assumptions beyond simple randomized assignment when noncompliance exists.
+
+=== Throughput
+
+The rate at which eligible units complete a defined process or lifecycle stage.
+
+=== Tool usage
+
+Observed invocation, interaction, or activity involving a tool. Usage is not proof of effectiveness or value.
+
+=== Traceability
+
+The ability to follow evidence, artifacts, activities, models, metrics, and decisions through their relationships and versions.
+
+=== Transportability
+
+The degree to which a causal result from one population or setting can be applied to another using evidence and assumptions.
+
+== U
+
+=== Uncertainty
+
+Incomplete knowledge about evidence, measurement, model, relationship, outcome, effect, or future state.
+
+=== Unit of analysis
+
+See _analysis unit_.
+
+=== Unit of consequence
+
+The entity at which meaningful outcomes and risk are evaluated. In this framework, the Engineering Change is often the principal unit of consequence.
+
+=== Utilization
+
+The proportion of available service capacity currently consumed. High utilization can produce nonlinear queue growth.
+
+== V
+
+=== Validation
+
+The process of establishing whether an artifact, finding, measure, model, intervention, or decision is sufficiently correct and fit for its intended use.
+
+=== Validation burden
+
+Human or system effort required to establish trust in output before acceptance or action.
+
+=== Validation run
+
+An execution that produces evidence about correctness, quality, safety, performance, compliance, or fitness.
+
+=== Validity
+
+The degree to which evidence, measurement, inference, or study supports the intended interpretation and use.
+
+=== Value realization
+
+The process by which forecast benefits become observed capacity, avoided cost, financial impact, risk reduction, or outcomes.
+
+=== Vendor-neutral evidence
+
+Evidence stored and defined independently of the vendor product that generated it, enabling comparison, audit, migration, and longitudinal analysis.
+
+=== Version
+
+A stable identifier for the semantics or implementation of a schema, metric, model, prompt, policy, treatment, study, or record.
+
+== W
+
+=== Wait time
+
+Elapsed time during which a unit is ready but has not begun receiving the required service.
+
+=== Work in progress
+
+The number of units started but not completed within a defined lifecycle boundary.
+
+=== Work mix
+
+The distribution of change types, complexity, risk, domains, technologies, and other characteristics in a population.
+
+=== Work-mix adjustment
+
+Analytical control for differences in population composition when making comparisons.
+
+=== Workflow
+
+The activities, states, decisions, actors, and transitions through which an Engineering Change or related unit progresses.
+
+== Controlled distinctions
+
+=== Engineering Change versus pull request
+
+An Engineering Change is the semantic unit of intended consequence. A pull request is one possible implementation artifact or review container.
+
+=== Deployment versus release
+
+A deployment places artifacts into an environment. A release exposes functionality to an intended population.
+
+=== Activity versus outcome
+
+Activity records work performed. Outcome records consequence or value.
+
+=== Elapsed time versus active effort
+
+Elapsed time includes waiting and inactivity. Active effort attempts to represent substantive attention or processing.
+
+=== Usage versus effectiveness
+
+Usage establishes interaction. Effectiveness establishes improvement in a defined outcome.
+
+=== Adoption versus exposure
+
+Adoption describes broader use or acceptance of a tool or practice. Exposure records whether a specific unit received a treatment.
+
+=== Correlation versus causation
+
+Correlation describes association. Causation claims an intervention changed the outcome under an identification strategy.
+
+=== Prediction versus causal estimate
+
+Prediction estimates an unknown outcome. A causal estimate compares potential outcomes under interventions.
+
+=== Confidence versus probability
+
+Confidence may refer to relationship strength, model score, or interval procedure. Probability must identify the random event or posterior statement.
+
+=== Precision versus accuracy
+
+Precision in information retrieval is the proportion of positive findings that are valid. Accuracy is the proportion of all classifications that are correct and can be misleading with class imbalance.
+
+=== Capacity value versus cash savings
+
+Capacity value estimates potential economic usefulness of released time. Cash savings require an actual or committed financial change.
+
+=== Avoided cost versus savings
+
+Avoided cost prevents a planned future expenditure. Savings reduce an existing or committed expense.
+
+=== Generated explanation versus observed evidence
+
+A generated explanation interprets evidence. It is not itself the original event or outcome.
+
+=== Automation versus agent
+
+Automation follows predefined logic. An agent selects and sequences actions toward a delegated objective.
+
+=== Review finding versus defect
+
+A review finding is an assertion requiring disposition. A defect is a validated undesirable condition.
+
+=== Quality signal versus quality outcome
+
+A signal is an indicator such as test failure or review finding. An outcome is an observed consequence such as escaped defect, rollback, or user impact.
+
+=== Metric quality versus engineering quality
+
+Metric quality describes whether measurement is trustworthy. Engineering quality describes the fitness of the system or change.
+
+=== Data freshness versus event latency
+
+Freshness is delay before evidence becomes available. Event latency may describe operational processing or user-facing response time.
+
+=== Governance approval versus scientific validity
+
+Approval authorizes a use under controls. It does not establish that the metric, model, or causal claim is scientifically valid.
+
+=== Reproducibility versus replication
+
+Reproducibility reruns the same method and evidence. Replication tests the result in new data, populations, periods, or implementations.
+
+=== Internal validity versus external validity
+
+Internal validity concerns correctness for the studied setting. External validity concerns generalization beyond it.
+
+=== Policy versus treatment
+
+A policy is an ongoing decision rule. A treatment is a condition evaluated or delivered to eligible units.
+
+=== Guardrail versus target
+
+A target is an outcome to improve. A guardrail defines unacceptable degradation or harm.
+
+=== Correction versus deletion
+
+Correction preserves and amends history. Deletion removes evidence according to legal or policy requirements.
+
+== Vocabulary governance
+
+Terms used in canonical schemas, metric specifications, model registries, experiment protocols, and governance records should be governed through:
+
+* stable term identifier;
+* preferred label;
+* definition;
+* permitted synonyms;
+* deprecated terms;
+* owner;
+* semantic version;
+* affected schemas and products;
+* effective date;
+* review date.
+
+Example:
+
+[source,yaml]
+----
+term:
+  id: ei.term.engineering_change
+  preferred_label: Engineering Change
+  version: 1.0.0
+  definition: Vendor-independent unit representing an intended modification and its implementation, validation, delivery, operation, and observed outcomes
+  deprecated_synonyms:
+    - universal_pull_request
+  owner: engineering_intelligence_semantics
+  effective_date: 2026-07-01
+  next_review: 2027-01-01
+----
+
+== Vocabulary checklist
+
+. Use stable semantic terms rather than source-vendor objects where possible.
+. Define every metric term independently of its current implementation.
+. Distinguish observed evidence, reconstruction, prediction, causal estimate, and decision.
+. Distinguish human, automation, assistant, and autonomous-agent activity.
+. Distinguish assignment, availability, invocation, exposure, adoption, and outcome.
+. Distinguish elapsed time, queue delay, service time, and active effort.
+. Distinguish released capacity, avoided cost, savings, and realized value.
+. Version definitions used in schemas, metrics, models, policies, and records.
+. Deprecate ambiguous terms rather than silently changing their meaning.
+. Review vocabulary when tools, workflows, architecture, or organizational practice changes.
