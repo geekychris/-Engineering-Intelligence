@@ -5,6 +5,7 @@ MODE="${1:-all}"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="$ROOT/build"
 WORK_DIR="$ROOT/.build-src"
+RENDER_OUTPUT_DIR="$WORK_DIR/output"
 EDITION_STAGING_DIR="$BUILD_DIR/.edition-staging"
 DIAGRAM_STAGING_DIR="$BUILD_DIR/figures/.mermaid-staging"
 DIAGRAM_FINAL_DIR="$BUILD_DIR/figures/mermaid"
@@ -66,9 +67,6 @@ initialize_publication_identity() {
   elif [[ -n "${GITHUB_SHA:-}" ]]; then
     SOURCE_COMMIT="$GITHUB_SHA"
   else
-    # Canonical sentinel for reproducible source archives that contain no VCS
-    # metadata. Tagged releases still pass an expected commit to the validator,
-    # so this value can never satisfy release identity verification.
     SOURCE_COMMIT="0000000000000000000000000000000000000000"
   fi
 
@@ -82,7 +80,7 @@ initialize_publication_identity
 
 mkdir -p "$BUILD_DIR/figures"
 rm -rf "$WORK_DIR" "$EDITION_STAGING_DIR" "$DIAGRAM_STAGING_DIR"
-mkdir -p "$WORK_DIR"
+mkdir -p "$WORK_DIR" "$RENDER_OUTPUT_DIR"
 if [[ "$MODE" != "diagrams" ]]; then
   mkdir -p "$EDITION_STAGING_DIR"
 fi
@@ -97,8 +95,6 @@ render_diagrams() {
   rm -rf "$DIAGRAM_STAGING_DIR"
   mkdir -p "$DIAGRAM_STAGING_DIR"
 
-  # Render the complete set into staging. Publication modes do not expose these
-  # figures until every requested edition and the manifest have also succeeded.
   while IFS= read -r -d '' source; do
     output="$DIAGRAM_STAGING_DIR/$(basename "${source%.mmd}.svg")"
     npx --no-install mmdc \
@@ -158,6 +154,8 @@ PY
 }
 
 build_html() {
+  local output="$RENDER_OUTPUT_DIR/engineering-intelligence.html"
+  rm -f "$output"
   bundle exec asciidoctor \
     --failure-level WARN \
     --safe-mode safe \
@@ -166,21 +164,25 @@ build_html() {
     --attribute data-uri \
     --attribute stylesdir="$WORK_DIR/styles" \
     --attribute stylesheet=engineering-intelligence.css \
-    --destination-dir "$EDITION_STAGING_DIR" \
+    --destination-dir "$RENDER_OUTPUT_DIR" \
     --out-file engineering-intelligence.html \
     "$WORK_DIR/book.adoc"
+  mv "$output" "$EDITION_STAGING_DIR/engineering-intelligence.html"
 }
 
 build_pdf() {
+  local output="$RENDER_OUTPUT_DIR/engineering-intelligence.pdf"
+  rm -f "$output"
   bundle exec asciidoctor-pdf \
     --failure-level WARN \
     --safe-mode safe \
     --attribute reproducible \
     --attribute pdf-themesdir="$WORK_DIR/themes" \
     --attribute pdf-theme=engineering-intelligence \
-    --destination-dir "$EDITION_STAGING_DIR" \
+    --destination-dir "$RENDER_OUTPUT_DIR" \
     --out-file engineering-intelligence.pdf \
     "$WORK_DIR/book.adoc"
+  mv "$output" "$EDITION_STAGING_DIR/engineering-intelligence.pdf"
 }
 
 write_manifest() {
@@ -240,9 +242,6 @@ PY
 publish_publication() {
   local name
 
-  # Rendering, edition generation, and manifest generation all complete before
-  # the public artifact set is touched. The manifest is moved last so it never
-  # advertises a figure or edition set that has not yet been installed.
   publish_diagrams
 
   for name in engineering-intelligence.html engineering-intelligence.pdf; do
