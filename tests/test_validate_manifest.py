@@ -41,6 +41,7 @@ class ManifestValidationTests(unittest.TestCase):
         diagram_count: int = 0,
         publication_time: str = "2026-07-16T12:00:00+00:00",
         source_date_epoch: int = 1784203200,
+        source_commit: str = "a" * 40,
     ) -> None:
         manifest = {
             "schema_version": 1,
@@ -48,7 +49,7 @@ class ManifestValidationTests(unittest.TestCase):
             "build_mode": mode,
             "publication_time": publication_time,
             "source_date_epoch": source_date_epoch,
-            "source_commit": "a" * 40,
+            "source_commit": source_commit,
             "files": files,
             "diagram_count": diagram_count,
         }
@@ -61,6 +62,17 @@ class ManifestValidationTests(unittest.TestCase):
         self.write_manifest(mode="html", files=[artifact])
 
         self.assertEqual(validate_manifest.validate(self.build_dir), 0)
+
+    def test_valid_expected_source_commit(self) -> None:
+        artifact = self.write_artifact("engineering-intelligence.html", b"<html></html>")
+        expected_commit = "a" * 40
+        self.write_manifest(
+            mode="html", files=[artifact], source_commit=expected_commit
+        )
+
+        self.assertEqual(
+            validate_manifest.validate(self.build_dir, expected_commit), 0
+        )
 
     def test_valid_equivalent_non_utc_timestamp(self) -> None:
         artifact = self.write_artifact("engineering-intelligence.html", b"<html></html>")
@@ -145,6 +157,14 @@ class ManifestValidationTests(unittest.TestCase):
         )
 
         self.assertEqual(validate_manifest.validate(self.build_dir), 1)
+
+    def test_rejects_unexpected_source_commit(self) -> None:
+        artifact = self.write_artifact("engineering-intelligence.html", b"<html></html>")
+        self.write_manifest(mode="html", files=[artifact], source_commit="a" * 40)
+
+        self.assertEqual(
+            validate_manifest.validate(self.build_dir, "b" * 40), 1
+        )
 
 
 if __name__ == "__main__":
