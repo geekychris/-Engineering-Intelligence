@@ -1,0 +1,19 @@
+flowchart LR
+    A[Decision question] --> B[Evidence request]
+    B --> C[Metric proposal and validation]
+    B --> D[Study charter and readiness]
+    C --> E[Governed metrics]
+    D --> F[Assignment, exposure, and analysis]
+    E --> G[Evidence review]
+    F --> G
+    G --> H[Decision record]
+    H --> I[Business case and value-realization plan]
+    I --> J[Implementation and monitored use]
+    J --> K[Value realization, governance, and follow-up]
+    K --> L[Learning review and portfolio update]
+    L --> A
+
+    Q[Quality exceptions, corrections, access, governance incidents, and review dates] -. attach throughout .-> B
+    Q -. attach throughout .-> G
+    Q -. attach throughout .-> J
+    Q -. attach throughout .-> L
