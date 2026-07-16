@@ -1,0 +1,324 @@
+= Measuring Engineering Systems
+
+[abstract]
+Engineering organizations produce abundant telemetry, but telemetry is not measurement. This chapter defines the measurement hierarchy from events to decisions, explains construct validity, reliability, sensitivity, and robustness, and introduces a taxonomy for flow, quality, economic, human, AI, and architectural metrics. It also covers derived measures, guardrails, metric versioning, statistical treatment, and common anti-patterns.
+
+== Measurement as a decision discipline
+
+The purpose of measurement is to improve a decision. A dashboard that cannot change a decision is descriptive at best and distracting at worst.
+
+Engineering Intelligence therefore begins every metric definition with a decision question. Examples include:
+
+* Should review capacity be added?
+* Is CI the dominant constraint?
+* Is an AI reviewer reducing total human effort?
+* Are changes becoming riskier after a workflow change?
+* Which repository boundaries create avoidable coordination cost?
+
+== The measurement hierarchy
+
+Engineering data becomes progressively more useful as interpretation is added:
+
+image::../figures/mermaid/measurement-hierarchy.mmd[Engineering measurement hierarchy]
+
+The layers are:
+
+. *Events* — source observations such as pull-request creation, review submission, CI completion, deployment, or incident declaration.
+. *Observations* — normalized facts derived from events, such as time to first review or number of failed checks.
+. *Features* — explanatory variables such as dependency depth, ownership boundaries, or semantic complexity.
+. *Metrics* — summarized quantities designed to answer a question.
+. *Models* — relationships used to explain, predict, or estimate counterfactual outcomes.
+. *Decisions* — actions taken because of the evidence.
+
+Confusing these layers creates weak analytics. A commit count is an observation. It becomes a metric only when attached to a valid construct and decision.
+
+== Properties of a good metric
+
+=== Decision relevance
+
+A metric should inform a specific operational, strategic, or experimental decision.
+
+=== Construct validity
+
+The metric should measure the concept it claims to represent. Pull-request count has low validity as a general productivity measure because it is strongly affected by repository and slicing conventions.
+
+=== Reliability
+
+Repeated measurement under equivalent conditions should produce similar values. Instrumentation gaps, inconsistent timestamps, and identity errors reduce reliability.
+
+=== Sensitivity
+
+A metric should respond when the underlying construct changes. A review-friction measure that does not move after a major queue reduction has weak sensitivity.
+
+=== Robustness
+
+A metric should resist gaming and remain interpretable across reasonable workflow differences.
+
+=== Explainability
+
+Users should be able to determine why a metric changed and drill down to its component evidence.
+
+=== Stability
+
+Noise should be quantified. Important measures should include intervals, sample size, and control limits where appropriate.
+
+=== Collection cost
+
+Instrumentation, storage, computation, governance, and human correction all have costs. High-cost measures should support high-value decisions.
+
+== Metric taxonomy
+
+[cols="1,3"]
+|===
+|Category |Examples
+
+|Flow
+|Lead time, active time, queue time, review latency, deployment latency, work in process, critical-path duration
+
+|Quality
+|Escaped defects, change-failure rate, rollback rate, severity-weighted incidents, security findings, rework
+
+|Economic
+|Human attention cost, AI cost, infrastructure cost, coordination cost, cost of delay, expected failure loss
+
+|Human
+|Context recovery, concurrent cognitive inventory, review burden, scarce-expertise utilization
+
+|AI
+|Finding precision, recall, duplication, validation burden, action rate, cognitive offload, cognitive reload
+
+|Architecture
+|Dependency depth, fan-in, fan-out, blast radius, repository spread, ownership boundaries, deployment coupling
+|===
+
+No category should be optimized independently. Faster flow with worse quality is not an improvement; lower review cost with greater cognitive reload may not create value.
+
+== Direct and derived metrics
+
+A direct metric is computed closely from observed events. Examples include build duration, time to first review, or number of deployment attempts.
+
+A derived metric depends on a model. Examples include cognitive burden, expected cost of delay, blast-radius score, or Engineering Change complexity.
+
+Derived metrics are often more decision-relevant but require stronger governance:
+
+* published definitions;
+* model version;
+* training and calibration data;
+* confidence intervals;
+* known limitations;
+* validation evidence;
+* recomputation history.
+
+== Leading and lagging measures
+
+Leading indicators change before the outcome of interest. Review queue age, CI instability, and dependency growth may precede delivery or quality problems.
+
+Lagging indicators confirm realized outcomes. Incidents, escaped defects, customer impact, and realized cost appear after release.
+
+A strong scorecard pairs them. Leading indicators support intervention; lagging indicators validate whether the intervention mattered.
+
+== Local and system-level measures
+
+Local measures describe one stage, team, repository, or participant. System-level measures describe the complete Engineering Change or portfolio.
+
+Local optimization can harm the system. For example, reducing CI cost by running fewer tests may increase rework and incidents. Reducing reviewer effort may shift burden to authors.
+
+Engineering Intelligence preserves both views and makes the relationship explicit.
+
+== Composite metrics
+
+Composite metrics summarize several related signals. They should not conceal their components.
+
+A Review Friction Index might combine normalized queue age, response cycles, unresolved comments, context-recovery events, and verification effort:
+
+[stem]
+++++
+RFI(e) = \sum_{k=1}^{K} w_k z_k(e)
+++++
+
+where stem:[z_k] are standardized components and stem:[w_k] are calibrated weights.
+
+Weights should be learned or justified, not chosen merely to make the result look plausible. Users must be able to inspect component values.
+
+== Guardrail metrics
+
+Every optimization metric should have guardrails.
+
+An AI reviewer experiment may target lower human review effort while guarding against increases in severe defects, rollback rate, security escapes, author misunderstanding, and long-term reviewer disengagement.
+
+A change is considered beneficial only if the primary outcome improves and guardrails remain within predeclared tolerances.
+
+== Statistical treatment
+
+Engineering metrics are usually skewed, heavy-tailed, seasonal, and clustered by team and repository. Means alone are rarely sufficient.
+
+Recommended summaries include:
+
+* median and selected quantiles;
+* confidence or credible intervals;
+* sample size and missingness;
+* distribution plots;
+* control limits;
+* stratification by change class;
+* hierarchical estimates for sparse groups.
+
+=== Control charts
+
+Control charts help distinguish common-cause variation from exceptional changes. They are useful for operational monitoring when metric definitions and populations remain stable.
+
+=== Time-series effects
+
+Seasonality, release freezes, reorganizations, holidays, incidents, and tool migrations can create apparent trends. Time-series models should record external events and definition changes.
+
+=== Bayesian updating
+
+Bayesian models are useful when evidence arrives sequentially, sample sizes are small, or prior domain knowledge matters. They support direct statements such as the probability that an intervention improved a metric by at least a meaningful threshold.
+
+== Metric versioning
+
+A metric without a version is not reproducible evidence.
+
+Version changes may include event-source changes, identity-resolution changes, new exclusion rules, updated reconstruction models, cost assumptions, or revised severity weights.
+
+Every material metric should retain:
+
+* metric name and semantic version;
+* definition and formula;
+* source schemas;
+* population and exclusions;
+* model version;
+* computation time;
+* lineage to raw evidence.
+
+== Comparison and normalization
+
+Comparisons should control for work mix. Relevant variables include Engineering Change complexity, potential blast radius, repository topology, team count, domain, novelty, and deployment type.
+
+Raw comparisons between teams are usually invalid because teams receive different work and operate under different constraints.
+
+Normalization can use stratification, regression adjustment, matching, hierarchical models, or experimental assignment. It should never erase meaningful heterogeneity.
+
+== Measurement anti-patterns
+
+=== Activity as productivity
+
+Commit count, lines changed, comments, and pull-request volume are easy to count and easy to game. They should not become universal performance measures.
+
+=== Individual ranking
+
+System telemetry is confounded by assignment, role, complexity, and invisible work. Individual league tables damage trust and measurement validity.
+
+=== One universal score
+
+Engineering effectiveness is multidimensional. A single score hides trade-offs and invites optimization against the formula.
+
+=== Silent definition changes
+
+Historical comparisons become invalid when definitions change without versioning and backfill.
+
+=== Correlation as causation
+
+A team using a tool may outperform because it adopted the tool early, has stronger leadership, or receives different work. Experiments or causal methods are required.
+
+=== Dashboard accumulation
+
+Adding metrics without retiring unused ones creates noise. Every dashboard should have an owner, audience, decision, and review date.
+
+== Designing a measurement catalogue
+
+Each metric specification should include:
+
+[cols="1,3"]
+|===
+|Field |Purpose
+
+|Name and version
+|Stable identifier for reproducibility
+
+|Decision
+|Question the metric informs
+
+|Construct
+|Concept being measured
+
+|Formula
+|Exact computation
+
+|Unit and population
+|Scope and denominator
+
+|Sources
+|Required events and entities
+
+|Latency
+|Near-real-time, daily, weekly, or retrospective
+
+|Validation
+|Evidence of validity and reliability
+
+|Bias and gaming
+|Known failure modes
+
+|Guardrails
+|Outcomes that must not worsen
+
+|Owner
+|Accountability for definition and maintenance
+|===
+
+== Example: measuring review latency
+
+A weak definition is "time from pull-request open to first review."
+
+A stronger definition specifies business-time handling, draft exclusions, bot reviews, reviewer assignment, author self-review, reopened pull requests, time zones, and whether the unit is pull request or Engineering Change.
+
+The metric should be paired with active review effort, queue age, complexity, reviewer capacity, and quality outcomes. A decrease can mean better flow or superficial review.
+
+== Example: measuring AI review quality
+
+For labeled findings:
+
+[stem]
+++++
+Precision = \frac{TP}{TP+FP}
+++++
+
+[stem]
+++++
+Recall = \frac{TP}{TP+FN}
+++++
+
+Ranking quality can be measured with NDCG when high-severity findings should appear first. Operational analysis should also include duplication, action type, validation effort, latency, and downstream outcome.
+
+High precision with very low recall may miss important defects. High recall with poor ranking may overwhelm authors. No single number is sufficient.
+
+== Key takeaways
+
+* Telemetry becomes measurement only when connected to a construct and decision.
+* Good metrics are relevant, valid, reliable, sensitive, robust, explainable, stable, and worth their collection cost.
+* Flow, quality, economics, human factors, AI, and architecture must be evaluated together.
+* Derived metrics require model governance, versioning, uncertainty, and validation.
+* Guardrails prevent local optimization from damaging the wider system.
+* Comparisons must control for work mix and organizational context.
+* Metric catalogues should be governed products, not undocumented queries.
+
+== Open questions
+
+* Which constructs can be measured reliably without invasive telemetry?
+* How should organizations retire metrics that have become targets and lost validity?
+* What normalization methods best preserve meaningful differences while enabling comparison?
+* How can metric catalogues remain understandable as models and schemas evolve?
+* Which leading indicators provide actionable warning without excessive false alarms?
+
+== Implementation checklist
+
+. Inventory current dashboards and identify the decision supported by each metric.
+. Separate events, observations, features, metrics, models, and decisions in the data architecture.
+. Create a versioned metric catalogue with lineage and owners.
+. Add uncertainty, sample size, and missingness to important measures.
+. Define guardrails for every optimization objective.
+. Prohibit unsupported individual productivity rankings.
+. Stratify or adjust comparisons for Engineering Change context.
+. Validate derived measures against simpler baselines and downstream outcomes.
+. Record external events and definition changes in time-series analysis.
+. Retire metrics that no longer support a decision.
