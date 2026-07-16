@@ -1,0 +1,21 @@
+flowchart LR
+    A[Decision and causal question] --> B[Theory of change and protocol]
+    B --> C[Eligibility, assignment, treatment, and metrics]
+    C --> D[Readiness, power, privacy, and rollback review]
+    D --> E[Assignment]
+    E --> F[Observed treatment exposure]
+    F --> G[Guardrail and data-quality monitoring]
+    G --> H[Predeclared analysis]
+    H --> I{Decision}
+    I -->|Adopt| J[Bounded rollout]
+    I -->|Modify| B
+    I -->|Extend| F
+    I -->|Reject or reverse| K[Stop and preserve negative result]
+    J --> L[Long-term follow-up and replication]
+    K --> L
+    L --> A
+
+    Q[Versioned evidence, provenance, external factors, and decision records] -. applies throughout .-> B
+    Q -. applies throughout .-> F
+    Q -. applies throughout .-> H
+    Q -. applies throughout .-> L
