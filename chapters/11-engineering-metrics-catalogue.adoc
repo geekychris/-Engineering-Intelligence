@@ -1,0 +1,512 @@
+= The Engineering Metrics Catalogue
+
+[abstract]
+Engineering Intelligence requires a governed catalogue of metrics whose definitions, purposes, formulas, instrumentation, biases, and actions are explicit. This chapter provides a practical reference model for defining and operating metrics across flow, quality, economics, human attention, AI participation, architecture, and experimentation. The objective is not to maximize metric count, but to create a coherent set of measures that support decisions and remain reproducible over time.
+
+== Why a catalogue matters
+
+Metrics are often created as local queries, embedded dashboard formulas, or spreadsheet calculations. Over time, several definitions of the same concept emerge. "Cycle time" may mean commit to merge, pull-request open to merge, work start to deployment, or intent to accepted outcome. All can be valid, but they are not interchangeable.
+
+A metric catalogue establishes one governed location for:
+
+* semantic definition;
+* decision purpose;
+* unit of analysis;
+* formula and exclusions;
+* source events and lineage;
+* model and metric version;
+* uncertainty and data quality;
+* known biases and gaming risks;
+* intended actions and guardrails.
+
+== Metric specification template
+
+Every metric should contain the following fields:
+
+[cols="1,3"]
+|===
+|Field |Description
+
+|Identifier
+|Stable machine-readable name
+
+|Title
+|Human-readable name
+
+|Version
+|Semantic version of definition and computation
+
+|Construct
+|Concept the metric is intended to measure
+
+|Decision
+|Decision or question the metric supports
+
+|Unit of analysis
+|Engineering Change, pull request, repository, service, team, portfolio, or time interval
+
+|Population
+|Eligible entities and exclusion rules
+
+|Formula
+|Exact mathematical or algorithmic definition
+
+|Sources
+|Events, entities, features, and models required
+
+|Latency
+|Expected time from source event to availability
+
+|Uncertainty
+|Confidence, credible interval, or quality state
+
+|Interpretation
+|What an increase or decrease may mean
+
+|Failure modes
+|Biases, confounders, gaming, and invalid uses
+
+|Guardrails
+|Outcomes that must remain within tolerance
+
+|Owner
+|Accountable group for maintenance and review
+|===
+
+== Flow metrics
+
+=== Engineering Change lead time
+
+Definition: elapsed time from accepted intent to accepted outcome.
+
+[stem]
+++++
+LT(e) = t_{accepted\ outcome}(e) - t_{accepted\ intent}(e)
+++++
+
+Purpose: portfolio planning, delay analysis, and end-to-end flow optimization.
+
+Instrumentation: planning events, Engineering Change lifecycle, deployment and outcome evidence.
+
+Interpretation: lower values may indicate faster delivery, simpler work, smaller scope, or weaker verification. Always stratify by complexity and outcome class.
+
+=== Active work time
+
+Definition: inferred or observed duration during which human or AI participants actively worked on the change.
+
+Purpose: distinguish execution effort from waiting.
+
+Failure modes: passive telemetry may undercount offline reasoning and overcount open-but-idle sessions.
+
+=== Queue time
+
+Definition: duration in a state where progress awaits a constrained resource or policy.
+
+[stem]
+++++
+QT(e) = \sum_{q \in Q_e} duration(q)
+++++
+
+Useful subtypes include review queue, CI queue, approval queue, environment queue, and deployment queue.
+
+=== Flow efficiency
+
+[stem]
+++++
+FE(e) = \frac{ActiveTime(e)}{LeadTime(e)}
+++++
+
+Flow efficiency is diagnostic, not an objective to maximize mechanically. Safety-critical work may rationally include waiting or observation windows.
+
+=== Work in process
+
+Definition: number of active Engineering Changes at a point in time or over a period.
+
+Weighted WIP should incorporate complexity and unresolved involvement rather than treating every change as equal.
+
+=== Aging work
+
+Definition: age distribution of open Engineering Changes relative to expected duration for their class.
+
+Purpose: detect stalled work before aggregate lead time worsens.
+
+== Review metrics
+
+=== Time to first substantive review
+
+Bots, assignment acknowledgements, and non-substantive comments should be excluded unless explicitly part of the construct.
+
+=== Active review effort
+
+Definition: estimated human and AI effort spent understanding, verifying, and responding to a change.
+
+=== Review response cycles
+
+Definition: number of meaningful author-reviewer iteration loops before acceptance.
+
+A high value may indicate poor initial quality, unclear expectations, complex work, or effective defect discovery.
+
+=== Review queue age
+
+Definition: age of changes awaiting review, preferably severity- or cost-of-delay-weighted.
+
+=== Review Friction Index
+
+A composite diagnostic metric:
+
+[stem]
+++++
+RFI(e) = \sum_k w_k z_k(e)
+++++
+
+Potential components include queue age, response cycles, context recovery, unresolved discussions, and validation effort.
+
+The index must expose component values and should be calibrated against delay and rework.
+
+== Quality metrics
+
+=== Change failure rate
+
+Definition: proportion of accepted outcomes that require rollback, hotfix, incident response, or material remediation within a declared window.
+
+The remediation threshold and attribution window must be explicit.
+
+=== Escaped defect rate
+
+Definition: defects attributable to a change and discovered after the designated release boundary.
+
+Use severity weighting and confidence of attribution.
+
+=== Severity-weighted defect cost
+
+[stem]
+++++
+DWC = \sum_i w_{severity(i)} \times count_i
+++++
+
+Weights should reflect expected impact or policy, and remain versioned.
+
+=== Rework ratio
+
+[stem]
+++++
+RR(e) = \frac{PostAcceptanceRework(e)}{TotalEffort(e)}
+++++
+
+Rework includes corrective changes linked to the original Engineering Change. Do not count planned follow-on development as rework.
+
+=== Detection stage distribution
+
+Shows where defects are found: authoring, AI review, human review, CI, staging, rollout, production, or customer report.
+
+Earlier detection is often cheaper, but stage alone does not establish value without severity and effort.
+
+== Economic metrics
+
+=== Total Engineering Change cost
+
+[stem]
+++++
+C_{total} = C_{human}+C_{AI}+C_{tool}+C_{infra}+C_{coord}+C_{delay}+C_{quality}+C_{risk}
+++++
+
+This is a model with explicit assumptions, not a directly observed number.
+
+=== Cost per accepted outcome
+
+[stem]
+++++
+CPO = \frac{\sum_e C_{total}(e)}{N_{accepted\ outcomes}}
+++++
+
+Use only within comparable outcome classes.
+
+=== Cost of delay
+
+Definition: value lost because an outcome arrives later than its relevant value curve.
+
+Report ranges and scenario assumptions rather than false precision.
+
+=== Scarce-attention consumption
+
+Definition: attention-weighted effort from constrained roles or expertise pools.
+
+Purpose: identify organizational bottlenecks and evaluate routing policies.
+
+=== Tool net value
+
+[stem]
+++++
+TNV = Benefit_{labor}+Benefit_{quality}+Benefit_{delay}-Cost_{license}-Cost_{infra}-Cost_{validation}
+++++
+
+Benefits should be causal estimates whenever possible.
+
+== Human and cognitive metrics
+
+=== Context recovery time
+
+Definition: time required to resume productive work after a material interruption or delay.
+
+=== Concurrent cognitive inventory
+
+[stem]
+++++
+CI_p(t)=\sum_{e \in Active_p(t)} w_e u_{p,e}(t)
+++++
+
+Use for system research and workload design, not individual performance ranking.
+
+=== Cognitive Offload Index
+
+[stem]
+++++
+COI = \frac{\hat{W}_{control}-\hat{W}_{treatment}}{\hat{W}_{control}}
+++++
+
+Must be paired with quality, learning, and trust guardrails.
+
+=== Cognitive reload
+
+Definition: additional human work caused by inspecting, correcting, rejecting, or recovering from tool or AI output.
+
+=== Attention fragmentation
+
+Possible measure: number and weighted severity of task transitions within active work windows.
+
+The metric requires careful validation because transitions can also reflect healthy collaboration or deliberate batching.
+
+== AI metrics
+
+=== Finding precision and recall
+
+Use labeled findings and severity weighting.
+
+=== Precision at k
+
+Measures the proportion of relevant findings among the top stem:[k] positions shown to a human.
+
+Purpose: evaluate whether limited attention is directed to useful findings.
+
+=== NDCG
+
+Normalized Discounted Cumulative Gain evaluates ranking when findings have graded relevance or severity.
+
+=== Duplicate finding rate
+
+Definition: proportion of AI findings duplicating another AI or human finding without additional value.
+
+=== Human validation burden
+
+Measures inspection, investigation, correction, and recovery effort attributable to AI output.
+
+=== Action rate
+
+Tracks direct application, modified application, equivalent independent fix, follow-up issue, acknowledgement, rejection, and no response.
+
+=== AI contribution latency
+
+Time from change state to useful AI contribution. Late findings may have low value even if correct.
+
+=== AI Leverage Factor
+
+A decision model relating value and avoided human or quality cost to AI and validation cost.
+
+== Architecture and topology metrics
+
+=== Repository spread
+
+Number of repositories participating in one Engineering Change.
+
+Interpret as topology, not intrinsic effort.
+
+=== Dependency depth
+
+Longest dependency path among affected components.
+
+=== Critical-path duration
+
+Longest duration-weighted path through the Engineering Change dependency graph.
+
+=== Ownership boundary count
+
+Number of distinct ownership or approval boundaries crossed.
+
+=== Blast Radius Score
+
+Composite of users, systems, data, financial exposure, availability, compliance, and reversibility.
+
+=== Change surface to impact surface ratio
+
+[stem]
+++++
+SIR(e) = \frac{ImpactSurface(e)}{ChangeSurface(e)}
+++++
+
+A high ratio can identify small changes with disproportionate reach.
+
+== Experiment metrics
+
+=== Treatment exposure rate
+
+[stem]
+++++
+ExposureRate = \frac{ExposedEligibleUnits}{AssignedTreatmentUnits}
+++++
+
+=== Compliance rate
+
+Measures adherence to the assigned workflow or policy.
+
+=== Average treatment effect
+
+[stem]
+++++
+ATE = E[Y(1)-Y(0)]
+++++
+
+=== Minimum practical effect attainment
+
+Probability or confidence that the effect exceeds a predeclared practical threshold.
+
+=== Guardrail breach rate
+
+Frequency and severity with which experiment guardrails exceed tolerance.
+
+=== Experiment decision latency
+
+Time from experiment registration to evidence-backed decision.
+
+== Data quality metrics
+
+=== Event completeness
+
+Proportion of expected source events received.
+
+=== Linkage coverage
+
+Proportion of artifacts linked to Engineering Changes above a confidence threshold.
+
+=== Identity ambiguity rate
+
+Proportion of events whose actor, repository, service, or team identity remains unresolved or multiply matched.
+
+=== Freshness
+
+Age of the newest complete data available to a metric.
+
+=== Replay divergence
+
+Difference between streaming results and authoritative recomputation.
+
+== Metric bundles
+
+Metrics should often be consumed as bundles rather than isolated values.
+
+=== AI review bundle
+
+* human review effort;
+* AI validation burden;
+* severe finding recall;
+* precision at k;
+* duplicate rate;
+* cycle time;
+* escaped defects;
+* tool and inference cost.
+
+=== Flow bundle
+
+* lead time;
+* active time;
+* queue time by stage;
+* WIP;
+* aging distribution;
+* flow efficiency;
+* accepted outcome rate.
+
+=== Platform bundle
+
+* event freshness;
+* linkage coverage;
+* metric latency;
+* replay divergence;
+* service availability;
+* source failure rate.
+
+== Metric lifecycle
+
+A metric progresses through proposed, experimental, validated, operational, deprecated, and retired states.
+
+A proposed metric should not appear in executive scorecards. A validated metric has evidence of construct validity and reliability. An operational metric has an owner, SLO, lineage, and action process.
+
+image::../figures/mermaid/metric-lifecycle.mmd[Metric lifecycle]
+
+== Review and retirement
+
+Metrics should be reviewed periodically for:
+
+* continuing decision relevance;
+* changed workflows or source semantics;
+* gaming or behavioral adaptation;
+* data quality;
+* overlap with other metrics;
+* evidence of action;
+* cost of maintenance.
+
+A metric that no longer informs a decision should be retired, not preserved indefinitely because it once appeared in a dashboard.
+
+== Common failure modes
+
+=== Name without definition
+
+Two teams report "cycle time" using different start and end points.
+
+=== Formula without construct
+
+A number is precisely computed but does not validly represent the concept claimed.
+
+=== Metric without decision
+
+Dashboards accumulate measures with no operational action.
+
+=== Score without components
+
+Composite metrics hide the reason for movement and invite gaming.
+
+=== Dollar value without assumptions
+
+Derived economics appear exact despite uncertain rates, attribution, and counterfactuals.
+
+=== Individual ranking
+
+System metrics are repurposed as performance scores, damaging trust and validity.
+
+== Key takeaways
+
+* A governed metric catalogue is necessary for reproducible Engineering Intelligence.
+* Every metric requires a construct, decision, unit, formula, lineage, uncertainty, owner, and failure modes.
+* Flow, quality, economics, cognition, AI, architecture, experiments, and data quality should be represented together.
+* Composite metrics must preserve drill-down into components.
+* Derived measures require explicit models and validation.
+* Metrics should have lifecycle states and retirement criteria.
+
+== Open questions
+
+* Which metric bundles best support executive decisions without oversimplification?
+* How should metric definitions be standardized across companies while preserving local context?
+* What evidence threshold should move a derived metric from experimental to operational?
+* How can metric catalogues encode causal assumptions explicitly?
+* Which measures remain robust after becoming organizational targets?
+
+== Implementation checklist
+
+. Create a versioned metric specification schema.
+. Require decision, construct, unit, formula, sources, uncertainty, guardrails, and owner.
+. Build initial bundles for flow, quality, AI review, and platform health.
+. Separate experimental metrics from operational scorecards.
+. Expose component drill-down for every composite measure.
+. Publish data quality and freshness with metric values.
+. Establish periodic review and retirement.
+. Prohibit unsupported individual ranking.
+. Preserve historical versions for reproducibility.
+. Link every operational metric to an explicit action process.
