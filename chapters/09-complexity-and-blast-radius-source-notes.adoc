@@ -1,0 +1,389 @@
+== Research foundations and source notes
+
+The complexity and blast-radius framework in this chapter draws on modularity, information hiding, socio-technical congruence, organizational communication structure, team cognitive load, distributed coordination, reliability engineering, and resilience. It extends those foundations into an Engineering Change-level model of consequence, reversibility, and architectural risk.
+
+=== Modularity and information hiding
+
+Parnas’s work on information hiding provides a foundational argument for organizing modules around design decisions likely to change rather than merely around execution order. See <<parnas1972>>.
+
+This supports the chapter’s treatment of architecture as a mechanism that changes the cost and risk of future Engineering Changes.
+
+A good boundary can reduce:
+
+* the amount of code and behavior that must be understood;
+* the number of teams involved;
+* compatibility obligations;
+* validation scope;
+* deployment coordination;
+* potential failure propagation.
+
+A poor boundary can repeatedly impose these costs even when each individual code change is small.
+
+=== Conway’s Law
+
+Conway observed that organizations tend to design systems whose structures mirror their communication structures. See <<conway1968>>.
+
+The chapter uses this as a starting point for analyzing the alignment among:
+
+* service boundaries;
+* repository boundaries;
+* team ownership;
+* communication paths;
+* approval structures;
+* deployment responsibility.
+
+The presence of structural similarity does not prove that one side caused the other in a specific case. It does establish that organizational and technical structures should be studied together.
+
+=== Socio-technical congruence
+
+Socio-technical congruence research examines whether coordination relationships align with technical dependencies. See <<cataldo2006>>.
+
+When a change creates dependencies across teams that do not routinely coordinate, the organization may experience:
+
+* slower owner discovery;
+* more handoffs;
+* inconsistent assumptions;
+* duplicated validation;
+* delayed decisions;
+* higher integration risk.
+
+This supports the chapter’s distinction between purely technical coupling and coordination burden.
+
+=== Distributed coordination
+
+Research on distributed software development documents the difficulty created by distance, organizational boundaries, and coordination dependencies. See <<herbsleb2007>>.
+
+The chapter therefore treats time zones, vendor boundaries, organizational separation, and decision-right fragmentation as contributors to change complexity.
+
+A dependency graph is not fully understood until the ownership and communication graph are considered as well.
+
+=== Team cognitive load
+
+Team Topologies emphasizes the importance of team cognitive load and defines interaction modes intended to support fast flow. See <<skelton2019>>.
+
+The chapter applies this perspective at Engineering Change level by asking:
+
+* How many domains must a team understand?
+* How many systems must be reasoned about simultaneously?
+* How much external coordination is required?
+* Which dependencies require specialist knowledge?
+* How stable and documented are the interfaces?
+
+The resulting *cognitive surface* is not directly observable and should be inferred through validated indicators rather than treated as a simple count.
+
+=== Complexity is multidimensional
+
+The chapter rejects a universal scalar complexity measure.
+
+Relevant dimensions include:
+
+* implementation complexity;
+* domain complexity;
+* dependency depth;
+* ownership fragmentation;
+* validation surface;
+* deployment coupling;
+* data consequence;
+* security and compliance exposure;
+* novelty;
+* reversibility;
+* uncertainty.
+
+A change can be simple in one dimension and dangerous in another. Two lines of configuration can have a larger consequence than thousands of lines of generated code.
+
+This multidimensional model is an Engineering Intelligence-specific synthesis built on the modularity and socio-technical foundations above.
+
+=== Static complexity measures
+
+Static code measures can provide useful local signals about control flow, nesting, size, dependency count, and maintainability.
+
+They do not fully represent:
+
+* organizational coordination;
+* runtime coupling;
+* data migration risk;
+* deployment sequence;
+* user or financial consequence;
+* regulatory exposure;
+* operational reversibility.
+
+The chapter therefore treats static complexity as one evidence family within a broader Engineering Change model rather than as architecture quality itself.
+
+=== Dependency graphs
+
+Repository, package, service, runtime, deployment, data, and organizational graphs reveal different forms of coupling.
+
+Useful measures include:
+
+* fan-in and fan-out;
+* path length;
+* strongly connected components;
+* centrality;
+* dependency depth;
+* bridge nodes;
+* ownership boundaries;
+* change co-occurrence;
+* deployment synchronization;
+* shared failure domains.
+
+Graph measures are descriptive structural features. Their relationship to effort, incidents, or value should be validated empirically rather than assumed.
+
+=== Change coupling
+
+Files, modules, repositories, or services that frequently change together may reveal hidden coupling.
+
+Change-coupling evidence can complement declared dependency graphs because actual engineering behavior may expose relationships absent from architecture documentation.
+
+However, co-change can also arise from:
+
+* broad formatting changes;
+* generated code;
+* shared release processes;
+* ownership conventions;
+* repeated migrations;
+* one large initiative.
+
+The chapter therefore requires contextual interpretation and Engineering Change reconstruction before treating co-change as architectural coupling.
+
+=== Blast radius
+
+Blast radius is the scope and consequence of plausible failure from an Engineering Change.
+
+The chapter models it across several dimensions:
+
+* users affected;
+* services and regions affected;
+* data affected;
+* financial exposure;
+* security boundaries crossed;
+* compliance obligations;
+* dependency propagation;
+* recovery difficulty;
+* duration of consequence.
+
+This multidimensional blast-radius model is an original Engineering Intelligence construct.
+
+It should be calibrated against incident, rollback, support, and production evidence rather than inferred solely from static topology.
+
+=== Likelihood and consequence
+
+Risk should distinguish the probability of failure from the impact if failure occurs.
+
+A change with low failure probability can still require strong controls when consequence is catastrophic.
+
+The chapter therefore separates:
+
+* defect or failure likelihood;
+* exposure;
+* blast radius;
+* detectability;
+* reversibility;
+* recovery time;
+* tail consequence.
+
+This structure is consistent with reliability and risk-management thinking, including the operational approaches described in <<beyer2016>> and <<beyer2018>>.
+
+=== Reversibility
+
+Reversibility reduces the cost of being wrong.
+
+Relevant properties include:
+
+* tested rollback;
+* feature-flag isolation;
+* backward-compatible deployment;
+* data reversibility;
+* dual-write or shadow operation;
+* regional or population-limited rollout;
+* automated stop conditions;
+* preserved prior artifacts and configuration.
+
+The chapter treats reversibility as a primary architectural and economic variable rather than a deployment implementation detail.
+
+This is an Engineering Intelligence-specific synthesis aligned with reliable change practices in <<humble2010>>, <<beyer2016>>, and <<kim2021-devops>>.
+
+=== Observability and detection
+
+The consequence of a failure depends partly on how quickly it is detected and understood.
+
+A broad change with excellent detection, containment, and rollback can be safer than a smaller opaque change.
+
+The chapter therefore includes:
+
+* detection latency;
+* diagnostic clarity;
+* ownership reachability;
+* telemetry coverage;
+* automated containment;
+* rollback readiness.
+
+These ideas draw on SRE practices in <<beyer2016>> and <<beyer2018>>.
+
+=== Resilience engineering
+
+Resilience concerns a system’s ability to adapt, absorb disturbance, and continue functioning under unexpected conditions.
+
+Woods’s work on graceful extensibility provides a foundation for thinking about adaptive capacity beyond static robustness. See <<woods2015>>.
+
+The chapter applies this by examining whether architecture provides:
+
+* spare response capacity;
+* alternate operating paths;
+* degraded modes;
+* clear escalation;
+* bounded failure domains;
+* flexible rollback and isolation;
+* accessible expert knowledge.
+
+Resilience cannot be reduced to incident count. A system may appear stable until it encounters conditions outside its designed envelope.
+
+=== High-reliability organizing
+
+High-reliability research emphasizes sensitivity to operations, reluctance to simplify, attention to weak signals, and resilience. See <<weick2007>>.
+
+This supports the chapter’s recommendation to combine structural risk scores with:
+
+* incident narratives;
+* near misses;
+* practitioner concerns;
+* override patterns;
+* repeated manual safeguards;
+* unusual coordination behavior.
+
+Weak signals may reveal hidden architectural fragility before a major incident occurs.
+
+=== Incident learning
+
+Systems-oriented incident analysis warns against attributing complex failure to one visible human action. See <<dekker2014>>.
+
+The chapter therefore links incidents back to the complete Engineering Change and surrounding system:
+
+* technical dependencies;
+* decision conditions;
+* review and validation;
+* deployment context;
+* organizational constraints;
+* observability;
+* recovery capability.
+
+This supports learning about architecture rather than merely assigning blame.
+
+=== Critical paths and synchronization
+
+Multi-repository and multi-team Engineering Changes often contain parallel work plus synchronization points.
+
+Critical-path length, waiting at dependency boundaries, and release sequencing can dominate elapsed time even when total implementation effort is moderate.
+
+The chapter combines dependency-graph analysis with queueing concepts from <<little1961>>, <<kingman1961>>, and <<hopp2011>> to explain why constrained synchronization points create nonlinear delay.
+
+=== Ownership entropy
+
+The chapter introduces *ownership entropy* as an operational way to describe how responsibility for a change is distributed across teams or domains.
+
+Higher fragmentation may imply:
+
+* more handoffs;
+* less complete local context;
+* slower decision-making;
+* greater coordination effort;
+* more ambiguous accountability.
+
+Ownership entropy is an original Engineering Intelligence construct. It should be calibrated against observed flow, coordination effort, and outcomes rather than treated as intrinsically harmful.
+
+Some complex changes legitimately require diverse ownership.
+
+=== Validation surface
+
+The *validation surface* is the set of behaviors, environments, data conditions, interfaces, and risks that must be checked before an Engineering Change can be accepted safely.
+
+It may include:
+
+* unit and integration behavior;
+* compatibility;
+* migration state;
+* security and privacy;
+* performance and scale;
+* regional behavior;
+* rollback;
+* production verification.
+
+This concept is original to the book and extends ordinary test-count measures into a consequence-oriented model.
+
+=== Architecture as an economic variable
+
+Architecture affects the recurring cost of change.
+
+A boundary that reduces coordination, validation, deployment coupling, and recovery effort can create durable capability value. A poorly designed dependency can tax every future change.
+
+The chapter’s economic treatment is informed by cost-benefit analysis in <<boardman2018>> and the productivity-realization literature in <<brynjolfsson1993>> and <<brynjolfsson2017>>.
+
+Architectural value should be measured through longitudinal change outcomes, not asserted solely from design intent.
+
+=== Causal evaluation of architecture
+
+Architecture changes are difficult to evaluate causally because they are rarely randomized and often coincide with broader organizational changes.
+
+The chapter therefore recommends:
+
+* phased migration;
+* matched comparison populations;
+* difference-in-differences;
+* interrupted time series;
+* synthetic controls;
+* mechanism and guardrail measures;
+* long follow-up windows.
+
+The methodological foundations are described in <<shadish2002>>, <<angrist2009>>, <<imbens2015>>, and <<hernan2020>>.
+
+=== Calibration and model drift
+
+Blast-radius and complexity models should be calibrated against observed outcomes.
+
+Relevant evidence includes:
+
+* incidents;
+* rollbacks;
+* review effort;
+* change latency;
+* rework;
+* support impact;
+* security findings;
+* failed or delayed migrations.
+
+Architecture, ownership, and deployment topology evolve. A model trained on old structure may become invalid even when its computation continues successfully.
+
+The chapter therefore requires model-versioning, drift detection, subgroup calibration, and correction.
+
+=== Governance and prohibited use
+
+Complexity and blast-radius scores can be misused to rank teams or penalize people assigned difficult work.
+
+Measurement-validity principles in <<messick1995>> and indicator-corruption concerns in <<campbell1979>> and <<goodhart1984>> support the chapter’s restrictions.
+
+These measures should normally be used to:
+
+* route review and validation;
+* prioritize architecture investment;
+* design rollout controls;
+* identify hidden dependencies;
+* improve resilience;
+* estimate uncertainty.
+
+They should not become simplistic performance scores.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* Engineering Change-level multidimensional complexity;
+* multidimensional blast radius spanning technical, user, data, financial, security, and compliance consequence;
+* ownership entropy;
+* validation surface;
+* cognitive surface;
+* reversibility as a first-class metric;
+* confidence-aware blast-radius prediction;
+* connected repository, service, runtime, deployment, ownership, and incident graphs;
+* architecture economics measured through longitudinal Engineering Change outcomes;
+* integration of weak signals, near misses, and practitioner evidence into architecture intelligence.
+
+These constructs should be treated as measurable hypotheses and calibrated against real engineering and operational outcomes.
