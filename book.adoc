@@ -79,4 +79,7 @@ include::appendices/g-operating-templates-and-records.adoc[]
 [appendix]
 include::appendices/h-glossary-and-controlled-vocabulary.adoc[]
 
+[appendix]
+include::appendices/i-evidence-base-and-bibliography.adoc[]
+
 // Additional appendices are added here as they are written.
