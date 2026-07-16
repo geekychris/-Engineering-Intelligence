@@ -28,7 +28,7 @@ def digest(path: Path) -> str:
     return hasher.hexdigest()
 
 
-def validate(build_dir: Path) -> int:
+def validate(build_dir: Path, expected_commit: str | None = None) -> int:
     build_dir = build_dir.resolve()
     manifest_path = build_dir / "manifest.json"
     errors: list[str] = []
@@ -59,6 +59,11 @@ def validate(build_dir: Path) -> int:
     source_commit = manifest.get("source_commit")
     if not isinstance(source_commit, str) or not source_commit:
         errors.append("source_commit must be a non-empty string")
+    elif expected_commit is not None and source_commit != expected_commit:
+        errors.append(
+            "source_commit does not match the expected release commit: "
+            f"declared {source_commit!r}, expected {expected_commit!r}"
+        )
 
     source_date_epoch = manifest.get("source_date_epoch")
     if not isinstance(source_date_epoch, int) or source_date_epoch < 0:
@@ -166,7 +171,8 @@ def validate(build_dir: Path) -> int:
 
 def main() -> int:
     build_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("build")
-    return validate(build_dir)
+    expected_commit = sys.argv[2] if len(sys.argv) > 2 else None
+    return validate(build_dir, expected_commit)
 
 
 if __name__ == "__main__":
