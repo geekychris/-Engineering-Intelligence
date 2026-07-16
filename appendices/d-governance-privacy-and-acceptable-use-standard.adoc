@@ -1,0 +1,1005 @@
+= Governance, Privacy, and Acceptable Use Standard
+
+[abstract]
+This appendix defines an operating standard for governing Engineering Intelligence systems. It translates ethical principles into concrete controls for data collection, access, metric use, experimentation, AI evaluation, automated policy, privacy, retention, incident response, appeal, and audit. The objective is to enable credible organizational learning while preventing surveillance, unsupported employment decisions, discriminatory treatment, and unsafe automation.
+
+== Purpose
+
+Engineering Intelligence systems combine evidence from source control, planning tools, CI, deployment systems, incidents, identities, organizational structures, AI tools, and business outcomes.
+
+That combination creates substantial value and substantial risk.
+
+The same evidence can be used to:
+
+* improve review routing;
+* evaluate an AI tool;
+* reduce queue delay;
+* identify architecture constraints;
+* optimize infrastructure cost;
+* support portfolio decisions;
+
+or to:
+
+* rank individuals through weak proxies;
+* infer sensitive characteristics;
+* monitor private behavior;
+* automate punitive decisions;
+* conceal uncertainty behind authoritative dashboards;
+* create irreversible policy from invalid metrics.
+
+Governance must therefore control not only what data is collected, but how evidence is interpreted and used.
+
+== Core principles
+
+=== Purpose limitation
+
+Data and metrics may be used only for declared, reviewed purposes.
+
+=== Data minimization
+
+Collect the least detailed evidence needed to support the approved decision.
+
+=== Proportionality
+
+The intrusiveness and consequence of measurement should be proportionate to the value and risk of the decision.
+
+=== Transparency
+
+Affected practitioners should understand what is collected, how metrics are defined, and which uses are prohibited.
+
+=== Contestability
+
+People and teams must be able to challenge incorrect data, interpretations, models, and decisions.
+
+=== Human accountability
+
+Automated systems may recommend or execute bounded actions, but accountable organizational owners remain responsible for policy and outcomes.
+
+=== Evidence quality
+
+No high-consequence use should proceed when source quality, metric validity, linkage, or uncertainty is inadequate.
+
+=== Temporal relevance
+
+Evidence should be interpreted in the context in which it was produced. Old metrics and model outputs should not be treated as permanently valid.
+
+=== Separation of learning and punishment
+
+Exploratory and operational learning systems should not be silently repurposed into employment or disciplinary systems.
+
+== Governance operating model
+
+image::../figures/mermaid/governance-use-review-lifecycle.mmd[Governance and acceptable-use lifecycle]
+
+Every governed use moves through proposal, classification, review, approval, implementation, monitoring, reassessment, and retirement.
+
+== Roles and responsibilities
+
+=== Executive sponsor
+
+Provides mandate, resources, and accountability for the overall program.
+
+=== Engineering Intelligence owner
+
+Owns the platform, evidence quality, operating model, and adherence to this standard.
+
+=== Data owner
+
+Owns source semantics, permitted use, retention, and source-specific access decisions.
+
+=== Metric owner
+
+Owns construct definition, interpretation, versioning, quality gates, and retirement.
+
+=== Study owner
+
+Owns experimental design, exposure, analysis, guardrails, and reporting.
+
+=== Domain representative
+
+Validates local workflow meaning and operational feasibility.
+
+=== Privacy reviewer
+
+Assesses purpose limitation, minimization, retention, re-identification, and sensitive-data risk.
+
+=== Security reviewer
+
+Assesses access, integrity, isolation, model and tool risk, and adversarial threats.
+
+=== Legal or compliance reviewer
+
+Assesses contractual, regulatory, employment, labor, and jurisdictional obligations.
+
+=== Practitioner representative
+
+Provides the perspective of people whose work or teams are represented in the system.
+
+=== Governance board
+
+Approves high-risk uses, resolves disputed interpretations, and reviews incidents and policy changes.
+
+== Use classification
+
+Every proposed use should be classified by consequence and sensitivity.
+
+=== Class 0: platform operations
+
+Examples:
+
+* connector health;
+* event freshness;
+* schema failures;
+* metric pipeline incidents.
+
+These uses generally involve low human consequence but may expose sensitive technical metadata.
+
+=== Class 1: descriptive team learning
+
+Examples:
+
+* queue analysis;
+* review-workload distribution;
+* CI bottleneck discovery;
+* workflow retrospectives.
+
+Results are intended for local improvement and should use appropriate aggregation.
+
+=== Class 2: organizational decision support
+
+Examples:
+
+* tool procurement;
+* platform investment;
+* architecture prioritization;
+* staffing-capacity analysis;
+* portfolio allocation.
+
+These uses require governed metrics, uncertainty, and decision records.
+
+=== Class 3: policy influence
+
+Examples:
+
+* mandatory review rules;
+* risk-based deployment gates;
+* automated reviewer routing;
+* access or approval policy;
+* organization-wide tool defaults.
+
+These uses require causal or strong operational evidence, guardrails, monitoring, and rollback.
+
+=== Class 4: individual or employment consequence
+
+Examples:
+
+* performance evaluation;
+* promotion;
+* compensation;
+* disciplinary action;
+* termination;
+* individual productivity ranking.
+
+Engineering telemetry and derived metrics should be presumed unsuitable for these uses unless a separate formal process demonstrates exceptional validity, fairness, necessity, legal authority, transparency, and due process. In most organizations, these uses should be prohibited.
+
+== Permitted uses
+
+Subject to appropriate review and controls, permitted uses include:
+
+* improving engineering-system reliability;
+* identifying process bottlenecks;
+* evaluating tools and interventions;
+* estimating human attention and infrastructure cost;
+* improving review, CI, deployment, and incident workflows;
+* understanding architecture and dependency risk;
+* supporting capacity and portfolio planning;
+* measuring source and metric quality;
+* conducting approved research;
+* supporting practitioner-led retrospectives;
+* auditing automated engineering actions.
+
+Permission is tied to the declared purpose, not to broad access to the data.
+
+== Prohibited uses
+
+The following uses should be prohibited by default:
+
+* ranking individual engineers by commit, pull-request, review, or ticket volume;
+* inferring individual productivity from cycle time or visible activity;
+* covert monitoring of work patterns outside an approved purpose;
+* using exploratory metrics in compensation or disciplinary decisions;
+* collecting keystrokes, screen activity, or message content without exceptional necessity and explicit approval;
+* inferring health, disability, family status, political activity, protected characteristics, or private beliefs;
+* penalizing people for correcting erroneous data or challenging a metric;
+* using AI-generated assessments as sole evidence for an adverse employment decision;
+* publishing identifiable comparisons without legitimate need;
+* reusing data for a materially different purpose without review;
+* allowing vendors to train external models on organizational evidence without explicit contractual permission;
+* executing irreversible high-impact actions solely from an unvalidated model or metric.
+
+== Restricted uses
+
+Some uses are neither automatically permitted nor universally prohibited.
+
+Examples include:
+
+* individual coaching;
+* expertise discovery;
+* workload or burnout-risk indicators;
+* staffing decisions;
+* organizational redesign;
+* fraud or insider-threat detection;
+* compliance investigation;
+* model-based risk gating.
+
+These require heightened review, narrow access, evidence of necessity, minimized data, explicit due process, and ongoing monitoring.
+
+== Purpose registration
+
+Every nontrivial use should be registered.
+
+Example:
+
+[source,yaml]
+----
+use_id: use_review_routing_2026_03
+name: Risk-based specialist review routing
+owner: secure_development_platform
+use_class: 3
+purpose: Route high-risk Engineering Changes to qualified security reviewers while reducing unnecessary low-risk review load
+population: production_application_repositories
+data:
+  - engineering_change_complexity
+  - dependency_blast_radius
+  - security_sensitive_paths
+  - historical_severe_findings
+metrics:
+  - ei.review.specialist_wait_time@1.2.0
+  - ei.quality.severe_security_escape_rate@1.0.0
+decisions:
+  - reviewer_assignment
+prohibited_extensions:
+  - engineer_performance_ranking
+  - promotion_decisions
+review_date: 2026-10-01
+----
+
+The registration should include purpose, owner, affected population, data, metrics, decisions, access, retention, risks, prohibited extensions, and expiration date.
+
+== Approval criteria
+
+A use may be approved only when:
+
+* the decision purpose is clear;
+* the proposed evidence is relevant;
+* less intrusive alternatives were considered;
+* source and metric quality are adequate;
+* affected populations are defined;
+* privacy and security controls are proportionate;
+* prohibited interpretations are documented;
+* an accountable owner exists;
+* correction and appeal are available;
+* monitoring and retirement criteria are defined.
+
+High-risk uses additionally require evidence of validity, subgroup behavior, causal justification where relevant, and rollback capability.
+
+== Data inventory
+
+The platform should maintain an inventory of:
+
+* source systems;
+* event types;
+* entity types;
+* personal and organizational identifiers;
+* sensitive technical information;
+* generated model outputs;
+* derived metrics;
+* access roles;
+* retention periods;
+* approved uses;
+* downstream consumers.
+
+Unknown or undocumented data should not enter decision-grade products.
+
+== Data classification
+
+Recommended classifications include:
+
+=== Public
+
+Approved for external release.
+
+=== Internal
+
+General organizational use with low sensitivity.
+
+=== Confidential
+
+Business, organizational, or technical information requiring restricted access.
+
+=== Restricted
+
+Sensitive code, identity, security, incident, model, or individual-level evidence.
+
+=== Highly restricted
+
+Evidence whose exposure could create substantial security, privacy, employment, legal, or regulatory harm.
+
+Classification should propagate to derived datasets unless de-identification or aggregation demonstrably reduces risk.
+
+== Sensitive data
+
+Sensitive categories may include:
+
+* individual identity and activity history;
+* private repository metadata;
+* security findings;
+* incident details;
+* access credentials or secrets;
+* customer or regulated data;
+* source-code content;
+* model prompts and retrieved context;
+* organizational restructuring information;
+* employment-related records;
+* protected or inferred personal characteristics.
+
+Sensitive data requires explicit purpose, restricted access, retention limits, and enhanced audit.
+
+== Data minimization review
+
+For each field, ask:
+
+* Is it necessary for the approved purpose?
+* Can it be replaced by a less detailed feature?
+* Can it be aggregated earlier?
+* Can identity be pseudonymized?
+* Can content be replaced by metadata?
+* Can the retention period be shortened?
+* Can computation occur locally without centralizing raw evidence?
+
+Fields without a defensible purpose should be removed.
+
+== Identity handling
+
+Canonical identity is useful for lineage and temporal ownership, but it creates risk.
+
+Controls should include:
+
+* separate storage for identity mappings;
+* pseudonymous analytical identifiers;
+* role-based re-identification;
+* time-bounded access;
+* access logging;
+* minimum aggregation thresholds;
+* prohibition on unnecessary individual display;
+* deletion or correction workflows.
+
+Identity resolution confidence should be visible when evidence is used.
+
+== Aggregation policy
+
+Aggregation can reduce risk but does not guarantee anonymity.
+
+Policy should define:
+
+* minimum group size;
+* treatment of small teams;
+* suppression of sparse dimensions;
+* prevention of repeated-query reconstruction;
+* time-window minimums;
+* handling of unique roles;
+* cross-filter restrictions.
+
+Small-group suppression should consider whether values can be inferred from totals.
+
+== Re-identification risk
+
+A dataset may be nominally anonymous but easily re-identifiable through repository, timestamps, language, team, or rare events.
+
+Risk review should evaluate:
+
+* uniqueness;
+* linkability with other systems;
+* rare-event exposure;
+* repeated releases;
+* access to auxiliary data;
+* insider knowledge.
+
+De-identification claims should be tested rather than assumed.
+
+== Access-control model
+
+Access should be granted by role, purpose, data class, and time.
+
+Recommended access layers include:
+
+=== Raw source evidence
+
+Limited to connector operators, data stewards, investigators, and approved researchers.
+
+=== Canonical row-level evidence
+
+Limited to platform, metric, and domain owners with a registered purpose.
+
+=== Restricted analytical datasets
+
+Available to approved analysts under purpose-bound access.
+
+=== Team aggregates
+
+Available to relevant practitioners and leaders, subject to minimum group size.
+
+=== Enterprise aggregates
+
+Available to broader decision makers when interpretation and uncertainty accompany the metric.
+
+Access should expire automatically and require periodic recertification.
+
+== Purpose-based access
+
+A person’s organizational role alone should not grant access to every use.
+
+Access requests should identify:
+
+* registered use;
+* required datasets;
+* necessary dimensions;
+* expected duration;
+* output audience;
+* export requirements;
+* accountable sponsor.
+
+Using data outside the approved purpose should be treated as a governance incident.
+
+== Least privilege
+
+Users and services should receive only the data and operations required.
+
+Examples include:
+
+* aggregated metrics instead of raw events;
+* repository-limited access instead of enterprise-wide access;
+* read-only views instead of export privileges;
+* pseudonymous IDs instead of names;
+* short-lived credentials;
+* separate access for security-sensitive fields.
+
+== Separation of duties
+
+High-consequence systems should separate:
+
+* metric definition from employment decision making;
+* model development from approval;
+* data administration from audit;
+* experiment analysis from unilateral rollout authority;
+* vendor evaluation from procurement approval;
+* policy recommendation from production deployment.
+
+Separation reduces conflicts of interest and hidden manipulation.
+
+== Data retention
+
+Retention should be based on purpose and risk rather than indefinite convenience.
+
+A retention schedule should distinguish:
+
+* immutable technical audit evidence;
+* individual-level activity detail;
+* raw message or content data;
+* model prompts and outputs;
+* experiment assignments;
+* derived metrics;
+* decision records;
+* security and compliance evidence.
+
+Detailed sensitive data should generally have shorter retention than governed aggregates and decision records.
+
+== Deletion
+
+Deletion workflows should support:
+
+* legal or policy deletion;
+* source-system deletion propagation;
+* user correction requests;
+* removal of expired data;
+* vendor termination;
+* experiment closure;
+* decommissioned metrics.
+
+Deletion should include replicas, caches, indexes, model-training sets, and exports where applicable.
+
+Where complete deletion is impossible due to immutable audit requirements, policy should document the legal basis, access restrictions, and minimization approach.
+
+== Export controls
+
+Exports create copies outside central controls.
+
+Policy should define:
+
+* who may export;
+* approved formats;
+* encryption requirements;
+* destination restrictions;
+* expiration;
+* watermarking or tagging;
+* onward-sharing prohibition;
+* deletion confirmation;
+* audit logging.
+
+Highly restricted evidence should remain within controlled analytical environments where possible.
+
+== Vendor governance
+
+Vendors processing Engineering Intelligence evidence should be assessed for:
+
+* data-use rights;
+* model-training restrictions;
+* data residency;
+* subprocessors;
+* retention and deletion;
+* incident notification;
+* security controls;
+* audit rights;
+* model and service changes;
+* output ownership;
+* portability and exit.
+
+Vendor effectiveness should be evaluated using organization-controlled evidence rather than vendor-reported usage alone.
+
+== AI model governance
+
+AI-assisted Engineering Intelligence uses require registration of:
+
+* provider;
+* model and version;
+* purpose;
+* input fields;
+* prompt and policy version;
+* retrieved context;
+* output use;
+* human review requirements;
+* known limitations;
+* evaluation results;
+* permitted populations;
+* rollback and replacement plan.
+
+A model upgrade is a treatment change and may require revalidation.
+
+== Generated explanations
+
+AI-generated summaries and recommendations should be labeled as generated inference.
+
+They should not be presented as direct observation.
+
+Important outputs should link to:
+
+* source evidence;
+* model and configuration;
+* uncertainty;
+* generated timestamp;
+* human review status;
+* corrections.
+
+Generated narratives should never silently replace underlying incident, review, or decision records.
+
+== Automated decisions
+
+Automated or semi-automated actions should be classified by consequence and reversibility.
+
+=== Advisory
+
+The system recommends; a human decides.
+
+=== Confirm-before-action
+
+The system prepares an action requiring explicit approval.
+
+=== Bounded autonomous
+
+The system acts within preapproved low-risk limits and records the action.
+
+=== High-impact autonomous
+
+The system executes consequential action without immediate approval.
+
+High-impact autonomous use should require exceptional evidence, strict bounds, continuous monitoring, independent review, and rapid shutdown.
+
+== Automation control requirements
+
+Automated policy should include:
+
+* explicit objective;
+* eligible scope;
+* evidence threshold;
+* model and metric versions;
+* confidence requirement;
+* action limits;
+* human override;
+* appeal;
+* audit trail;
+* guardrails;
+* stop and rollback rules;
+* expiration or review date.
+
+No automated policy should depend on a metric in unavailable or degraded quality state.
+
+== Individual-level views
+
+Individual-level evidence may be operationally necessary for debugging, review assignment, incident response, or personal self-reflection.
+
+Controls should include:
+
+* narrow declared purpose;
+* access limited to the person, appropriate operator, or authorized investigator;
+* prohibition on comparative ranking;
+* visible data provenance;
+* correction workflow;
+* retention limits;
+* audit of access.
+
+An individual should generally be able to see the evidence attributed to them unless doing so would compromise a legitimate investigation or security control.
+
+== Practitioner notice
+
+Practitioners should receive clear notice describing:
+
+* source systems used;
+* categories of data collected;
+* approved purposes;
+* prohibited uses;
+* aggregation practices;
+* retention;
+* who may access detail;
+* correction and appeal;
+* contact for governance concerns.
+
+Notice should be understandable without requiring interpretation of a long legal policy.
+
+== Consent
+
+Employment settings complicate meaningful consent because participation may not be freely optional.
+
+Organizations should not use nominal consent to justify disproportionate monitoring.
+
+Where consent is appropriate, it should be specific, informed, revocable where feasible, and separated from mandatory operational collection.
+
+For required collection, organizations should rely on necessity, proportionality, transparency, governance, and applicable legal authority rather than fictional voluntariness.
+
+== Correction rights
+
+Affected people and teams should be able to request correction of:
+
+* identity attribution;
+* team ownership;
+* Engineering Change linkage;
+* source-event interpretation;
+* metric population inclusion;
+* model classification;
+* generated explanation;
+* decision-record factual errors.
+
+The system should preserve correction provenance and recompute affected outputs where material.
+
+== Appeal process
+
+High-consequence decisions should provide an appeal route.
+
+An appeal should support:
+
+* access to relevant evidence;
+* explanation of metrics and models;
+* opportunity to provide context;
+* review by a person independent of the original decision;
+* correction of data errors;
+* documented resolution;
+* protection from retaliation.
+
+Appeal volume and outcomes should be monitored as governance signals.
+
+== Fairness and subgroup review
+
+Uses affecting populations should be evaluated across relevant groups and contexts.
+
+Relevant dimensions may include:
+
+* geography;
+* organization;
+* role;
+* tenure band;
+* language and technology stack;
+* repository maturity;
+* accessibility needs;
+* work type;
+* shift or time-zone constraints.
+
+Protected characteristics should not be inferred casually. Fairness analysis involving sensitive attributes requires explicit legal and privacy review.
+
+== Distributional effects
+
+An intervention may improve the average while shifting burden to a smaller group.
+
+Governance review should consider:
+
+* who receives benefit;
+* who bears validation work;
+* who experiences false positives;
+* who loses autonomy;
+* who is excluded from treatment;
+* who carries residual risk;
+* whether scarce experts become more overloaded.
+
+Distributional outcomes should accompany aggregate results.
+
+== Metric-use review
+
+Before a metric is used in a new context, verify:
+
+* the purpose is compatible with its specification;
+* the population is valid;
+* the interpretation remains supported;
+* quality gates are met;
+* the use does not violate prohibited interpretations;
+* aggregation and privacy controls are adequate;
+* the metric version is current;
+* behavioral effects are acceptable.
+
+A governed metric is not universally reusable.
+
+== Experiment governance
+
+Experiments should receive review proportional to risk.
+
+Review should cover:
+
+* intervention consequence;
+* assignment fairness;
+* informed notice where appropriate;
+* exposure logging;
+* guardrails;
+* stop rules;
+* privacy;
+* subgroup risk;
+* rollback;
+* post-study data retention.
+
+Randomization does not excuse unsafe treatment.
+
+== Research publication
+
+External publication should review:
+
+* confidentiality;
+* intellectual property;
+* re-identification;
+* employee privacy;
+* customer and regulated data;
+* vendor restrictions;
+* security exposure;
+* reproducibility tradeoffs.
+
+Organizations should share methods, schemas, synthetic data, and aggregate findings where raw evidence cannot be disclosed.
+
+== Monitoring approved uses
+
+Approved uses should be monitored for:
+
+* data-quality degradation;
+* population drift;
+* metric-version changes;
+* access anomalies;
+* export activity;
+* use outside declared purpose;
+* behavioral gaming;
+* subgroup harm;
+* model drift;
+* decision reversal or appeal;
+* lack of continued value.
+
+Monitoring should be tied to an owner and review cadence.
+
+== Audit logging
+
+Audit records should include:
+
+* identity of user or service;
+* purpose and registered use;
+* datasets and fields accessed;
+* query or action;
+* timestamp;
+* export destination;
+* metric or model version;
+* automated decision or override;
+* approval and review status.
+
+Audit logs themselves are sensitive and require protection.
+
+== Periodic access review
+
+Access should be recertified periodically.
+
+Review should remove:
+
+* inactive users;
+* expired projects;
+* overly broad roles;
+* access inherited from previous teams;
+* unused export permission;
+* service accounts without owners;
+* vendor access after contract change.
+
+== Governance incident
+
+A governance incident includes:
+
+* unauthorized access;
+* purpose violation;
+* prohibited individual ranking;
+* erroneous high-impact metric;
+* undisclosed vendor reuse;
+* re-identification;
+* automated action outside bounds;
+* missing audit evidence;
+* failure to delete expired data;
+* retaliation for correction or appeal;
+* material subgroup harm.
+
+== Incident response
+
+Response should include:
+
+. contain access or automated action;
+. preserve evidence;
+. identify affected data, people, decisions, and outputs;
+. notify appropriate owners and reviewers;
+. correct or suppress affected metrics and decisions;
+. satisfy legal or contractual notification duties;
+. review root causes and control failures;
+. remediate systems and policy;
+. communicate findings to affected populations where appropriate;
+. track follow-up to closure.
+
+== Metric and model rollback
+
+The platform should support rapid rollback of:
+
+* metric versions;
+* model versions;
+* prompts and policies;
+* access grants;
+* automated actions;
+* dashboard publications;
+* derived datasets;
+* experiment treatments.
+
+Rollback procedures should be tested before high-risk use.
+
+== Misuse detection
+
+Potential signals include:
+
+* repeated queries targeting one person;
+* unusually small group filters;
+* exports of individual-level data;
+* access outside registered use;
+* attempts to join restricted identity data;
+* dashboards embedded in performance-review workflows;
+* automated actions exceeding policy limits;
+* metric use after deprecation.
+
+Detection should be balanced against legitimate privacy for analysts and investigators.
+
+== Policy exception process
+
+Exceptions should require:
+
+* written justification;
+* defined scope;
+* accountable sponsor;
+* legal, privacy, and security review;
+* compensating controls;
+* expiration date;
+* monitoring;
+* documented renewal or termination.
+
+Permanent informal exceptions undermine the standard.
+
+== Governance review cadence
+
+=== Weekly operational review
+
+Access anomalies, data incidents, automated-action failures, and active guardrail breaches.
+
+=== Monthly use review
+
+New uses, changed populations, metric changes, access requests, and exceptions.
+
+=== Quarterly governance review
+
+Retention, privacy, subgroup effects, model performance, appeals, and policy retirement.
+
+=== Annual program review
+
+Overall effectiveness, prohibited-use compliance, trust, incidents, organizational value, and changes in law or technology.
+
+== Governance maturity levels
+
+=== Level 0: implicit
+
+Rules exist mainly as informal expectations.
+
+=== Level 1: documented
+
+Permitted purposes, access, and prohibited uses are written.
+
+=== Level 2: operational
+
+Use registration, review, access controls, retention, and correction are functioning.
+
+=== Level 3: auditable
+
+Lineage, purpose-based access, audit, incidents, and periodic recertification are measurable.
+
+=== Level 4: adaptive
+
+Governance responds continuously to metric, model, workflow, and population change.
+
+=== Level 5: trustworthy autonomy
+
+Bounded automated policy operates with strong evidence, monitoring, appeal, and rollback.
+
+Maturity should be demonstrated through controls and outcomes, not policy documents alone.
+
+== Governance anti-patterns
+
+=== Collect first, justify later
+
+Data becomes permanent before purpose and risk are considered.
+
+=== Access by seniority
+
+Leadership role is treated as a universal need to inspect individual detail.
+
+=== Aggregate means anonymous
+
+Small-group and auxiliary-data re-identification are ignored.
+
+=== Metric governance without use governance
+
+A valid metric is reused for an invalid purpose.
+
+=== Consent theater
+
+Employees are asked to agree to monitoring they cannot realistically refuse.
+
+=== AI explanation as due process
+
+A generated rationale substitutes for access to evidence and independent review.
+
+=== Permanent pilot
+
+Experimental access and data collection continue after the study ends.
+
+=== Policy without enforcement
+
+Prohibited uses are documented but not detectable or sanctionable.
+
+=== Governance as delay only
+
+Review adds bureaucracy without improving evidence quality, safety, or accountability.
+
+== Standard implementation checklist
+
+. Establish accountable governance roles and a review board.
+. Classify uses by consequence and sensitivity.
+. Register purpose, population, data, metrics, owner, and expiration.
+. Publish permitted, restricted, and prohibited uses.
+. Maintain data inventory, classification, lineage, and retention schedules.
+. Apply purpose-based least-privilege access and separation of duties.
+. Minimize identity detail and enforce aggregation thresholds.
+. Provide practitioner notice, correction, and appeal.
+. Govern vendors, models, prompts, and automated policy versions.
+. Monitor access, exports, drift, misuse, subgroup effects, and appeals.
+. Maintain incident response and tested rollback procedures.
+. Recertify access and approved uses on a declared cadence.
+. Retire data, metrics, models, and uses that no longer justify their risk.
+. Judge governance by preserved trust and safe decision quality, not review volume.
