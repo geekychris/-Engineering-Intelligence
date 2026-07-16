@@ -1,21 +1,24 @@
 SHELL := /usr/bin/env bash
 
-.PHONY: all html pdf diagrams validate clean
+.PHONY: all html pdf diagrams validate clean clean-diagrams
 
-all:
+all: clean-diagrams
 	bash scripts/build.sh all
 
-html:
+html: clean-diagrams
 	bash scripts/build.sh html
 
-pdf:
+pdf: clean-diagrams
 	bash scripts/build.sh pdf
 
-diagrams:
+diagrams: clean-diagrams
 	bash scripts/build.sh diagrams
 
-validate:
+validate: clean-diagrams
 	bash scripts/build.sh validate
+
+clean-diagrams:
+	rm -rf build/figures/mermaid
 
 clean:
 	rm -rf build .build-src
