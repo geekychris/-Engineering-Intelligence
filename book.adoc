@@ -47,6 +47,8 @@ include::chapters/06-experimentation-and-causal-inference-source-notes.adoc[]
 
 include::chapters/07-ai-assisted-engineering.adoc[]
 
+include::chapters/07-ai-assisted-engineering-source-notes.adoc[]
+
 include::chapters/08-enterprise-instrumentation.adoc[]
 
 include::chapters/09-complexity-and-blast-radius.adoc[]
