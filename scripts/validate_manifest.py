@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 import json
@@ -66,6 +67,24 @@ def validate(build_dir: Path) -> int:
     publication_time = manifest.get("publication_time")
     if not isinstance(publication_time, str) or not publication_time:
         errors.append("publication_time must be a non-empty string")
+    elif isinstance(source_date_epoch, int) and source_date_epoch >= 0:
+        try:
+            parsed_time = datetime.fromisoformat(publication_time)
+        except ValueError:
+            errors.append("publication_time must be a valid ISO-8601 timestamp")
+        else:
+            if parsed_time.tzinfo is None:
+                errors.append("publication_time must include a timezone offset")
+            else:
+                expected_time = datetime.fromtimestamp(
+                    source_date_epoch, timezone.utc
+                )
+                if parsed_time.astimezone(timezone.utc) != expected_time:
+                    errors.append(
+                        "publication_time does not match source_date_epoch: "
+                        f"declared {publication_time!r}, expected "
+                        f"{expected_time.isoformat()!r}"
+                    )
 
     files = manifest.get("files")
     if not isinstance(files, list):
