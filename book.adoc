@@ -19,6 +19,10 @@ Software engineering organizations are increasingly instrumented, yet they often
 
 _Engineering Intelligence_ develops a framework for answering those questions. It treats engineering as a measurable socio-technical system and integrates engineering economics, human cognition, software architecture, queueing theory, causal inference, and AI-assisted development.
 
+include::frontmatter/executive-summary.adoc[]
+
+include::frontmatter/readers-guide.adoc[]
+
 include::chapters/01-introduction.adoc[]
 
 include::chapters/02-engineering-economics.adoc[]
