@@ -61,4 +61,7 @@ include::appendices/a-engineering-change-reference-model.adoc[]
 [appendix]
 include::appendices/b-metric-specification-standard.adoc[]
 
+[appendix]
+include::appendices/c-experiment-and-causal-study-protocol.adoc[]
+
 // Additional appendices are added here as they are written.
