@@ -1,0 +1,180 @@
+extends: default
+
+page:
+  size: Letter
+  layout: portrait
+  margin: [0.75in, 0.75in, 0.8in, 0.75in]
+
+base:
+  font-family: Noto Serif
+  font-size: 10.5
+  line-height-length: 15
+  font-color: 222222
+
+font:
+  catalog:
+    merge: true
+
+heading:
+  font-family: Noto Sans
+  font-color: 17365D
+  font-style: bold
+  line-height: 1.15
+  margin-top: 18
+  margin-bottom: 8
+
+heading-h1:
+  font-size: 24
+  page-break-before: always
+  margin-top: 0
+  margin-bottom: 18
+
+heading-h2:
+  font-size: 17
+  margin-top: 20
+  margin-bottom: 8
+
+heading-h3:
+  font-size: 13
+  margin-top: 16
+  margin-bottom: 6
+
+heading-h4:
+  font-size: 11
+  margin-top: 12
+  margin-bottom: 4
+
+link:
+  font-color: 245A88
+
+prose:
+  margin-bottom: 8
+
+caption:
+  font-family: Noto Sans
+  font-size: 8.5
+  font-style: italic
+  font-color: 555555
+  align: left
+
+code:
+  font-family: Noto Sans Mono
+  font-size: 8.5
+  background-color: F5F7F9
+  border-color: D8DEE6
+  border-width: 0.5
+  padding: 8
+
+literal:
+  font-family: Noto Sans Mono
+  font-size: 8.5
+
+blockquote:
+  font-color: 444444
+  border-color: 8AA4BF
+  border-width: 0 0 0 3
+  padding: [0, 0, 0, 12]
+
+admonition:
+  column-rule-color: B8C7D6
+  column-rule-width: 0.5
+  padding: [6, 8, 6, 8]
+
+admonition-label:
+  font-family: Noto Sans
+  font-style: bold
+  font-color: 17365D
+
+sidebar:
+  background-color: F4F7FA
+  border-color: C8D4E0
+  border-width: 0.5
+  border-radius: 3
+  padding: 10
+
+sidebar-title:
+  font-family: Noto Sans
+  font-style: bold
+  font-color: 17365D
+
+example:
+  background-color: F8FAFC
+  border-color: D5DEE8
+  border-width: 0.5
+  border-radius: 2
+  padding: 10
+
+quote:
+  font-color: 444444
+
+list:
+  indent: 18
+  item-spacing: 3
+
+table:
+  border-color: AEBCCB
+  border-width: 0.5
+  grid-color: D6DEE7
+  grid-width: 0.5
+  cell-padding: 5
+  head:
+    background-color: E9EFF5
+    font-family: Noto Sans
+    font-style: bold
+    font-color: 17365D
+  body:
+    stripe-background-color: F8FAFC
+
+image:
+  align: center
+
+footer:
+  height: 0.45in
+  line-height: 1
+  font-family: Noto Sans
+  font-size: 8
+  font-color: 6B7280
+  border-color: D8DEE6
+  border-width: 0.5
+  recto:
+    left:
+      content: '{document-title}'
+    right:
+      content: '{page-number}'
+  verso:
+    left:
+      content: '{page-number}'
+    right:
+      content: '{chapter-title}'
+
+toc:
+  font-family: Noto Sans
+  font-size: 9.5
+  line-height: 1.25
+  dot-leader:
+    font-color: 9AA7B4
+  h2:
+    font-style: bold
+    font-color: 17365D
+  h3:
+    font-color: 444444
+
+title-page:
+  align: left
+  title:
+    top: 26%
+    font-family: Noto Sans
+    font-size: 32
+    font-style: bold
+    font-color: 17365D
+    line-height: 1.1
+  subtitle:
+    font-family: Noto Sans
+    font-size: 15
+    font-color: 4B5563
+    line-height: 1.25
+  authors:
+    margin-top: 30
+    font-family: Noto Sans
+    font-size: 12
+    font-color: 374151
