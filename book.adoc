@@ -67,4 +67,7 @@ include::appendices/c-experiment-and-causal-study-protocol.adoc[]
 [appendix]
 include::appendices/d-governance-privacy-and-acceptable-use-standard.adoc[]
 
+[appendix]
+include::appendices/e-economic-evaluation-and-business-case-standard.adoc[]
+
 // Additional appendices are added here as they are written.
