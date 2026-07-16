@@ -53,4 +53,6 @@ include::chapters/16-the-science-of-engineering-intelligence.adoc[]
 
 include::chapters/17-the-learning-engineering-organization.adoc[]
 
+include::chapters/18-the-future-of-engineering-intelligence.adoc[]
+
 // Planned chapters are added here as they are written.
