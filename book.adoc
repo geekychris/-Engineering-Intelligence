@@ -91,6 +91,8 @@ include::chapters/17-the-learning-engineering-organization-source-notes.adoc[]
 
 include::chapters/18-the-future-of-engineering-intelligence.adoc[]
 
+include::chapters/18-the-future-of-engineering-intelligence-source-notes.adoc[]
+
 [appendix]
 include::appendices/a-engineering-change-reference-model.adoc[]
 
