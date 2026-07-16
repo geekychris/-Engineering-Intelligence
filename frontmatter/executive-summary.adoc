@@ -1,0 +1,328 @@
+[preface]
+= Executive Summary
+
+Software engineering organizations generate extraordinary amounts of operational evidence, yet often remain unable to answer their most consequential questions with confidence.
+
+They can count commits, pull requests, deployments, incidents, code suggestions, review comments, and tool invocations. They can rarely explain, with the same precision:
+
+* where scarce expert attention is consumed;
+* which queues and architectural dependencies limit delivery;
+* whether a tool or policy actually caused an improvement;
+* whether faster activity produced better outcomes;
+* whether released capacity became economic value;
+* whether an AI-assisted workflow improved the system after validation, rework, quality, and risk are included;
+* whether a metric is sufficiently valid, complete, and governed for the decision being made.
+
+_Engineering Intelligence_ presents a unified framework for solving this problem. It treats software engineering as a measurable socio-technical and economic system: a system in which people, AI participants, repositories, services, dependencies, review processes, build infrastructure, deployment mechanisms, production outcomes, organizational structures, and financial constraints interact.
+
+The objective is not to create more dashboards. It is to improve the quality, speed, reproducibility, and accountability of engineering decisions.
+
+== The central thesis
+
+The fundamental unit of analysis should not be the developer, commit, pull request, ticket, deployment, or AI suggestion. Each is only a partial artifact of a larger process.
+
+The central unit is the *Engineering Change*: a vendor-independent representation of an intended modification and its implementation, validation, delivery, operation, and observed consequences.
+
+An Engineering Change connects:
+
+* the intent or problem being addressed;
+* the human and machine actors involved;
+* source, configuration, infrastructure, data, and documentation artifacts;
+* review and validation activity;
+* builds and deployable artifacts;
+* deployments and releases;
+* incidents, defects, rollbacks, and operational outcomes;
+* user, business, economic, and learning outcomes.
+
+This unit allows organizations to measure the complete change system rather than optimizing isolated tools or stages.
+
+== Engineering is an attention-allocation system
+
+Engineering capacity is not adequately represented by headcount or hours. The scarcest resource is often expert attention: the ability to understand, decide, validate, coordinate, diagnose, and accept responsibility.
+
+Attention is consumed by:
+
+* implementation;
+* code and architecture review;
+* waiting and context reconstruction;
+* build and test failures;
+* unclear ownership;
+* cross-team dependencies;
+* incident response;
+* validating AI-generated output;
+* interpreting weak or contradictory evidence;
+* navigating organizational policy.
+
+The most valuable interventions do not merely increase visible activity. They release or redirect scarce attention toward higher-value decisions.
+
+This leads to a critical economic distinction:
+
+[quote]
+Released time is not automatically financial savings, and additional output is not automatically value.
+
+Capacity becomes valuable only when it appears in usable form, reaches constrained valuable work, and is absorbed by downstream systems capable of converting it into outcomes.
+
+== Engineering is a queueing system
+
+Engineering work moves through queues for implementation, review, specialist approval, CI, test environments, deployment, incident response, and organizational decisions.
+
+Queue behavior is nonlinear. Near high utilization, small changes in arrival rate, variability, or service capacity can produce disproportionately large changes in waiting time.
+
+This means:
+
+* increasing upstream output can worsen end-to-end flow;
+* optimizing a non-bottleneck may create little value;
+* reducing variability may be as important as increasing nominal capacity;
+* scarce reviewers and environments should be treated as constrained service systems;
+* cycle-time averages can conceal severe tail behavior.
+
+Engineering Intelligence therefore measures arrival, service, wait, work in progress, variability, utilization, and lifecycle state together.
+
+== Engineering is an economic system
+
+Engineering investments should be evaluated against credible alternatives, not against zero.
+
+A complete business case includes:
+
+* acquisition and implementation cost;
+* infrastructure and inference cost;
+* support, administration, security, and governance;
+* human validation and rework;
+* migration, switching, and exit cost;
+* quality and operational risk;
+* opportunity cost;
+* released capacity;
+* avoided cost;
+* cost-of-delay reduction;
+* risk reduction;
+* option and capability value.
+
+The framework explicitly separates:
+
+* booked financial savings;
+* committed financial impact;
+* avoided planned cost;
+* released capacity;
+* modeled outcome value;
+* strategic option value.
+
+This prevents modeled engineering time from being reported as realized cash savings.
+
+== Metrics are decision products
+
+A metric is not a number or SQL query. It is a versioned analytical product with:
+
+* a decision purpose;
+* a defined construct;
+* a unit and eligible population;
+* exact formula and aggregation behavior;
+* source and transformation lineage;
+* data-quality requirements;
+* missing-data semantics;
+* uncertainty;
+* validity and reliability evidence;
+* interpretation and prohibited uses;
+* privacy and governance controls;
+* an owner, review cadence, and retirement condition.
+
+A metric that is useful for team workflow improvement may be invalid for cross-team comparison. A metric valid for tool evaluation may be prohibited for individual performance decisions.
+
+The question is never simply, “Is this metric valid?” It is:
+
+[quote]
+Is this metric sufficiently valid for this population, decision, consequence, and use?
+
+== Measurement must support causal learning
+
+Descriptive telemetry can show that two things moved together. It cannot, by itself, establish that an intervention caused the outcome.
+
+Engineering Intelligence supports a continuum of evidence:
+
+* descriptive observation;
+* predictive modeling;
+* designed observational studies;
+* natural and quasi-experiments;
+* randomized experiments;
+* replicated causal evidence;
+* monitored operational policy.
+
+Experiments require more than a feature flag. They require:
+
+* executable eligibility;
+* an appropriate assignment unit;
+* deterministic assignment;
+* treatment and comparator specifications;
+* observed treatment exposure;
+* primary outcomes and guardrails;
+* power and readiness review;
+* interference and noncompliance analysis;
+* a predeclared analysis plan;
+* decision and stopping rules;
+* long-term follow-up and replication.
+
+Assignment must remain distinct from exposure. Adoption must remain distinct from effectiveness.
+
+== AI changes the production system
+
+AI-assisted engineering should not be evaluated through suggestion volume, acceptance rate, generated code, or anecdotal enthusiasm alone.
+
+AI may reduce authoring effort while increasing:
+
+* review and validation burden;
+* false-positive handling;
+* rework;
+* maintenance complexity;
+* security review;
+* model and infrastructure cost;
+* correlated failure risk;
+* skill atrophy;
+* dependence on a vendor or model family.
+
+The correct unit is the net effect on the Engineering Change and the surrounding system.
+
+A useful economic expression is:
+
+[stem]
+++++
+NetAttentionChange = AuthoringAttentionReduced - ValidationAttentionAdded - ReworkAttentionAdded
+++++
+
+AI systems also require provenance: provider, model, configuration, prompt, retrieval context, tool permissions, initiating actor, delegation chain, latency, and cost.
+
+As agents become more autonomous, the Engineering Change graph must include machine identity, delegated authority, validation responsibility, and acceptance accountability.
+
+== Architecture is measurable consequence
+
+Architecture influences the cost and risk of change through:
+
+* dependency reach;
+* ownership fragmentation;
+* cognitive load;
+* validation scope;
+* deployment coupling;
+* blast radius;
+* specialist requirements;
+* operational recovery.
+
+Architecture should not be reduced to static complexity counts. It should be evaluated by how structure changes the effort, coordination, safety, and reversibility of Engineering Changes.
+
+The framework combines repository, service, runtime, deployment, ownership, and incident graphs to evaluate architectural constraints over time.
+
+== The platform is an evidence system
+
+A credible Engineering Intelligence platform preserves a traceable path from source evidence to decision.
+
+The reference architecture includes:
+
+* connectors and event ingestion;
+* immutable raw evidence;
+* canonical events and schema contracts;
+* temporal identity and ownership;
+* service and repository catalogues;
+* Engineering Change reconstruction;
+* confidence-aware relationships;
+* analytical, graph, search, and operational projections;
+* metric, model, experiment, evidence, and decision registries;
+* purpose-bound serving products;
+* privacy, security, audit, correction, replay, and quality controls.
+
+The architecture separates:
+
+* observed evidence;
+* reconstructed relationships;
+* model inference;
+* generated explanation;
+* causal estimate;
+* organizational decision.
+
+This separation is essential because each carries different uncertainty and authority.
+
+== Governance is part of measurement quality
+
+An unrestricted evidence system will damage trust and eventually damage the evidence itself.
+
+Engineering Intelligence therefore includes controls for:
+
+* purpose limitation;
+* data minimization;
+* use classification;
+* least-privilege and purpose-based access;
+* identity isolation and aggregation thresholds;
+* correction and appeal;
+* prohibited individual ranking;
+* vendor and model governance;
+* automated-action boundaries;
+* retention, deletion, and export;
+* governance incidents and rollback.
+
+The framework presumes that ordinary engineering telemetry is unsuitable for individual compensation, promotion, discipline, or termination decisions unless a separate formal process establishes exceptional validity, necessity, fairness, legal authority, transparency, and due process. In most organizations, such uses should remain prohibited.
+
+== The operating model
+
+Engineering Intelligence becomes useful when embedded in an operating cadence.
+
+A complete loop is:
+
+. identify a consequential decision;
+. define the construct and evidence required;
+. instrument and validate the evidence path;
+. specify governed metrics;
+. run descriptive or causal analysis;
+. evaluate economics and risk;
+. make and record a bounded decision;
+. monitor implementation and guardrails;
+. measure realized outcomes;
+. preserve learning, corrections, and negative results;
+. revisit the decision when assumptions or conditions change.
+
+The book provides standard templates for each part of this loop.
+
+== A maturity path
+
+Organizations can develop the capability incrementally.
+
+=== Stage 1: trustworthy evidence
+
+Establish immutable source evidence, canonical events, identity, ownership, lineage, and data-quality visibility.
+
+=== Stage 2: Engineering Change intelligence
+
+Reconstruct end-to-end changes and connect artifacts, activities, validation, deployment, release, incidents, and outcomes.
+
+=== Stage 3: governed measurement
+
+Create metric specifications, registries, quality gates, uncertainty, and interpretation controls.
+
+=== Stage 4: causal learning
+
+Add assignment, exposure, guardrails, experiments, quasi-experiments, and reproducibility.
+
+=== Stage 5: economic and portfolio intelligence
+
+Connect engineering evidence to cost, capacity realization, delay, risk, business outcomes, and portfolio decisions.
+
+=== Stage 6: AI and agent evaluation
+
+Measure model versions, prompts, delegation, validation burden, correlated risk, and long-term capability effects.
+
+=== Stage 7: bounded adaptive policy
+
+Allow reversible, monitored, purpose-limited automation only where evidence, governance, and rollback are sufficiently mature.
+
+== What success looks like
+
+A successful Engineering Intelligence program is not defined by the number of connectors, dashboards, metrics, or AI features.
+
+It is visible when the organization can repeatedly:
+
+* identify the real constraint;
+* estimate uncertainty honestly;
+* test interventions rather than debate anecdotes;
+* distinguish capacity from savings;
+* detect harmful tradeoffs;
+* make bounded and reversible decisions;
+* reproduce the evidence behind those decisions;
+* learn across teams and over time;
+* preserve practitioner trust.
+
+The ultimate product is not telemetry. It is an organization that becomes better at learning how it engineers.
