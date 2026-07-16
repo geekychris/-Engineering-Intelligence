@@ -15,11 +15,7 @@
 :media: prepress
 ifdef::backend-pdf[]
 :notitle:
-endif::[]
-
-ifdef::backend-pdf[]
-image::frontmatter/engineering-intelligence-cover.svg[Engineering Intelligence cover,pdfwidth=6.65in,align=center]
-<<<
+:front-cover-image: image:figures/front_cover.jpg[fit=fill]
 endif::[]
 
 [preface]

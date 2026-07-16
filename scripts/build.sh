@@ -150,6 +150,13 @@ prepare_sources() {
     cp -R "$ROOT/styles" "$WORK_DIR/styles"
   fi
 
+  mkdir -p "$WORK_DIR/figures"
+
+  # Copy raster/vector figures that live at the top of figures/ (cover art,
+  # photos, etc.) but skip the Mermaid source directory — the rendered PNGs
+  # come from the diagram staging area below.
+  find "$ROOT/figures" -maxdepth 1 -type f -exec cp {} "$WORK_DIR/figures/" \;
+
   mkdir -p "$WORK_DIR/figures/mermaid"
 
   if compgen -G "$DIAGRAM_STAGING_DIR/*.png" >/dev/null; then
