@@ -27,71 +27,71 @@ include::chapters/01-introduction.adoc[leveloffset=+1]
 
 include::chapters/02-engineering-economics.adoc[leveloffset=+1]
 
-include::chapters/02-engineering-economics-source-notes.adoc[leveloffset=+1]
+include::chapters/02-engineering-economics-source-notes.adoc[leveloffset=+2]
 
 include::chapters/03-engineering-change.adoc[leveloffset=+1]
 
-include::chapters/03-engineering-change-source-notes.adoc[leveloffset=+1]
+include::chapters/03-engineering-change-source-notes.adoc[leveloffset=+2]
 
 include::chapters/04-human-attention.adoc[leveloffset=+1]
 
-include::chapters/04-human-attention-source-notes.adoc[leveloffset=+1]
+include::chapters/04-human-attention-source-notes.adoc[leveloffset=+2]
 
 include::chapters/05-measuring-engineering-systems.adoc[leveloffset=+1]
 
-include::chapters/05-measuring-engineering-systems-source-notes.adoc[leveloffset=+1]
+include::chapters/05-measuring-engineering-systems-source-notes.adoc[leveloffset=+2]
 
 include::chapters/06-experimentation-and-causal-inference.adoc[leveloffset=+1]
 
-include::chapters/06-experimentation-and-causal-inference-source-notes.adoc[leveloffset=+1]
+include::chapters/06-experimentation-and-causal-inference-source-notes.adoc[leveloffset=+2]
 
 include::chapters/07-ai-assisted-engineering.adoc[leveloffset=+1]
 
-include::chapters/07-ai-assisted-engineering-source-notes.adoc[leveloffset=+1]
+include::chapters/07-ai-assisted-engineering-source-notes.adoc[leveloffset=+2]
 
 include::chapters/08-enterprise-instrumentation.adoc[leveloffset=+1]
 
-include::chapters/08-enterprise-instrumentation-source-notes.adoc[leveloffset=+1]
+include::chapters/08-enterprise-instrumentation-source-notes.adoc[leveloffset=+2]
 
 include::chapters/09-complexity-and-blast-radius.adoc[leveloffset=+1]
 
-include::chapters/09-complexity-and-blast-radius-source-notes.adoc[leveloffset=+1]
+include::chapters/09-complexity-and-blast-radius-source-notes.adoc[leveloffset=+2]
 
 include::chapters/10-engineering-intelligence-platform.adoc[leveloffset=+1]
 
-include::chapters/10-engineering-intelligence-platform-source-notes.adoc[leveloffset=+1]
+include::chapters/10-engineering-intelligence-platform-source-notes.adoc[leveloffset=+2]
 
 include::chapters/11-engineering-metrics-catalogue.adoc[leveloffset=+1]
 
-include::chapters/11-engineering-metrics-catalogue-source-notes.adoc[leveloffset=+1]
+include::chapters/11-engineering-metrics-catalogue-source-notes.adoc[leveloffset=+2]
 
 include::chapters/12-experiment-playbooks.adoc[leveloffset=+1]
 
-include::chapters/12-experiment-playbooks-source-notes.adoc[leveloffset=+1]
+include::chapters/12-experiment-playbooks-source-notes.adoc[leveloffset=+2]
 
 include::chapters/13-governance-ethics-and-adoption.adoc[leveloffset=+1]
 
-include::chapters/13-governance-ethics-and-adoption-source-notes.adoc[leveloffset=+1]
+include::chapters/13-governance-ethics-and-adoption-source-notes.adoc[leveloffset=+2]
 
 include::chapters/14-portfolio-and-executive-decision-making.adoc[leveloffset=+1]
 
-include::chapters/14-portfolio-and-executive-decision-making-source-notes.adoc[leveloffset=+1]
+include::chapters/14-portfolio-and-executive-decision-making-source-notes.adoc[leveloffset=+2]
 
 include::chapters/15-implementation-and-rollout.adoc[leveloffset=+1]
 
-include::chapters/15-implementation-and-rollout-source-notes.adoc[leveloffset=+1]
+include::chapters/15-implementation-and-rollout-source-notes.adoc[leveloffset=+2]
 
 include::chapters/16-the-science-of-engineering-intelligence.adoc[leveloffset=+1]
 
-include::chapters/16-the-science-of-engineering-intelligence-source-notes.adoc[leveloffset=+1]
+include::chapters/16-the-science-of-engineering-intelligence-source-notes.adoc[leveloffset=+2]
 
 include::chapters/17-the-learning-engineering-organization.adoc[leveloffset=+1]
 
-include::chapters/17-the-learning-engineering-organization-source-notes.adoc[leveloffset=+1]
+include::chapters/17-the-learning-engineering-organization-source-notes.adoc[leveloffset=+2]
 
 include::chapters/18-the-future-of-engineering-intelligence.adoc[leveloffset=+1]
 
-include::chapters/18-the-future-of-engineering-intelligence-source-notes.adoc[leveloffset=+1]
+include::chapters/18-the-future-of-engineering-intelligence-source-notes.adoc[leveloffset=+2]
 
 [appendix]
 include::appendices/a-engineering-change-reference-model.adoc[leveloffset=+1]
