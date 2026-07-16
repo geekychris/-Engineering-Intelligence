@@ -1,0 +1,385 @@
+= Chapter Source Notes and Citation Map
+
+[abstract]
+This appendix maps the principal claims, constructs, and methods in each chapter to the foundational and empirical sources collected in Appendix I. It provides a publication-ready citation plan without implying that every concept is established to the same degree. The map distinguishes mature foundations, practitioner syntheses, standards, and emerging research, and identifies where the book advances an original synthesis or proposes a research agenda.
+
+== Citation conventions
+
+The citation map follows several rules.
+
+* Original papers and official standards are preferred over secondary summaries.
+* A citation supports only the claim for which it is relevant; it does not endorse every conclusion in the source.
+* Practitioner books are used for operating models and synthesis, not as substitutes for causal evidence.
+* Preprints and recent AI studies are labeled as emerging evidence.
+* The Engineering Change reference model, attention economics, integrated platform design, and several agent-governance concepts are original syntheses in this book and should not be presented as established external standards.
+* Time-sensitive AI research and standards should be reverified before each publication edition.
+
+== Chapter 1 — Introduction
+
+=== Established foundations
+
+The argument that developer productivity is multidimensional is supported by the SPACE framework and the DevEx framework. See <<forsgren2021-space>> and <<noda2023-devex>>.
+
+The discussion of software delivery performance and organizational capability builds on the research synthesized in <<forsgren2018>> and the operating practices described in <<kim2021-devops>> and <<humble2010>>.
+
+The warning against treating easily counted activity as productivity is consistent with measurement-validity principles in <<messick1995>>, indicator corruption in <<campbell1979>>, and Goodhart’s Law in <<goodhart1984>>.
+
+The socio-technical framing is grounded in Conway’s organizational observation, socio-technical congruence, and distributed coordination research. See <<conway1968>>, <<cataldo2006>>, and <<herbsleb2007>>.
+
+The discussion of human attention and interruption is informed by cognitive-load theory and interruption research. See <<sweller1988>> and <<mark2008>>.
+
+The discussion of experimentation draws on the potential-outcomes framework, experimental design, and practical controlled-experiment methods. See <<rubin1974>>, <<holland1986>>, <<shadish2002>>, and <<kohavi2020>>.
+
+=== Original synthesis
+
+The Engineering Change as the principal unit of consequence, the explicit treatment of AI as an engineering participant, and the integration of attention, economics, architecture, causal inference, and governance form the book’s original synthesis.
+
+== Chapter 2 — Engineering Economics
+
+=== Established foundations
+
+The distinction between technology adoption and realized productivity is supported by the productivity-paradox literature. See <<solow1987>>, <<brynjolfsson1993>>, and <<brynjolfsson2017>>.
+
+The treatment of cost-benefit analysis, discounting, risk, and sensitivity follows the methods summarized in <<boardman2018>>.
+
+The system-level emphasis on constraints and bottlenecks is informed by <<goldratt1984>> and the operational treatment of flow and capacity in <<hopp2011>>.
+
+The distinction between gross local efficiency and end-to-end value is consistent with queueing and operations research, particularly <<little1961>>, <<kingman1961>>, and <<hopp2011>>.
+
+=== Original synthesis
+
+The capacity-realization factor, fragmentation discount, validation-burden accounting, and explicit taxonomy separating cash savings, avoided cost, released capacity, modeled outcome value, and option value are operational constructs developed for Engineering Intelligence.
+
+== Chapter 3 — Engineering Change
+
+=== Established foundations
+
+The modularity and information-hiding basis for reasoning about change boundaries is grounded in <<parnas1972>>.
+
+The relationship between organizational communication and system structure is supported by <<conway1968>> and <<cataldo2006>>.
+
+The provenance-oriented entity, activity, and agent model is compatible with the W3C PROV data model in <<moreau2013>>.
+
+The event-log, replay, temporal, and data-intensive architectural principles draw on <<kleppmann2017>> and <<akidau2018>>.
+
+=== Original synthesis
+
+The Engineering Change lifecycle, graph vocabulary, confidence-aware reconstruction model, multi-repository aggregation, and unit-of-consequence framing are original reference-model contributions of this book.
+
+== Chapter 4 — Human Attention
+
+=== Established foundations
+
+Cognitive-load theory provides the basis for treating working cognitive capacity as constrained. See <<sweller1988>>.
+
+The cost of interruption and context switching is supported by <<mark2008>>.
+
+Developer perceptions of productive and unproductive work are examined in <<meyer2014>>.
+
+The relationship between developer affect, progress, and flow is informed by <<muller2019>> and the developer-experience frameworks in <<fagerholm2012>> and <<noda2023-devex>>.
+
+=== Original synthesis
+
+The four-part attention model—production, verification, coordination, and recovery effort—and the concepts of attention amplification, attention yield, cognitive offload, and cognitive reload are book-specific operational constructs.
+
+== Chapter 5 — Measuring Engineering Systems
+
+=== Established foundations
+
+The treatment of measurement scales and the limitations of arithmetic operations on different scale types is grounded in <<stevens1946>>.
+
+Reliability and internal consistency are informed by <<cronbach1951>>.
+
+Validity as evidence supporting a particular interpretation and use follows <<messick1995>>.
+
+The broader treatment of measurement design is supported by <<hand2004>>.
+
+Indicator corruption and behavioral response to targets are grounded in <<campbell1979>> and <<goodhart1984>>.
+
+The multidimensional nature of engineering productivity is supported by <<forsgren2021-space>> and <<noda2023-devex>>.
+
+=== Original synthesis
+
+The metric specification lifecycle, policy-grade metric concept, explicit prohibited-use field, quality-state publication contract, and integration of measurement validity with governance are original operational extensions.
+
+== Chapter 6 — Experimentation and Causal Inference
+
+=== Established foundations
+
+The potential-outcomes formulation follows <<rubin1974>>, <<holland1986>>, <<imbens2015>>, and <<hernan2020>>.
+
+Structural causal reasoning and causal graphs are grounded in <<pearl2009>>.
+
+Randomized and quasi-experimental design principles are supported by <<shadish2002>>, <<angrist2009>>, and <<kohavi2020>>.
+
+Preregistration and separation of confirmatory and exploratory analysis are supported by <<nosek2018>>.
+
+=== Original synthesis
+
+The Engineering Intelligence experiment protocol combines software delivery events, Engineering Change assignment, actual tool exposure, model and prompt versioning, guardrails, economic outcomes, and value-realization follow-up into one operational study model.
+
+== Chapter 7 — AI-Assisted Engineering
+
+=== Established and emerging evidence
+
+Controlled task-level evidence on AI coding-assistant completion time is represented by <<peng2023>>.
+
+Usability, comprehension, debugging, and trust challenges are examined in <<vaithilingam2022>>.
+
+Programmer interaction patterns with code-generating models are studied in <<barke2023>>.
+
+Repository-level software-agent benchmarking is represented by <<jimenez2024>>.
+
+Broader GenAI productivity perceptions across several dimensions are discussed in the emerging evidence represented by <<afroz2025>>.
+
+AI risk-management principles are supported by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+
+=== Caution
+
+These studies do not establish universal effects across organizations, model versions, engineering tasks, or production outcomes. Claims should remain bounded to population, task, treatment, comparator, and observation period.
+
+=== Original synthesis
+
+Net attention effect, validation burden, accepted contribution share, machine-participation provenance, delegation depth, autonomous-action reversal, model monoculture, and continuous Engineering Change evaluation are original or extended constructs in this book.
+
+== Chapter 8 — Enterprise Instrumentation
+
+=== Established foundations
+
+Event-time, late-data, watermark, and stream-processing concepts draw on <<akidau2018>>.
+
+Event logs, replay, consistency, batch and stream architecture, and data-system tradeoffs draw on <<kleppmann2017>>.
+
+Provenance semantics are aligned with <<moreau2013>>.
+
+Reliability objectives, operational toil, and service-level thinking are informed by <<beyer2016>> and <<beyer2018>>.
+
+Privacy-risk management is informed by <<nist2020-privacy>>; cybersecurity governance is informed by <<nist2024-csf>>.
+
+=== Original synthesis
+
+The source-to-canonical Engineering Change instrumentation model, confidence-aware reconstruction quality, metric-quality SLOs, and purpose-bound evidence-serving architecture are original platform integrations.
+
+== Chapter 9 — Complexity and Blast Radius
+
+=== Established foundations
+
+Modular decomposition and information hiding are grounded in <<parnas1972>>.
+
+The relationship between organizational and technical structure is supported by <<conway1968>>, <<cataldo2006>>, and <<herbsleb2007>>.
+
+Team cognitive load and interaction modes are informed by <<skelton2019>>.
+
+=== Original synthesis
+
+The multidimensional blast-radius model combining dependency reach, service and repository span, ownership entropy, validation surface, data and financial consequence, and incident evidence is a book-specific framework.
+
+== Chapter 10 — The Engineering Intelligence Platform
+
+=== Established foundations
+
+The architectural treatment of durable logs, stream and batch processing, replay, and data-system tradeoffs draws on <<kleppmann2017>> and <<akidau2018>>.
+
+Provenance modeling is supported by <<moreau2013>>.
+
+Service-level objectives and operational platform reliability are informed by <<beyer2016>> and <<beyer2018>>.
+
+Privacy, cybersecurity, and AI risk management are informed by <<nist2020-privacy>>, <<nist2024-csf>>, <<nist2023-airmf>>, and <<nist2024-genai>>.
+
+=== Original synthesis
+
+The connected evidence, metric, model, experiment, and decision registries; purpose-bound APIs; Engineering Change reconstruction service; and evidence-to-decision architecture are integrated reference designs developed in this book.
+
+== Chapter 11 — Engineering Metrics Catalogue
+
+=== Established foundations
+
+Delivery-performance measures build on the research synthesized in <<forsgren2018>>.
+
+Multidimensional developer-productivity and experience measures are informed by <<forsgren2021-space>> and <<noda2023-devex>>.
+
+Queue, throughput, work-in-progress, and elapsed-time relationships are grounded in <<little1961>>, <<kingman1961>>, and <<hopp2011>>.
+
+Precision, recall, and ranking measures are supported by <<manning2008>> and <<jarvelin2002>>.
+
+Measurement validity and target distortion are informed by <<messick1995>>, <<campbell1979>>, and <<goodhart1984>>.
+
+=== Original synthesis
+
+The catalogue’s attention, economics, AI, architecture, linkage, governance, and value-realization metrics extend established measurement ideas into a unified Engineering Intelligence system.
+
+== Chapter 12 — Experiment Playbooks
+
+=== Established foundations
+
+The playbooks are grounded in experimental and quasi-experimental methods from <<shadish2002>>, <<angrist2009>>, <<imbens2015>>, <<hernan2020>>, and <<kohavi2020>>.
+
+Ranking evaluation uses <<jarvelin2002>> and <<manning2008>>.
+
+Preregistration and confirmatory-analysis discipline are informed by <<nosek2018>>.
+
+=== Original synthesis
+
+The vendor, AI reviewer, coding assistant, CI, architecture, and policy playbooks adapt causal methods to Engineering Change evidence, machine provenance, human validation burden, and enterprise guardrails.
+
+== Chapter 13 — Governance, Ethics, and Adoption
+
+=== Established foundations
+
+Professional obligations concerning harm, fairness, privacy, honesty, competence, and accountability are informed by <<acm2018-ethics>>.
+
+AI risk governance is supported by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+
+Privacy-risk management is informed by <<nist2020-privacy>>, and cybersecurity governance by <<nist2024-csf>>.
+
+Measurement misuse and behavioral distortion are supported by <<campbell1979>>, <<goodhart1984>>, and <<messick1995>>.
+
+=== Original synthesis
+
+The use-classification model, presumption against individual employment use, purpose registration, metric-use review, generated-explanation controls, and governance-incident model are operational standards developed in this book.
+
+== Chapter 14 — Portfolio and Executive Decision-Making
+
+=== Established foundations
+
+Cost-benefit and uncertainty methods draw on <<boardman2018>>.
+
+Technology-productivity realization and complementary organizational investment are informed by <<brynjolfsson1993>> and <<brynjolfsson2017>>.
+
+Constraint and flow reasoning is informed by <<goldratt1984>> and <<hopp2011>>.
+
+Organizational learning and systems thinking are supported by <<argyris1978>> and <<senge1990>>.
+
+=== Original synthesis
+
+The evidence-maturity portfolio, decision-record system, learning investment portfolio, value-realization ledger, and executive distinction between activity, capacity, and realized value are book-specific integrations.
+
+== Chapter 15 — Implementation and Rollout
+
+=== Established foundations
+
+Continuous delivery and incremental operational change are informed by <<humble2010>> and <<kim2021-devops>>.
+
+Reliability objectives and operational ownership are supported by <<beyer2016>> and <<beyer2018>>.
+
+Learning-organization and double-loop concepts are grounded in <<argyris1978>> and <<senge1990>>.
+
+=== Original synthesis
+
+The decision-first rollout sequence, maturity floors, complete evidence-to-decision loop, and first-90-day Engineering Intelligence implementation are operational methods developed in this book.
+
+== Chapter 16 — The Science of Engineering Intelligence
+
+=== Established foundations
+
+Measurement validity and reliability draw on <<stevens1946>>, <<cronbach1951>>, <<messick1995>>, and <<hand2004>>.
+
+Causal inference draws on <<rubin1974>>, <<holland1986>>, <<pearl2009>>, <<imbens2015>>, and <<hernan2020>>.
+
+Preregistration and reproducibility are informed by <<nosek2018>> and <<open-science2015>>.
+
+Reusable evidence and stewardship principles are informed by <<wilkinson2016>>.
+
+=== Original synthesis
+
+Engineering Intelligence as a distinct scientific discipline, its unit hierarchy, evidence maturity model, open evidence graph, and combined research agenda are proposed in this book.
+
+== Chapter 17 — The Learning Engineering Organization
+
+=== Established foundations
+
+Single-loop and double-loop learning are grounded in <<argyris1978>>.
+
+Systems thinking and learning-organization practices are informed by <<senge1990>>.
+
+High-reliability organizing and attention to weak signals are supported by <<weick2007>>.
+
+Systems-oriented incident learning is informed by <<dekker2014>> and resilience engineering by <<woods2015>>.
+
+Delivery feedback and learning practices are informed by <<kim2021-devops>> and <<beyer2016>>.
+
+=== Original synthesis
+
+Learning velocity, capability preservation, evidence memory, decision follow-up, negative-result retention, and the Engineering Intelligence function are integrated organizational constructs developed in this book.
+
+== Chapter 18 — The Future of Engineering Intelligence
+
+=== Established foundations
+
+AI risk and management-system concepts are informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+
+General-purpose-technology adoption and delayed productivity effects are informed by <<brynjolfsson2017>>.
+
+Resilience and adaptive capacity are informed by <<woods2015>> and <<weick2007>>.
+
+Provenance and agent-activity representation are compatible with <<moreau2013>>.
+
+=== Emerging and original material
+
+The treatment of intent as a first-class artifact, agent economic participation, delegation graphs, machine-speed governance, software-production digital twins, synthetic evidence risk, executable architecture policy, and bounded closed-loop engineering automation is forward-looking synthesis and research agenda, not established consensus.
+
+== Appendix source relationships
+
+=== Appendix A — Engineering Change Reference Model
+
+Conceptually compatible with provenance entities, activities, and agents in <<moreau2013>>, but defines a domain-specific model and relationship vocabulary.
+
+=== Appendix B — Metric Specification Standard
+
+Grounded in measurement validity and reliability from <<stevens1946>>, <<cronbach1951>>, <<messick1995>>, and <<hand2004>>, with governance extensions informed by <<campbell1979>> and <<goodhart1984>>.
+
+=== Appendix C — Experiment and Causal Study Protocol
+
+Grounded in <<shadish2002>>, <<imbens2015>>, <<hernan2020>>, <<angrist2009>>, <<kohavi2020>>, and <<nosek2018>>.
+
+=== Appendix D — Governance, Privacy, and Acceptable Use Standard
+
+Informed by <<acm2018-ethics>>, <<nist2020-privacy>>, <<nist2024-csf>>, <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+
+=== Appendix E — Economic Evaluation and Business Case Standard
+
+Grounded in <<boardman2018>>, <<brynjolfsson1993>>, <<brynjolfsson2017>>, <<little1961>>, <<kingman1961>>, and <<hopp2011>>.
+
+=== Appendix F — Technical Reference Architecture
+
+Informed by <<moreau2013>>, <<kleppmann2017>>, <<akidau2018>>, <<beyer2016>>, and <<beyer2018>>.
+
+=== Appendix G — Operating Templates and Records
+
+Operationalizes the standards and original synthesis developed throughout the book.
+
+=== Appendix H — Glossary and Controlled Vocabulary
+
+Defines the book’s controlled semantics; external concepts retain their established meaning where cited.
+
+=== Appendix I — Evidence Base and Bibliography
+
+Contains full source details and evidence classifications.
+
+=== Appendix J — Maturity Assessment and Adoption Roadmap
+
+Combines organizational learning from <<argyris1978>> and <<senge1990>>, delivery and reliability practices from <<kim2021-devops>> and <<beyer2016>>, and the book’s original maturity framework.
+
+== Citation integration roadmap
+
+The next publication pass should:
+
+. add inline cross-references from major empirical and methodological claims to the bibliography anchors;
+. add source notes to figures whose structure derives from published frameworks;
+. distinguish direct empirical support from analogy or synthesis;
+. verify every DOI and official publication URL;
+. remove or replace sources that cannot be verified from an authoritative publication record;
+. add conflicting or null evidence where material;
+. record verification dates for web-only standards and institutional publications;
+. generate a citation-coverage report during the publication build.
+
+== Citation map checklist
+
+. Cite primary and official sources wherever available.
+. Bound claims to the population and method of the cited evidence.
+. Label practitioner synthesis, standards, and preprints accurately.
+. Do not imply that a framework or standard proves empirical effectiveness.
+. Identify original Engineering Intelligence concepts explicitly.
+. Preserve unresolved questions and conflicting evidence.
+. Reverify recent AI studies and standards before each edition.
+. Treat citation coverage as a quality attribute of the publication.
