@@ -1,0 +1,412 @@
+= The Engineering Intelligence Platform
+
+[abstract]
+The preceding chapters define the concepts, metrics, and evidence required to understand engineering systems. This chapter turns those ideas into a concrete platform architecture. It describes the major services, storage systems, APIs, computation paths, governance controls, decision products, and operating model needed to build an Engineering Intelligence platform incrementally in a large enterprise.
+
+== Platform objectives
+
+An Engineering Intelligence platform should answer four classes of questions:
+
+* *What happened?* — reconstruct Engineering Changes, queues, reviews, deployments, and outcomes.
+* *Why did it happen?* — identify constraints, complexity, dependencies, and external factors.
+* *What is likely to happen next?* — predict delay, risk, cost, and quality outcomes.
+* *What should we change?* — support experiments, routing, prioritization, and investment decisions.
+
+The platform is not merely a reporting warehouse. It is an evidence and decision system.
+
+== Core architectural principles
+
+. Preserve immutable raw evidence.
+. Separate canonical entities from source-specific identifiers.
+. Treat the Engineering Change as the primary unit of analysis.
+. Version events, features, metrics, models, and policies.
+. Support both near-real-time operations and retrospective recomputation.
+. Keep causal experiment assignment independent from metric computation.
+. Expose uncertainty, provenance, and data quality with every derived result.
+. Minimize behavioral surveillance and prohibit unsupported individual ranking.
+
+== Logical architecture
+
+image::../figures/mermaid/engineering-intelligence-platform.mmd[Engineering Intelligence platform]
+
+The architecture is divided into seven planes:
+
+[cols="1,3"]
+|===
+|Plane |Responsibilities
+
+|Collection
+|Connectors, webhooks, CDC, polling, agent telemetry, schema validation
+
+|Evidence
+|Immutable event log, raw payload store, deduplication, replay
+
+|Identity and graph
+|Canonical identities, Engineering Change reconstruction, topology, provenance
+
+|Computation
+|Streaming state, batch features, metric engine, models, experiments
+
+|Governance
+|Schema registry, lineage, privacy, access, retention, audit
+
+|Decision
+|Dashboards, alerts, APIs, reports, recommendations
+
+|Control
+|Experiment assignment, policy delivery, model and metric versions
+|===
+
+== Service boundaries
+
+A practical service decomposition includes:
+
+=== Source connector service
+
+Connects to Git hosting, issue tracking, CI/CD, AI tools, observability, service catalogues, and organizational systems. It translates source records into canonical envelopes while retaining original payloads.
+
+=== Identity service
+
+Resolves people, AI actors, repositories, services, teams, environments, and tools into stable temporal identities.
+
+=== Engineering Change service
+
+Creates, links, merges, splits, and closes Engineering Changes. It exposes lifecycle state, graph membership, confidence, and provenance.
+
+=== Topology service
+
+Maintains repository, service, data, deployment, ownership, and business dependency graphs.
+
+=== Feature service
+
+Publishes versioned point-in-time features for changes, repositories, teams, services, and experiments.
+
+=== Metric service
+
+Executes governed metric definitions and exposes current and historical values with lineage and uncertainty.
+
+=== Experiment service
+
+Manages eligibility, assignment, exposure, guardrails, external factors, and experiment status.
+
+=== Model service
+
+Hosts predictive, causal, ranking, and reconstruction models with versioned inputs and monitoring.
+
+=== Decision product service
+
+Provides APIs, dashboards, alerts, and reports tailored to operational, engineering, product, and executive users.
+
+== Canonical APIs
+
+The Engineering Change API should expose operations such as:
+
+[source,http]
+----
+GET /engineering-changes/{id}
+GET /engineering-changes/{id}/graph
+GET /engineering-changes/{id}/metrics
+POST /engineering-changes/{id}/members
+POST /engineering-changes/{id}:merge
+POST /engineering-changes/{id}:split
+----
+
+A metric API should require explicit version and time context:
+
+[source,http]
+----
+GET /metrics/review-friction/v2.1
+  ?entityType=engineering_change
+  &entityId=EC-01J8...
+  &asOf=2026-07-15T22:00:00Z
+----
+
+A result should return value, interval, sample basis, quality state, and lineage.
+
+== Storage architecture
+
+No single database is optimal for all workloads.
+
+[cols="1,3"]
+|===
+|Store |Purpose
+
+|Object storage or lakehouse
+|Immutable raw events, normalized history, batch features, reproducible snapshots
+
+|Event broker
+|Low-latency transport, ordering, replay, stream processing
+
+|Relational store
+|Experiment registry, metric catalogue, governance metadata, operational state
+
+|Graph store
+|Engineering Change, repository, service, ownership, and dependency relationships
+
+|Search index
+|Interactive discovery across changes, artifacts, findings, and explanations
+
+|Feature store
+|Point-in-time online and offline model inputs
+
+|Analytical warehouse
+|Large-scale aggregation, ad hoc analysis, and reporting
+|===
+
+The canonical source of truth should be explicit for every entity and fact.
+
+== Stream processing
+
+Streaming computation maintains:
+
+* current lifecycle state;
+* queue depth and age;
+* experiment exposure;
+* AI interaction state;
+* build and deployment progression;
+* freshness and quality alerts;
+* rapidly changing guardrails.
+
+State transitions should be deterministic and replayable. Stream processors should emit changelogs rather than silently mutate opaque state.
+
+== Batch and graph computation
+
+Batch computation handles:
+
+* historical reconstruction;
+* semantic code analysis;
+* dependency graph generation;
+* ownership and collaboration networks;
+* complexity and blast-radius features;
+* experiment datasets;
+* cost and value recomputation;
+* model training and calibration.
+
+Incremental graph processing is preferable where possible, but complete recomputation must remain available for recovery and definition changes.
+
+== Metric specification language
+
+A declarative metric definition reduces divergence between dashboards and experiments.
+
+[source,yaml]
+----
+id: review_friction
+version: 2.1.0
+entity: engineering_change
+construct: review_process_friction
+population: accepted_changes
+features:
+  - review_queue_minutes
+  - review_response_cycles
+  - context_recovery_events
+  - validation_minutes
+aggregation: weighted_sum
+uncertainty: bootstrap_clustered_by_repository
+guardrails:
+  - severe_escape_rate
+  - rollback_rate
+owner: engineering-intelligence
+----
+
+The execution engine can compile the definition into SQL, batch, or streaming plans.
+
+== Policy and routing engine
+
+Metrics and models become operational when they influence routing and policy.
+
+Examples include:
+
+* send high-blast-radius changes to specialist review;
+* suppress low-confidence duplicate AI comments;
+* prioritize aged changes with high cost of delay;
+* require stronger rollout controls for irreversible migrations;
+* allocate scarce reviewers to changes with highest expected risk reduction.
+
+Every policy should be versioned, explainable, and linked to an experiment or governance decision.
+
+== Decision products
+
+Different audiences require different views.
+
+=== Engineer view
+
+Shows current change state, unresolved dependencies, review queues, AI findings, expected bottlenecks, and production outcome.
+
+=== Team view
+
+Shows flow distributions, work in process, review constraints, quality, cognitive burden, and experiment status.
+
+=== Platform view
+
+Shows infrastructure latency, tool cost, data quality, model drift, and source freshness.
+
+=== Executive view
+
+Shows portfolio-level cost, value, risk, capacity constraints, and evidence from interventions.
+
+A good decision product permits drill-down from aggregate conclusion to raw evidence without exposing unnecessary individual detail.
+
+== Data contracts and ownership
+
+Each domain should own the quality of the events it emits. The platform team owns canonical contracts, identity, lineage, and shared computation.
+
+A data contract includes schema, semantics, owner, SLO, classification, retention, compatibility, and quality checks.
+
+Producers should not be able to change semantics silently.
+
+== Platform SLOs
+
+Suggested service-level objectives include:
+
+* event ingestion availability;
+* source-to-platform lag;
+* maximum duplicate and loss rate;
+* Engineering Change reconstruction latency;
+* metric freshness;
+* experiment assignment availability;
+* replay completion time;
+* lineage completeness;
+* data-quality alert time.
+
+Freshness should be visible in every product. Stale metrics should not appear current.
+
+== Security and privacy architecture
+
+The platform may contain source code, prompts, behavioral metadata, organizational relationships, and financial assumptions.
+
+Required controls include:
+
+* encryption and key management;
+* least-privilege service identities;
+* row and column access control;
+* pseudonymous identity by default;
+* classified event handling;
+* retention and deletion workflows;
+* export controls;
+* audit trails;
+* separation between system analysis and performance management.
+
+== Reference implementation roadmap
+
+=== Phase 1: evidence foundation
+
+Ingest source-control, CI, and deployment events. Establish canonical envelopes, raw storage, replay, and identity resolution.
+
+=== Phase 2: Engineering Change graph
+
+Introduce explicit IDs where practical and probabilistic reconstruction elsewhere. Expose graph and lifecycle APIs.
+
+=== Phase 3: governed metrics
+
+Create the metric catalogue, feature pipelines, lineage, and quality indicators. Deliver flow and quality views.
+
+=== Phase 4: experimentation
+
+Add deterministic assignment, exposure logging, external-factor registry, guardrails, and reproducible analysis datasets.
+
+=== Phase 5: AI and cognitive instrumentation
+
+Capture AI contributions, human actions, validation burden, trust, and quality-adjusted offload.
+
+=== Phase 6: predictive and prescriptive intelligence
+
+Add delay, risk, complexity, and routing models. Introduce policy decisions only after experimental validation.
+
+== Suggested technology-neutral components
+
+The design can be implemented with different stacks, but common component classes include:
+
+* event broker;
+* object store or lakehouse;
+* stream processor;
+* SQL transformation engine;
+* graph database or graph-processing layer;
+* relational metadata store;
+* feature store;
+* search engine;
+* model-serving platform;
+* dashboard and notebook environment;
+* policy engine.
+
+Avoid coupling the conceptual architecture to one vendor.
+
+== Build-versus-buy decisions
+
+Buy commodity capabilities when they do not define strategic differentiation: standard connectors, visualization, cataloguing, or infrastructure monitoring.
+
+Retain control of canonical event history, identity, Engineering Change reconstruction, metric definitions, experiment assignments, proprietary AI telemetry, and policy logic.
+
+Vendor products should integrate through contracts rather than become the only location where evidence exists.
+
+== Operating model
+
+A successful platform requires more than software.
+
+Recommended roles include:
+
+* platform engineering;
+* data engineering;
+* applied statistics and causal inference;
+* ML and information retrieval;
+* developer experience;
+* security and privacy;
+* domain representatives;
+* metric and experiment owners.
+
+A governance council should approve high-impact metrics, experiments, and individual-level uses.
+
+== Common failure modes
+
+=== Building a universal data lake without decisions
+
+Data accumulates while operational value remains unclear.
+
+=== Coupling metrics to dashboards
+
+Definitions diverge across products and cannot be reproduced.
+
+=== Hiding provenance
+
+Users cannot challenge or correct derived conclusions.
+
+=== Centralizing all ownership
+
+The platform team cannot understand every source and domain without producer contracts.
+
+=== Automating policy too early
+
+Predictive models are deployed before validation and create self-reinforcing bias.
+
+=== Ignoring operating model
+
+Technology exists, but no one owns definitions, experiments, or action.
+
+== Key takeaways
+
+* The Engineering Intelligence platform is an evidence, experimentation, and decision system—not merely a dashboard stack.
+* Clear service boundaries separate collection, identity, graph, features, metrics, experiments, models, and decision products.
+* Immutable evidence, temporal identities, point-in-time features, and versioned definitions are foundational.
+* Operational policies should be explainable, versioned, and experimentally validated.
+* Different audiences require different views, but all should share one governed semantic layer.
+* Incremental adoption should deliver value before advanced prediction or automation.
+
+== Open questions
+
+* Which platform capabilities should be centralized versus federated to teams?
+* How can metric specification languages remain expressive without becoming ungovernable?
+* What is the best storage pattern for temporal engineering graphs at enterprise scale?
+* How should policy engines incorporate uncertainty and human override?
+* Which parts of the platform are likely to become standardized industry infrastructure?
+
+== Implementation checklist
+
+. Define platform objectives and decision products before selecting technology.
+. Establish canonical events, immutable evidence, and temporal identity.
+. Implement the Engineering Change and topology services.
+. Create versioned feature, metric, and experiment services.
+. Expose lineage, confidence, and data quality through APIs.
+. Separate assignment, exposure, and outcome computation.
+. Add policy routing only after validated experiments.
+. Publish platform SLOs and freshness indicators.
+. Establish privacy, security, retention, and governance controls.
+. Build incrementally from evidence capture to prescriptive intelligence.
