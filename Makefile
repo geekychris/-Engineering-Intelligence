@@ -1,6 +1,6 @@
 SHELL := /usr/bin/env bash
 
-.PHONY: all html pdf diagrams validate source-validate manifest-validate clean clean-diagrams
+.PHONY: all html pdf diagrams validate test source-validate manifest-validate clean clean-diagrams
 
 all:
 	bash scripts/build.sh all
@@ -17,9 +17,12 @@ pdf:
 diagrams:
 	bash scripts/build.sh diagrams
 
-validate:
+validate: test
 	bash scripts/build.sh validate
 	python3 scripts/validate_manifest.py build
+
+test:
+	python3 -m unittest discover -s tests -p 'test_*.py' -v
 
 source-validate:
 	python3 scripts/validate_sources.py
