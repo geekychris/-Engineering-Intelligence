@@ -9,6 +9,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+concurrency:
+  group: engineering-intelligence-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -47,7 +51,7 @@ jobs:
           node-version: "20"
 
       - name: Install Mermaid tooling
-        run: npm install
+        run: npm install --no-audit --no-fund
 
       - name: Build and validate editions
         run: make validate
