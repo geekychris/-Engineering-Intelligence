@@ -174,7 +174,7 @@ build_pdf() {
 }
 
 write_manifest() {
-  python3 - "$ROOT" "$BUILD_DIR" <<'PY'
+  python3 - "$ROOT" "$BUILD_DIR" "$MODE" <<'PY'
 from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
@@ -185,6 +185,7 @@ import sys
 
 root = Path(sys.argv[1])
 build = Path(sys.argv[2])
+build_mode = sys.argv[3]
 
 
 def digest(path):
@@ -222,7 +223,9 @@ for name in ("engineering-intelligence.html", "engineering-intelligence.pdf"):
         )
 
 manifest = {
+    "schema_version": 1,
     "title": "Engineering Intelligence",
+    "build_mode": build_mode,
     "publication_time": publication_time,
     "source_date_epoch": epoch,
     "source_commit": commit,
