@@ -1,0 +1,209 @@
+== Research foundations and source notes
+
+The platform architecture in this chapter draws on data-intensive systems, event-time stream processing, provenance, site reliability engineering, privacy engineering, cybersecurity governance, and AI risk management. It extends those foundations into a decision-oriented evidence platform for software engineering.
+
+=== Durable logs and derived state
+
+The architectural distinction between durable evidence and derived views is grounded in modern data-intensive system design. See <<kleppmann2017>>.
+
+The chapter therefore separates:
+
+* raw source evidence;
+* canonical events;
+* identity and ownership resolution;
+* Engineering Change reconstruction;
+* analytical projections;
+* metric and model outputs;
+* generated explanations;
+* organizational decisions.
+
+This separation supports replay, correction, reproducibility, and semantic evolution.
+
+=== Event time and stream processing
+
+Event-time semantics, late data, watermarks, and replayable stream processing are grounded in <<akidau2018>>.
+
+These principles support the platform’s treatment of:
+
+* source event time;
+* ingestion and processing time;
+* delayed deployment and incident evidence;
+* outcome maturity;
+* retractions and recomputation;
+* shadow processing during semantic changes.
+
+A current dashboard value is not necessarily a final analytical result when important downstream evidence has not matured.
+
+=== Provenance
+
+The W3C PROV model provides a general foundation for representing entities, activities, agents, derivation, generation, attribution, and association. See <<moreau2013>>.
+
+The platform applies provenance across the complete evidence path, including source records, reconstruction, metrics, models, experiments, explanations, and decisions.
+
+The central requirement is that observed evidence, inferred relationships, predictions, causal estimates, generated narratives, and human decisions remain distinguishable.
+
+=== Polyglot analytical architecture
+
+Different workloads require different storage and serving patterns.
+
+The chapter’s use of immutable evidence stores, operational state, analytical warehouses, graph projections, search indexes, feature stores, and governed registries follows the tradeoff-oriented approach in <<kleppmann2017>>.
+
+Polyglot storage should not produce polyglot truth. Authoritative semantics, identifiers, lineage, and versions must remain shared.
+
+=== Service reliability
+
+The platform is a production service whose failures can affect consequential organizational decisions.
+
+SRE principles concerning service-level objectives, error budgets, operational toil, monitoring, incident response, and reliable change are grounded in <<beyer2016>> and <<beyer2018>>.
+
+Relevant objectives include:
+
+* connector freshness and completeness;
+* schema-conformance rate;
+* identity-resolution quality;
+* linkage quality;
+* metric publication latency;
+* replay and correction latency;
+* serving availability;
+* audit-log completeness.
+
+The chapter extends SRE thinking from infrastructure availability to evidence integrity.
+
+=== Privacy engineering
+
+The NIST Privacy Framework provides the basis for identifying, governing, controlling, communicating, and protecting privacy risk. See <<nist2020-privacy>>.
+
+The platform applies these principles through:
+
+* purpose limitation;
+* data minimization;
+* pseudonymization;
+* re-identification isolation;
+* aggregation thresholds;
+* retention and deletion controls;
+* practitioner correction and appeal;
+* access auditing.
+
+The platform should collect the least detailed evidence necessary for the declared decision.
+
+=== Cybersecurity governance
+
+The NIST Cybersecurity Framework provides a general foundation for governing, identifying, protecting, detecting, responding to, and recovering from cybersecurity risk. See <<nist2024-csf>>.
+
+Relevant controls include:
+
+* least-privilege connectors;
+* secrets management;
+* encryption;
+* workload and tenant isolation;
+* supply-chain review;
+* immutable audit evidence;
+* incident response;
+* tested backup and recovery;
+* vendor-risk management.
+
+Engineering Intelligence data can reveal organizational structure, vulnerabilities, code activity, and sensitive initiatives, making it a high-value security target.
+
+=== AI governance
+
+AI-enabled explanations, classifications, recommendations, and agents introduce additional risks.
+
+The chapter’s governance approach is informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+
+These foundations support:
+
+* model and prompt registries;
+* treatment and configuration versioning;
+* evaluation and monitoring;
+* human accountability;
+* bounded permissions;
+* rollback;
+* vendor and data-use controls;
+* generated-content provenance.
+
+The standards guide risk management; they do not establish that any individual model is effective or safe for a particular engineering decision.
+
+=== Registries as institutional memory
+
+The platform includes registries for metrics, models, experiments, evidence, decisions, and governed uses.
+
+This design supports reproducibility, review, and organizational learning by preserving:
+
+* definitions;
+* owners;
+* versions;
+* assumptions;
+* evidence;
+* limitations;
+* outcomes;
+* review dates;
+* correction history.
+
+The broader organizational-learning foundations are discussed in <<argyris1978>> and <<senge1990>>.
+
+=== Decision products versus dashboards
+
+The platform is designed to serve bounded decision products rather than unrestricted metric browsing.
+
+A decision product should include:
+
+* the decision question;
+* eligible population;
+* evidence and quality state;
+* metrics and uncertainty;
+* causal status;
+* economic interpretation;
+* guardrails;
+* assumptions and limitations;
+* recommended review date.
+
+This use-specific approach follows the validity principles in <<messick1995>> and reduces the indicator misuse described in <<campbell1979>> and <<goodhart1984>>.
+
+=== Purpose-bound serving
+
+Role-based access is combined with declared purpose, population, data classification, and use restrictions.
+
+This is an original Engineering Intelligence extension aligned with the privacy-risk principles in <<nist2020-privacy>>.
+
+Examples include:
+
+* pseudonymous analysis for measurement scientists;
+* aggregated team views for managers;
+* raw connector diagnostics for platform operators;
+* restricted re-identification for correction or authorized investigation;
+* prohibition of unsupported individual employment use.
+
+=== Reproducibility and correction
+
+A decision-grade platform must reproduce the evidence path behind a result.
+
+This requires:
+
+* source and schema versions;
+* transformation lineage;
+* identity and reconstruction versions;
+* metric and model versions;
+* experiment assignment and exposure;
+* correction history;
+* generated artifacts and publication manifests.
+
+The chapter’s correction model requires replay and downstream impact analysis when evidence or semantics change.
+
+This follows the provenance and replay foundations in <<moreau2013>>, <<kleppmann2017>>, and <<akidau2018>>.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* a platform centered on Engineering Change reconstruction rather than source-specific dashboards;
+* explicit separation of evidence, reconstruction, inference, prediction, causal estimate, explanation, and decision;
+* connected metric, model, experiment, evidence, decision, and governed-use registries;
+* purpose-bound serving products;
+* semantic and evidence-quality SLOs;
+* correction-triggered decision-impact review;
+* outcome-maturity state;
+* confidence-aware graph relationships;
+* machine-participation and delegation provenance;
+* a decision-first platform roadmap tied to realized value rather than connector count.
+
+These contributions should be evaluated through reliability, correction accuracy, practitioner trust, reproducibility, governance outcomes, and the quality of decisions the platform improves.
