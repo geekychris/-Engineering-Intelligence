@@ -39,4 +39,6 @@ include::chapters/09-complexity-and-blast-radius.adoc[]
 
 include::chapters/10-engineering-intelligence-platform.adoc[]
 
+include::chapters/11-engineering-metrics-catalogue.adoc[]
+
 // Planned chapters are added here as they are written.
