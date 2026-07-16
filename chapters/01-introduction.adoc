@@ -19,7 +19,7 @@ Despite this abundance, many organizations still cannot answer basic questions w
 
 The obstacle is not a lack of metrics. It is a lack of models.
 
-A metric describes an observation. A model explains how observations relate, identifies mechanisms, supports prediction, and allows competing interventions to be evaluated. Pull-request lead time, for example, is useful as a descriptive measure. It becomes operationally valuable only when an organization can distinguish waiting from active work, control for change complexity, identify the constrained stage, and estimate whether an intervention would improve quality-adjusted delivery rather than simply accelerate merging.
+A metric describes an observation. A model explains how observations relate, identifies mechanisms, supports prediction, and allows competing interventions to be evaluated. Pull-request lead time, for example, is useful as a descriptive measure. It becomes operationally valuable only when an organization can distinguish waiting from active work, control for change complexity, identify the constrained stage, and estimate whether an intervention would improve quality-adjusted delivery rather than simply accelerate merging. This decision-oriented view is consistent with the broader measurement principle that validity attaches to a specific interpretation and use, not merely to a number’s reproducibility. See <<messick1995>> and <<hand2004>>.
 
 Engineering Intelligence therefore begins with a change in objective:
 
@@ -28,7 +28,7 @@ ____
 The purpose of engineering measurement is not to count activity. It is to improve decisions about how scarce engineering resources are used.
 ____
 
-Those resources include money and compute, but the most constrained resource in most engineering organizations is expert human attention. Build capacity can be purchased. AI inference can be scaled. Experienced judgment, architectural context, security expertise, and sustained cognitive focus remain comparatively scarce.
+Those resources include money and compute, but the most constrained resource in most engineering organizations is expert human attention. Build capacity can be purchased. AI inference can be scaled. Experienced judgment, architectural context, security expertise, and sustained cognitive focus remain comparatively scarce. Cognitive-load and interruption research provide part of the theoretical basis for treating attention as constrained and for distinguishing uninterrupted reasoning from fragmented work. See <<sweller1988>> and <<mark2008>>.
 
 == From dashboards to a learning system
 
@@ -47,7 +47,7 @@ The loop contains six capabilities:
 . *Experimentation* — test changes to tools, policies, prompts, workflows, and organizational structures.
 . *Learning* — update organizational knowledge and feed evidence back into future decisions.
 
-The final step is essential. Measurement that does not change a decision is, at best, descriptive. At worst, it creates surveillance, metric gaming, and administrative burden without improving the engineering system.
+The final step is essential. Measurement that does not change a decision is, at best, descriptive. At worst, it creates surveillance, metric gaming, and administrative burden without improving the engineering system. The risk that measures become distorted when converted into targets is well established in the work associated with Campbell’s Law and Goodhart’s Law. See <<campbell1979>> and <<goodhart1984>>.
 
 == The limits of familiar productivity measures
 
@@ -55,7 +55,7 @@ Software engineering has repeatedly adopted measures that are easy to compute bu
 
 Lines of code can reflect implementation volume, generated code, verbosity, duplication, or unnecessary complexity. Commit count depends on personal workflow and repository policy. Pull-request count is sensitive to slicing conventions. Story points are locally defined and frequently distorted when aggregated. Utilization rewards visible busyness while penalizing the slack required for learning, incident response, mentoring, and creative problem solving.
 
-Even stronger frameworks must be used carefully. Delivery-performance measures such as deployment frequency, lead time for changes, change-failure rate, and restoration time are valuable system-level outcomes. The SPACE framework correctly emphasizes that productivity cannot be represented by a single dimension and includes satisfaction, performance, activity, communication, and efficiency. Developer Experience research further emphasizes feedback loops, cognitive load, and flow state.
+Even stronger frameworks must be used carefully. Delivery-performance measures such as deployment frequency, lead time for changes, change-failure rate, and restoration time are valuable system-level outcomes and are central to the software-delivery research synthesized in <<forsgren2018>>. The SPACE framework emphasizes that productivity cannot be represented by a single dimension and includes satisfaction and well-being, performance, activity, communication and collaboration, and efficiency and flow. See <<forsgren2021-space>>. Developer Experience research further emphasizes feedback loops, cognitive load, and flow state. See <<noda2023-devex>> and <<fagerholm2012>>.
 
 Engineering Intelligence builds on these foundations. It does not attempt to replace them with one universal score. Instead, it adds four capabilities:
 
@@ -83,7 +83,7 @@ A single product change may require:
 * a coordinated deployment sequence;
 * production verification and cleanup work.
 
-Conversely, one pull request may combine several unrelated changes. Pull-request boundaries are shaped by repository topology, team conventions, code ownership, and tooling limitations. Treating every pull request as an equivalent unit therefore introduces substantial measurement error.
+Conversely, one pull request may combine several unrelated changes. Pull-request boundaries are shaped by repository topology, team conventions, code ownership, and tooling limitations. Treating every pull request as an equivalent unit therefore introduces substantial measurement error. The broader relationship between organizational coordination and technical structure is established in socio-technical research, including <<conway1968>>, <<cataldo2006>>, and <<herbsleb2007>>.
 
 This book defines an *Engineering Change* as follows.
 
@@ -98,7 +98,7 @@ The relationship between intent and implementation is many-to-many:
 
 image::../figures/mermaid/engineering-change-graph.mmd[Engineering Change graph]
 
-This graph-oriented representation matters for multi-repository and multi-team work. Cost and latency should be attributed to the complete change graph, while local measures can still be retained for individual pull requests, builds, approvals, and deployments.
+This graph-oriented representation matters for multi-repository and multi-team work. Cost and latency should be attributed to the complete change graph, while local measures can still be retained for individual pull requests, builds, approvals, and deployments. The entity-activity-agent structure is compatible with general provenance models such as W3C PROV, while the Engineering Change model adds domain-specific semantics. See <<moreau2013>>.
 
 === Change reconstruction
 
@@ -114,11 +114,11 @@ Engineering Changes may be declared explicitly through a change identifier, issu
 * semantic similarity of titles and code changes;
 * traces emitted by developer tools and AI agents.
 
-The system should retain both the inferred relationship and its confidence. Silent certainty is dangerous: a falsely joined change can inflate apparent cost and blast radius, while a missed relationship fragments a costly coordinated effort into deceptively simple pull requests.
+The system should retain both the inferred relationship and its confidence. Silent certainty is dangerous: a falsely joined change can inflate apparent cost and blast radius, while a missed relationship fragments a costly coordinated effort into deceptively simple pull requests. Preserving provenance, versions, and replayability follows established data-system principles described in <<moreau2013>>, <<kleppmann2017>>, and <<akidau2018>>.
 
 == Engineering is a socio-technical system
 
-Software delivery is neither purely technical nor purely organizational. Outcomes emerge from interactions among people, tools, architecture, incentives, policies, and external constraints.
+Software delivery is neither purely technical nor purely organizational. Outcomes emerge from interactions among people, tools, architecture, incentives, policies, and external constraints. This framing is consistent with the organizational and socio-technical foundations in <<conway1968>>, <<cataldo2006>>, and <<herbsleb2007>>.
 
 Consider a two-line configuration change. Its implementation complexity may be trivial. Yet the change could modify authentication behavior for every product, require review from three security teams, trigger a coordinated global deployment, and create a severe regulatory risk if incorrect. Code size is low; potential blast radius and coordination complexity are high.
 
@@ -155,13 +155,13 @@ Engineering Intelligence therefore represents a change as a multidimensional vec
 |Distance from patterns already understood by the author, reviewers, team, and organization
 |===
 
-These dimensions influence both expected effort and uncertainty. They also help prevent invalid comparisons. A workflow intervention should not be judged by comparing raw cycle time across fundamentally different change populations.
+These dimensions influence both expected effort and uncertainty. They also help prevent invalid comparisons. A workflow intervention should not be judged by comparing raw cycle time across fundamentally different change populations. The modularity principles in <<parnas1972>> and the team cognitive-load perspective in <<skelton2019>> provide important foundations for understanding why boundaries and ownership affect change difficulty.
 
 == Human attention as an economic resource
 
 Traditional cost accounting often starts with labor hours multiplied by loaded compensation. That is necessary but incomplete.
 
-An hour of uninterrupted architectural work is not equivalent to twelve five-minute interruptions distributed across a day. A review request that arrives after the author has mentally left the task may require expensive context reconstruction. A senior security engineer's attention may be more constrained than the monetary cost assigned to the same amount of general engineering time. A queue of unresolved reviews can create attention residue even when no one is actively reviewing.
+An hour of uninterrupted architectural work is not equivalent to twelve five-minute interruptions distributed across a day. A review request that arrives after the author has mentally left the task may require expensive context reconstruction. A senior security engineer's attention may be more constrained than the monetary cost assigned to the same amount of general engineering time. A queue of unresolved reviews can create attention residue even when no one is actively reviewing. These distinctions are consistent with cognitive-load theory, interruption research, and developer-productivity studies. See <<sweller1988>>, <<mark2008>>, and <<meyer2014>>.
 
 Engineering Intelligence therefore distinguishes at least four forms of human effort:
 
@@ -172,7 +172,7 @@ Engineering Intelligence therefore distinguishes at least four forms of human ef
 
 The fourth category is frequently invisible. It appears as longer completion time, repeated reading, reopened files, duplicated analysis, forgotten assumptions, and hesitant decisions. It is one reason why elapsed time cannot be naively converted into labor cost.
 
-The cost model developed later in this book will therefore include direct effort, queueing delay, context-recovery cost, scarce-expertise consumption, tool cost, infrastructure cost, expected quality loss, and cost of delay.
+The cost model developed later in this book will therefore include direct effort, queueing delay, context-recovery cost, scarce-expertise consumption, tool cost, infrastructure cost, expected quality loss, and cost of delay. The distinction between elapsed flow time, service time, utilization, and queue delay draws on queueing and operations research, including <<little1961>>, <<kingman1961>>, and <<hopp2011>>.
 
 == AI as a first-class engineering participant
 
@@ -180,7 +180,7 @@ AI coding and review systems change both engineering work and the observability 
 
 An AI reviewer may identify a defect, generate a patch, explain a security issue, suggest a test, summarize a large change, or route a concern to a human expert. The human may accept the suggestion, modify it, reject it, ignore it, create a follow-up issue, or independently discover the same problem.
 
-Treating the AI merely as a software license obscures its role. The AI participates in the engineering system and produces measurable work products and decision prompts. Engineering Intelligence therefore models AI contributions explicitly.
+Treating the AI merely as a software license obscures its role. The AI participates in the engineering system and produces measurable work products and decision prompts. Engineering Intelligence therefore models AI contributions explicitly. Empirical work on AI coding assistants shows that interaction, usability, comprehension, debugging, and outcomes vary materially by task and context. See <<peng2023>>, <<vaithilingam2022>>, and <<barke2023>>.
 
 This does not mean equating model output with human judgment. It means recording the distribution of work:
 
@@ -195,7 +195,7 @@ This does not mean equating model output with human judgment. It means recording
 
 This framing creates the possibility of measuring *cognitive offload*: human reasoning or production work avoided because a reliable AI contribution performed it first. It also reveals *cognitive reload*: additional human work created by noisy, ambiguous, or untrustworthy AI output.
 
-A high suggestion-acceptance rate is not sufficient evidence of offload. Developers may accept trivial suggestions, mechanically apply changes they do not understand, or ignore valuable comments because they lack time. Conversely, a rejected comment may still create value by prompting inspection. The correct object of study is the causal effect of AI participation on human effort and quality-adjusted outcomes.
+A high suggestion-acceptance rate is not sufficient evidence of offload. Developers may accept trivial suggestions, mechanically apply changes they do not understand, or ignore valuable comments because they lack time. Conversely, a rejected comment may still create value by prompting inspection. The correct object of study is the causal effect of AI participation on human effort and quality-adjusted outcomes. Repository-level agent benchmarks such as <<jimenez2024>> are useful for capability evaluation, but they do not replace organization-specific causal and production-outcome studies.
 
 == Measurement for decisions
 
@@ -208,7 +208,7 @@ Every operational metric in this book is evaluated through six questions:
 . *Failure modes* — how can it be biased, gamed, or misunderstood?
 . *Actionability* — what intervention becomes possible when the metric changes?
 
-This discipline prevents metric proliferation. Large enterprises can generate thousands of measures; only a subset deserve to become operational objectives.
+This discipline prevents metric proliferation. Large enterprises can generate thousands of measures; only a subset deserve to become operational objectives. Measurement theory and validity research emphasize that a measure must be evaluated against its intended interpretation and use. See <<stevens1946>>, <<messick1995>>, and <<hand2004>>.
 
 Metrics will be classified along several axes:
 
@@ -220,13 +220,13 @@ Metrics will be classified along several axes:
 * individual, team, repository, service, portfolio, or enterprise scope;
 * observational versus experiment-specific.
 
-No individual-level metric should automatically be treated as a performance score. Measurements designed to understand system constraints can become harmful when repurposed to rank people. This changes behavior, damages trust, and invalidates the measurement process itself.
+No individual-level metric should automatically be treated as a performance score. Measurements designed to understand system constraints can become harmful when repurposed to rank people. This changes behavior, damages trust, and invalidates the measurement process itself. See <<campbell1979>>, <<goodhart1984>>, and <<messick1995>>.
 
 == The scientific method and engineering experimentation
 
 Engineering organizations frequently introduce tools and policies globally, compare before-and-after averages, and attribute any movement to the intervention. This is rarely sufficient.
 
-Tool adoption may coincide with seasonal release cycles, reorganizations, staffing changes, product launches, incidents, changes in repository mix, or broader adoption of generative AI. Teams choose tools non-randomly. Early adopters differ from late adopters. Measurement definitions change. Novelty effects decay. Work may be shifted outside the observed boundary.
+Tool adoption may coincide with seasonal release cycles, reorganizations, staffing changes, product launches, incidents, changes in repository mix, or broader adoption of generative AI. Teams choose tools non-randomly. Early adopters differ from late adopters. Measurement definitions change. Novelty effects decay. Work may be shifted outside the observed boundary. These are standard threats to causal identification and validity described in <<shadish2002>>, <<imbens2015>>, and <<hernan2020>>.
 
 Engineering Intelligence treats experimentation as infrastructure, not an occasional analytics project.
 
@@ -244,7 +244,7 @@ A strong evaluation specifies:
 * heterogeneous effects;
 * external events and concurrent changes.
 
-Randomized controlled experiments are valuable when feasible, but software organizations often require alternatives: staggered rollouts, switchback experiments, difference-in-differences, matched controls, regression discontinuity, interrupted time series, synthetic controls, hierarchical models, and Bayesian sequential analysis.
+Randomized controlled experiments are valuable when feasible, but software organizations often require alternatives: staggered rollouts, switchback experiments, difference-in-differences, matched controls, regression discontinuity, interrupted time series, synthetic controls, hierarchical models, and Bayesian sequential analysis. The methodological foundations are covered in <<rubin1974>>, <<holland1986>>, <<shadish2002>>, <<angrist2009>>, <<imbens2015>>, <<hernan2020>>, and <<kohavi2020>>.
 
 The objective is not statistical sophistication for its own sake. It is to avoid confident but incorrect conclusions about expensive organizational changes.
 
@@ -256,7 +256,7 @@ image::../figures/mermaid/reference-architecture.mmd[Engineering Intelligence re
 
 Near-real-time events are appropriate for lifecycle state, queue depth, tool interactions, CI results, and deployment transitions. Batch computation is appropriate for repository topology, dependency graphs, historical baselines, code-complexity features, ownership networks, and model retraining. Some derived outcomes, such as realized defects or incident impact, arrive days or weeks after a merge.
 
-The architecture must therefore support event time, late-arriving data, changing entity relationships, historical recomputation, and versioned metric definitions. A number displayed without the definition and model version that produced it is not reproducible evidence.
+The architecture must therefore support event time, late-arriving data, changing entity relationships, historical recomputation, and versioned metric definitions. A number displayed without the definition and model version that produced it is not reproducible evidence. These architectural requirements are grounded in event-log, stream-processing, provenance, and reliability principles described in <<kleppmann2017>>, <<akidau2018>>, <<moreau2013>>, and <<beyer2016>>.
 
 == Scope of this book
 
