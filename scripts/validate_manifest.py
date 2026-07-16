@@ -149,7 +149,7 @@ def validate(build_dir: Path, expected_commit: str | None = None) -> int:
 
     diagrams_dir = build_dir / "figures" / "mermaid"
     actual_diagram_count = (
-        len(list(diagrams_dir.glob("*.svg"))) if diagrams_dir.is_dir() else 0
+        len(list(diagrams_dir.glob("*.png"))) if diagrams_dir.is_dir() else 0
     )
     if manifest.get("diagram_count") != actual_diagram_count:
         errors.append(

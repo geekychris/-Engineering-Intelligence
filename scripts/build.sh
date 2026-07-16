@@ -12,6 +12,8 @@ DIAGRAM_FINAL_DIR="$BUILD_DIR/figures/mermaid"
 BOOK="$ROOT/book.adoc"
 PDF_THEME="$ROOT/themes/engineering-intelligence-theme.yml"
 HTML_STYLESHEET="$ROOT/styles/engineering-intelligence.css"
+MERMAID_CONFIG="$ROOT/figures/mermaid.config.json"
+MATH_RENDERER="$ROOT/scripts/render-math.js"
 
 fail() {
   printf 'ERROR: %s\n' "$*" >&2
@@ -41,6 +43,11 @@ fi
 
 [[ -f "$BOOK" ]] || fail "book.adoc was not found"
 [[ -f "$ROOT/scripts/validate_sources.py" ]] || fail "source validator was not found"
+[[ -f "$MERMAID_CONFIG" ]] || fail "Mermaid config was not found"
+
+if [[ "$MODE" != "diagrams" ]]; then
+  [[ -f "$MATH_RENDERER" ]] || fail "math renderer was not found"
+fi
 
 if [[ "$MODE" == "html" || "$MODE" == "all" || "$MODE" == "validate" ]]; then
   [[ -f "$HTML_STYLESHEET" ]] || fail "HTML stylesheet was not found"
@@ -95,12 +102,20 @@ render_diagrams() {
   rm -rf "$DIAGRAM_STAGING_DIR"
   mkdir -p "$DIAGRAM_STAGING_DIR"
 
+  # Render Mermaid to high-DPI PNG rather than SVG. Mermaid v11 emits node
+  # labels inside <foreignObject> (HTML in SVG), which prawn-svg cannot
+  # render, so text disappears from PDF SVGs. Rasterising through mmdc
+  # preserves every label at print quality without a bespoke SVG rewriter.
   while IFS= read -r -d '' source; do
-    output="$DIAGRAM_STAGING_DIR/$(basename "${source%.mmd}.svg")"
+    output="$DIAGRAM_STAGING_DIR/$(basename "${source%.mmd}.png")"
     npx --no-install mmdc \
       --input "$source" \
       --output "$output" \
       --backgroundColor transparent \
+      --configFile "$MERMAID_CONFIG" \
+      --width 2400 \
+      --height 1800 \
+      --scale 2 \
       --quiet
   done < <(
     python3 - "$ROOT/figures/mermaid" <<'PY'
@@ -137,8 +152,8 @@ prepare_sources() {
 
   mkdir -p "$WORK_DIR/figures/mermaid"
 
-  if compgen -G "$DIAGRAM_STAGING_DIR/*.svg" >/dev/null; then
-    cp "$DIAGRAM_STAGING_DIR"/*.svg "$WORK_DIR/figures/mermaid/"
+  if compgen -G "$DIAGRAM_STAGING_DIR/*.png" >/dev/null; then
+    cp "$DIAGRAM_STAGING_DIR"/*.png "$WORK_DIR/figures/mermaid/"
   fi
 
   python3 - "$WORK_DIR" <<'PY'
@@ -148,9 +163,23 @@ import sys
 work = Path(sys.argv[1])
 for path in work.rglob("*.adoc"):
     text = path.read_text(encoding="utf-8")
-    text = text.replace(".mmd[", ".svg[")
+    text = text.replace(".mmd[", ".png[")
+    # Chapter files reference figures with '../figures/...' so they render
+    # standalone in the source tree. In the staged jail, book.adoc is the
+    # top-level document and figures live alongside it, so any '../' in an
+    # image target escapes the jail and asciidoctor emits a warning.
+    text = text.replace("image::../figures/", "image::figures/")
     path.write_text(text, encoding="utf-8")
 PY
+}
+
+render_math() {
+  # Pre-render every stem:[...] and [stem] block into an SVG under
+  # figures/math/ inside the jail and rewrite the source to reference it.
+  # asciidoctor-pdf's built-in stem handling is unavailable in safe mode
+  # without the mathematical gem, and MathJax is a browser-only runtime,
+  # so precomputing SVGs is the portable path for both HTML and PDF.
+  node "$MATH_RENDERER" "$WORK_DIR"
 }
 
 build_html() {
@@ -231,7 +260,7 @@ manifest = {
     "source_date_epoch": epoch,
     "source_commit": commit,
     "files": files,
-    "diagram_count": len(list(diagrams.glob("*.svg"))),
+    "diagram_count": len(list(diagrams.glob("*.png"))),
 }
 (editions / "manifest.json").write_text(
     json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
@@ -261,6 +290,7 @@ case "$MODE" in
   validate)
     render_diagrams
     prepare_sources
+    render_math
     build_html
     build_pdf
     write_manifest
@@ -273,6 +303,7 @@ case "$MODE" in
   html)
     render_diagrams
     prepare_sources
+    render_math
     build_html
     write_manifest
     publish_publication
@@ -280,6 +311,7 @@ case "$MODE" in
   pdf)
     render_diagrams
     prepare_sources
+    render_math
     build_pdf
     write_manifest
     publish_publication
@@ -287,6 +319,7 @@ case "$MODE" in
   all)
     render_diagrams
     prepare_sources
+    render_math
     build_html
     build_pdf
     write_manifest
