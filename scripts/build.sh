@@ -6,6 +6,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="$ROOT/build"
 WORK_DIR="$ROOT/.build-src"
 BOOK="$ROOT/book.adoc"
+PDF_THEME="$ROOT/themes/engineering-intelligence-theme.yml"
 
 fail() {
   printf 'ERROR: %s\n' "$*" >&2
@@ -35,7 +36,10 @@ fi
 
 [[ -f "$BOOK" ]] || fail "book.adoc was not found"
 [[ -f "$ROOT/scripts/validate_sources.py" ]] || fail "source validator was not found"
-[[ -f "$ROOT/themes/engineering-intelligence-theme.yml" ]] || fail "PDF theme was not found"
+
+if [[ "$MODE" == "pdf" || "$MODE" == "all" || "$MODE" == "validate" ]]; then
+  [[ -f "$PDF_THEME" ]] || fail "PDF theme was not found"
+fi
 
 mkdir -p "$BUILD_DIR"
 rm -rf "$WORK_DIR"
@@ -94,7 +98,11 @@ prepare_sources() {
   cp -R "$ROOT/frontmatter" "$WORK_DIR/frontmatter"
   cp -R "$ROOT/chapters" "$WORK_DIR/chapters"
   cp -R "$ROOT/appendices" "$WORK_DIR/appendices"
-  cp -R "$ROOT/themes" "$WORK_DIR/themes"
+
+  if [[ -d "$ROOT/themes" ]]; then
+    cp -R "$ROOT/themes" "$WORK_DIR/themes"
+  fi
+
   mkdir -p "$WORK_DIR/figures/mermaid"
 
   if compgen -G "$BUILD_DIR/figures/mermaid/*.svg" >/dev/null; then
