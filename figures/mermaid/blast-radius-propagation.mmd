@@ -1,0 +1,20 @@
+flowchart LR
+    CHANGE[Engineering Change] --> LIB[Shared library]
+    CHANGE --> API[API or service]
+    CHANGE --> DATA[Schema or data path]
+
+    LIB --> S1[Dependent service A]
+    LIB --> S2[Dependent service B]
+    API --> CLIENTS[Client applications]
+    DATA --> JOBS[Analytics and batch jobs]
+
+    S1 --> USERS[Users and customers]
+    S2 --> USERS
+    CLIENTS --> USERS
+    JOBS --> REPORTS[Business and regulatory reports]
+
+    USERS --> MONEY[Financial and operational impact]
+    REPORTS --> COMPLIANCE[Compliance and legal impact]
+
+    FLAGS[Feature flags and rollback] -. constrain .-> USERS
+    OBS[Monitoring and detection] -. reduce duration .-> MONEY
