@@ -1,0 +1,394 @@
+= Portfolio and Executive Decision-Making
+
+[abstract]
+Engineering Intelligence ultimately exists to improve choices about where the organization invests money, attention, time, and risk capacity. This chapter explains how change-level evidence can support portfolio decisions without collapsing engineering into a single score. It covers capacity allocation, opportunity cost, option value, scenario analysis, uncertainty, dependency-aware prioritization, constrained optimization, executive scorecards, and decision records.
+
+== From measurement to allocation
+
+Engineering metrics become strategically useful when they inform allocation decisions such as:
+
+* which initiatives should receive scarce engineering capacity;
+* where specialist review capacity should be added;
+* which platform investment will reduce the largest recurring cost;
+* whether to buy, build, replace, or retire an engineering tool;
+* which migrations should be accelerated because delay is expensive;
+* where risk should be accepted, reduced, transferred, or avoided.
+
+The objective is not to maximize throughput in isolation. It is to maximize expected organizational value subject to constraints on capacity, quality, safety, regulation, and strategic direction.
+
+== Portfolio value model
+
+For Engineering Change or initiative stem:[e], define expected net value:
+
+[stem]
+++++
+NV(e) = E[B(e)] - E[C(e)]
+++++
+
+where stem:[B(e)] includes direct business benefit, risk reduction, learning, capability, and option value, while stem:[C(e)] includes human, tool, infrastructure, coordination, delay, quality, and risk costs.
+
+A portfolio decision selects a set of changes:
+
+[stem]
+++++
+\max_{x_e \in \{0,1\}} \sum_e x_e NV(e)
+++++
+
+subject to constraints such as:
+
+[stem]
+++++
+\sum_e x_e r_{e,k} \leq Capacity_k
+++++
+
+for each constrained resource stem:[k].
+
+This formulation is intentionally simplified. Real portfolios include dependencies, mandatory work, correlated risks, staged decisions, and uncertain outcomes.
+
+== Capacity is multidimensional
+
+Headcount is not one interchangeable pool. Capacity includes:
+
+* general implementation effort;
+* specialist domain expertise;
+* review and approval bandwidth;
+* platform and infrastructure capacity;
+* deployment windows;
+* test environments;
+* leadership attention;
+* change absorption capacity in customers and operations.
+
+A plan can be fully funded in nominal engineer-months and still be infeasible because one scarce expertise pool is overcommitted.
+
+== Opportunity cost
+
+The economic cost of choosing one initiative includes the value of the best alternative displaced.
+
+If a security migration consumes the only database specialists for a quarter, the relevant comparison is not just its direct cost. It includes the value of other work delayed by that constraint.
+
+Engineering Intelligence makes opportunity cost visible through queueing, dependency, cost-of-delay, and scarce-attention models.
+
+== Mandatory and strategic work
+
+Not all work is selected by return on investment.
+
+Mandatory classes include:
+
+* regulatory commitments;
+* critical security remediation;
+* contractual obligations;
+* safety and financial-integrity controls;
+* end-of-life migrations;
+* incident recovery.
+
+These should be represented as constraints or minimum commitments rather than assigned artificial financial benefits to force them into a ranking.
+
+Strategic work may also have option value that exceeds its immediate cash return.
+
+== Option value
+
+An engineering investment can create the right, but not the obligation, to pursue future opportunities.
+
+Examples include:
+
+* establishing a reusable platform;
+* removing vendor lock-in;
+* creating a clean data boundary;
+* adding observability before a major migration;
+* building a prototype to resolve uncertainty;
+* introducing an abstraction that enables multiple products.
+
+Option value increases when future uncertainty is high, the decision can be staged, and the investment preserves flexibility.
+
+A small experiment may be valuable because it prevents a much larger mistaken commitment.
+
+== Value of information
+
+The expected value of information is the improvement in decision quality enabled by new evidence.
+
+[stem]
+++++
+EVI = E[V\ after\ information] - E[V\ before\ information] - Cost_{information}
+++++
+
+This framework supports investment in prototypes, instrumentation, experiments, and technical discovery.
+
+Research work should not be judged only by immediate shipped output when its purpose is to reduce uncertainty.
+
+== Dependency-aware portfolios
+
+Initiatives are not independent. One migration may enable several products. A shared platform may reduce future cost across a portfolio. Two changes may compete for the same deployment window.
+
+Represent the portfolio as a directed graph with edges such as `ENABLES`, `BLOCKS`, `REQUIRES`, `COMPETES_FOR`, and `REDUCES_RISK_OF`.
+
+image::../figures/mermaid/portfolio-dependency-map.mmd[Portfolio dependency and constraint map]
+
+Useful measures include:
+
+* prerequisite depth;
+* number and value of enabled changes;
+* shared constrained resources;
+* critical portfolio path;
+* dependency concentration;
+* value unlocked per enabling investment.
+
+== Cost of delay at portfolio level
+
+Portfolio prioritization should account for the shape of delay cost.
+
+A fixed-date regulatory change, an incident remediation, a seasonal launch, and an internal refactor have different value curves.
+
+A useful prioritization input is weighted shortest job first:
+
+[stem]
+++++
+WSJF(e) = \frac{CostOfDelay(e)}{EstimatedDuration(e)}
+++++
+
+It is a heuristic, not a universal truth. It should be adjusted for dependencies, uncertainty, risk, and scarce-resource constraints.
+
+== Uncertainty and distributions
+
+Executive decisions should not rely only on expected values.
+
+For each initiative, report:
+
+* median and expected value;
+* credible interval;
+* downside and upside scenarios;
+* probability of negative net value;
+* probability of missing a deadline;
+* key uncertainty drivers;
+* reversibility and exit options.
+
+Two initiatives with the same expected value may have very different risk profiles.
+
+== Scenario planning
+
+Scenario planning is useful when external conditions dominate precise forecasting.
+
+Scenarios might vary:
+
+* demand and revenue;
+* regulatory timing;
+* vendor pricing;
+* staffing and attrition;
+* AI model capability and cost;
+* infrastructure constraints;
+* acquisition or reorganization;
+* security and reliability environment.
+
+The goal is not to predict one future. It is to identify decisions that remain robust across several plausible futures.
+
+== Monte Carlo portfolio simulation
+
+When duration, cost, benefit, and dependency outcomes are uncertain, simulation can estimate portfolio distributions.
+
+For each run:
+
+. sample initiative cost and duration;
+. sample benefit and failure outcomes;
+. apply dependencies and resource constraints;
+. compute delivery dates and cost of delay;
+. aggregate portfolio value and risk.
+
+Outputs include probability of meeting commitments, distribution of net value, resource bottleneck frequency, and sensitivity to assumptions.
+
+== Risk appetite and constraints
+
+A risk-neutral portfolio maximizes expected value. Real organizations impose constraints on catastrophic loss, compliance, liquidity, operational capacity, and reputation.
+
+Risk policies may include:
+
+* maximum aggregate security exposure;
+* minimum reliability investment;
+* limits on simultaneous irreversible migrations;
+* required contingency capacity;
+* concentration limits for critical vendors or expertise;
+* minimum experimental evidence before scale-up.
+
+These are governance constraints, not metric weights to be traded away silently.
+
+== Portfolio balance
+
+A healthy portfolio often balances:
+
+* customer and growth work;
+* reliability and security;
+* regulatory and mandatory commitments;
+* platform and developer experience;
+* architecture and debt reduction;
+* learning and experimentation;
+* operational maintenance.
+
+The correct balance is contextual. Engineering Intelligence provides evidence about consequences rather than one prescribed percentage.
+
+== Platform investment economics
+
+Platform investments distribute benefit across many future Engineering Changes.
+
+Evaluation should estimate:
+
+* population of affected changes;
+* reduction in active effort, queueing, infrastructure, or failure cost;
+* adoption and migration cost;
+* time until benefit begins;
+* maintenance burden;
+* heterogeneous effects across teams;
+* option value and lock-in.
+
+A platform can have positive average value while harming specialized teams. Preserve subgroup analysis.
+
+== Tool portfolio decisions
+
+Engineering organizations often accumulate overlapping tools.
+
+A tool portfolio review should compare:
+
+* total and marginal cost;
+* actual exposure and adoption;
+* causal effect on effort, quality, and delay;
+* integration and governance cost;
+* vendor risk;
+* switching cost;
+* overlapping capability;
+* long-term strategic fit.
+
+License utilization alone is insufficient. A lightly used specialist tool can be highly valuable, while a widely used tool can create little net benefit.
+
+== Executive scorecards
+
+An executive scorecard should present a compact set of decision-oriented views rather than a universal productivity score.
+
+Recommended views include:
+
+[cols="1,3"]
+|===
+|View |Question
+
+|Portfolio flow
+|Where is value delayed and why?
+
+|Capacity constraints
+|Which expertise, review, platform, or deployment resources are binding?
+
+|Quality and risk
+|Where is expected failure loss or blast radius concentrated?
+
+|Engineering economics
+|Where are money and attention consumed, and what value is created?
+
+|Experiment evidence
+|Which interventions have demonstrated causal benefit?
+
+|Platform health
+|Can the measurement system itself be trusted?
+|===
+
+Each view should expose uncertainty, work mix, and drill-down.
+
+== Avoiding the one-score trap
+
+Combining flow, cost, quality, cognition, and value into one enterprise score creates fragile assumptions and gaming opportunities.
+
+A multi-objective decision view is preferable. Leaders should see trade-offs and constraints rather than a fabricated single ranking.
+
+Composite scores may be useful for narrow routing decisions when components, weights, and policy are explicit.
+
+== Decision records
+
+Material engineering investment decisions should preserve:
+
+* decision and alternatives;
+* expected value and cost distributions;
+* constraints and dependencies;
+* evidence and experiment results;
+* assumptions and external scenarios;
+* dissenting views;
+* selected option;
+* review date and trigger conditions.
+
+A decision record enables later learning without judging past choices solely by realized outcome.
+
+== Forecast calibration
+
+Organizations should compare forecasts with outcomes.
+
+Calibration measures include:
+
+* estimated versus actual duration;
+* predicted versus realized cost;
+* forecast probability versus event frequency;
+* expected versus realized adoption;
+* anticipated versus observed quality effects.
+
+The purpose is to improve forecasting models, not punish uncertainty.
+
+== Portfolio review cadence
+
+Different decisions require different cadences:
+
+* near-real-time for incidents and urgent risk;
+* weekly for operational queues and constrained capacity;
+* monthly for tool and platform economics;
+* quarterly for portfolio allocation and strategic scenarios;
+* event-driven for major external changes.
+
+Do not force all measures into one executive meeting rhythm.
+
+== Common failure modes
+
+=== Ranking by ROI alone
+
+Mandatory work, option value, risk constraints, and dependencies are ignored.
+
+=== Treating capacity as fungible
+
+Plans overcommit scarce expertise while nominal headcount appears sufficient.
+
+=== Double counting value
+
+Time savings, throughput, and delay reduction may represent overlapping benefit.
+
+=== Ignoring uncertainty
+
+Single forecasts create false confidence and brittle commitments.
+
+=== Portfolio theater
+
+Scores are produced after strategic choices have already been made and do not affect allocation.
+
+=== Punishing forecast error
+
+Teams hide uncertainty and produce politically safe estimates.
+
+== Key takeaways
+
+* Portfolio decisions allocate multiple constrained resources, not just headcount or budget.
+* Opportunity cost and cost of delay connect engineering flow to strategic value.
+* Mandatory constraints, option value, and learning value should not be forced into simplistic ROI rankings.
+* Dependencies and shared bottlenecks require graph-aware portfolio analysis.
+* Decisions should use distributions, scenarios, and risk constraints rather than point forecasts alone.
+* Executive scorecards should preserve trade-offs and avoid one universal score.
+* Decision records and forecast calibration turn portfolio choices into organizational learning.
+
+== Open questions
+
+* How should option value be estimated consistently for platform and architecture work?
+* Which portfolio optimization methods remain understandable enough for executive use?
+* How should correlated technical and business risks be represented?
+* What evidence is sufficient to scale an intervention from experiment to enterprise policy?
+* How can organizations reward honest uncertainty in planning?
+
+== Implementation checklist
+
+. Define value, cost, risk, and mandatory-work classes.
+. Model scarce capacity by expertise and operational constraint.
+. Build a temporal dependency graph across initiatives and Engineering Changes.
+. Use cost-of-delay curves and scenario ranges.
+. Represent forecasts as distributions with key sensitivity drivers.
+. Add option and information value for staged investments.
+. Maintain executive views for flow, constraints, risk, economics, experiments, and data quality.
+. Avoid universal productivity or portfolio scores.
+. Record material decisions and review triggers.
+. Calibrate forecasts against realized outcomes.
