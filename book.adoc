@@ -43,4 +43,6 @@ include::chapters/11-engineering-metrics-catalogue.adoc[]
 
 include::chapters/12-experiment-playbooks.adoc[]
 
+include::chapters/13-governance-ethics-and-adoption.adoc[]
+
 // Planned chapters are added here as they are written.
