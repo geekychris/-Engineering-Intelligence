@@ -86,4 +86,7 @@ include::appendices/h-glossary-and-controlled-vocabulary.adoc[]
 [appendix]
 include::appendices/i-evidence-base-and-bibliography.adoc[]
 
+[appendix]
+include::appendices/j-maturity-assessment-and-adoption-roadmap.adoc[]
+
 // Additional appendices are added here as they are written.
