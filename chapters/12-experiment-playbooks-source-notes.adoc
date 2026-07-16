@@ -1,0 +1,199 @@
+== Research foundations and source notes
+
+The experiment playbooks in this chapter operationalize the causal-inference foundations introduced earlier. They draw on randomized experiments, quasi-experimental design, online experimentation, preregistration, information retrieval, and reproducibility.
+
+=== Randomized evaluation
+
+The potential-outcomes tradition provides the core framework for estimating causal effects. See <<rubin1974>>, <<holland1986>>, <<imbens2015>>, and <<hernan2020>>.
+
+The playbooks therefore require:
+
+* a declared estimand;
+* an explicit assignment unit;
+* a credible comparator;
+* auditable randomization;
+* exposure and compliance tracking;
+* analysis consistent with the assignment design.
+
+Randomization improves comparability in expectation, but it does not remove problems caused by missing outcomes, spillover, treatment drift, or poor measurement.
+
+=== Practical online experimentation
+
+The operating discipline for trustworthy experiments is informed by <<kohavi2020>>.
+
+This supports playbook requirements for:
+
+* sample-ratio and assignment checks;
+* primary outcomes and guardrails;
+* data-quality monitoring;
+* predeclared stopping rules;
+* treatment-version control;
+* reproducible analysis;
+* decision follow-up.
+
+Engineering experiments should not rely on a dashboard trend and a post hoc explanation.
+
+=== Quasi-experimental alternatives
+
+When randomization is infeasible, the playbooks use methods such as:
+
+* difference-in-differences;
+* regression discontinuity;
+* interrupted time series;
+* matched comparison groups;
+* synthetic controls;
+* instrumental variables.
+
+The methodological foundations are described in <<shadish2002>>, <<angrist2009>>, <<imbens2015>>, and <<hernan2020>>.
+
+Each method relies on assumptions that must be made explicit and tested where possible. A before-and-after comparison alone is not a causal design.
+
+=== Preregistration
+
+Preregistration helps distinguish confirmatory analysis from exploration. See <<nosek2018>>.
+
+The playbooks therefore record before analysis:
+
+* hypotheses;
+* estimands;
+* outcomes and guardrails;
+* eligibility;
+* exclusions;
+* covariates;
+* missing-data handling;
+* subgroup analysis;
+* stopping and decision rules.
+
+Exploratory work remains valuable, but it should be labeled as such.
+
+=== Power and decision relevance
+
+Power analysis should be based on the smallest effect that would change the decision.
+
+Engineering studies often require simulation because outcomes are clustered, skewed, rare, delayed, or heterogeneous.
+
+A study that is underpowered for a decision-relevant effect should not interpret a nonsignificant result as proof of no effect.
+
+=== Cluster and switchback designs
+
+Teams, repositories, reviewers, and time windows may be more appropriate assignment units than individuals.
+
+Clustered designs must account for within-cluster correlation. Switchback designs must account for:
+
+* time effects;
+* carryover;
+* washout;
+* shared capacity;
+* assignment-window integrity.
+
+These design concerns follow the general experimental principles in <<shadish2002>>, <<imbens2015>>, and <<kohavi2020>>.
+
+=== Noninferiority and equivalence
+
+Some playbooks ask whether a cheaper or faster process is not unacceptably worse than the current process.
+
+That question requires a predeclared noninferiority margin rather than a failed superiority test.
+
+Equivalence designs are appropriate when the decision depends on demonstrating that differences lie within acceptable positive and negative bounds.
+
+=== AI review and finding evaluation
+
+AI review experiments use precision and recall as defined in standard information retrieval. See <<manning2008>>.
+
+Rank-sensitive evaluation can use NDCG when high-value findings should appear early. See <<jarvelin2002>>.
+
+The playbooks also require:
+
+* duplicate handling;
+* severity and partial relevance;
+* adjudication procedures;
+* reviewer disagreement analysis;
+* false-positive handling effort;
+* downstream defect and rework evidence.
+
+Finding quality is not equivalent to product value, so these metrics remain mechanisms within a broader outcome bundle.
+
+=== AI coding-assistant playbooks
+
+The coding-assistant playbooks are informed by empirical studies in <<peng2023>>, <<vaithilingam2022>>, and <<barke2023>>.
+
+These studies support measuring more than completion speed. Relevant outcomes include:
+
+* validation effort;
+* correctness;
+* comprehension;
+* rework;
+* downstream quality;
+* net attention effect;
+* long-term maintainability.
+
+Voluntary adoption should be treated as a source of selection bias.
+
+=== Repository-level agent evaluation
+
+Agent playbooks use repository-level benchmark evidence such as <<jimenez2024>> as one capability layer.
+
+Production readiness requires additional evidence for:
+
+* permission boundaries;
+* tool-call behavior;
+* human oversight;
+* rollback;
+* operational consequence;
+* cost;
+* long-term maintainability.
+
+Benchmark success is not sufficient evidence for autonomous production authority.
+
+=== Architecture and workflow interventions
+
+Architecture, review-policy, CI, and platform interventions are often evaluated through phased or quasi-experimental designs.
+
+Relevant methods include:
+
+* staggered rollout;
+* matched repositories;
+* interrupted time series;
+* difference-in-differences;
+* synthetic controls.
+
+The playbooks require mechanism measures and guardrails because an intervention can improve one stage while moving delay or risk elsewhere.
+
+=== Reproducibility
+
+The reproducibility concerns illustrated by <<open-science2015>> and the FAIR principles in <<wilkinson2016>> support retaining:
+
+* study protocol;
+* assignment table;
+* treatment configuration;
+* source snapshots or durable references;
+* metric versions;
+* analysis code;
+* generated outputs;
+* deviations and corrections.
+
+A study result should be reproducible even after dashboards, models, or organizational structures change.
+
+=== Governance and ethics
+
+Experiments involving detailed practitioner data or AI systems require purpose limitation, privacy controls, and professional accountability.
+
+Relevant foundations include <<nist2020-privacy>>, <<nist2023-airmf>>, <<nist2024-genai>>, and <<acm2018-ethics>>.
+
+The playbooks therefore require risk review, minimum necessary data, transparent treatment, and explicit restrictions on unsupported individual employment use.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* reusable experiment playbooks organized around Engineering Change outcomes;
+* explicit linkage among assignment, exposure, human disposition, and downstream consequence;
+* machine-treatment provenance across model, prompt, retrieval, tools, and configuration;
+* experiment-readiness gates tied to data-quality and governance floors;
+* attention and economic outcomes as first-class experimental measures;
+* treatment-version drift controls;
+* value-realization follow-up after study completion;
+* linked study, evidence, metric, and decision records;
+* replication across Engineering Change classes before enterprise-wide policy.
+
+These playbooks should evolve as evidence accumulates and should preserve null, negative, and contradictory findings rather than only successful interventions.
