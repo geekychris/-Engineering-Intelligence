@@ -1,0 +1,13 @@
+flowchart TD
+    E[Raw events] --> O[Normalized observations]
+    O --> F[Contextual features]
+    F --> M[Decision-oriented metrics]
+    M --> MD[Explanatory and predictive models]
+    MD --> D[Engineering decisions]
+    D --> X[Experiments and interventions]
+    X --> E
+
+    Q[Data quality, provenance, and versioning] -. governs .-> O
+    Q -. governs .-> F
+    Q -. governs .-> M
+    Q -. governs .-> MD
