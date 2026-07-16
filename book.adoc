@@ -71,6 +71,8 @@ include::chapters/12-experiment-playbooks-source-notes.adoc[]
 
 include::chapters/13-governance-ethics-and-adoption.adoc[]
 
+include::chapters/13-governance-ethics-and-adoption-source-notes.adoc[]
+
 include::chapters/14-portfolio-and-executive-decision-making.adoc[]
 
 include::chapters/15-implementation-and-rollout.adoc[]
