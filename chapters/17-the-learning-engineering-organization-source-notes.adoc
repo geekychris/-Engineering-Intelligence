@@ -1,0 +1,290 @@
+== Research foundations and source notes
+
+The learning-organization framework in this chapter draws on organizational learning, systems thinking, developer experience, socio-technical design, reliable delivery, causal evaluation, and reproducible evidence. It extends those foundations into an operating model where engineering decisions, interventions, outcomes, and corrections become cumulative institutional knowledge.
+
+=== Single-loop and double-loop learning
+
+Argyris and Schön distinguish single-loop learning, which corrects action within existing assumptions, from double-loop learning, which questions the governing assumptions themselves. See <<argyris1978>>.
+
+This distinction is central to the chapter.
+
+Single-loop learning asks:
+
+* Did the intervention meet its target?
+* Was the rollout executed correctly?
+* Which operational parameter should change?
+
+Double-loop learning asks:
+
+* Was the original problem framed correctly?
+* Was the metric valid for the decision?
+* Did the incentive structure create distortion?
+* Should the policy or architectural assumption be replaced?
+
+Engineering Intelligence becomes organizational learning only when both loops are supported.
+
+=== Systems thinking
+
+Senge’s learning-organization work emphasizes systems thinking, shared learning, and the ability to understand feedback across interconnected parts of an organization. See <<senge1990>>.
+
+The chapter therefore rejects isolated explanations of engineering performance.
+
+A change in one area may affect:
+
+* queueing elsewhere;
+* specialist attention;
+* architectural coupling;
+* review quality;
+* incident exposure;
+* practitioner trust;
+* economic realization.
+
+Learning requires tracing these feedback relationships rather than rewarding local optimization alone.
+
+=== Learning from delivery systems
+
+Research on high-performing software delivery provides evidence that technical practices, management systems, culture, and architecture interact. See <<forsgren2018>>.
+
+This supports the chapter’s treatment of engineering performance as an organizational capability rather than the sum of individual output.
+
+Relevant learning domains include:
+
+* deployment and recovery;
+* work in progress;
+* review and validation;
+* architecture;
+* platform reliability;
+* team interaction;
+* governance;
+* AI-assisted work.
+
+=== Developer experience as learning evidence
+
+The SPACE framework and DevEx research emphasize multidimensional productivity, feedback loops, cognitive load, and flow. See <<forsgren2021-space>> and <<noda2023-devex>>.
+
+The chapter therefore treats practitioner experience as evidence about the engineering system.
+
+Repeated reports of slow feedback, ambiguous ownership, noisy automation, or excessive validation burden can reveal structural constraints not visible in throughput metrics.
+
+Practitioner evidence should be combined with operational and outcome data rather than dismissed as subjective noise.
+
+=== Socio-technical learning
+
+Conway’s Law and socio-technical congruence research show that technical and organizational structures are interdependent. See <<conway1968>> and <<cataldo2006>>.
+
+Distributed-development research further demonstrates the role of coordination boundaries and organizational distance. See <<herbsleb2007>>.
+
+The chapter therefore preserves learning about:
+
+* technical dependencies;
+* ownership boundaries;
+* communication paths;
+* decision rights;
+* handoffs;
+* organizational change.
+
+A technical intervention may fail because the organizational system surrounding it remains unchanged.
+
+=== Team cognitive load
+
+Team Topologies emphasizes limiting team cognitive load and designing interaction modes that support flow. See <<skelton2019>>.
+
+The chapter extends this into organizational learning by tracking where teams repeatedly require knowledge outside their stable cognitive boundary.
+
+Recurring coordination, escalation, or specialist dependency may indicate:
+
+* poor service boundaries;
+* insufficient platform capability;
+* fragmented ownership;
+* missing documentation;
+* inappropriate team design.
+
+These patterns should trigger structural learning rather than blame.
+
+=== Learning through experiments
+
+Randomized and quasi-experimental methods provide a disciplined way to learn whether interventions cause outcomes. See <<shadish2002>>, <<imbens2015>>, <<hernan2020>>, and <<kohavi2020>>.
+
+The chapter therefore embeds experiments into normal engineering governance.
+
+A learning organization preserves:
+
+* the original hypothesis;
+* assignment and exposure;
+* treatment version;
+* outcomes and guardrails;
+* null and negative findings;
+* later replication;
+* final decision.
+
+The experiment is not complete when the statistical analysis ends. It is complete when the organization updates policy, records what it learned, and follows realized outcomes.
+
+=== Learning from incidents
+
+SRE practices treat incidents as opportunities to improve systems and operational capability. See <<beyer2016>> and <<beyer2018>>.
+
+Systems-oriented incident analysis also cautions against reducing complex failure to one visible human action. See <<dekker2014>>.
+
+The chapter therefore links incidents to:
+
+* Engineering Changes;
+* architecture and dependencies;
+* decision context;
+* review and validation;
+* rollout controls;
+* observability;
+* recovery behavior;
+* organizational constraints.
+
+This creates reusable knowledge about failure mechanisms rather than isolated postmortem documents.
+
+=== Learning from weak signals
+
+High-reliability organizing emphasizes sensitivity to operations, attention to weak signals, and reluctance to simplify. See <<weick2007>>.
+
+The chapter therefore treats the following as learning evidence:
+
+* near misses;
+* repeated manual safeguards;
+* unusual escalation;
+* practitioner concern;
+* policy overrides;
+* corrections;
+* model disagreement;
+* repeated workaround behavior.
+
+These signals may reveal fragility before a severe incident occurs.
+
+=== Reproducible organizational memory
+
+Reproducibility concerns illustrated by <<open-science2015>> and FAIR principles in <<wilkinson2016>> support retaining enough evidence to reconstruct important findings.
+
+The chapter therefore connects:
+
+* source evidence;
+* metric versions;
+* models;
+* experiments;
+* decisions;
+* corrections;
+* realized outcomes.
+
+Organizational memory should not depend solely on slide decks, personal recollection, or current dashboards.
+
+=== Knowledge as versioned evidence
+
+Knowledge changes as evidence, systems, and organizational context change.
+
+The chapter therefore treats knowledge records as versioned objects containing:
+
+* claim;
+* supporting evidence;
+* causal status;
+* applicable context;
+* uncertainty;
+* owner;
+* review date;
+* contradictions;
+* superseding evidence.
+
+This is an original Engineering Intelligence construct.
+
+A conclusion should be updated or retired when its treatment, population, metric, or context changes materially.
+
+=== Decision review
+
+A learning organization evaluates both outcomes and reasoning quality.
+
+A decision can be reasonable and still lead to a poor outcome under uncertainty. A good outcome can also result from weak reasoning or luck.
+
+The chapter therefore reviews:
+
+* what was known at decision time;
+* assumptions;
+* uncertainty;
+* alternatives;
+* expected mechanisms;
+* actual outcomes;
+* unexpected consequences;
+* which beliefs should change.
+
+This supports better future decisions without hindsight-based blame.
+
+=== Null and negative knowledge
+
+Null, negative, and contradictory findings are valuable organizational assets.
+
+They can reveal:
+
+* interventions that do not generalize;
+* hidden costs;
+* invalid metrics;
+* treatment-version sensitivity;
+* weak causal mechanisms;
+* implementation dependence;
+* boundary conditions.
+
+The chapter therefore requires retaining unsuccessful experiments and abandoned approaches in the evidence base.
+
+=== Learning cadence
+
+Learning should occur at multiple cadences:
+
+* operational review for immediate system state;
+* experiment review for intervention evidence;
+* metric review for validity and gaming;
+* architecture review for recurring change cost;
+* portfolio review for realized value;
+* scientific review for replication and cumulative evidence.
+
+These cadences prevent all learning from being compressed into annual planning or incident response.
+
+=== Governance of learning
+
+Learning systems can become performative if teams are rewarded for producing positive findings or polished narratives.
+
+Campbell’s Law and Goodhart’s Law provide the relevant warning. See <<campbell1979>> and <<goodhart1984>>.
+
+The chapter therefore recommends:
+
+* preserving negative evidence;
+* separating study quality from result direction;
+* rewarding correction;
+* recording uncertainty;
+* retiring invalid metrics;
+* prohibiting punitive use of exploratory findings.
+
+=== Economic learning
+
+Cost-benefit analysis provides the basis for comparing expected and realized value. See <<boardman2018>>.
+
+Productivity-realization research in <<brynjolfsson1993>> and <<brynjolfsson2017>> supports examining complementary organizational change and delayed benefits.
+
+The chapter therefore tracks:
+
+* expected value;
+* released capacity;
+* redeployment;
+* avoided cost;
+* realized operational or customer value;
+* forecast error;
+* reasons for divergence.
+
+This turns business cases into testable organizational hypotheses.
+
+=== Original Engineering Intelligence contributions
+
+The following are original synthesis or domain-specific extensions proposed by this book:
+
+* an evidence graph connecting Engineering Changes, metrics, models, experiments, decisions, and outcomes;
+* versioned organizational knowledge records with applicability and review dates;
+* decision review that separates reasoning quality from outcome luck;
+* systematic retention of null, negative, contradictory, and superseded findings;
+* learning cadences spanning operations, metrics, experiments, architecture, portfolio, and science;
+* correction and dispute treated as positive learning signals;
+* treatment-version and context boundaries attached to organizational conclusions;
+* business cases treated as hypotheses subject to value-realization review;
+* practitioner evidence integrated with telemetry and causal analysis;
+* double-loop learning applied to metrics, policies, architecture, and governance.
+
+These constructs should be evaluated through reuse of prior evidence, reduction of repeated failed initiatives, forecast calibration, correction quality, cross-team transfer of valid findings, and the organization’s ability to revise deeply held assumptions.
