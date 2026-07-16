@@ -1,0 +1,526 @@
+= Experiment Playbooks
+
+[abstract]
+The previous chapters describe how to measure engineering systems and estimate causal effects. This chapter turns those methods into reusable experiment playbooks. Each playbook defines the intervention, mechanism, unit of assignment, outcomes, guardrails, instrumentation, external factors, analysis method, and decision rule. The examples cover AI review, merge queues, CI acceleration, review routing, pull-request slicing, repository topology, context restoration, and autonomous agents.
+
+== How to use a playbook
+
+A playbook is not a fixed recipe. It is a structured starting point that forces the experiment owner to make assumptions explicit.
+
+Every playbook contains:
+
+* decision and hypothesis;
+* treatment and control;
+* assignment and analysis units;
+* eligibility and exclusions;
+* primary outcome;
+* guardrails;
+* treatment exposure;
+* external factors;
+* statistical design;
+* minimum practical effect;
+* stopping and decision rules;
+* interpretation risks.
+
+image::../figures/mermaid/experiment-playbook-template.mmd[Experiment playbook structure]
+
+== Playbook 1: AI pull-request reviewer
+
+=== Decision
+
+Should the organization adopt, replace, or expand an AI pull-request reviewer?
+
+=== Mechanism
+
+The reviewer may reduce human search and verification effort, find defects earlier, and improve consistency. It may also create false positives, duplication, validation burden, and automation bias.
+
+=== Treatment
+
+A precisely versioned model, prompt, repository index, severity policy, comment-ranking policy, and user interface.
+
+=== Assignment
+
+Engineering Change or repository-cluster assignment is preferable when reviewers and codebases are shared. Pull-request assignment is possible for low-contamination environments.
+
+=== Primary outcomes
+
+Recommended primary outcome:
+
+[stem]
+++++
+QualityAdjustedReviewEffort = HumanReviewMinutes + ValidationMinutes + ExpectedFailureCostRate
+++++
+
+Alternative primary outcomes include severe-finding recall at a fixed validation budget or cost per accepted Engineering Change.
+
+=== Guardrails
+
+* severe escaped defects;
+* rollback rate;
+* security findings;
+* cognitive reload;
+* author understanding;
+* reviewer learning;
+* comment latency;
+* trust calibration.
+
+=== Instrumentation
+
+Capture AI findings, ranking, confidence, files inspected, human views, action type, duplicate status, validation effort, code changes, and downstream outcomes.
+
+=== Analysis
+
+Use cluster-randomized or staggered rollout with hierarchical effects by language, complexity, repository type, and finding category.
+
+=== Decision rule
+
+Adopt only if the minimum practical reduction in quality-adjusted effort is achieved and severe-quality guardrails remain within tolerance.
+
+== Playbook 2: ranked versus unranked AI findings
+
+=== Hypothesis
+
+Showing the most important findings first improves severe-finding action and reduces validation burden.
+
+=== Treatment
+
+Ranked top-k findings with expandable remainder.
+
+=== Control
+
+Chronological or unranked full finding list.
+
+=== Primary outcomes
+
+* human validation minutes;
+* severe-finding action rate;
+* NDCG or precision at k;
+* time to first high-value action.
+
+=== Risks
+
+Ranking can hide valuable low-confidence findings. Users may inspect only visible items. Track severe recall across the full set and interface expansion behavior.
+
+== Playbook 3: merge queue introduction
+
+=== Decision
+
+Should a repository or portfolio adopt a merge queue?
+
+=== Mechanism
+
+A merge queue may reduce broken-main events, integration rework, and redundant CI, but can increase queueing latency and reduce author control.
+
+=== Assignment
+
+Repository cluster or switchback by time block. Avoid individual assignment because the queue is shared infrastructure.
+
+=== Primary outcome
+
+Quality-adjusted time from approval to integrated mainline state.
+
+=== Guardrails
+
+* failed mainline builds;
+* rollback and revert;
+* queue age;
+* urgent-change latency;
+* CI cost;
+* author context recovery.
+
+=== External factors
+
+Release freezes, high-volume launches, CI outages, and repository migrations should be recorded.
+
+=== Analysis
+
+Switchback analysis is useful when the queue can be enabled and disabled safely. Otherwise use staggered rollout with repository-level matching.
+
+== Playbook 4: CI acceleration
+
+=== Decision
+
+Does a faster CI configuration create sufficient engineering value to justify infrastructure cost?
+
+=== Treatments
+
+Examples include larger runners, test sharding, improved caching, selective testing, speculative execution, or remote build execution.
+
+=== Primary outcome
+
+Quality-adjusted critical-path CI latency.
+
+=== Economic model
+
+[stem]
+++++
+NetValue = Value_{delay\ reduced} + HumanContextCost_{avoided} - InfrastructureCost_{added} - QualityRisk_{change}
+++++
+
+=== Guardrails
+
+* flaky-test rate;
+* missed defect rate;
+* cache correctness;
+* resource saturation;
+* queue spillover;
+* downstream rework.
+
+=== Assignment
+
+Job, pull-request, repository, or time-block assignment depending on shared-cache and capacity interference.
+
+=== Interpretation risk
+
+Reducing job duration may not reduce Engineering Change lead time if review or deployment remains the true constraint.
+
+== Playbook 5: risk-based specialist review
+
+=== Decision
+
+Can scarce specialist attention be routed only to changes likely to benefit from it?
+
+=== Treatment
+
+A risk model routes high-risk changes to specialist review and lower-risk changes to standard review plus automated controls.
+
+=== Control
+
+Universal specialist review or the current policy.
+
+=== Primary outcome
+
+Quality-adjusted release time and specialist attention consumed.
+
+=== Guardrails
+
+* severe false negatives;
+* migration, security, or compliance incidents;
+* rollback;
+* model calibration by subgroup;
+* unresolved author uncertainty.
+
+=== Design
+
+Randomize within a safe risk band. For policy thresholds, use regression discontinuity around the cutoff. Retain mandatory review for categories where experimentation is inappropriate.
+
+== Playbook 6: pull-request size guidance
+
+=== Decision
+
+Does encouraging smaller pull requests improve flow and review quality?
+
+=== Mechanism
+
+Smaller changes may reduce review burden and integration risk, but excessive fragmentation can increase coordination, sequencing, and context switching.
+
+=== Treatment
+
+Guidance, tooling, or workflow that encourages a target size or stacked changes.
+
+=== Unit of analysis
+
+Engineering Change, not individual pull request. Otherwise one intent split into ten pull requests can appear artificially productive.
+
+=== Primary outcomes
+
+* Engineering Change lead time;
+* total human review effort;
+* coordination and handoff count;
+* rework and defect outcomes;
+* critical-path duration.
+
+=== Heterogeneous effects
+
+Estimate by repository topology, deployment coupling, team familiarity, and change complexity.
+
+=== Decision rule
+
+Do not adopt a universal line-count threshold. Identify ranges and contexts where smaller slices improve total outcomes.
+
+== Playbook 7: monorepo or repository consolidation
+
+=== Decision
+
+Would consolidating repositories reduce coordination and build friction enough to justify migration cost and new coupling?
+
+=== Intervention
+
+A selected portfolio is migrated or reorganized into a shared repository, build system, or release structure.
+
+=== Design
+
+Randomization is rarely feasible. Use matched comparison groups, synthetic controls, and interrupted time series with long pre- and post-periods.
+
+=== Primary outcomes
+
+* Engineering Change repository spread;
+* coordination cost;
+* critical-path duration;
+* build latency;
+* ownership boundary count;
+* defect and rollback outcomes.
+
+=== Guardrails
+
+* build-system complexity;
+* access-control limitations;
+* repository-scale performance;
+* blast radius;
+* team autonomy;
+* migration disruption.
+
+=== External factors
+
+Reorganizations and platform migrations are likely confounders and must be recorded explicitly.
+
+== Playbook 8: automated context restoration
+
+=== Hypothesis
+
+An AI-generated resumption package reduces the cognitive recovery required after a change has been inactive.
+
+=== Treatment
+
+On return, the author receives a structured summary of intent, files changed, unresolved comments, decisions, CI status, dependent changes, and modifications since last activity.
+
+=== Control
+
+Standard pull-request and issue interface.
+
+=== Eligibility
+
+Changes inactive beyond a declared period and later resumed by the same or a new engineer.
+
+=== Primary outcome
+
+Time to first substantive productive action after resumption.
+
+=== Guardrails
+
+* incorrect-summary rate;
+* missed unresolved issue;
+* downstream rework;
+* over-reliance;
+* validation time.
+
+=== Instrumentation
+
+Capture resumption trigger, summary generation, views, navigation, first productive action, and corrective behavior.
+
+== Playbook 9: human-first versus AI-first review
+
+=== Decision
+
+Should AI findings be shown before or after an independent human review?
+
+=== Mechanisms
+
+AI-first may reduce human effort and direct attention. Human-first may reduce automation bias and provide a cleaner measure of AI incremental value.
+
+=== Treatment arms
+
+. AI-first review.
+. Human-first review with AI revealed afterward.
+. Parallel independent review.
+
+=== Outcomes
+
+* independent human defect discovery;
+* total combined recall;
+* duplication;
+* validation effort;
+* severe escapes;
+* review latency;
+* learning effects.
+
+=== Design
+
+Randomize Engineering Changes, stratified by complexity and reviewer expertise. Measure carryover as reviewers learn from repeated AI exposure.
+
+== Playbook 10: autonomous maintenance agent
+
+=== Decision
+
+Can an agent safely complete bounded maintenance tasks with less human effort?
+
+=== Eligible tasks
+
+Dependency upgrades, mechanical migrations, formatting, test generation, or configuration updates with deterministic validation and easy rollback.
+
+=== Treatment
+
+Agent plans, edits, tests, and opens a pull request under constrained permissions.
+
+=== Control
+
+Human-executed task with equivalent acceptance criteria.
+
+=== Primary outcome
+
+Accepted tasks per unit of quality-adjusted human attention.
+
+=== Guardrails
+
+* unrelated-file modifications;
+* failed or incomplete tests;
+* security or license violations;
+* rollback;
+* hidden side effects;
+* escalation rate;
+* reviewer validation burden.
+
+=== Attribution
+
+Measure full agent runtime and infrastructure cost, human supervision, corrections, and downstream rework.
+
+== Playbook 11: branch-protection policy
+
+=== Decision
+
+Does requiring additional approvals or checks reduce expected failure loss enough to justify delay?
+
+=== Intervention
+
+Add or remove one policy element at a time where feasible: approval count, code-owner review, test suite, security scan, or signed commit.
+
+=== Primary outcome
+
+[stem]
+++++
+NetPolicyValue = ExpectedFailureLoss_{avoided} - HumanCost - DelayCost - InfrastructureCost
+++++
+
+=== Design
+
+Repository-cluster randomization for low-risk populations, regression discontinuity for risk-based policy, or matched staggered rollout.
+
+=== Guardrails
+
+Severe incidents and compliance constraints may impose non-negotiable minima.
+
+== Playbook 12: review-queue prioritization
+
+=== Hypothesis
+
+Prioritizing review requests by expected cost of delay and aging improves portfolio value without starving routine work.
+
+=== Treatment
+
+A priority queue using cost-of-delay class, age, risk, and specialist requirements.
+
+=== Control
+
+FIFO, manual selection, or current practice.
+
+=== Outcomes
+
+* cost-of-delay-weighted queue time;
+* tail latency;
+* starvation rate;
+* reviewer utilization;
+* severe-quality outcomes;
+* cognitive switching.
+
+=== Design
+
+Switchback by reviewer pool or time block. Account for strategic behavior in priority labels.
+
+== External-factor control checklist
+
+For every playbook, record:
+
+* release and planning cycles;
+* holidays and staffing changes;
+* incidents and outages;
+* reorganizations;
+* new tools or model releases;
+* repository migrations;
+* policy and compliance changes;
+* changes in work mix;
+* vendor or platform failures.
+
+External factors should be scoped to affected entities and time windows rather than recorded as global notes.
+
+== Pre-experiment readiness
+
+Do not launch until:
+
+. treatment and control are technically stable;
+. assignment and exposure are instrumented;
+. primary outcomes and guardrails are available;
+. baseline variance and power are understood;
+. security, legal, and ethical reviews are complete;
+. stopping and rollback rules are defined;
+. concurrent interventions are registered.
+
+== Post-experiment decision record
+
+A decision record should include:
+
+* estimated causal effects and intervals;
+* practical significance;
+* guardrail status;
+* heterogeneous effects;
+* external-factor sensitivity;
+* economic interpretation;
+* limitations;
+* adopt, revise, reject, or extend decision;
+* rollout and monitoring plan.
+
+The result of a good experiment is organizational knowledge, even when the intervention fails.
+
+== Common failure modes
+
+=== Evaluating the wrong unit
+
+Pull-request metrics are used for interventions whose effects occur across the Engineering Change.
+
+=== Changing several mechanisms at once
+
+A new model, prompt, UI, and policy are introduced together, preventing attribution.
+
+=== Missing exposure
+
+Assignment is recorded, but actual use is unknown.
+
+=== Short observation windows
+
+Immediate speed is measured while quality, learning, and operational effects arrive later.
+
+=== Ignoring negative or subgroup effects
+
+A positive average hides harm in high-risk repositories or novice populations.
+
+=== No decision threshold
+
+The experiment reaches significance but the improvement is too small to justify migration.
+
+== Key takeaways
+
+* Experiment playbooks make mechanisms, assumptions, and decision rules explicit.
+* The Engineering Change is usually the correct analysis unit for workflow interventions.
+* Primary outcomes should represent quality-adjusted system value, not local activity.
+* Treatment exposure, external factors, guardrails, and heterogeneous effects are essential.
+* Every experiment should end with a durable decision and learning record.
+
+== Open questions
+
+* Which engineering interventions are most amenable to safe randomization?
+* How should long-term learning and skill outcomes be incorporated into short operational experiments?
+* What methods best evaluate rare severe failures during limited rollouts?
+* How can experiment playbooks be standardized without encouraging mechanical use?
+* Which interventions produce the largest value per unit of experimentation effort?
+
+== Implementation checklist
+
+. Select experiments tied to material decisions and plausible mechanisms.
+. Use the playbook template to register treatment, units, outcomes, guardrails, and external factors.
+. Prefer quality-adjusted Engineering Change outcomes.
+. Instrument assignment and actual exposure independently.
+. Predeclare practical thresholds and stopping rules.
+. Analyze heterogeneous effects and contamination.
+. Preserve economic assumptions and uncertainty.
+. Record decisions and rollout actions.
+. Reuse successful designs while recalibrating for local context.
+. Treat failed interventions as valuable evidence.
