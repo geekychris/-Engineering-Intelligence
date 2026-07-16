@@ -1,0 +1,11 @@
+flowchart LR
+    CTX[Repository, issue, policy, and retrieved context] --> MODEL[Model and prompt version]
+    MODEL --> OUT[Suggestion, finding, patch, or plan]
+    OUT --> HUMAN[Human validation and decision]
+    HUMAN --> ART[Accepted artifact or rejection]
+    ART --> RESULT[Build, deployment, quality, and operational outcome]
+
+    META[Tokens, latency, cost, permissions, and tool calls] -. provenance .-> MODEL
+    META -. provenance .-> OUT
+    OUT -. linked to .-> EC[Engineering Change]
+    RESULT -. feedback .-> EVAL[Evaluation and model monitoring]
