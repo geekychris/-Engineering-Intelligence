@@ -13,7 +13,19 @@ permissions:
   contents: read
 
 jobs:
+  source-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Validate AsciiDoc source graph
+        run: python3 scripts/validate_sources.py
+
   build:
+    needs: source-validation
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
