@@ -59,6 +59,8 @@ include::chapters/09-complexity-and-blast-radius-source-notes.adoc[]
 
 include::chapters/10-engineering-intelligence-platform.adoc[]
 
+include::chapters/10-engineering-intelligence-platform-source-notes.adoc[]
+
 include::chapters/11-engineering-metrics-catalogue.adoc[]
 
 include::chapters/12-experiment-playbooks.adoc[]
