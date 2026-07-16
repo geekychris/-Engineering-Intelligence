@@ -1,0 +1,15 @@
+flowchart LR
+    A[Construct] --> B[Mechanism]
+    B --> C[Observable indicators]
+    C --> D[Measurement model]
+    D --> E[Hypothesis]
+    E --> F[Study design]
+    F --> G[Analysis and uncertainty]
+    G --> H[Decision implication]
+    H --> I[Replication and challenge]
+    I --> J[Theory revision]
+    J --> A
+
+    Q[Data quality, validity, ethics, and governance] -. constrains .-> C
+    Q -. constrains .-> F
+    Q -. constrains .-> H
