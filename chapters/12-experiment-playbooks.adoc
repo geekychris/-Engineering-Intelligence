@@ -454,6 +454,8 @@ Do not launch until:
 . stopping and rollback rules are defined;
 . concurrent interventions are registered.
 
+Skipping any of these produces a result that reads like evidence but decays under review. Treatment instability confounds effects with rollout artifacts; missing exposure instrumentation forces an intent-to-treat interpretation onto a study intended to measure engagement; ambiguous stopping rules invite peeking. The cost of a delayed launch is almost always smaller than the cost of a study that has to be redone once these gaps are discovered mid-analysis.
+
 == Post-experiment decision record
 
 A decision record should include:

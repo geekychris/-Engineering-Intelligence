@@ -439,6 +439,8 @@ A publication-quality evaluation should therefore report:
 * inference and platform costs;
 * long-term effects after novelty and learning periods.
 
+The point-estimate of $650,000 is a starting hypothesis, not a conclusion. Reported in isolation it is nearly indistinguishable from an educated guess; reported with the accompaniments above, it becomes a claim that other engineering leaders can inspect, replicate, or dispute. Chapter 6 develops the causal machinery required to turn such an evaluation into evidence that survives contact with an audit or a change of leadership.
+
 == Worked example: a required specialist approval
 
 A platform team proposes requiring a database specialist to approve every schema-changing pull request.
@@ -543,6 +545,8 @@ Economic analyses should state explicitly whether they use:
 * fully allocated cost;
 * replacement cost;
 * opportunity cost.
+
+Choosing incorrectly is the more common failure mode than computing incorrectly. A team that reports "we saved five million dollars" using fully allocated cost is describing a spreadsheet reallocation, not real cash freed for other work. A team that treats avoidable cost as marginal will systematically under-invest in capacity because it counts the savings but not the queuing that produced them. Naming the cost category next to every economic claim is therefore the smallest change with the largest effect on the honesty of the resulting decision.
 
 == Uncertainty and sensitivity analysis
 

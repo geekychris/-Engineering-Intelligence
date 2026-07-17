@@ -160,6 +160,8 @@ Recommended comment attributes include:
 * estimated validation effort;
 * eventual relationship to rework, defect, or incident.
 
+Enriched this way, comment data reconstructs the intent of a review rather than counting its surface activity. A team can then distinguish between an eight-comment review that caught two defects and an eight-comment review that relitigated formatting, even though a naive count would rank both equally. That distinction is a prerequisite for any downstream claim that AI review either helps or harms.
+
 == AI as a cognitive participant
 
 AI can perform parts of creation, understanding, verification, and explanation. Its economic value depends on whether it reduces total human cognitive work while maintaining or improving outcomes.
@@ -199,6 +201,8 @@ Acceptance telemetry should therefore distinguish:
 * no observable response;
 * duplicate of a human finding;
 * duplicate of another AI finding.
+
+These categories can be recovered from IDE, review, and version-control telemetry with modest instrumentation, and together they let acceptance be treated as a distribution rather than a single number. The next section introduces an index that uses this richer view to estimate whether AI actually reduced human work.
 
 == A cognitive offload index
 

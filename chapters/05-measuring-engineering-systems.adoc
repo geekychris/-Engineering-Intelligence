@@ -15,6 +15,8 @@ Engineering Intelligence therefore begins every metric definition with a decisio
 * Are changes becoming riskier after a workflow change?
 * Which repository boundaries create avoidable coordination cost?
 
+Each question implies a stakeholder, an action that would be taken if the answer changed, and a threshold at which the action becomes justified. A metric that cannot be traced to such a triad is descriptive telemetry, not measurement. The remainder of this chapter treats every construct — from event to composite index — as machinery in service of one of these questions.
+
 == The measurement hierarchy
 
 Engineering data becomes progressively more useful as interpretation is added:
@@ -109,6 +111,8 @@ Derived metrics are often more decision-relevant but require stronger governance
 * validation evidence;
 * recomputation history.
 
+Without this scaffolding a derived metric behaves like a black box that quietly changes meaning when its underlying model is retrained. Governance is not administrative overhead: it is what allows a Cognitive Offload Index or a blast-radius score to survive scrutiny in a change-management review or a post-incident audit. Direct metrics can be re-derived from raw events; derived metrics can only be trusted to the extent that their assumptions are stated and traceable.
+
 == Leading and lagging measures
 
 Leading indicators change before the outcome of interest. Review queue age, CI instability, and dependency growth may precede delivery or quality problems.
@@ -189,6 +193,8 @@ Every material metric should retain:
 * model version;
 * computation time;
 * lineage to raw evidence.
+
+Semantic versioning conveys the nature of a change: a patch corrects computation, a minor version adds a compatible refinement, a major version breaks historical comparability. A dashboard that mixes versions without labelling them silently confuses evidence. Where historical continuity matters, retain the prior version alongside the new one and backfill only when the semantics genuinely align.
 
 == Comparison and normalization
 

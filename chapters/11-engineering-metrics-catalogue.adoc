@@ -19,6 +19,8 @@ A metric catalogue establishes one governed location for:
 * known biases and gaming risks;
 * intended actions and guardrails.
 
+Without a catalogue, arguments about performance become arguments about definitions, and the same word travels between teams carrying incompatible meanings. Catalogue governance is therefore not an infrastructure concern but a decision-quality concern: it fixes the vocabulary in which engineering claims are made, disputed, and settled. The remainder of this chapter treats each metric as an entry in that catalogue rather than a chart on a dashboard.
+
 == Metric specification template
 
 Every metric should contain the following fields:

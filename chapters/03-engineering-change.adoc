@@ -89,6 +89,8 @@ A graph representation enables questions that flat pull-request tables cannot an
 * How much human and AI effort accumulated across the complete change?
 * Which dependencies repeatedly create coordination cost?
 
+Each of these is a traversal over the Engineering Change graph rather than a query against a flat activity log. The graph therefore does more than reshape the data: it makes coordination, dependency, and provenance first-class citizens of the analysis. Subsequent chapters use this representation for cost accounting, blast-radius estimation, and experimental unit-of-analysis decisions.
+
 == Boundaries and identity
 
 Every metric depends on a boundary. The Engineering Change boundary determines which activities, costs, outcomes, and failures are attributed together.
