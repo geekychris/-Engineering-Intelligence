@@ -31,6 +31,8 @@ Governance must therefore control not only what data is collected, but how evide
 
 == Core principles
 
+The principles below are not a checklist; they are the constraints that keep an Engineering Intelligence programme legitimate over time. Every subsequent rule in this appendix — classification, registration, retention, appeal — is an operational expression of one or more of these principles, and any exception process should trace its reasoning back to them explicitly.
+
 === Purpose limitation
 
 Data and metrics may be used only for declared, reviewed purposes.
@@ -71,7 +73,9 @@ Exploratory and operational learning systems should not be silently repurposed i
 
 image::../figures/mermaid/governance-use-review-lifecycle.mmd[Governance and acceptable-use lifecycle]
 
-Every governed use moves through proposal, classification, review, approval, implementation, monitoring, reassessment, and retirement.
+Every governed use moves through proposal, classification, review, approval, implementation, monitoring, reassessment, and retirement. The diagram below expands the same loop with the two mechanisms that give it teeth: the classification step routes use proposals to a review body proportionate to their consequence, and the monitoring step feeds discovered drift or misuse back into a rollback-and-appeal path rather than allowing quiet continuation. Governance without both branches degrades quickly into paperwork.
+
+image::../figures/mermaid/governance-review-loop.mmd[Acceptable-use review loop — classification, approval, monitoring, and appeal,align=center]
 
 == Roles and responsibilities
 
@@ -121,7 +125,7 @@ Approves high-risk uses, resolves disputed interpretations, and reviews incident
 
 == Use classification
 
-Every proposed use should be classified by consequence and sensitivity.
+Every proposed use should be classified by consequence and sensitivity. The class determines which review body inspects the proposal, what evidence must accompany it, how deeply access is scoped, and how frequently the use is re-examined. A single misclassification — most commonly a Class 3 or 4 use being registered as Class 1 to speed approval — undermines every downstream control, so classification decisions themselves are audited and appealable.
 
 === Class 0: platform operations
 
@@ -548,6 +552,8 @@ Vendor effectiveness should be evaluated using organization-controlled evidence 
 
 == AI model governance
 
+Introducing an AI-assisted use into Engineering Intelligence changes the substrate of the decision, not just its interface. The model's training data, prompt, retrieval context, and evaluation history become part of the analytical claim; a silent upgrade rewrites that substrate without informing anyone who relied on the previous behaviour. AI model governance therefore treats each configuration as a versioned artefact under the same registration and rollback disciplines applied to metrics and experiments.
+
 AI-assisted Engineering Intelligence uses require registration of:
 
 * provider;
@@ -584,7 +590,7 @@ Generated narratives should never silently replace underlying incident, review, 
 
 == Automated decisions
 
-Automated or semi-automated actions should be classified by consequence and reversibility.
+Automated or semi-automated actions should be classified by consequence and reversibility. The four tiers below are not arranged by sophistication of the automation but by how much of the decision can be reversed without harm. A well-tuned model operating at the wrong tier is more dangerous than a crude one operating at the right tier, because reviewers assume the safeguards match the actions.
 
 === Advisory
 

@@ -77,6 +77,10 @@ The logical architecture contains twelve major capability areas:
 
 == Source systems
 
+The collection layer connects heterogeneous source systems to a single canonical event stream that everything downstream will read from. The following diagram shows how the source domains fan into a small set of collection patterns, land in immutable raw evidence under explicit ingestion guarantees, and are canonicalised against a shared schema before any semantic work begins.
+
+image::../figures/mermaid/collection-layer-components.mmd[Collection-layer components — from source domains to canonicalised raw evidence,align=center]
+
 Typical source domains include:
 
 === Planning and intent
@@ -303,6 +307,10 @@ A producing domain should publish a data contract specifying:
 Contracts turn hidden assumptions into operational dependencies.
 
 == Identity resolution service
+
+The semantic core is the layer at which raw evidence stops being tool-shaped and starts being Engineering-Change-shaped. It resolves who did the work, in which organisational context, and how the resulting activity connects into a coherent Change. Its projections are what downstream metrics, models, and experiments actually read.
+
+image::../figures/mermaid/semantic-core-components.mmd[Semantic core — identity, reconstruction, and projections,align=center]
 
 The identity service maps source identities to canonical actors.
 
@@ -635,6 +643,10 @@ The evidence registry indexes:
 Search should support construct, intervention, population, outcome, system, and decision.
 
 == Serving layer
+
+The serving layer is what users, analysts, and downstream systems actually touch. It exposes governed products backed by the semantic core, records what those products were used for, and enforces the access and auditing rules that the platform depends on for legitimacy. Nothing should reach a user except through a serving product whose purpose, uncertainty, and lineage are traceable.
+
+image::../figures/mermaid/serving-layer-components.mmd[Serving layer — governed products, registries, and audit surfaces,align=center]
 
 Serving patterns include:
 

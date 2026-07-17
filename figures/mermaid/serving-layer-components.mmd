@@ -1,0 +1,36 @@
+flowchart TB
+    FEAT[[Versioned feature store]]
+    GRAPH[[Temporal knowledge graph]]
+
+    subgraph Products[Governed decision products]
+        direction LR
+        MAPI[/Metric API/]
+        EAPI[/Engineering Change API/]
+        EVID[Evidence explorer]
+        ECON[Experiment console]
+        DEC[[Decision workbench]]
+        PVIEW[Practitioner views]
+        EVIEW[Executive products]
+    end
+
+    FEAT --> Products
+    GRAPH --> Products
+
+    subgraph Registries[Registries and audit]
+        direction LR
+        MREG[Metric registry]
+        SREG[Study registry]
+        DREG[Decision registry]
+        LIN[Data lineage]
+    end
+
+    Products --> Registries
+
+    subgraph Guardrails[Access, governance, and audit]
+        direction LR
+        PB[Purpose binding]
+        AUDIT[Query audit]
+        ROLL[Rollback and appeal]
+    end
+
+    Products --> Guardrails

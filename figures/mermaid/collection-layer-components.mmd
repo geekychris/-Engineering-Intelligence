@@ -1,0 +1,37 @@
+flowchart TB
+    subgraph Sources
+        direction LR
+        PLAN[Planning and intent]
+        SCM[Source control and review]
+        BUILD[Build and validation]
+        DEL[Delivery and operations]
+        ORG[Organisation and economics]
+        AI[AI and agent systems]
+    end
+
+    subgraph CollectionPatterns[Collection patterns]
+        direction LR
+        WH[/Webhooks/]
+        STR[/Streams/]
+        CDC[/Change-data capture/]
+        POLL[/Polling/]
+        BATCH[/Batch export/]
+        CLI[/Client instrumentation/]
+    end
+
+    Sources --> CollectionPatterns
+
+    subgraph IngestGuarantees[Ingestion guarantees]
+        direction LR
+        ONCE[[Exactly-once effect]]
+        ORDER[[Per-key ordering]]
+        REPLAY[[Deterministic replay]]
+        SLO[[Freshness and completeness SLOs]]
+    end
+
+    CollectionPatterns --> ENV[Canonical event envelope]
+    ENV --> IngestGuarantees
+    IngestGuarantees --> RAW[[Immutable raw evidence]]
+    ENV --> REG[Schema registry]
+    REG --> CANON[Canonicalisation]
+    CANON --> RAW

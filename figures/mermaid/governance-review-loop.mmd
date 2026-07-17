@@ -1,0 +1,19 @@
+flowchart TB
+    P([Proposed use]) --> REG[Purpose registration]
+    REG --> TRIAGE{{Use classification<br/>Class 0-4}}
+    TRIAGE -->|Class 0-1| L[Lightweight review]
+    TRIAGE -->|Class 2-3| S[Standard review]
+    TRIAGE -->|Class 4| F[Full governance board]
+    L --> DEC{Approve?}
+    S --> DEC
+    F --> DEC
+    DEC -->|No| REJECT[[Rejected with reasons]]
+    DEC -->|Yes| REG2[Registered use]
+    REG2 --> MON[/Purpose-bound access<br/>and audit logging/]
+    MON --> PER[Periodic review]
+    PER -->|Continue| MON
+    PER -->|Modify| REG
+    PER -->|Retire| RET([Use retired])
+    MON -.->|Misuse or drift| INC[Governance incident]
+    INC --> ROLL[[Rollback and appeal]]
+    ROLL --> PER

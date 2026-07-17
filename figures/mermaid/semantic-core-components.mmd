@@ -1,0 +1,31 @@
+flowchart TB
+    RAW[[Immutable raw evidence]]
+
+    subgraph Identity[Identity and organisational context]
+        direction LR
+        IR[Identity resolution]
+        ORG[Temporal organisational model]
+        CAT[Service and repository catalogue]
+    end
+
+    RAW --> Identity
+
+    subgraph Reconstruction[Engineering Change reconstruction]
+        direction LR
+        CAND[Candidate generation]
+        RULES[Rule-based linking]
+        MODEL[Probabilistic joining]
+        CONF{{Confidence service}}
+    end
+
+    Identity --> Reconstruction
+
+    subgraph Projections[Semantic projections]
+        direction LR
+        GRAPH[[Temporal knowledge graph]]
+        FEAT[Versioned feature store]
+        LAKE[Lakehouse tables]
+    end
+
+    Reconstruction --> Projections
+    Projections --> API[/Metric and Change APIs/]

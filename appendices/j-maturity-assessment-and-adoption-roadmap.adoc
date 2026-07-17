@@ -19,9 +19,15 @@ image::../figures/mermaid/engineering-intelligence-maturity-roadmap.mmd[Engineer
 
 == Maturity levels
 
+The six levels below describe what an Engineering Intelligence capability looks like as it accumulates. The transitions between levels are as important as the levels themselves — each ratchet closes a specific gap that was previously invisible, and reversing course is possible when a level's investment fails to hold. Read the diagram below as capabilities that must exist before the next level's practices can be sustained, not as a linear timeline.
+
+image::../figures/mermaid/maturity-ratchet.mmd[Maturity ratchet — the capability added at each transition,align=center]
+
 === Level 0: fragmented telemetry
 
 The organization has source-specific dashboards and reports but no stable cross-system model.
+
+In practice, this level looks like teams answering the same question three different ways depending on which tool they open first. Cross-team performance discussions rely on screenshots and story-time rather than shared evidence, and a leadership request for "the number" produces a two-week investigation whose result cannot be reproduced next quarter.
 
 Typical characteristics:
 
@@ -39,6 +45,8 @@ Decision risk is high because evidence is incomplete, inconsistent, and difficul
 
 The organization has several useful operational metrics and a basic shared vocabulary.
 
+At this level a leader can open a dashboard and see how flow, quality, and reliability move over time without arguing about definitions. What remains missing is mechanism: nobody can yet say whether a change in the numbers reflects a change in the underlying system, a change in the workload, or a change in how the tools reported it.
+
 Typical characteristics:
 
 * major source systems are ingested;
@@ -53,6 +61,8 @@ The organization can identify patterns but cannot consistently explain mechanism
 === Level 2: connected Engineering Change evidence
 
 The organization can connect intent, artifacts, review, validation, deployment, release, and outcomes for a meaningful population.
+
+Reaching this level is the first point at which _end-to-end_ questions become answerable — "which changes actually reached production and stayed there," "which repository boundaries added coordination delay to changes that spanned them," "how much reviewer time did the top 5% of high-blast-radius changes consume." Reconstruction is imperfect and confidence bands appear on every joined dataset, but analysts stop reasoning about pull requests and start reasoning about Engineering Changes.
 
 Typical characteristics:
 
@@ -70,6 +80,8 @@ The organization can analyze end-to-end flow and consequence rather than isolate
 
 Metrics and analyses are treated as versioned, governed products.
 
+At Level 3 a metric change is a release, not a query edit. Consequential measures carry semantic versions, published assumptions, and uncertainty. Decision records reference the specific metric version that was used, so a decision made a year ago can be re-inspected under the same rules. Prohibited uses are enforceable, not aspirational, and dashboards that fail their governance criteria are retired rather than tolerated.
+
 Typical characteristics:
 
 * metric specifications include purpose, population, formula, quality, and prohibited use;
@@ -86,6 +98,8 @@ The organization can make defensible portfolio and operational decisions from go
 
 The organization routinely evaluates interventions causally.
 
+At this level, "we rolled it out and things got better" is no longer treated as evidence that a tool worked. Interventions are launched with an assignment mechanism, an exposure signal, guardrails, and a pre-analysis plan; results carry intervals and are validated against realized long-term outcomes rather than immediate metric movement. Negative results are shipped alongside positive ones because they remove interventions that would otherwise linger in policy by default.
+
 Typical characteristics:
 
 * deterministic assignment and observed exposure are available;
@@ -101,6 +115,8 @@ The organization can distinguish plausible improvement from measured causal effe
 === Level 5: adaptive engineering organization
 
 Engineering Intelligence is embedded in operating policy and organizational learning.
+
+The distinguishing property of Level 5 is that the organization's own operating model is a subject of measurement. Policies, thresholds, review routing, capacity allocation, and even the metrics themselves are treated as interventions with lifecycles: they are versioned, evaluated for continued fit, and retired when the evidence changes. A reorganization does not reset the learning; the graph of decisions, evidence, and outcomes survives the org chart.
 
 Typical characteristics:
 
