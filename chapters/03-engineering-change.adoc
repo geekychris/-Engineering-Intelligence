@@ -274,6 +274,10 @@ image::../figures/mermaid/change-entity-relationships.mmd[Engineering Change ent
 
 A strong platform preserves each entity and connects them rather than forcing one system to become the universal source of truth.
 
+image::../figures/mermaid/engineering-change-entity.mmd[Engineering Change domain model — attributes, methods, and cardinalities]
+
+The domain model above shows the Engineering Change with the attributes and derived quantities it must expose to support cost accounting, blast-radius estimation, and cohort selection later in the book. The cardinalities matter: because a single Engineering Change may accumulate Effort from many Participants and produce exactly one Outcome, aggregation queries that treat any of these relationships as one-to-one will systematically under- or over-count.
+
 == Membership over time
 
 Membership can change as work evolves. An artifact may initially belong to a prototype and later be incorporated into a production change. A shared-library release may serve several Engineering Changes.

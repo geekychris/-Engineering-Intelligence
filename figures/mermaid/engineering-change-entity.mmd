@@ -1,0 +1,60 @@
+classDiagram
+    direction LR
+
+    class EngineeringChange {
+        +id : uuid
+        +intent : str
+        +createdAt : datetime
+        +completedAt : datetime
+        +state : Lifecycle
+        +constructTotalCost() Cost
+        +estimateBlastRadius() Radius
+    }
+
+    class Intent {
+        +description : str
+        +owner : Participant
+        +approvedBy : Participant
+    }
+
+    class Participant {
+        +id : str
+        +role : Role
+        +scarcityMultiplier : float
+    }
+
+    class Artifact {
+        +path : str
+        +repo : str
+        +kind : ArtifactKind
+    }
+
+    class Outcome {
+        +state : OutcomeState
+        +evidence : Evidence[]
+        +acceptedAt : datetime
+    }
+
+    class Effort {
+        +participant : Participant
+        +hours : float
+        +activeTime : Duration
+        +switches : int
+    }
+
+    class Cost {
+        +human : float
+        +tool : float
+        +coordination : float
+        +delay : float
+        +quality : float
+        +risk : float
+    }
+
+    EngineeringChange "1" --> "1" Intent : realises
+    EngineeringChange "1" --> "0..*" Participant : involves
+    EngineeringChange "1" --> "1..*" Artifact : touches
+    EngineeringChange "1" --> "0..*" Effort : accumulates
+    EngineeringChange "1" --> "1" Outcome : produces
+    EngineeringChange "1" --> "1" Cost : incurs
+    Participant "1" --> "0..*" Effort : contributes

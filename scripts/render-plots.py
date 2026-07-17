@@ -207,12 +207,55 @@ def causal_dag(out: Path):
     plt.close(fig)
 
 
+def measurement_onion(out: Path):
+    fig, ax = plt.subplots(figsize=(6.2, 5.6), dpi=120)
+    fig.patch.set_alpha(0)
+    ax.set_aspect("equal")
+    ax.axis("off")
+    ax.set_xlim(-6, 6)
+    ax.set_ylim(-6, 6)
+
+    layers = [
+        ("Events", 5.6, CREAM, NAVY, "raw source observations"),
+        ("Observations", 4.6, "#F2E1BE", NAVY, "normalised facts"),
+        ("Features", 3.6, SKY, DARK_NAVY, "explanatory variables"),
+        ("Metrics", 2.6, RIVER, "#FFFFFF", "summarised for a question"),
+        ("Models", 1.6, DEEP_GOLD, "#FFFFFF", "relationships and prediction"),
+        ("Decisions", 0.6, NAVY, "#FFFFFF", "action taken"),
+    ]
+    for label, radius, fill, text_color, sub in layers:
+        circle = plt.Circle((0, 0), radius, facecolor=fill,
+                            edgecolor=NAVY, linewidth=1.6)
+        ax.add_patch(circle)
+    # Label each ring at 45° so they stack visibly
+    import math
+    for i, (label, radius, fill, text_color, sub) in enumerate(layers):
+        prev_r = layers[i + 1][1] if i + 1 < len(layers) else 0.0
+        mid = (radius + prev_r) / 2 if prev_r else radius / 2
+        angle = math.radians(90)
+        x = mid * math.cos(angle)
+        y = mid * math.sin(angle)
+        ax.text(x, y, label, ha="center", va="center",
+                fontfamily="Georgia", fontsize=11.5,
+                color=text_color, fontweight="bold")
+        ax.text(x, y - 0.32, sub, ha="center", va="center",
+                fontfamily="Georgia", fontsize=8.5,
+                color=text_color, style="italic")
+
+    ax.text(0, 5.95, "Interpretation added inward",
+            ha="center", fontfamily="Georgia", fontsize=11, color=NAVY)
+    fig.tight_layout()
+    fig.savefig(out, format="png", transparent=True, dpi=220)
+    plt.close(fig)
+
+
 PLOTS = {
     "cost-distribution.png": cost_distribution,
     "queueing-latency.png": queueing_latency,
     "context-switch-recovery.png": context_switch_recovery,
     "experiment-power.png": experiment_power,
     "causal-dag.png": causal_dag,
+    "measurement-onion.png": measurement_onion,
 }
 
 

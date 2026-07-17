@@ -199,6 +199,10 @@ Agent evaluation requires additional dimensions:
 
 image::../figures/mermaid/agent-task-loop.mmd[Agent task execution loop]
 
+image::../figures/mermaid/agent-task-sequence.mmd[Sequence of communication between the human owner, agent, environment, and reviewer]
+
+The flowchart above collapses the loop into its logical states; the sequence diagram makes the addressees explicit. Every arrow crosses a trust boundary — from a human intent to an autonomous plan, from the plan to a permitted execution surface, and back to a human review of the resulting evidence — and each boundary is a place where instrumentation, permissions, and audit trails must be defined.
+
 A successful pull request is not sufficient if the agent used unsafe permissions, modified unrelated files, or produced hidden operational risk.
 
 == Autonomy and risk tiers

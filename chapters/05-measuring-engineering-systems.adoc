@@ -23,6 +23,8 @@ Engineering data becomes progressively more useful as interpretation is added:
 
 image::../figures/mermaid/measurement-hierarchy.mmd[Engineering measurement hierarchy]
 
+image::figures/plots/measurement-onion.png[The measurement onion — interpretation is added inward from event to decision,pdfwidth=4.5in,align=center]
+
 The layers are:
 
 . *Events* — source observations such as pull-request creation, review submission, CI completion, deployment, or incident declaration.

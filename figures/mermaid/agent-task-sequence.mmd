@@ -1,0 +1,24 @@
+sequenceDiagram
+    autonumber
+    actor User as Engineering owner
+    participant Agent as Autonomous agent
+    participant Env as Permitted environment
+    participant Human as Human reviewer
+
+    User->>Agent: Bounded goal + constraints
+    activate Agent
+    Agent->>Agent: Create plan
+    loop Until goal or exhaustion
+        Agent->>Env: Select and execute action
+        Env-->>Agent: Result and side effects
+        Agent->>Agent: Verify against goal and safety
+        alt Recoverable failure
+            Agent->>Agent: Revise plan
+        else Unsafe or uncertain
+            Agent->>Human: Escalate with evidence
+            Human-->>Agent: Guidance or halt
+        end
+    end
+    Agent->>Human: Report evidence + proposed outcome
+    deactivate Agent
+    Human->>User: Approval or governed acceptance
