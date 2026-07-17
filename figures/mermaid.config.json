@@ -1,5 +1,59 @@
 {
+  "theme": "base",
+  "themeVariables": {
+    "background": "transparent",
+    "primaryColor": "#F5EBD6",
+    "primaryTextColor": "#17365D",
+    "primaryBorderColor": "#17365D",
+    "secondaryColor": "#DCECF4",
+    "secondaryTextColor": "#17365D",
+    "secondaryBorderColor": "#17365D",
+    "tertiaryColor": "#B78331",
+    "tertiaryTextColor": "#FFFFFF",
+    "tertiaryBorderColor": "#6C371F",
+    "lineColor": "#17365D",
+    "textColor": "#17365D",
+    "mainBkg": "#F5EBD6",
+    "secondBkg": "#DCECF4",
+    "tertiaryBkg": "#B78331",
+    "nodeBorder": "#17365D",
+    "clusterBkg": "#F8E8C8",
+    "clusterBorder": "#B78331",
+    "edgeLabelBackground": "#F5EBD6",
+    "fontFamily": "Georgia, 'Times New Roman', serif",
+    "fontSize": "18px",
+    "labelBackground": "#F5EBD6",
+    "labelBoxBkgColor": "#F5EBD6",
+    "labelBoxBorderColor": "#17365D",
+    "labelTextColor": "#17365D",
+    "actorBkg": "#F5EBD6",
+    "actorBorder": "#17365D",
+    "actorTextColor": "#17365D",
+    "actorLineColor": "#17365D",
+    "signalColor": "#17365D",
+    "signalTextColor": "#17365D",
+    "loopTextColor": "#17365D",
+    "activationBkgColor": "#DCECF4",
+    "activationBorderColor": "#17365D"
+  },
   "flowchart": {
-    "htmlLabels": false
-  }
+    "htmlLabels": true,
+    "curve": "basis",
+    "nodeSpacing": 55,
+    "rankSpacing": 65,
+    "padding": 18,
+    "diagramPadding": 20
+  },
+  "sequence": {
+    "actorFontFamily": "Georgia, serif",
+    "actorFontSize": 16,
+    "messageFontFamily": "Georgia, serif",
+    "messageFontSize": 14,
+    "noteFontFamily": "Georgia, serif",
+    "noteFontSize": 13,
+    "boxMargin": 12,
+    "diagramMarginX": 30,
+    "diagramMarginY": 20
+  },
+  "themeCSS": ".node rect, .node polygon, .node circle, .node ellipse, .node path { stroke-width: 2.2px !important; } .edgePath .path { stroke-width: 1.8px !important; } .cluster rect { stroke-width: 2px !important; } .label foreignObject > div, .label text { font-family: Georgia, 'Times New Roman', serif !important; color: #17365D !important; } .nodeLabel { color: #17365D !important; font-weight: 500 !important; } .edgeLabel { background-color: #F5EBD6 !important; color: #17365D !important; padding: 2px 4px !important; } .edgeLabel rect { fill: #F5EBD6 !important; }"
 }

@@ -1,5 +1,5 @@
 flowchart TD
-    EC[Engineering Change] --> H[Human attention]
+    EC([Engineering Change]) --> H[Human attention]
     EC --> T[Tools and AI]
     EC --> I[Infrastructure]
     EC --> C[Coordination]
@@ -7,7 +7,7 @@ flowchart TD
     EC --> Q[Quality]
     EC --> R[Risk]
 
-    H --> TOTAL[Total economic cost]
+    H --> TOTAL[[Total economic cost]]
     T --> TOTAL
     I --> TOTAL
     C --> TOTAL
@@ -15,5 +15,5 @@ flowchart TD
     Q --> TOTAL
     R --> TOTAL
 
-    TOTAL --> NV[Net value]
-    VALUE[Value created or protected] --> NV
+    TOTAL --> NV{{Net value}}
+    VALUE[/Value created or protected/] --> NV

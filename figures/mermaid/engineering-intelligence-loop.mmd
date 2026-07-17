@@ -1,11 +1,11 @@
 flowchart LR
-    A[Observe engineering events] --> B[Reconstruct Engineering Changes]
+    A[/Observe engineering events/] --> B[Reconstruct Engineering Changes]
     B --> C[Compute features and outcomes]
-    C --> D[Build explanatory and predictive models]
-    D --> E[Design workflow experiment]
+    C --> D[[Build explanatory and predictive models]]
+    D --> E{{Design workflow experiment}}
     E --> F[Evaluate causal effect]
-    F --> G[Update organizational knowledge]
+    F --> G([Update organizational knowledge])
     G --> A
 
-    X[External factors] -. record and control .-> C
+    X[(External factors)] -. record and control .-> C
     X -. influence .-> E
