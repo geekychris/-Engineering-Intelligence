@@ -161,6 +161,16 @@ prepare_sources() {
   # come from the diagram staging area below.
   find "$ROOT/figures" -maxdepth 1 -type f -exec cp {} "$WORK_DIR/figures/" \;
 
+  # Copy chapter illustration plates (chapter-01.jpg … chapter-18.jpg
+  # and any .png variants). If present they override the procedural
+  # ornament below.
+  if [[ -d "$ROOT/figures/plates" ]]; then
+    mkdir -p "$WORK_DIR/figures/plates"
+    find "$ROOT/figures/plates" -maxdepth 1 -type f \
+      \( -name "*.png" -o -name "*.jpg" \) \
+      -exec cp {} "$WORK_DIR/figures/plates/" \;
+  fi
+
   mkdir -p "$WORK_DIR/figures/mermaid"
 
   if compgen -G "$DIAGRAM_STAGING_DIR/*.png" >/dev/null; then
@@ -201,10 +211,10 @@ render_plots() {
 }
 
 render_chapter_plates() {
-  # Render the chapter-opening ornament variants and inject an image
-  # directive after each chapter's title. Each chapter gets a topic
-  # badge (magnifier for measurement, balance for economics, etc.) so
-  # the openings vary while sharing a common frame.
+  # Render the procedural ornament fallbacks and inject the chapter-opening
+  # image directive after each chapter's title. If a bespoke illustration
+  # exists at figures/plates/chapter-<NN>.png it wins; otherwise the topic
+  # badge (magnifier for measurement, balance for economics, etc.) is used.
   python3 "$PLATE_RENDERER" "$WORK_DIR/figures/plates"
   python3 - "$WORK_DIR" <<'PY'
 from pathlib import Path
@@ -212,10 +222,10 @@ import re
 import sys
 
 work = Path(sys.argv[1])
+plates_dir = work / "figures" / "plates"
 title_re = re.compile(r"^=\s+(.+)", re.MULTILINE)
+chapter_num_re = re.compile(r"^(\d{2})-")
 
-# Keyword matches on the chapter title decide the badge. First match wins;
-# 'compass' is the default for foundation/framework chapters.
 RULES = [
     (re.compile(r"economic|cost|portfolio|executive", re.I), "balance"),
     (re.compile(r"attention|human|governance|learning|ethics", re.I), "profile"),
@@ -230,7 +240,15 @@ def pick_badge(title):
             return badge
     return "compass"
 
-def ornament_for(badge):
+def plate_for(path, title):
+    m = chapter_num_re.match(path.name)
+    if m:
+        for ext in ("jpg", "png"):
+            illustration = plates_dir / f"chapter-{m.group(1)}.{ext}"
+            if illustration.exists():
+                return (f'image::figures/plates/chapter-{m.group(1)}.{ext}'
+                        f'[Chapter illustration,pdfwidth=6.5in,align=center]')
+    badge = pick_badge(title)
     return (f'image::figures/plates/chapter-ornament-{badge}.png'
             '[Chapter ornament,pdfwidth=5.5in,align=center]')
 
@@ -244,9 +262,8 @@ for chapters_dir in (work / "chapters",):
         m = title_re.search(text)
         if not m:
             continue
-        badge = pick_badge(m.group(1))
         insert_at = m.end()
-        new_text = text[:insert_at] + "\n\n" + ornament_for(badge) + text[insert_at:]
+        new_text = text[:insert_at] + "\n\n" + plate_for(path, m.group(1)) + text[insert_at:]
         path.write_text(new_text, encoding="utf-8")
 PY
 }
