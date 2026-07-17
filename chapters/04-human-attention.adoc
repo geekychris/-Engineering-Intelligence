@@ -113,6 +113,10 @@ The coefficients should be learned from data rather than treated as universal co
 
 image::../figures/mermaid/context-switch-cycle.mmd[Context switching and recovery cycle]
 
+image::figures/plots/context-switch-recovery.png[Post-interruption effectiveness recovers gradually toward steady state,pdfwidth=5.5in,align=center]
+
+The shape of the recovery curve above matters more than any single coefficient: the shaded region is attention debt — cumulative work-below-steady-state that the interruption imposes even after the engineer returns to the task. A schedule that appears to fit "just one more meeting" into a heads-down morning is quietly increasing the size of that region rather than trading fifteen minutes for fifteen minutes.
+
 === Concurrent work in progress
 
 The number of simultaneously active changes is a useful but imperfect indicator. Two tiny maintenance changes may impose less burden than one complex migration. The model should therefore weight active work by complexity, novelty, urgency, and unresolved state.

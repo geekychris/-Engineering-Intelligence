@@ -38,6 +38,10 @@ The individual treatment effect is:
 
 Only one potential outcome is observed. Experimentation and causal inference provide disciplined ways to estimate the missing counterfactual.
 
+image::figures/plots/causal-dag.png[A directed acyclic graph showing treatment, mediator, outcome, and confounder,pdfwidth=5.5in,align=center]
+
+The directed acyclic graph above makes the alternatives explicit. Adoption of the AI reviewer (T) affects the outcome (Y) both directly and through the mediator of allocated reviewer time (M). A common cause — team skill or repository maturity (U) — influences both adoption and outcome, creating a confounding path. Estimating the causal effect of T on Y requires either randomising T (which cuts the confounding arrow into T) or adjusting for U (which blocks the backdoor path). Drawing this DAG before an experiment is designed forces the assumptions to become visible before the numbers do.
+
 == Define the intervention precisely
 
 "Use AI review" is not a sufficiently precise treatment definition. An experiment must specify:
@@ -175,6 +179,10 @@ Power is the probability of detecting an effect of a specified size when it exis
 For a two-group comparison of means, required sample size grows with outcome variance and shrinks with larger expected effect. Cluster assignment, rare defects, and heavy-tailed outcomes often require much larger samples than teams expect.
 
 For rare severe defects, use longer observation windows, composite severity-weighted outcomes, Bayesian models, or historical augmentation. Do not replace meaningful rare outcomes with easy but weak proxies solely to obtain significance.
+
+image::figures/plots/experiment-power.png[Statistical power to detect a proportional effect across sample sizes,pdfwidth=5.5in,align=center]
+
+Figure 6 shows the practical implication. A study with 500 changes per arm cannot reliably detect anything smaller than about a 15% shift in outcome; even 8,000 per arm leaves proportional effects below 5% underpowered. The minimum detectable effect, not the observed effect, is what determines whether a negative result is evidence of no effect or simply evidence of insufficient data. Power analyses belong in the pre-registration, not in the discussion.
 
 == Sequential testing
 

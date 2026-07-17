@@ -14,6 +14,7 @@ PDF_THEME="$ROOT/themes/engineering-intelligence-theme.yml"
 HTML_STYLESHEET="$ROOT/styles/engineering-intelligence.css"
 MERMAID_CONFIG="$ROOT/figures/mermaid.config.json"
 MATH_RENDERER="$ROOT/scripts/render-math.js"
+PLOT_RENDERER="$ROOT/scripts/render-plots.py"
 
 fail() {
   printf 'ERROR: %s\n' "$*" >&2
@@ -47,6 +48,7 @@ fi
 
 if [[ "$MODE" != "diagrams" ]]; then
   [[ -f "$MATH_RENDERER" ]] || fail "math renderer was not found"
+  [[ -f "$PLOT_RENDERER" ]] || fail "plot renderer was not found"
 fi
 
 if [[ "$MODE" == "html" || "$MODE" == "all" || "$MODE" == "validate" ]]; then
@@ -189,6 +191,13 @@ render_math() {
   node "$MATH_RENDERER" "$WORK_DIR"
 }
 
+render_plots() {
+  # Emit data-driven SVG figures (cost distributions, queueing curves,
+  # power curves, DAGs) directly into the jail so chapter prose can
+  # cite them like any other image.
+  python3 "$PLOT_RENDERER" "$WORK_DIR/figures/plots"
+}
+
 build_html() {
   local output="$RENDER_OUTPUT_DIR/engineering-intelligence.html"
   rm -f "$output"
@@ -298,6 +307,7 @@ case "$MODE" in
     render_diagrams
     prepare_sources
     render_math
+    render_plots
     build_html
     build_pdf
     write_manifest
@@ -311,6 +321,7 @@ case "$MODE" in
     render_diagrams
     prepare_sources
     render_math
+    render_plots
     build_html
     write_manifest
     publish_publication
@@ -319,6 +330,7 @@ case "$MODE" in
     render_diagrams
     prepare_sources
     render_math
+    render_plots
     build_pdf
     write_manifest
     publish_publication
@@ -327,6 +339,7 @@ case "$MODE" in
     render_diagrams
     prepare_sources
     render_math
+    render_plots
     build_html
     build_pdf
     write_manifest

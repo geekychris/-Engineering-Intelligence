@@ -72,6 +72,11 @@ def validate(root: Path) -> int:
                     f"{relative(path)}: {raw}"
                 )
                 continue
+            # Plot SVGs are generated during the build by scripts/render-plots.py
+            # and land inside the jail. The generator's source list is
+            # authoritative; skip these here.
+            if raw.startswith("figures/plots/"):
+                continue
             target = (path.parent / raw).resolve()
             if not target.exists():
                 errors.append(
