@@ -15,6 +15,7 @@ HTML_STYLESHEET="$ROOT/styles/engineering-intelligence.css"
 MERMAID_CONFIG="$ROOT/figures/mermaid.config.json"
 MATH_RENDERER="$ROOT/scripts/render-math.js"
 PLOT_RENDERER="$ROOT/scripts/render-plots.py"
+PLATE_RENDERER="$ROOT/scripts/render-chapter-plates.py"
 
 fail() {
   printf 'ERROR: %s\n' "$*" >&2
@@ -49,6 +50,7 @@ fi
 if [[ "$MODE" != "diagrams" ]]; then
   [[ -f "$MATH_RENDERER" ]] || fail "math renderer was not found"
   [[ -f "$PLOT_RENDERER" ]] || fail "plot renderer was not found"
+  [[ -f "$PLATE_RENDERER" ]] || fail "chapter plate renderer was not found"
 fi
 
 if [[ "$MODE" == "html" || "$MODE" == "all" || "$MODE" == "validate" ]]; then
@@ -198,6 +200,36 @@ render_plots() {
   python3 "$PLOT_RENDERER" "$WORK_DIR/figures/plots"
 }
 
+render_chapter_plates() {
+  # Render the chapter-opening ornament and inject an image directive
+  # after each chapter's title so every chapter opens with a consistent
+  # decorative rule.
+  python3 "$PLATE_RENDERER" "$WORK_DIR/figures/plates"
+  python3 - "$WORK_DIR" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+work = Path(sys.argv[1])
+ornament = 'image::figures/plates/chapter-ornament.png[Chapter ornament,pdfwidth=5.5in,align=center]'
+title_re = re.compile(r"^=\s+.+", re.MULTILINE)
+
+for chapters_dir in (work / "chapters",):
+    if not chapters_dir.exists():
+        continue
+    for path in sorted(chapters_dir.glob("*.adoc")):
+        if "source-notes" in path.name:
+            continue
+        text = path.read_text(encoding="utf-8")
+        m = title_re.search(text)
+        if not m:
+            continue
+        insert_at = m.end()
+        new_text = text[:insert_at] + "\n\n" + ornament + text[insert_at:]
+        path.write_text(new_text, encoding="utf-8")
+PY
+}
+
 build_html() {
   local output="$RENDER_OUTPUT_DIR/engineering-intelligence.html"
   rm -f "$output"
@@ -308,6 +340,7 @@ case "$MODE" in
     prepare_sources
     render_math
     render_plots
+    render_chapter_plates
     build_html
     build_pdf
     write_manifest
@@ -322,6 +355,7 @@ case "$MODE" in
     prepare_sources
     render_math
     render_plots
+    render_chapter_plates
     build_html
     write_manifest
     publish_publication
@@ -331,6 +365,7 @@ case "$MODE" in
     prepare_sources
     render_math
     render_plots
+    render_chapter_plates
     build_pdf
     write_manifest
     publish_publication
@@ -340,6 +375,7 @@ case "$MODE" in
     prepare_sources
     render_math
     render_plots
+    render_chapter_plates
     build_html
     build_pdf
     write_manifest
