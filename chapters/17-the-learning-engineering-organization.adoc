@@ -480,7 +480,7 @@ Inspect evidence freshness, operational queues, active experiment exposure, guar
 
 === Monthly learning review
 
-Review completed analyses, intervention progress, metric quality, and decisions requiring evidence.
+Review completed analyzes, intervention progress, metric quality, and decisions requiring evidence.
 
 === Quarterly portfolio review
 

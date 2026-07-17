@@ -32,7 +32,7 @@ Governance must therefore control not only what data is collected, but how evide
 
 == Core principles
 
-The principles below are not a checklist; they are the constraints that keep an Engineering Intelligence programme legitimate over time. Every subsequent rule in this appendix — classification, registration, retention, appeal — is an operational expression of one or more of these principles, and any exception process should trace its reasoning back to them explicitly.
+The principles below are not a checklist; they are the constraints that keep an Engineering Intelligence program legitimate over time. Every subsequent rule in this appendix — classification, registration, retention, appeal — is an operational expression of one or more of these principles, and any exception process should trace its reasoning back to them explicitly.
 
 === Purpose limitation
 
@@ -553,7 +553,7 @@ Vendor effectiveness should be evaluated using organization-controlled evidence 
 
 == AI model governance
 
-Introducing an AI-assisted use into Engineering Intelligence changes the substrate of the decision, not just its interface. The model's training data, prompt, retrieval context, and evaluation history become part of the analytical claim; a silent upgrade rewrites that substrate without informing anyone who relied on the previous behaviour. AI model governance therefore treats each configuration as a versioned artefact under the same registration and rollback disciplines applied to metrics and experiments.
+Introducing an AI-assisted use into Engineering Intelligence changes the substrate of the decision, not just its interface. The model's training data, prompt, retrieval context, and evaluation history become part of the analytical claim; a silent upgrade rewrites that substrate without informing anyone who relied on the previous behavior. AI model governance therefore treats each configuration as a versioned artefact under the same registration and rollback disciplines applied to metrics and experiments.
 
 AI-assisted Engineering Intelligence uses require registration of:
 

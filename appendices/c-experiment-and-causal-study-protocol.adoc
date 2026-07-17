@@ -2,7 +2,7 @@
 = Experiment and Causal Study Protocol
 
 [abstract]
-This appendix defines a practical protocol for randomized experiments, phased rollouts, natural experiments, and other causal studies in software engineering organizations. It standardizes how questions are framed, units are assigned, treatment is delivered, exposure is observed, outcomes and guardrails are measured, interference is handled, analyses are predeclared, and decisions are recorded. The objective is not statistical ceremony. It is to make consequential engineering interventions testable, auditable, reproducible, and safe.
+This appendix defines a practical protocol for randomized experiments, phased rollouts, natural experiments, and other causal studies in software engineering organizations. It standardizes how questions are framed, units are assigned, treatment is delivered, exposure is observed, outcomes and guardrails are measured, interference is handled, analyzes are predeclared, and decisions are recorded. The objective is not statistical ceremony. It is to make consequential engineering interventions testable, auditable, reproducible, and safe.
 
 == Scope
 
@@ -316,7 +316,7 @@ The primary randomized analysis should usually be intention-to-treat: compare un
 
 This preserves the causal benefit of randomization and includes real adoption friction.
 
-Treatment-on-treated or per-protocol analyses may be useful as secondary analyses, but require stronger assumptions because exposure is not random.
+Treatment-on-treated or per-protocol analyzes may be useful as secondary analyzes, but require stronger assumptions because exposure is not random.
 
 == Noncompliance
 
@@ -530,7 +530,7 @@ The plan should specify:
 * model specification;
 * clustering and weighting;
 * multiplicity handling;
-* subgroup analyses;
+* subgroup analyzes;
 * sequential monitoring;
 * decision criteria;
 * robustness checks.
@@ -571,7 +571,7 @@ Classify missingness by reason:
 * domain withdrawal;
 * true absence of outcome.
 
-Report missingness by variant. Use sensitivity analyses where missingness could depend on treatment or outcome.
+Report missingness by variant. Use sensitivity analyzes where missingness could depend on treatment or outcome.
 
 == Sequential monitoring
 
@@ -650,7 +650,7 @@ Unexpected subgroup results are hypotheses for replication unless strongly suppo
 
 When many outcomes, variants, or subgroups are tested, specify how false discoveries are controlled or how posterior decisions are made.
 
-Do not hide the total number of analyses performed.
+Do not hide the total number of analyzes performed.
 
 == Robustness checks
 

@@ -99,7 +99,7 @@ The chapter therefore requires observed exposure evidence such as:
 * duration and dosage;
 * fallback or crossover.
 
-Intention-to-treat analysis should generally preserve original assignment. Exposure-based analyses may be useful but can reintroduce selection bias unless supported by an appropriate identification strategy.
+Intention-to-treat analysis should generally preserve original assignment. Exposure-based analyzes may be useful but can reintroduce selection bias unless supported by an appropriate identification strategy.
 
 === Causal graphs
 
@@ -284,7 +284,7 @@ Practical concerns around trustworthy online experimentation are covered in <<ko
 
 === Preregistration and pre-analysis plans
 
-Preregistration separates confirmatory analysis from analyses chosen after observing results. See <<nosek2018>>.
+Preregistration separates confirmatory analysis from analyzes chosen after observing results. See <<nosek2018>>.
 
 The Engineering Intelligence pre-analysis plan records:
 

@@ -157,7 +157,7 @@ Detailed behavioral telemetry should not be retained indefinitely merely because
 
 === AI rollout
 
-AI-enabled features require additional lifecycle governance informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+AI-enabled features require additional lifecycle governance informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42,001>>, and <<iso23,894>>.
 
 The chapter recommends progressing from:
 

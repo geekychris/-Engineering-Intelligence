@@ -179,9 +179,13 @@ prepare_sources() {
 
   python3 - "$WORK_DIR" <<'PY'
 from pathlib import Path
+import re
 import sys
 
 work = Path(sys.argv[1])
+chapters_dir = work / "chapters"
+first_section_re = re.compile(r"^== ", re.MULTILINE)
+
 for path in work.rglob("*.adoc"):
     text = path.read_text(encoding="utf-8")
     text = text.replace(".mmd[", ".png[")
@@ -191,6 +195,39 @@ for path in work.rglob("*.adoc"):
     # image target escapes the jail and asciidoctor emits a warning.
     text = text.replace("image::../figures/", "image::figures/")
     path.write_text(text, encoding="utf-8")
+
+# Apply drop caps to the first prose paragraph inside the first section of
+# each chapter file. Source-note files and appendices are left untouched.
+letter_re = re.compile(r"^([A-Z])(\w*)")
+for path in sorted(chapters_dir.glob("*.adoc")):
+    if "source-notes" in path.name:
+        continue
+    text = path.read_text(encoding="utf-8")
+    lines = text.split("\n")
+    section_idx = None
+    for i, line in enumerate(lines):
+        if line.startswith("== ") and not line.startswith("== Key ") \
+                and not line.startswith("== Open ") \
+                and not line.startswith("== Implementation "):
+            section_idx = i
+            break
+    if section_idx is None:
+        continue
+    # find first non-blank, non-directive line after the section heading
+    for j in range(section_idx + 1, len(lines)):
+        line = lines[j]
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith(("[", "image::", "//", "====", "----", "++++", "|===")):
+            continue
+        m = letter_re.match(stripped)
+        if not m:
+            break
+        new_line = f"[.dropcap]##{m.group(1)}##{m.group(2)}{stripped[m.end():]}"
+        lines[j] = new_line
+        break
+    path.write_text("\n".join(lines), encoding="utf-8")
 PY
 }
 

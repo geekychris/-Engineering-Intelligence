@@ -400,6 +400,16 @@ Detailed data collected for one study is retained and reused indefinitely.
 
 Oversight is created reactively after a metric or model has already shaped behavior.
 
+== Worked example: responding to a metric-misuse incident
+
+A vice president of engineering asks the intelligence team for "the top 20 lowest-performing engineers" ranked by review-latency contribution. The registered use of the review-latency metric is Class 2 (organizational decision support); individual-level ranking would be Class 4 and is currently prohibited without a separate formal process.
+
+The governance operating model triggers three responses within 48 hours. First, the metric owner declines the request in writing, citing the registered purpose and the acceptable-use standard. Second, the request is logged as a governance incident and routed to the governance board for review. Third, the platform confirms that the metric API's purpose-bound access already blocked the underlying query at the interface layer, so no ad-hoc query produced the ranking.
+
+The board review, one week later, considers two questions. Was the requester properly informed of the classification, and does the review-latency metric have any legitimate purpose at the individual level? The board concludes the requester's expectation reflected a widespread misunderstanding, updates the leadership onboarding materials to clarify Class 4 boundaries, and reaffirms the prohibition. It does not sanction the requester; the point of the process is to make legitimate boundaries visible, not to punish the first person who bumps against them.
+
+The incident is closed with three artefacts: the decline letter, the board minute, and the updated onboarding note. Twelve months later, an audit of governance incidents shows this pattern of request occurring three more times but declining after the onboarding change was rolled out — the governance loop demonstrably shifted behavior without any punitive step.
+
 == Key takeaways
 
 * Engineering measurement changes behavior and incentives.

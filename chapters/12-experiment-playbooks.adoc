@@ -519,7 +519,7 @@ The playbook's power-planning stage sets the minimum detectable effect at 8% of 
 n = 2 \times \left(\frac{(1.96 + 0.84)\sigma}{0.08 \bar{Y}}\right)^2 \approx 1{,}950\ \text{changes per arm}
 ++++
 
-At the team's observed change velocity that requires roughly 11 weeks. Stopping rules use the O'Brien-Fleming boundary at three interim looks; results are analysed by intention-to-treat with a secondary complier-average estimate.
+At the team's observed change velocity that requires roughly 11 weeks. Stopping rules use the O'Brien-Fleming boundary at three interim looks; results are analyzed by intention-to-treat with a secondary complier-average estimate.
 
 Outcome: the intervention reduces effort by 6.4% (95% CI: 2.1% to 10.7%) with escaped-defect rate unchanged (+0.02pp, non-significant). The point estimate is below the pre-declared 8% MDE; the decision record notes the effect is real but too small to justify the licensing cost at current model prices, and the playbook is re-run six months later after a model version change.
 

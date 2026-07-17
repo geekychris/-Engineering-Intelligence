@@ -206,7 +206,7 @@ Every material metric should retain:
 * computation time;
 * lineage to raw evidence.
 
-Semantic versioning conveys the nature of a change: a patch corrects computation, a minor version adds a compatible refinement, a major version breaks historical comparability. A dashboard that mixes versions without labelling them silently confuses evidence. Where historical continuity matters, retain the prior version alongside the new one and backfill only when the semantics genuinely align.
+Semantic versioning conveys the nature of a change: a patch corrects computation, a minor version adds a compatible refinement, a major version breaks historical comparability. A dashboard that mixes versions without labeling them silently confuses evidence. Where historical continuity matters, retain the prior version alongside the new one and backfill only when the semantics genuinely align.
 
 == Comparison and normalization
 
@@ -309,6 +309,16 @@ Recall = \frac{TP}{TP+FN}
 Ranking quality can be measured with NDCG when high-severity findings should appear first. Operational analysis should also include duplication, action type, validation effort, latency, and downstream outcome.
 
 High precision with very low recall may miss important defects. High recall with poor ranking may overwhelm authors. No single number is sufficient.
+
+== Worked example: the cost of an unversioned metric change
+
+An organization reports "review latency" on a leadership scorecard. In Q2, latency drops from 8.4 hours to 5.9 hours — a 30% improvement widely attributed to the AI reviewer rolled out in that quarter.
+
+Investigation reveals that in April the metric owner also changed the eligible population: draft pull requests and bot-authored dependency bumps, which had previously counted, were excluded. Historical recomputation with the new definition shows the true Q1 latency was 6.7 hours, not 8.4 — the "improvement" was 0.8 hours, not 2.5.
+
+The economic implications are asymmetric. The AI reviewer's $1.2M annual cost was justified in part by the reported 30% improvement. The actual 12% improvement changes the expected annual net benefit from roughly $650k to roughly $95k — a decision that would have been reversed had the metric been governed properly. A single unversioned metric change misdirected the equivalent of half a year of investment.
+
+The remediation is procedural, not analytical: any change to a scorecard metric increments a version number, retains the prior version alongside the new one, and re-scores the last four quarters under both definitions. The dashboard displays both series until the review committee accepts the new version. In this case the correct label would have been "review-latency v2.0 (new population); v1.0 shown for comparison." The AI-reviewer decision would then have used v1.0-consistent numbers and reached a different conclusion.
 
 == Key takeaways
 

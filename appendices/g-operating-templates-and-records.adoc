@@ -283,7 +283,7 @@ pre_analysis_plan:
   missing_data:
     incomplete_outcome_window: exclude_until_mature
     source_failure: suppress_and_report
-  subgroup_analyses:
+  subgroup_analyzes:
     confirmatory:
       - complexity_band
     exploratory:
@@ -316,7 +316,7 @@ study_result:
     severe_escape_rate: noninferior
     rollback_rate: no_material_difference
   economics:
-    released_capacity_hours_annualized: 28000
+    released_capacity_hours_annualized: 28,000
     realized_value_status: modeled_not_realized
   limitations:
     - high_risk_repositories_excluded

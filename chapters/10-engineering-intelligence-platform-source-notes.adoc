@@ -108,7 +108,7 @@ Engineering Intelligence data can reveal organizational structure, vulnerabiliti
 
 AI-enabled explanations, classifications, recommendations, and agents introduce additional risks.
 
-The chapter’s governance approach is informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+The chapter’s governance approach is informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42,001>>, and <<iso23,894>>.
 
 These foundations support:
 

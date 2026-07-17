@@ -312,6 +312,25 @@ Unversioned updates make experiments and trends irreproducible.
 
 Strong advisory performance does not automatically justify autonomous execution.
 
+== Worked example: measuring net cognitive offload from an AI reviewer
+
+A twelve-week study evaluates whether an AI code reviewer delivers net cognitive offload on 12,400 pull requests across a treated and matched control cohort.
+
+Baseline human review effort in the control cohort averages 17.2 minutes per pull request. In the treatment cohort, direct review time falls to 13.9 minutes — an apparent 3.3 minute per-review saving.
+
+But the treatment cohort's authors spend an additional 1.4 minutes per pull request triaging and dispositioning AI findings, and reviewers spend 1.1 minutes verifying findings they did not surface themselves. The treatment cohort also shows a 6% increase in reopened-comment cycles when AI findings prompt rework the reviewer would not have requested.
+
+Net attention accounting:
+
+- direct review time saved: -3.3 min
+- author verification of AI findings: +1.4 min
+- reviewer verification: +1.1 min
+- additional rework cycle effort (probability-weighted): +0.4 min
+
+Net saving: -0.4 minutes per pull request. The AI reviewer produces a real but modest 2.3% net reduction in human cognitive work, not the 19% headline reduction the direct-time comparison suggested.
+
+The Quality-adjusted Cognitive Offload Index applies the guardrail: escaped-defect rate falls by 8% in the treatment cohort (statistically significant). The quality-retention factor $Q_r = 1.05$ raises QCOI slightly, making the intervention marginally net-positive on a quality-adjusted basis. The decision record notes that the case for the tool depends on the quality effect, not the raw time saving, and re-evaluation is scheduled after the next model upgrade.
+
 == Key takeaways
 
 * AI should be modeled as a first-class participant with explicit provenance, cost, and outcomes.

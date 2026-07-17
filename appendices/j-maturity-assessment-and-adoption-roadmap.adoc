@@ -79,7 +79,7 @@ The organization can analyze end-to-end flow and consequence rather than isolate
 
 === Level 3: governed decision intelligence
 
-Metrics and analyses are treated as versioned, governed products.
+Metrics and analyzes are treated as versioned, governed products.
 
 At Level 3 a metric change is a release, not a query edit. Consequential measures carry semantic versions, published assumptions, and uncertainty. Decision records reference the specific metric version that was used, so a decision made a year ago can be re-inspected under the same rules. Prohibited uses are enforceable, not aspirational, and dashboards that fail their governance criteria are retired rather than tolerated.
 

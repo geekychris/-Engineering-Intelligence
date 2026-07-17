@@ -77,7 +77,7 @@ The chapter therefore recommends registering:
 * causal assumptions;
 * outcomes;
 * exclusions;
-* subgroup analyses;
+* subgroup analyzes;
 * analysis methods;
 * decision thresholds.
 

@@ -388,6 +388,23 @@ Predictive models are deployed before validation and create self-reinforcing bia
 
 Technology exists, but no one owns definitions, experiments, or action.
 
+== Worked example: sequencing platform delivery for first-year value
+
+A newly formed engineering-intelligence team has a mandate to demonstrate value within twelve months. They have four candidate initial capabilities: an ingestion layer, Engineering Change reconstruction, a metric governance layer, and an experiment platform.
+
+Ranking by decision-value-per-effort:
+
+- Ingestion + descriptive review-latency dashboard: 3 engineer-quarters, unblocks the CTO's monthly reliability review, low uncertainty.
+- Engineering Change reconstruction: 6 engineer-quarters, unblocks blast-radius scoring and coordination-cost measurement, medium uncertainty because linkage confidence depends on source-system semantics.
+- Metric governance layer: 4 engineer-quarters, defers value but is a prerequisite for anything shown on an executive scorecard.
+- Experiment platform: 8 engineer-quarters, high value but useless until reconstruction is in place.
+
+The team has 18 engineer-quarters for the year. A naive plan would try to build all four in parallel; the resulting slippage delays every deliverable.
+
+A sequenced plan takes ingestion + descriptive dashboard through governance in the first quarter (7 engineer-quarters), builds reconstruction against that governed ingest in Q2-Q3 (6 engineer-quarters, with governance work continuing in the background at 1 engineer-quarter), and starts the experiment platform in Q4 (4 engineer-quarters against the reconstructed graph). By month twelve, the team has produced two governed executive-scorecard metrics, one causal experiment on review routing, and a blast-radius measure the incident review committee has adopted — a small, credible portfolio that justifies year-two funding.
+
+The alternative sequencing — experiment platform first — would have delivered no consumable output for eight months and made continued investment politically difficult.
+
 == Key takeaways
 
 * The Engineering Intelligence platform is an evidence, experimentation, and decision system—not merely a dashboard stack.

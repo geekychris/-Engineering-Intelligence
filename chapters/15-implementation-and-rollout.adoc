@@ -407,6 +407,21 @@ Mandatory use expands after technical success but before governance and legitima
 
 Many outcome effects will require longer follow-up, especially rare quality events.
 
+== Worked example: selecting the first pilot
+
+A newly funded intelligence team must choose one of four candidate pilots for the first ninety days. Each is scored against the pilot-selection criteria in this chapter:
+
+- _Reviewer capacity in the payments organization._ Sponsor: engaged VP. Decision at stake: whether to add three senior reviewers or invest in AI review tooling. Data reachability: high — payments has clean source systems. Political cost of failure: moderate.
+- _Deployment latency across the whole company._ Sponsor: interested but not accountable. Decision at stake: unclear. Data reachability: fragmented across six deployment systems. Political cost of failure: high, because the pilot would be visible enterprise-wide.
+- _Incident response quality for site reliability._ Sponsor: strong SRE lead. Decision at stake: whether to invest in on-call reduction tooling. Data reachability: medium — needs joining incident data to on-call schedules. Political cost of failure: low.
+- _AI-review evaluation._ Sponsor: platform lead. Decision at stake: rollout expansion. Data reachability: medium. Political cost of failure: moderate — this is one of several ongoing AI evaluations.
+
+Scored on the "narrow, consequential, evidence-reachable, sponsored" rubric, the reviewer-capacity pilot ranks first. It has an accountable sponsor with a real capital decision, source systems already produce the required signal, the population is bounded to one organization, and success or failure will be visible to a supportive audience.
+
+The team picks the reviewer-capacity pilot as the ninety-day target and lists the whole-company deployment-latency work as a "not yet" — the decision at stake is unclear, the political cost of failure is high, and the data path is not ready. That candidate returns to the roadmap for reconsideration after the ingestion layer stabilises.
+
+Two months in, the pilot has produced a defensible cost model that shifts the payments leadership from adding three reviewers to adopting AI-assisted review — a $600k annual capital re-allocation supported by a governed metric and a documented analysis path.
+
 == Key takeaways
 
 * Begin with a consequential decision, not universal instrumentation.

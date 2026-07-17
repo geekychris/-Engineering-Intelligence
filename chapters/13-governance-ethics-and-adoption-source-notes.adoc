@@ -99,7 +99,7 @@ The chapter therefore treats security controls as governance controls, including
 
 The NIST AI Risk Management Framework and its generative-AI profile provide foundations for governing, mapping, measuring, and managing AI risk. See <<nist2023-airmf>> and <<nist2024-genai>>.
 
-Management-system and risk-process standards are represented by <<iso42001>> and <<iso23894>>.
+Management-system and risk-process standards are represented by <<iso42,001>> and <<iso23,894>>.
 
 The chapter operationalizes these principles through model records containing:
 

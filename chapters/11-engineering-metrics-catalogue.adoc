@@ -485,9 +485,21 @@ Composite metrics hide the reason for movement and invite gaming.
 
 Derived economics appear exact despite uncertain rates, attribution, and counterfactuals.
 
-=== Individual ranking
+== Worked example: reading the flow bundle without misreading it
 
-System metrics are repurposed as performance scores, damaging trust and validity.
+A platform lead is asked whether a workflow change three months ago helped delivery. She opens the flow bundle for the affected teams.
+
+- Lead time: 6.2 days, down from 7.9 days.
+- Active time: 3.1 days, down from 3.2 days.
+- Queue time by stage: review queue 1.4 days (down from 2.6); CI queue 0.7 days (unchanged); staging queue 1.0 days (up from 0.9).
+- WIP: 42 changes, down from 51.
+- Aging distribution: 95th percentile 18 days, down from 27.
+- Flow efficiency: 50% active, up from 41%.
+- Accepted outcome rate: 87%, down from 91%.
+
+Read as isolated numbers, this looks like an unambiguous improvement — every flow metric moved in the desired direction. Read as a bundle, the accepted-outcome rate falling four points is the loudest signal. Faster flow with fewer accepted outcomes is not the same intervention as faster flow with steady outcomes; the difference is whether "faster" has come from reducing wait time or from accepting lower-quality work.
+
+Drill-down on the accepted-outcome delta shows a specific category of change — customer-facing UI updates — is now being reverted twice as often as before. The workflow change routed those changes past a specialist reviewer who had previously caught interaction-design issues. The bundle exposed the trade-off that any single flow number would have hidden. The intervention is not reversed but is amended: the routing rule adds an exception for customer-facing UI changes, restoring specialist review while preserving the queueing improvements elsewhere.
 
 == Key takeaways
 

@@ -313,9 +313,9 @@ If a team completes ten Engineering Changes per week and average flow time is th
 
 This relationship does not prescribe a target, but it exposes trade-offs. Increasing work in process without increasing throughput raises flow time. Reducing batch size and limiting concurrent work can reduce latency even if individual task execution speed does not change.
 
-The cost of queueing at a constrained resource is not linear in utilisation. As Figure 3 shows, the expected wait time of an M/M/1 queue rises gently until roughly 70% utilisation and then explodes as the resource approaches saturation. A review queue or CI cluster operating at 90% average load is not "a bit slower" than one at 70%: it is qualitatively different, and small variance in arrival rate produces the long tail of delayed changes that dominate lead-time distributions.
+The cost of queueing at a constrained resource is not linear in utilization. As Figure 3 shows, the expected wait time of an M/M/1 queue rises gently until roughly 70% utilization and then explodes as the resource approaches saturation. A review queue or CI cluster operating at 90% average load is not "a bit slower" than one at 70%: it is qualitatively different, and small variance in arrival rate produces the long tail of delayed changes that dominate lead-time distributions.
 
-image::figures/plots/queueing-latency.png[Queueing delay vs utilisation of a constrained resource,pdfwidth=5.5in,align=center]
+image::figures/plots/queueing-latency.png[Queueing delay vs utilization of a constrained resource,pdfwidth=5.5in,align=center]
 
 A carrying-cost approximation is:
 
@@ -555,7 +555,7 @@ The average cost of a CI system includes fixed platform engineering and infrastr
 
 Likewise, reducing average review time by ten minutes does not necessarily free ten minutes of usable capacity. The saved fragments may be too dispersed to reallocate. A constrained reviewer queue may show a large nonlinear benefit from a small capacity increase, while an unconstrained queue may show almost none.
 
-Economic analyses should state explicitly whether they use:
+Economic analyzes should state explicitly whether they use:
 
 * marginal cost;
 * avoidable cost;

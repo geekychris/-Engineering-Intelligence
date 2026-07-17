@@ -403,6 +403,21 @@ Privacy risk increases while trust and validity decline.
 
 No tool contains complete intent, implementation, deployment, and outcome evidence.
 
+== Worked example: measuring identity-resolution accuracy
+
+A platform team has resolved 41,290 distinct source identities across six systems into 4,177 canonical actors. The resolution model uses email matches, SSO federation records, and probabilistic name-and-history clustering.
+
+The team validates the resolution against a hand-labeled sample of 500 identities. Four counts result:
+
+- True positives: 462 (correctly merged into the same canonical actor)
+- True negatives: 21 (correctly kept separate)
+- False positives: 8 (wrongly merged; two people collapsed into one)
+- False negatives: 9 (the same person left as two distinct canonical actors)
+
+Precision is $462 / (462 + 8) = 98.3\%$; recall is $462 / (462 + 9) = 98.1\%$. Both are high, but the analytical consequences are asymmetric. A false positive attributes work from one person to another (a governance and fairness risk); a false negative merely under-attributes and inflates apparent headcount.
+
+The team publishes both metrics on the identity service's SLO dashboard, sets an SLO of precision $\geq 99.0\%$ (higher stakes), and configures the reconstruction service to flag any Engineering Change whose accountability depends on a probabilistic identity match with confidence below 0.90. Manual review remains the resolution path for those cases; automated joins never enter the derived analytical dataset without an SLO-tracked identity-resolution version stamp. Two months later, the flagged-manual-review rate is 0.4% of joins — a workload that the platform team can absorb without shifting the accuracy-versus-throughput trade-off.
+
 == Key takeaways
 
 * Enterprise instrumentation should be designed around evidence, entities, and decisions—not dashboards.

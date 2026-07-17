@@ -327,7 +327,7 @@ The chapter therefore requires:
 * export and exit capability;
 * treatment of provider-generated labels as claims rather than facts.
 
-AI risk-management principles are informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+AI risk-management principles are informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42,001>>, and <<iso23,894>>.
 
 === Observability versus surveillance
 

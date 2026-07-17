@@ -28,7 +28,7 @@ The relevant work system includes both the machineâ€™s production and the humanâ
 
 === Interaction patterns
 
-Studies of programmer interaction with code-generating models describe iterative behaviors such as acceleration, exploration, steering, repair, and evaluation. See <<barke2023>>.
+Studies of programr interaction with code-generating models describe iterative behaviors such as acceleration, exploration, steering, repair, and evaluation. See <<barke2023>>.
 
 This supports a richer event model than simple accepted-versus-rejected suggestions.
 
@@ -214,7 +214,7 @@ Relevant guardrails include:
 
 AI risk-management principles are supported by the NIST AI Risk Management Framework and its generative-AI profile. See <<nist2023-airmf>> and <<nist2024-genai>>.
 
-Management-system and risk-process standards are represented by <<iso42001>> and <<iso23894>>.
+Management-system and risk-process standards are represented by <<iso42,001>> and <<iso23,894>>.
 
 These standards guide governance and control; they do not prove that any particular AI system is effective or safe.
 

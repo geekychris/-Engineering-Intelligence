@@ -192,7 +192,7 @@ For rare severe defects, use longer observation windows, composite severity-weig
 
 image::figures/plots/experiment-power.png[Statistical power to detect a proportional effect across sample sizes,pdfwidth=5.5in,align=center]
 
-Figure 6 shows the practical implication. A study with 500 changes per arm cannot reliably detect anything smaller than about a 15% shift in outcome; even 8,000 per arm leaves proportional effects below 5% underpowered. The minimum detectable effect, not the observed effect, is what determines whether a negative result is evidence of no effect or simply evidence of insufficient data. Power analyses belong in the pre-registration, not in the discussion.
+Figure 6 shows the practical implication. A study with 500 changes per arm cannot reliably detect anything smaller than about a 15% shift in outcome; even 8,000 per arm leaves proportional effects below 5% underpowered. The minimum detectable effect, not the observed effect, is what determines whether a negative result is evidence of no effect or simply evidence of insufficient data. Power analyzes belong in the pre-registration, not in the discussion.
 
 == Sequential testing
 
@@ -220,7 +220,7 @@ Record:
 * cross-over;
 * protocol deviations.
 
-Intent-to-treat analysis estimates the effect of offering or assigning treatment. Per-protocol and treatment-on-the-treated analyses answer different questions and require stronger assumptions.
+Intent-to-treat analysis estimates the effect of offering or assigning treatment. Per-protocol and treatment-on-the-treated analyzes answer different questions and require stronger assumptions.
 
 == Interference and network effects
 
@@ -376,7 +376,7 @@ Multiple tools and policies change simultaneously, making attribution impossible
 
 == Worked example: did the AI reviewer actually reduce review latency?
 
-An organisation rolls out an AI reviewer to half of its 240 backend teams over a two-week window. Six weeks later, mean review latency in treated teams is 4.9 hours; in control teams it is 6.8 hours. A leader concludes the AI saved 1.9 hours per review.
+An organization rolls out an AI reviewer to half of its 240 backend teams over a two-week window. Six weeks later, mean review latency in treated teams is 4.9 hours; in control teams it is 6.8 hours. A leader concludes the AI saved 1.9 hours per review.
 
 Two adjustments change the interpretation.
 

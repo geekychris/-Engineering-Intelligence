@@ -19,353 +19,366 @@ They can be used to:
 
 Where possible, entries include a DOI, official publication page, standards body, or publisher reference.
 
+[bibliography]
 == Software delivery and organizational performance
 
-[[forsgren2018]]
+[[[forsgren2018]]]
 *Forsgren, Nicole; Humble, Jez; and Kim, Gene.* _Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations._ IT Revolution Press, 2018. ISBN 978-1942788331.
 
 A foundational synthesis of research connecting software-delivery capabilities, organizational culture, delivery performance, and organizational outcomes.
 
-[[forsgren2021-space]]
+[[[forsgren2021-space]]]
 *Forsgren, Nicole; Storey, Margaret-Anne; Maddila, Chandra; Zimmermann, Thomas; Houck, Brian; and Butler, Jenna.* “The SPACE of Developer Productivity: There’s More to It Than You Think.” _ACM Queue_, volume 19, issue 1, 2021. https://queue.acm.org/detail.cfm?id=3454124[ACM Queue].
 
 Defines developer productivity as multidimensional across satisfaction and well-being, performance, activity, communication and collaboration, and efficiency and flow.
 
-[[noda2023-devex]]
+[[[noda2023-devex]]]
 *Noda, Abi; Storey, Margaret-Anne; Forsgren, Nicole; and Greiler, Michaela.* “DevEx: What Actually Drives Productivity.” _ACM Queue_, volume 21, issue 2, 2023. https://queue.acm.org/detail.cfm?id=3595878[ACM Queue].
 
 Develops a practical developer-experience framework centered on feedback loops, cognitive load, and flow state.
 
-[[fagerholm2012]]
+[[[fagerholm2012]]]
 *Fagerholm, Fabian, and Münch, Jürgen.* “Developer Experience: Concept and Definition.” _2012 International Conference on Software and System Process_, 2012. https://doi.org/10.1109/ICSSP.2012.6225984[DOI].
 
 An early formal treatment of developer experience as a distinct construct.
 
-[[kim2021-devops]]
+[[[kim2021-devops]]]
 *Kim, Gene; Humble, Jez; Debois, Patrick; Willis, John; and Forsgren, Nicole.* _The DevOps Handbook_, second edition. IT Revolution Press, 2021. ISBN 978-1950508402.
 
 Provides a broad operating model for flow, feedback, experimentation, reliability, and organizational learning.
 
-[[humble2010]]
+[[[humble2010]]]
 *Humble, Jez, and Farley, David.* _Continuous Delivery: Reliable Software Releases through Build, Test, and Deployment Automation._ Addison-Wesley, 2010. ISBN 978-0321601919.
 
 A foundational reference for deployment pipelines, automation, validation, and reliable release practices.
 
+[bibliography]
 == Socio-technical systems and software architecture
 
-[[conway1968]]
+[[[conway1968]]]
 *Conway, Melvin E.* “How Do Committees Invent?” _Datamation_, volume 14, number 4, 1968.
 
 Introduces the observation now known as Conway’s Law: system structures tend to reflect the communication structures of the organizations that design them.
 
-[[cataldo2006]]
+[[[cataldo2006]]]
 *Cataldo, Marcelo; Wagstrom, Patrick A.; Herbsleb, James D.; and Carley, Kathleen M.* “Identification of Coordination Requirements: Implications for the Design of Collaboration and Awareness Tools.” _Proceedings of CSCW 2006_, 2006. https://doi.org/10.1145/1180875.1180929[DOI].
 
 Develops socio-technical congruence as a way to analyze alignment between technical dependencies and coordination.
 
-[[herbsleb2007]]
+[[[herbsleb2007]]]
 *Herbsleb, James D.* “Global Software Engineering: The Future of Socio-technical Coordination.” _Future of Software Engineering_, 2007. https://doi.org/10.1109/FOSE.2007.11[DOI].
 
 Reviews coordination, distance, communication, and dependency challenges in distributed software engineering.
 
-[[parnas1972]]
+[[[parnas1972]]]
 *Parnas, David L.* “On the Criteria To Be Used in Decomposing Systems into Modules.” _Communications of the ACM_, volume 15, issue 12, 1972. https://doi.org/10.1145/361598.361623[DOI].
 
 Establishes information hiding and design-decision-based modularity.
 
-[[martin2017]]
+[[[martin2017]]]
 *Martin, Robert C.* _Clean Architecture: A Craftsman’s Guide to Software Structure and Design._ Prentice Hall, 2017. ISBN 978-0134494166.
 
 A practitioner-oriented treatment of dependency direction, boundaries, and architectural stability.
 
-[[skelton2019]]
+[[[skelton2019]]]
 *Skelton, Matthew, and Pais, Manuel.* _Team Topologies: Organizing Business and Technology Teams for Fast Flow._ IT Revolution Press, 2019. ISBN 978-1942788812.
 
 Connects organizational structure, cognitive load, interaction modes, and software-delivery flow.
 
+[bibliography]
 == Human attention, cognition, and interruption
 
-[[sweller1988]]
+[[[sweller1988]]]
 *Sweller, John.* “Cognitive Load During Problem Solving: Effects on Learning.” _Cognitive Science_, volume 12, issue 2, 1988. https://doi.org/10.1207/s15516709cog1202_4[DOI].
 
 A foundational treatment of cognitive load and its effects on learning and problem solving.
 
-[[mark2008]]
+[[[mark2008]]]
 *Mark, Gloria; Gudith, Daniela; and Klocke, Ulrich.* “The Cost of Interrupted Work: More Speed and Stress.” _Proceedings of CHI 2008_, 2008. https://doi.org/10.1145/1357054.1357072[DOI].
 
 Examines the performance and stress effects of interruption.
 
-[[meyer2014]]
+[[[meyer2014]]]
 *Meyer, André N.; Fritz, Thomas; Murphy, Gail C.; and Zimmermann, Thomas.* “Software Developers’ Perceptions of Productivity.” _Proceedings of FSE 2014_, 2014. https://doi.org/10.1145/2635868.2635892[DOI].
 
 Studies how developers perceive productive and unproductive work.
 
-[[muller2019]]
+[[[muller2019]]]
 *Müller, Sebastian C., and Fritz, Thomas.* “Stuck and Frustrated or in Flow and Happy: Sensing Developers’ Emotions and Progress.” _Proceedings of ICSE 2015_, 2015. https://doi.org/10.1109/ICSE.2015.334[DOI].
 
 Connects affective state, progress, and software-development work.
 
+[bibliography]
 == Measurement theory and metrics
 
-[[stevens1946]]
+[[[stevens1946]]]
 *Stevens, S. S.* “On the Theory of Scales of Measurement.” _Science_, volume 103, issue 2684, 1946. https://doi.org/10.1126/science.103.2684.677[DOI].
 
 A foundational account of nominal, ordinal, interval, and ratio measurement scales.
 
-[[cronbach1951]]
+[[[cronbach1951]]]
 *Cronbach, Lee J.* “Coefficient Alpha and the Internal Structure of Tests.” _Psychometrika_, volume 16, 1951. https://doi.org/10.1007/BF02310555[DOI].
 
 Introduces coefficient alpha as a measure of internal consistency.
 
-[[campbell1979]]
-*Campbell, Donald T.* “Assessing the Impact of Planned Social Change.” _Evaluation and Program Planning_, volume 2, issue 1, 1979. https://doi.org/10.1016/0149-7189(79)90048-X[DOI].
+[[[campbell1979]]]
+*Campbell, Donald T.* “Assessing the Impact of Planned Social Change.” _Evaluation and Program Planning_, volume 2, issue 1, 1979. https://doi.org/10.1016/0149-7189(79)90,048-X[DOI].
 
 Discusses how indicators become corrupted when heavily used for decision and control.
 
-[[goodhart1984]]
+[[[goodhart1984]]]
 *Goodhart, Charles A. E.* “Problems of Monetary Management: The U.K. Experience.” In _Monetary Theory and Practice_, Macmillan, 1984.
 
 The source associated with Goodhart’s Law: a measure can cease to be useful when it becomes a target.
 
-[[messick1995]]
+[[[messick1995]]]
 *Messick, Samuel.* “Validity of Psychological Assessment: Validation of Inferences from Persons’ Responses and Performances as Scientific Inquiry into Score Meaning.” _American Psychologist_, volume 50, issue 9, 1995. https://doi.org/10.1037/0003-066X.50.9.741[DOI].
 
 A major unified treatment of validity as evidence supporting interpretation and use.
 
-[[hand2004]]
+[[[hand2004]]]
 *Hand, David J.* _Measurement Theory and Practice: The World Through Quantification._ Arnold, 2004. ISBN 978-0340692486.
 
 A broad reference on quantification, measurement design, and interpretation.
 
+[bibliography]
 == Queueing, flow, and operations
 
-[[little1961]]
+[[[little1961]]]
 *Little, John D. C.* “A Proof for the Queuing Formula: L = λW.” _Operations Research_, volume 9, issue 3, 1961. https://doi.org/10.1287/opre.9.3.383[DOI].
 
 Provides the formal proof of Little’s Law relating work in progress, throughput, and flow time.
 
-[[kingman1961]]
+[[[kingman1961]]]
 *Kingman, J. F. C.* “The Single Server Queue in Heavy Traffic.” _Mathematical Proceedings of the Cambridge Philosophical Society_, volume 57, issue 4, 1961. https://doi.org/10.1017/S0305004100036094[DOI].
 
 Provides a foundational approximation for waiting time under variable arrival and service processes.
 
-[[hopp2011]]
+[[[hopp2011]]]
 *Hopp, Wallace J., and Spearman, Mark L.* _Factory Physics_, third edition. Waveland Press, 2011. ISBN 978-1577667391.
 
 A comprehensive reference on flow, variability, capacity, queues, work in progress, and operating-system behavior.
 
-[[goldratt1984]]
+[[[goldratt1984]]]
 *Goldratt, Eliyahu M., and Cox, Jeff.* _The Goal: A Process of Ongoing Improvement._ North River Press, 1984.
 
 A practitioner-oriented introduction to constraints and system-level optimization.
 
+[bibliography]
 == Causal inference and experimentation
 
-[[rubin1974]]
+[[[rubin1974]]]
 *Rubin, Donald B.* “Estimating Causal Effects of Treatments in Randomized and Nonrandomized Studies.” _Journal of Educational Psychology_, volume 66, issue 5, 1974. https://doi.org/10.1037/h0037350[DOI].
 
 A foundational statement of the potential-outcomes framework.
 
-[[holland1986]]
+[[[holland1986]]]
 *Holland, Paul W.* “Statistics and Causal Inference.” _Journal of the American Statistical Association_, volume 81, issue 396, 1986. https://doi.org/10.1080/01621459.1986.10478354[DOI].
 
 Clarifies the fundamental problem of causal inference and the role of statistical design.
 
-[[pearl2009]]
+[[[pearl2009]]]
 *Pearl, Judea.* _Causality: Models, Reasoning, and Inference_, second edition. Cambridge University Press, 2009. ISBN 978-0521895606.
 
 A foundational treatment of structural causal models and graphical causal inference.
 
-[[hernan2020]]
+[[[hernan2020]]]
 *Hernán, Miguel A., and Robins, James M.* _Causal Inference: What If._ Chapman & Hall/CRC, 2020. https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/[Official author page].
 
 A modern, accessible reference on target trials, confounding, selection, time-varying treatment, and causal estimation.
 
-[[imbens2015]]
+[[[imbens2015]]]
 *Imbens, Guido W., and Rubin, Donald B.* _Causal Inference for Statistics, Social, and Biomedical Sciences._ Cambridge University Press, 2015. ISBN 978-0521885881.
 
 A rigorous treatment of potential outcomes, assignment mechanisms, experiments, and observational studies.
 
-[[shadish2002]]
+[[[shadish2002]]]
 *Shadish, William R.; Cook, Thomas D.; and Campbell, Donald T.* _Experimental and Quasi-Experimental Designs for Generalized Causal Inference._ Houghton Mifflin, 2002. ISBN 978-0395615560.
 
 A core reference for randomized and quasi-experimental design and validity.
 
-[[angrist2009]]
+[[[angrist2009]]]
 *Angrist, Joshua D., and Pischke, Jörn-Steffen.* _Mostly Harmless Econometrics: An Empiricist’s Companion._ Princeton University Press, 2009. ISBN 978-0691120355.
 
 A practical reference for regression, instrumental variables, regression discontinuity, and difference-in-differences.
 
-[[kohavi2020]]
+[[[kohavi2020]]]
 *Kohavi, Ron; Tang, Diane; and Xu, Ya.* _Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing._ Cambridge University Press, 2020. ISBN 978-1108724265.
 
 A practical guide to experimentation infrastructure, guardrails, metrics, power, and organizational adoption.
 
+[bibliography]
 == Ranking and information-retrieval evaluation
 
-[[jarvelin2002]]
+[[[jarvelin2002]]]
 *Järvelin, Kalervo, and Kekäläinen, Jaana.* “Cumulated Gain-Based Evaluation of IR Techniques.” _ACM Transactions on Information Systems_, volume 20, issue 4, 2002. https://doi.org/10.1145/582415.582418[DOI].
 
 Introduces discounted cumulative gain and normalized discounted cumulative gain for ranking evaluation.
 
-[[manning2008]]
+[[[manning2008]]]
 *Manning, Christopher D.; Raghavan, Prabhakar; and Schütze, Hinrich.* _Introduction to Information Retrieval._ Cambridge University Press, 2008. https://nlp.stanford.edu/IR-book/[Official book site].
 
 A standard reference for precision, recall, ranking, indexing, and evaluation.
 
+[bibliography]
 == Organizational learning, safety, and resilience
 
-[[argyris1978]]
+[[[argyris1978]]]
 *Argyris, Chris, and Schön, Donald A.* _Organizational Learning: A Theory of Action Perspective._ Addison-Wesley, 1978.
 
 Develops single-loop and double-loop organizational learning.
 
-[[senge1990]]
+[[[senge1990]]]
 *Senge, Peter M.* _The Fifth Discipline: The Art and Practice of the Learning Organization._ Doubleday, 1990. ISBN 978-0385260954.
 
 A foundational practitioner text on systems thinking and learning organizations.
 
-[[weick2007]]
+[[[weick2007]]]
 *Weick, Karl E., and Sutcliffe, Kathleen M.* _Managing the Unexpected: Resilient Performance in an Age of Uncertainty_, second edition. Jossey-Bass, 2007. ISBN 978-0787996499.
 
 Examines high-reliability organizing, attention to weak signals, and resilience.
 
-[[dekker2014]]
+[[[dekker2014]]]
 *Dekker, Sidney.* _The Field Guide to Understanding “Human Error”_, third edition. CRC Press, 2014. ISBN 978-1472439055.
 
 Provides a systems-oriented alternative to individual blame in incident analysis.
 
-[[woods2015]]
+[[[woods2015]]]
 *Woods, David D.* “Four Concepts for Resilience and the Implications for the Future of Resilience Engineering.” _Reliability Engineering & System Safety_, volume 141, 2015. https://doi.org/10.1016/j.ress.2015.03.018[DOI].
 
 Defines resilience concepts including rebound, robustness, graceful extensibility, and sustained adaptability.
 
+[bibliography]
 == Economics and productivity
 
-[[solow1987]]
+[[[solow1987]]]
 *Solow, Robert M.* “We’d Better Watch Out.” _New York Times Book Review_, July 12, 1987.
 
 Contains the observation later called the productivity paradox: computers were visible everywhere except in measured productivity statistics.
 
-[[brynjolfsson1993]]
+[[[brynjolfsson1993]]]
 *Brynjolfsson, Erik.* “The Productivity Paradox of Information Technology.” _Communications of the ACM_, volume 36, issue 12, 1993. https://doi.org/10.1145/163298.163309[DOI].
 
 Analyzes measurement, learning, redistribution, and organizational explanations for delayed information-technology productivity gains.
 
-[[brynjolfsson2017]]
-*Brynjolfsson, Erik; Rock, Daniel; and Syverson, Chad.* “Artificial Intelligence and the Modern Productivity Paradox: A Clash of Expectations and Statistics.” NBER Working Paper 24001, 2017. https://doi.org/10.3386/w24001[DOI].
+[[[brynjolfsson2017]]]
+*Brynjolfsson, Erik; Rock, Daniel; and Syverson, Chad.* “Artificial Intelligence and the Modern Productivity Paradox: A Clash of Expectations and Statistics.” NBER Working Paper 24001, 2017. https://doi.org/10.3386/w24,001[DOI].
 
 Connects general-purpose technology adoption to complementary innovation and delayed measured productivity.
 
-[[boardman2018]]
+[[[boardman2018]]]
 *Boardman, Anthony E.; Greenberg, David H.; Vining, Aidan R.; and Weimer, David L.* _Cost-Benefit Analysis: Concepts and Practice_, fifth edition. Cambridge University Press, 2018. ISBN 978-1108401296.
 
 A comprehensive reference for economic evaluation, discounting, risk, and sensitivity analysis.
 
+[bibliography]
 == AI-assisted software engineering
 
-[[peng2023]]
-*Peng, Sida; Kalliamvakou, Eirini; Cihon, Peter; and Demirer, Mert.* “The Impact of AI on Developer Productivity: Evidence from GitHub Copilot.” 2023. https://arxiv.org/abs/2302.06590[arXiv].
+[[[peng2023]]]
+*Peng, Sida; Kalliamvakou, Eirini; Cihon, Peter; and Demirer, Mert.* “The Impact of AI on Developer Productivity: Evidence from GitHub Copilot.” 2023. https://arxiv.org/abs/2302.6,590[arXiv].
 
 Reports a controlled study of task-completion time with and without an AI coding assistant. Interpretation should remain bounded to the task, population, model, and study design.
 
-[[vaithilingam2022]]
+[[[vaithilingam2022]]]
 *Vaithilingam, Priyan; Zhang, Tianyi; and Glassman, Elena L.* “Expectation vs. Experience: Evaluating the Usability of Code Generation Tools Powered by Large Language Models.” _CHI Extended Abstracts 2022_, 2022. https://doi.org/10.1145/3491101.3519665[DOI].
 
 Examines usability, understanding, debugging, and trust in AI code generation.
 
-[[barke2023]]
+[[[barke2023]]]
 *Barke, Shraddha; James, Michael B.; and Polikarpova, Nadia.* “Grounded Copilot: How Programmers Interact with Code-Generating Models.” _Proceedings of the ACM on Programming Languages_, volume 7, OOPSLA1, 2023. https://doi.org/10.1145/3586030[DOI].
 
-Studies interaction patterns between programmers and code-generating models.
+Studies interaction patterns between programrs and code-generating models.
 
-[[jimenez2024]]
-*Jimenez, Carlos E.; Yang, John; Wettig, Alexander; Yao, Shunyu; Pei, Kexin; Press, Ofir; and Narasimhan, Karthik.* “SWE-bench: Can Language Models Resolve Real-World GitHub Issues?” _ICLR 2024_. https://arxiv.org/abs/2310.06770[arXiv].
+[[[jimenez2024]]]
+*Jimenez, Carlos E.; Yang, John; Wettig, Alexander; Yao, Shunyu; Pei, Kexin; Press, Ofir; and Narasimhan, Karthik.* “SWE-bench: Can Language Models Resolve Real-World GitHub Issues?” _ICLR 2024_. https://arxiv.org/abs/2310.6,770[arXiv].
 
 Introduces a benchmark using real repository issues and patches for evaluating software-engineering agents.
 
-[[afroz2025]]
-*Afroz, Sadia; Feng, Zixuan; Kimura, Katie; Trinkenreich, Bianca; Steinmacher, Igor; and Sarma, Anita.* “Developer Productivity with GenAI.” 2025. https://arxiv.org/abs/2510.24265[arXiv].
+[[[afroz2025]]]
+*Afroz, Sadia; Feng, Zixuan; Kimura, Katie; Trinkenreich, Bianca; Steinmacher, Igor; and Sarma, Anita.* “Developer Productivity with GenAI.” 2025. https://arxiv.org/abs/2510.24,265[arXiv].
 
 Examines perceived productivity effects across SPACE dimensions and highlights variation by usage and outcome dimension.
 
+[bibliography]
 == AI risk, governance, and standards
 
-[[nist2023-airmf]]
+[[[nist2023-airmf]]]
 *National Institute of Standards and Technology.* _Artificial Intelligence Risk Management Framework (AI RMF 1.0)._ NIST AI 100-1, January 2023. https://doi.org/10.6028/NIST.AI.100-1[DOI].
 
 Defines the Govern, Map, Measure, and Manage functions for voluntary AI risk management.
 
-[[nist2024-genai]]
+[[[nist2024-genai]]]
 *National Institute of Standards and Technology.* _Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile._ NIST AI 600-1, July 2024. https://doi.org/10.6028/NIST.AI.600-1[DOI].
 
 Extends the AI RMF with generative-AI-specific risks and actions.
 
-[[nist2020-privacy]]
+[[[nist2020-privacy]]]
 *National Institute of Standards and Technology.* _NIST Privacy Framework: A Tool for Improving Privacy through Enterprise Risk Management_, version 1.0, January 2020. https://www.nist.gov/privacy-framework[Official NIST page].
 
 Provides a risk-based framework for identifying and managing privacy risk.
 
-[[nist2024-csf]]
+[[[nist2024-csf]]]
 *National Institute of Standards and Technology.* _The NIST Cybersecurity Framework (CSF) 2.0._ February 2024. https://doi.org/10.6028/NIST.CSWP.29[DOI].
 
 Defines the Govern, Identify, Protect, Detect, Respond, and Recover functions for cybersecurity risk management.
 
-[[iso42001]]
-*International Organization for Standardization and International Electrotechnical Commission.* _ISO/IEC 42001:2023 — Information Technology — Artificial Intelligence — Management System._ 2023. https://www.iso.org/standard/81230.html[ISO publication page].
+[[<<iso42,001>>]]
+*International Organization for Standardization and International Electrotechnical Commission.* _ISO/IEC 42,001:2023 — Information Technology — Artificial Intelligence — Management System._ 2023. https://www.iso.org/standard/81,230.html[ISO publication page].
 
 Defines requirements for an organizational AI management system.
 
-[[iso23894]]
-*International Organization for Standardization and International Electrotechnical Commission.* _ISO/IEC 23894:2023 — Information Technology — Artificial Intelligence — Guidance on Risk Management._ 2023. https://www.iso.org/standard/77304.html[ISO publication page].
+[[<<iso23,894>>]]
+*International Organization for Standardization and International Electrotechnical Commission.* _ISO/IEC 23,894:2023 — Information Technology — Artificial Intelligence — Guidance on Risk Management._ 2023. https://www.iso.org/standard/77,304.html[ISO publication page].
 
 Provides guidance for AI-specific risk management.
 
+[bibliography]
 == Data systems, provenance, and observability
 
-[[moreau2013]]
+[[[moreau2013]]]
 *Moreau, Luc, and Missier, Paolo, editors.* _PROV-DM: The PROV Data Model._ W3C Recommendation, April 30, 2013. https://www.w3.org/TR/prov-dm/[W3C Recommendation].
 
 Defines a general model for entities, activities, agents, and provenance relationships.
 
-[[kleppmann2017]]
+[[[kleppmann2017]]]
 *Kleppmann, Martin.* _Designing Data-Intensive Applications._ O’Reilly Media, 2017. ISBN 978-1449373320.
 
 A broad reference for event logs, stream processing, replication, consistency, batch processing, and data-system architecture.
 
-[[akidau2018]]
+[[[akidau2018]]]
 *Akidau, Tyler; Chernyak, Slava; and Lax, Reuven.* _Streaming Systems: The What, Where, When, and How of Large-Scale Data Processing._ O’Reilly Media, 2018. ISBN 978-1491983874.
 
 Develops event-time, watermarks, triggers, and correctness concepts for stream processing.
 
-[[beyer2016]]
+[[[beyer2016]]]
 *Beyer, Betsy; Jones, Chris; Petoff, Jennifer; and Murphy, Niall Richard, editors.* _Site Reliability Engineering: How Google Runs Production Systems._ O’Reilly Media, 2016. https://sre.google/sre-book/table-of-contents/[Official online edition].
 
 A foundational reference for service-level objectives, toil, reliability engineering, and operational learning.
 
-[[beyer2018]]
+[[[beyer2018]]]
 *Beyer, Betsy; Murphy, Niall Richard; Rensin, David K.; Kawahara, Kent; and Thorne, Stephen, editors.* _The Site Reliability Workbook._ O’Reilly Media, 2018. https://sre.google/workbook/table-of-contents/[Official online edition].
 
 Provides operational practices for SLOs, monitoring, incident response, and reliability programs.
 
+[bibliography]
 == Research design, reproducibility, and reporting
 
-[[open-science2015]]
+[[[open-science2015]]]
 *Open Science Collaboration.* “Estimating the Reproducibility of Psychological Science.” _Science_, volume 349, issue 6251, 2015. https://doi.org/10.1126/science.aac4716[DOI].
 
 A large collaborative replication project illustrating the importance and difficulty of reproducibility.
 
-[[nosek2018]]
+[[[nosek2018]]]
 *Nosek, Brian A.; Ebersole, Charles R.; DeHaven, Alexander C.; and Mellor, David T.* “The Preregistration Revolution.” _Proceedings of the National Academy of Sciences_, volume 115, issue 11, 2018. https://doi.org/10.1073/pnas.1708274114[DOI].
 
 Explains how preregistration separates confirmatory and exploratory analysis.
 
-[[wilkinson2016]]
+[[[wilkinson2016]]]
 *Wilkinson, Mark D., et al.* “The FAIR Guiding Principles for Scientific Data Management and Stewardship.” _Scientific Data_, volume 3, 2016. https://doi.org/10.1038/sdata.2016.18[DOI].
 
 Defines principles for making research data findable, accessible, interoperable, and reusable.
 
-[[acm2018-ethics]]
+[[[acm2018-ethics]]]
 *Association for Computing Machinery.* _ACM Code of Ethics and Professional Conduct._ 2018. https://www.acm.org/code-of-ethics[ACM].
 
 Provides professional principles concerning harm, fairness, privacy, honesty, competence, and accountability.

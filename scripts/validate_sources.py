@@ -14,7 +14,7 @@ import sys
 
 INCLUDE_RE = re.compile(r"include::([^\[]+)\[")
 IMAGE_RE = re.compile(r"image::([^\[]+)\[")
-ANCHOR_RE = re.compile(r"\[\[([^\],]+)(?:,[^\]]*)?\]\]")
+ANCHOR_RE = re.compile(r"\[\[\[?([^\],]+)(?:,[^\]]*)?\]?\]\]")
 XREF_RE = re.compile(r"<<([^,>]+)(?:,[^>]*)?>>")
 CITATION_KEY_RE = re.compile(r"^[a-z][a-z0-9-]*\d{4}(?:-[a-z0-9-]+)?$")
 CHAPTER_RE = re.compile(r"^(\d{2})-(.+)\.adoc$")

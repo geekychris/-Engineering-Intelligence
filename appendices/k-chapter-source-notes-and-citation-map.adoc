@@ -133,7 +133,7 @@ Repository-level software-agent benchmarking is represented by <<jimenez2024>>.
 
 Broader GenAI productivity perceptions across several dimensions are discussed in the emerging evidence represented by <<afroz2025>>.
 
-AI risk-management principles are supported by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+AI risk-management principles are supported by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42,001>>, and <<iso23,894>>.
 
 === Caution
 
@@ -229,7 +229,7 @@ The vendor, AI reviewer, coding assistant, CI, architecture, and policy playbook
 
 Professional obligations concerning harm, fairness, privacy, honesty, competence, and accountability are informed by <<acm2018-ethics>>.
 
-AI risk governance is supported by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+AI risk governance is supported by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42,001>>, and <<iso23,894>>.
 
 Privacy-risk management is informed by <<nist2020-privacy>>, and cybersecurity governance by <<nist2024-csf>>.
 
@@ -307,7 +307,7 @@ Learning velocity, capability preservation, evidence memory, decision follow-up,
 
 === Established foundations
 
-AI risk and management-system concepts are informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+AI risk and management-system concepts are informed by <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42,001>>, and <<iso23,894>>.
 
 General-purpose-technology adoption and delayed productivity effects are informed by <<brynjolfsson2017>>.
 
@@ -335,7 +335,7 @@ Grounded in <<shadish2002>>, <<imbens2015>>, <<hernan2020>>, <<angrist2009>>, <<
 
 === xref:app-D[Appendix D] — Governance, Privacy, and Acceptable Use Standard
 
-Informed by <<acm2018-ethics>>, <<nist2020-privacy>>, <<nist2024-csf>>, <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
+Informed by <<acm2018-ethics>>, <<nist2020-privacy>>, <<nist2024-csf>>, <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42,001>>, and <<iso23,894>>.
 
 === xref:app-E[Appendix E] — Economic Evaluation and Business Case Standard
 

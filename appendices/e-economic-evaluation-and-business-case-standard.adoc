@@ -747,7 +747,7 @@ benefit_id: benefit_review_capacity
 business_case_id: bc_ai_review_2026_02
 benefit_type: released_capacity
 forecast_annual_value_usd: 4200000
-forecast_hours: 28000
+forecast_hours: 28,000
 realization_factor: 0.45
 actual_to_date:
   measured_hours_released: 9100

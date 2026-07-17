@@ -54,6 +54,8 @@ role:
   dropcap:
     font-family: Times-Roman
     font-color: 17365D
+    font-size: 40
+    font-style: bold
   lead:
     font-size: 11.5
     font-color: 2A3947

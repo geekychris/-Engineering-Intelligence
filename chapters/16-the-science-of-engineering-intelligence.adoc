@@ -375,7 +375,7 @@ A publishable Engineering Intelligence study should provide, where privacy and s
 * synthetic or de-identified example data;
 * decision record.
 
-Where raw data cannot be shared, organizations can still publish transformation logic, schemas, synthetic fixtures, and reproducible aggregate analyses.
+Where raw data cannot be shared, organizations can still publish transformation logic, schemas, synthetic fixtures, and reproducible aggregate analyzes.
 
 == Pre-registration
 
@@ -391,7 +391,7 @@ For consequential experiments, pre-register:
 * sample-size rationale;
 * stopping criteria;
 * analysis model;
-* subgroup analyses.
+* subgroup analyzes.
 
 Pre-registration does not prevent exploration. It distinguishes confirmatory evidence from discoveries made after inspecting the data.
 

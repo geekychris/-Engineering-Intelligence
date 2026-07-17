@@ -354,7 +354,7 @@ A shared authentication library is updated to change how session tokens are refr
 
 The blast-radius score developed in this chapter looks at three inputs. Reach: the service catalogue shows 47 downstream services import the library at the pinned version; 31 will pick up the change on their next deploy, and 8 have deploy cadences under 24 hours. Exposure: 5 of the downstream services are internet-facing and handle authenticated user requests. Reversibility: the change modifies a client-visible cookie attribute; rollback requires simultaneous coordinated redeployment across the fleet or a period of graceful mixed-version handling.
 
-A simple weighted score, with each factor normalised to [0, 1]:
+A simple weighted score, with each factor normalized to [0, 1]:
 
 [stem]
 ++++

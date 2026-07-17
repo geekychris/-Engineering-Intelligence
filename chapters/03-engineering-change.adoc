@@ -403,6 +403,21 @@ Overly broad changes make cost, latency, and causality meaningless. Use hierarch
 
 Changing reconstruction rules can alter past metrics. Preserve model versions and support reproducible analysis.
 
+== Worked example: reconstructing an Engineering Change under confidence
+
+A platform team wants to attribute cost and outcome to an Engineering Change titled "add refund reason codes to checkout." The reconstruction service assembles evidence from six systems: the intent ticket, three pull requests across two repositories, a feature-flag configuration change, and a deployment record.
+
+Deterministic linkage — where the pull-request description or commit trailer carries `refs REFUND-8842` — connects two of the three pull requests to the intent with confidence 1.0. The third pull request modifies the payment-integration service and shares an author but no explicit reference; a probabilistic model links it with confidence 0.62 based on temporal co-occurrence, semantic similarity of description, and shared file paths with the other two changes.
+
+The feature-flag change is emitted by a separate system without repository references. It links to the intent via a normalized flag name (`checkout.refund_reason_codes_enabled`) that matches text in the intent description; confidence 0.88.
+
+Total human effort attributed:
+
+- deterministic edges: 14.2 authored hours + 6.1 review hours = 20.3 hours ± low uncertainty
+- probabilistic edges: additional 4.4 authored hours and 1.7 review hours, weighted by their link confidences: $4.4 \times 0.62 + 1.7 \times 0.62 = 3.78$ expected additional hours
+
+Total expected effort: 24.1 hours. A conservative interpretation reports 20.3 hours (deterministic only) as the floor and 26.4 hours (all evidence, unweighted) as the ceiling. The versioned reconstruction stamps every metric derived from this Engineering Change with reconstruction model v3.4, so if the linkage model is later revised the effort estimate can be recomputed rather than retconned.
+
 == Key takeaways
 
 * Pull requests are observable artifacts, not universal units of engineering work.

@@ -1,10 +1,10 @@
 = Acknowledgments
 
-This book stands on decades of work by others. The intellectual foundations of engineering economics, human cognition, queueing theory, causal inference, software architecture, and organisational learning are not new; the contribution of this book is a synthesis of those foundations into a single measurable framework for modern software engineering.
+This book stands on decades of work by others. The intellectual foundations of engineering economics, human cognition, queueing theory, causal inference, software architecture, and organizational learning are not new; the contribution of this book is a synthesis of those foundations into a single measurable framework for modern software engineering.
 
-The bibliography and per-chapter source notes name the specific researchers, practitioners, and organisations whose work shaped each argument. Any errors of interpretation, emphasis, or omission are the author's alone.
+The bibliography and per-chapter source notes name the specific researchers, practitioners, and organizations whose work shaped each argument. Any errors of interpretation, emphasis, or omission are the author's alone.
 
-The framework was refined in conversation with engineers, engineering leaders, platform architects, data scientists, and social scientists across many organisations. Their willingness to discuss what they measure — and what they wish they could measure — improved every chapter. Individual acknowledgment is withheld to preserve the confidentiality of specific operating contexts, but the debt is real.
+The framework was refined in conversation with engineers, engineering leaders, platform architects, data scientists, and social scientists across many organizations. Their willingness to discuss what they measure — and what they wish they could measure — improved every chapter. Individual acknowledgment is withheld to preserve the confidentiality of specific operating contexts, but the debt is real.
 
 Several early readers offered corrections that materially improved the manuscript. Their patience with drafts that were more ambitious than clear is gratefully recorded here.
 
