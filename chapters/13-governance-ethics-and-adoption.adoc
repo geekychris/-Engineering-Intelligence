@@ -1,7 +1,14 @@
+[[ch-13]]
 = Governance, Ethics, and Organizational Adoption
 
 [abstract]
 Engineering Intelligence can improve decisions, reduce wasted effort, and make hidden system constraints visible. It can also become a surveillance system, distort incentives, and undermine trust if metrics are misused. This chapter defines the governance, ethical, privacy, and organizational practices required for responsible adoption. It explains purpose limitation, metric rights, acceptable and prohibited uses, incentive effects, model governance, transparency, employee participation, and the operating model needed to sustain legitimate measurement.
+
+// index terms
+indexterm:[purpose limitation]
+indexterm:[use classification]
+indexterm:[acceptable use]
+indexterm:[data minimization]
 
 == Measurement changes behavior
 

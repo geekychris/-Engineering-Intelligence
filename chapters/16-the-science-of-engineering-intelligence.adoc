@@ -1,7 +1,13 @@
+[[ch-16]]
 = The Science of Engineering Intelligence
 
 [abstract]
 Engineering Intelligence becomes a discipline only when its claims can be tested, reproduced, challenged, and improved. This chapter defines the scientific foundations of the field: its objects of study, theory-building practices, measurement standards, replication requirements, benchmark design, shared datasets, reporting conventions, and research agenda. It argues that engineering organizations should not merely consume metrics, but participate in a cumulative science of software delivery.
+
+// index terms
+indexterm:[reproducibility]
+indexterm:[benchmark]
+indexterm:[replication]
 
 == From analytics practice to scientific discipline
 

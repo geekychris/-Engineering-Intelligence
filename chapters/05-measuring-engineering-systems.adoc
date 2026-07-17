@@ -1,7 +1,17 @@
+[[ch-05]]
 = Measuring Engineering Systems
 
 [abstract]
 Engineering organizations produce abundant telemetry, but telemetry is not measurement. This chapter defines the measurement hierarchy from events to decisions, explains construct validity, reliability, sensitivity, and robustness, and introduces a taxonomy for flow, quality, economic, human, AI, and architectural metrics. It also covers derived measures, guardrails, metric versioning, statistical treatment, and common anti-patterns.
+
+// index terms
+indexterm:[metric taxonomy]
+indexterm:[construct validity]
+indexterm:[reliability]
+indexterm:[sensitivity]
+indexterm:[guardrail metric]
+indexterm:[composite metric]
+indexterm:[metric versioning]
 
 == Measurement as a decision discipline
 

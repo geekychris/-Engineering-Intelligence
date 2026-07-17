@@ -376,7 +376,7 @@ The chapter therefore tracks cost by:
 * serving consumer;
 * model and inference workload.
 
-This allows platform cost to be evaluated against decision value using the economic methods in <<boardman2018>> and Chapter 2.
+This allows platform cost to be evaluated against decision value using the economic methods in <<boardman2018>> and xref:ch-02[Chapter 2].
 
 === Original Engineering Intelligence contributions
 

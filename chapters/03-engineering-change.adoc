@@ -1,7 +1,14 @@
+[[ch-03]]
 = The Engineering Change
 
 [abstract]
 A pull request is a platform artifact, not a reliable unit of engineering work. One coherent intent may span repositories, migrations, approvals, feature flags, deployments, and operational tasks; one pull request may contain several unrelated intents. This chapter formalizes the Engineering Change as the primary analytical unit of Engineering Intelligence. It defines its entities and boundaries, models it as a temporal property graph, describes deterministic and probabilistic reconstruction, introduces confidence and provenance requirements, and explains how to instrument the lifecycle at enterprise scale.
+
+// index terms
+indexterm:[Engineering Change]
+indexterm:[temporal property graph]
+indexterm:[provenance]
+indexterm:[reconstruction]
 
 == Why the pull request is insufficient
 

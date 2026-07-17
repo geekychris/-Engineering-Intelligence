@@ -1,7 +1,12 @@
+[[ch-17]]
 = The Learning Engineering Organization
 
 [abstract]
 The ultimate purpose of Engineering Intelligence is not measurement itself. It is to create an organization that can learn deliberately: observe its engineering system, form credible explanations, test interventions, retain what works, abandon what does not, and improve its ability to make future decisions. This chapter brings together the economic, human, architectural, experimental, technical, and governance ideas developed throughout the book. It describes the operating model of a learning engineering organization and the capabilities required to sustain it.
+
+// index terms
+indexterm:[learning loop]
+indexterm:[retrospection]
 
 == Measurement is not the destination
 

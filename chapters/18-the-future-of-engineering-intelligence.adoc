@@ -1,7 +1,12 @@
+[[ch-18]]
 = The Future of Engineering Intelligence
 
 [abstract]
 Engineering Intelligence will evolve as software creation becomes increasingly distributed across people, AI agents, platforms, generated artifacts, and autonomous operational systems. The central challenge will no longer be merely measuring human software-development activity. It will be understanding and governing a dynamic production system in which intent, implementation, validation, and operation may be performed by different combinations of humans and machines. This chapter explores that future, identifies durable principles, and proposes a practical direction for organizations building Engineering Intelligence capabilities today.
+
+// index terms
+indexterm:[autonomous engineering]
+indexterm:[multi-agent]
 
 == A changing production system
 

@@ -1,0 +1,6 @@
+= Dedication
+
+[.dedication]
+--
+_For the engineers whose careful work is rarely counted, and for the leaders willing to ask what their measurements are actually measuring._
+--

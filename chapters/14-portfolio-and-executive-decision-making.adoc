@@ -1,7 +1,14 @@
+[[ch-14]]
 = Portfolio and Executive Decision-Making
 
 [abstract]
 Engineering Intelligence ultimately exists to improve choices about where the organization invests money, attention, time, and risk capacity. This chapter explains how change-level evidence can support portfolio decisions without collapsing engineering into a single score. It covers capacity allocation, opportunity cost, option value, scenario analysis, uncertainty, dependency-aware prioritization, constrained optimization, executive scorecards, and decision records.
+
+// index terms
+indexterm:[capacity allocation]
+indexterm:[option value]
+indexterm:[opportunity cost]
+indexterm:[portfolio]
 
 == From measurement to allocation
 
@@ -361,6 +368,20 @@ Scores are produced after strategic choices have already been made and do not af
 === Punishing forecast error
 
 Teams hide uncertainty and produce politically safe estimates.
+
+== Worked example: allocating capacity across three initiatives
+
+An engineering organisation has 42 engineers of general capacity and 6 engineers of scarce security-specialist capacity available for the next quarter. Three initiatives compete for that capacity:
+
+_Initiative A — payments migration._ Expected value $8M realised over 18 months (revenue enablement + risk reduction), estimated cost 24 general engineer-quarters and 3 specialist-quarters, dependency on a shared identity service, cost of delay $180k per month, downside if incomplete: minor.
+
+_Initiative B — internal developer platform upgrade._ Expected value $4M over 24 months (recovered productivity across 900 engineers), cost 30 general engineer-quarters and 0 specialist-quarters, no external dependency, cost of delay $60k per month, downside if incomplete: capability continues to work as-is.
+
+_Initiative C — regulatory compliance program._ Expected value not primarily monetary but mandatory; failing to complete on schedule triggers a $12M regulatory penalty and reputational risk. Cost 18 general engineer-quarters and 5 specialist-quarters, hard deadline 30 September, cost of delay approaches infinity as the deadline nears.
+
+A simplistic ROI ranking would prefer A ($8M / 27 quarters = $296k/quarter) over B ($4M / 30 = $133k/quarter). But C's mandatory constraint locks in 18 general + 5 specialist quarters, leaving only 24 general + 1 specialist quarter free. C is not a portfolio choice; it is a floor. Within the remaining capacity, A is still short one specialist-quarter and B has 30 general-quarters of demand against 24 available.
+
+The portfolio decision becomes: fund C fully, fund B partially with sequenced quarters (accepting a modest slip in cost of delay), and defer A by one quarter — or negotiate specialist capacity from another portfolio to unlock A now. The trade-off is explicit and traceable: A's $180k monthly cost of delay is the price of unlocking C's mandatory constraint. That price is not hidden inside a composite score.
 
 == Key takeaways
 

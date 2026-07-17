@@ -1,7 +1,8 @@
+[[app-K]]
 = Chapter Source Notes and Citation Map
 
 [abstract]
-This appendix maps the principal claims, constructs, and methods in each chapter to the foundational and empirical sources collected in Appendix I. It provides a publication-ready citation plan without implying that every concept is established to the same degree. The map distinguishes mature foundations, practitioner syntheses, standards, and emerging research, and identifies where the book advances an original synthesis or proposes a research agenda.
+This appendix maps the principal claims, constructs, and methods in each chapter to the foundational and empirical sources collected in xref:app-I[Appendix I]. It provides a publication-ready citation plan without implying that every concept is established to the same degree. The map distinguishes mature foundations, practitioner syntheses, standards, and emerging research, and identifies where the book advances an original synthesis or proposes a research agenda.
 
 == Citation conventions
 
@@ -14,7 +15,7 @@ The citation map follows several rules.
 * The Engineering Change reference model, attention economics, integrated platform design, and several agent-governance concepts are original syntheses in this book and should not be presented as established external standards.
 * Time-sensitive AI research and standards should be reverified before each publication edition.
 
-== Chapter 1 — Introduction
+== xref:ch-01[Chapter 1] — Introduction
 
 === Established foundations
 
@@ -34,7 +35,7 @@ The discussion of experimentation draws on the potential-outcomes framework, exp
 
 The Engineering Change as the principal unit of consequence, the explicit treatment of AI as an engineering participant, and the integration of attention, economics, architecture, causal inference, and governance form the book’s original synthesis.
 
-== Chapter 2 — Engineering Economics
+== xref:ch-02[Chapter 2] — Engineering Economics
 
 === Established foundations
 
@@ -50,7 +51,7 @@ The distinction between gross local efficiency and end-to-end value is consisten
 
 The capacity-realization factor, fragmentation discount, validation-burden accounting, and explicit taxonomy separating cash savings, avoided cost, released capacity, modeled outcome value, and option value are operational constructs developed for Engineering Intelligence.
 
-== Chapter 3 — Engineering Change
+== xref:ch-03[Chapter 3] — Engineering Change
 
 === Established foundations
 
@@ -66,7 +67,7 @@ The event-log, replay, temporal, and data-intensive architectural principles dra
 
 The Engineering Change lifecycle, graph vocabulary, confidence-aware reconstruction model, multi-repository aggregation, and unit-of-consequence framing are original reference-model contributions of this book.
 
-== Chapter 4 — Human Attention
+== xref:ch-04[Chapter 4] — Human Attention
 
 === Established foundations
 
@@ -82,7 +83,7 @@ The relationship between developer affect, progress, and flow is informed by <<m
 
 The four-part attention model—production, verification, coordination, and recovery effort—and the concepts of attention amplification, attention yield, cognitive offload, and cognitive reload are book-specific operational constructs.
 
-== Chapter 5 — Measuring Engineering Systems
+== xref:ch-05[Chapter 5] — Measuring Engineering Systems
 
 === Established foundations
 
@@ -102,7 +103,7 @@ The multidimensional nature of engineering productivity is supported by <<forsgr
 
 The metric specification lifecycle, policy-grade metric concept, explicit prohibited-use field, quality-state publication contract, and integration of measurement validity with governance are original operational extensions.
 
-== Chapter 6 — Experimentation and Causal Inference
+== xref:ch-06[Chapter 6] — Experimentation and Causal Inference
 
 === Established foundations
 
@@ -118,7 +119,7 @@ Preregistration and separation of confirmatory and exploratory analysis are supp
 
 The Engineering Intelligence experiment protocol combines software delivery events, Engineering Change assignment, actual tool exposure, model and prompt versioning, guardrails, economic outcomes, and value-realization follow-up into one operational study model.
 
-== Chapter 7 — AI-Assisted Engineering
+== xref:ch-07[Chapter 7] — AI-Assisted Engineering
 
 === Established and emerging evidence
 
@@ -142,7 +143,7 @@ These studies do not establish universal effects across organizations, model ver
 
 Net attention effect, validation burden, accepted contribution share, machine-participation provenance, delegation depth, autonomous-action reversal, model monoculture, and continuous Engineering Change evaluation are original or extended constructs in this book.
 
-== Chapter 8 — Enterprise Instrumentation
+== xref:ch-08[Chapter 8] — Enterprise Instrumentation
 
 === Established foundations
 
@@ -160,7 +161,7 @@ Privacy-risk management is informed by <<nist2020-privacy>>; cybersecurity gover
 
 The source-to-canonical Engineering Change instrumentation model, confidence-aware reconstruction quality, metric-quality SLOs, and purpose-bound evidence-serving architecture are original platform integrations.
 
-== Chapter 9 — Complexity and Blast Radius
+== xref:ch-09[Chapter 9] — Complexity and Blast Radius
 
 === Established foundations
 
@@ -174,7 +175,7 @@ Team cognitive load and interaction modes are informed by <<skelton2019>>.
 
 The multidimensional blast-radius model combining dependency reach, service and repository span, ownership entropy, validation surface, data and financial consequence, and incident evidence is a book-specific framework.
 
-== Chapter 10 — The Engineering Intelligence Platform
+== xref:ch-10[Chapter 10] — The Engineering Intelligence Platform
 
 === Established foundations
 
@@ -190,7 +191,7 @@ Privacy, cybersecurity, and AI risk management are informed by <<nist2020-privac
 
 The connected evidence, metric, model, experiment, and decision registries; purpose-bound APIs; Engineering Change reconstruction service; and evidence-to-decision architecture are integrated reference designs developed in this book.
 
-== Chapter 11 — Engineering Metrics Catalogue
+== xref:ch-11[Chapter 11] — Engineering Metrics Catalogue
 
 === Established foundations
 
@@ -208,7 +209,7 @@ Measurement validity and target distortion are informed by <<messick1995>>, <<ca
 
 The catalogue’s attention, economics, AI, architecture, linkage, governance, and value-realization metrics extend established measurement ideas into a unified Engineering Intelligence system.
 
-== Chapter 12 — Experiment Playbooks
+== xref:ch-12[Chapter 12] — Experiment Playbooks
 
 === Established foundations
 
@@ -222,7 +223,7 @@ Preregistration and confirmatory-analysis discipline are informed by <<nosek2018
 
 The vendor, AI reviewer, coding assistant, CI, architecture, and policy playbooks adapt causal methods to Engineering Change evidence, machine provenance, human validation burden, and enterprise guardrails.
 
-== Chapter 13 — Governance, Ethics, and Adoption
+== xref:ch-13[Chapter 13] — Governance, Ethics, and Adoption
 
 === Established foundations
 
@@ -238,7 +239,7 @@ Measurement misuse and behavioral distortion are supported by <<campbell1979>>, 
 
 The use-classification model, presumption against individual employment use, purpose registration, metric-use review, generated-explanation controls, and governance-incident model are operational standards developed in this book.
 
-== Chapter 14 — Portfolio and Executive Decision-Making
+== xref:ch-14[Chapter 14] — Portfolio and Executive Decision-Making
 
 === Established foundations
 
@@ -254,7 +255,7 @@ Organizational learning and systems thinking are supported by <<argyris1978>> an
 
 The evidence-maturity portfolio, decision-record system, learning investment portfolio, value-realization ledger, and executive distinction between activity, capacity, and realized value are book-specific integrations.
 
-== Chapter 15 — Implementation and Rollout
+== xref:ch-15[Chapter 15] — Implementation and Rollout
 
 === Established foundations
 
@@ -268,7 +269,7 @@ Learning-organization and double-loop concepts are grounded in <<argyris1978>> a
 
 The decision-first rollout sequence, maturity floors, complete evidence-to-decision loop, and first-90-day Engineering Intelligence implementation are operational methods developed in this book.
 
-== Chapter 16 — The Science of Engineering Intelligence
+== xref:ch-16[Chapter 16] — The Science of Engineering Intelligence
 
 === Established foundations
 
@@ -284,7 +285,7 @@ Reusable evidence and stewardship principles are informed by <<wilkinson2016>>.
 
 Engineering Intelligence as a distinct scientific discipline, its unit hierarchy, evidence maturity model, open evidence graph, and combined research agenda are proposed in this book.
 
-== Chapter 17 — The Learning Engineering Organization
+== xref:ch-17[Chapter 17] — The Learning Engineering Organization
 
 === Established foundations
 
@@ -302,7 +303,7 @@ Delivery feedback and learning practices are informed by <<kim2021-devops>> and 
 
 Learning velocity, capability preservation, evidence memory, decision follow-up, negative-result retention, and the Engineering Intelligence function are integrated organizational constructs developed in this book.
 
-== Chapter 18 — The Future of Engineering Intelligence
+== xref:ch-18[Chapter 18] — The Future of Engineering Intelligence
 
 === Established foundations
 
@@ -320,43 +321,43 @@ The treatment of intent as a first-class artifact, agent economic participation,
 
 == Appendix source relationships
 
-=== Appendix A — Engineering Change Reference Model
+=== xref:app-A[Appendix A] — Engineering Change Reference Model
 
 Conceptually compatible with provenance entities, activities, and agents in <<moreau2013>>, but defines a domain-specific model and relationship vocabulary.
 
-=== Appendix B — Metric Specification Standard
+=== xref:app-B[Appendix B] — Metric Specification Standard
 
 Grounded in measurement validity and reliability from <<stevens1946>>, <<cronbach1951>>, <<messick1995>>, and <<hand2004>>, with governance extensions informed by <<campbell1979>> and <<goodhart1984>>.
 
-=== Appendix C — Experiment and Causal Study Protocol
+=== xref:app-C[Appendix C] — Experiment and Causal Study Protocol
 
 Grounded in <<shadish2002>>, <<imbens2015>>, <<hernan2020>>, <<angrist2009>>, <<kohavi2020>>, and <<nosek2018>>.
 
-=== Appendix D — Governance, Privacy, and Acceptable Use Standard
+=== xref:app-D[Appendix D] — Governance, Privacy, and Acceptable Use Standard
 
 Informed by <<acm2018-ethics>>, <<nist2020-privacy>>, <<nist2024-csf>>, <<nist2023-airmf>>, <<nist2024-genai>>, <<iso42001>>, and <<iso23894>>.
 
-=== Appendix E — Economic Evaluation and Business Case Standard
+=== xref:app-E[Appendix E] — Economic Evaluation and Business Case Standard
 
 Grounded in <<boardman2018>>, <<brynjolfsson1993>>, <<brynjolfsson2017>>, <<little1961>>, <<kingman1961>>, and <<hopp2011>>.
 
-=== Appendix F — Technical Reference Architecture
+=== xref:app-F[Appendix F] — Technical Reference Architecture
 
 Informed by <<moreau2013>>, <<kleppmann2017>>, <<akidau2018>>, <<beyer2016>>, and <<beyer2018>>.
 
-=== Appendix G — Operating Templates and Records
+=== xref:app-G[Appendix G] — Operating Templates and Records
 
 Operationalizes the standards and original synthesis developed throughout the book.
 
-=== Appendix H — Glossary and Controlled Vocabulary
+=== xref:app-H[Appendix H] — Glossary and Controlled Vocabulary
 
 Defines the book’s controlled semantics; external concepts retain their established meaning where cited.
 
-=== Appendix I — Evidence Base and Bibliography
+=== xref:app-I[Appendix I] — Evidence Base and Bibliography
 
 Contains full source details and evidence classifications.
 
-=== Appendix J — Maturity Assessment and Adoption Roadmap
+=== xref:app-J[Appendix J] — Maturity Assessment and Adoption Roadmap
 
 Combines organizational learning from <<argyris1978>> and <<senge1990>>, delivery and reliability practices from <<kim2021-devops>> and <<beyer2016>>, and the book’s original maturity framework.
 

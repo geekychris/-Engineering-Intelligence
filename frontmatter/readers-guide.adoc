@@ -7,11 +7,11 @@ _Engineering Intelligence_ can be read sequentially, but it is also designed as 
 Begin with:
 
 * the Executive Summary;
-* Chapter 2, _Engineering Economics_;
-* Chapter 14, _Portfolio and Executive Decision-Making_;
-* Chapter 17, _The Learning Engineering Organization_;
-* Appendix E, _Economic Evaluation and Business Case Standard_;
-* Appendix G, _Operating Templates and Records_.
+* xref:ch-02[Chapter 2, _Engineering Economics_];
+* xref:ch-14[Chapter 14, _Portfolio and Executive Decision-Making_];
+* xref:ch-17[Chapter 17, _The Learning Engineering Organization_];
+* xref:app-E[Appendix E, _Economic Evaluation and Business Case Standard_];
+* xref:app-G[Appendix G, _Operating Templates and Records_].
 
 This path focuses on investment, capacity, risk, causal evidence, portfolio choices, and value realization.
 
@@ -19,12 +19,12 @@ This path focuses on investment, capacity, risk, causal evidence, portfolio choi
 
 Begin with:
 
-* Chapter 3, _Engineering Change_;
-* Chapter 4, _Human Attention_;
-* Chapter 5, _Measuring Engineering Systems_;
-* Chapter 10, _The Engineering Intelligence Platform_;
-* Chapter 15, _Implementation and Rollout_;
-* Appendix F, _Technical Reference Architecture_.
+* xref:ch-03[Chapter 3, _Engineering Change_];
+* xref:ch-04[Chapter 4, _Human Attention_];
+* xref:ch-05[Chapter 5, _Measuring Engineering Systems_];
+* xref:ch-10[Chapter 10, _The Engineering Intelligence Platform_];
+* xref:ch-15[Chapter 15, _Implementation and Rollout_];
+* xref:app-F[Appendix F, _Technical Reference Architecture_].
 
 This path focuses on building an evidence system that connects workflow instrumentation to useful decisions.
 
@@ -32,14 +32,14 @@ This path focuses on building an evidence system that connects workflow instrume
 
 Begin with:
 
-* Chapter 5, _Measuring Engineering Systems_;
-* Chapter 6, _Experimentation and Causal Inference_;
-* Chapter 11, _Engineering Metrics Catalogue_;
-* Chapter 12, _Experiment Playbooks_;
-* Chapter 16, _The Science of Engineering Intelligence_;
-* Appendix B, _Metric Specification Standard_;
-* Appendix C, _Experiment and Causal Study Protocol_;
-* Appendix I, _Evidence Base and Bibliography_.
+* xref:ch-05[Chapter 5, _Measuring Engineering Systems_];
+* xref:ch-06[Chapter 6, _Experimentation and Causal Inference_];
+* xref:ch-11[Chapter 11, _Engineering Metrics Catalogue_];
+* xref:ch-12[Chapter 12, _Experiment Playbooks_];
+* xref:ch-16[Chapter 16, _The Science of Engineering Intelligence_];
+* xref:app-B[Appendix B, _Metric Specification Standard_];
+* xref:app-C[Appendix C, _Experiment and Causal Study Protocol_];
+* xref:app-I[Appendix I, _Evidence Base and Bibliography_].
 
 This path focuses on constructs, validity, reliability, uncertainty, causal design, replication, and reporting.
 
@@ -47,12 +47,12 @@ This path focuses on constructs, validity, reliability, uncertainty, causal desi
 
 Begin with:
 
-* Chapter 3, _Engineering Change_;
-* Chapter 4, _Human Attention_;
-* Chapter 9, _Complexity and Blast Radius_;
-* Chapter 17, _The Learning Engineering Organization_;
-* Appendix A, _Engineering Change Reference Model_;
-* Appendix F, _Technical Reference Architecture_.
+* xref:ch-03[Chapter 3, _Engineering Change_];
+* xref:ch-04[Chapter 4, _Human Attention_];
+* xref:ch-09[Chapter 9, _Complexity and Blast Radius_];
+* xref:ch-17[Chapter 17, _The Learning Engineering Organization_];
+* xref:app-A[Appendix A, _Engineering Change Reference Model_];
+* xref:app-F[Appendix F, _Technical Reference Architecture_].
 
 This path treats architecture as a determinant of coordination cost, validation burden, change risk, and reversibility.
 
@@ -60,13 +60,13 @@ This path treats architecture as a determinant of coordination cost, validation 
 
 Begin with:
 
-* Chapter 6, _Experimentation and Causal Inference_;
-* Chapter 7, _AI-Assisted Engineering_;
-* Chapter 12, _Experiment Playbooks_;
-* Chapter 18, _The Future of Engineering Intelligence_;
-* Appendix C, _Experiment and Causal Study Protocol_;
-* Appendix D, _Governance, Privacy, and Acceptable Use Standard_;
-* Appendix E, _Economic Evaluation and Business Case Standard_.
+* xref:ch-06[Chapter 6, _Experimentation and Causal Inference_];
+* xref:ch-07[Chapter 7, _AI-Assisted Engineering_];
+* xref:ch-12[Chapter 12, _Experiment Playbooks_];
+* xref:ch-18[Chapter 18, _The Future of Engineering Intelligence_];
+* xref:app-C[Appendix C, _Experiment and Causal Study Protocol_];
+* xref:app-D[Appendix D, _Governance, Privacy, and Acceptable Use Standard_];
+* xref:app-E[Appendix E, _Economic Evaluation and Business Case Standard_].
 
 This path focuses on net attention, validation burden, model and agent provenance, quality guardrails, causal evaluation, economics, and governance.
 
@@ -74,12 +74,12 @@ This path focuses on net attention, validation burden, model and agent provenanc
 
 Begin with:
 
-* Chapter 8, _Enterprise Instrumentation_;
-* Chapter 13, _Governance, Ethics, and Adoption_;
-* Chapter 18, _The Future of Engineering Intelligence_;
-* Appendix D, _Governance, Privacy, and Acceptable Use Standard_;
-* Appendix F, _Technical Reference Architecture_;
-* Appendix G, _Operating Templates and Records_.
+* xref:ch-08[Chapter 8, _Enterprise Instrumentation_];
+* xref:ch-13[Chapter 13, _Governance, Ethics, and Adoption_];
+* xref:ch-18[Chapter 18, _The Future of Engineering Intelligence_];
+* xref:app-D[Appendix D, _Governance, Privacy, and Acceptable Use Standard_];
+* xref:app-F[Appendix F, _Technical Reference Architecture_];
+* xref:app-G[Appendix G, _Operating Templates and Records_].
 
 This path focuses on purpose limitation, access, identity, retention, automated decisions, correction, appeal, and audit.
 
@@ -87,12 +87,12 @@ This path focuses on purpose limitation, access, identity, retention, automated 
 
 Begin with:
 
-* Chapter 1, _Introduction_;
-* Chapter 3, _Engineering Change_;
-* Chapter 4, _Human Attention_;
-* Chapter 11, _Engineering Metrics Catalogue_;
-* Chapter 13, _Governance, Ethics, and Adoption_;
-* Appendix H, _Glossary and Controlled Vocabulary_.
+* xref:ch-01[Chapter 1, _Introduction_];
+* xref:ch-03[Chapter 3, _Engineering Change_];
+* xref:ch-04[Chapter 4, _Human Attention_];
+* xref:ch-11[Chapter 11, _Engineering Metrics Catalogue_];
+* xref:ch-13[Chapter 13, _Governance, Ethics, and Adoption_];
+* xref:app-H[Appendix H, _Glossary and Controlled Vocabulary_].
 
 This path explains how measurement can improve the work system without reducing people to activity counts.
 
@@ -158,7 +158,7 @@ A practical reading and application sequence is:
 . Measure adoption, exposure, guardrails, and realized outcomes.
 . Preserve corrections, limitations, and negative results.
 
-Appendix G provides reusable records for this process.
+xref:app-G[Appendix G] provides reusable records for this process.
 
 == What not to do
 
@@ -190,7 +190,7 @@ The book distinguishes durable principles from emerging possibilities and treats
 
 == A note on terminology
 
-Capitalized terms such as _Engineering Change_ refer to controlled concepts defined in Appendix H. Tool-specific terminology should be mapped to these concepts rather than used as a substitute for them.
+Capitalized terms such as _Engineering Change_ refer to controlled concepts defined in xref:app-H[Appendix H]. Tool-specific terminology should be mapped to these concepts rather than used as a substitute for them.
 
 == Using the templates
 

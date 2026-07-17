@@ -1,0 +1,20 @@
+= Copyright and publication
+
+[.copyright-block]
+--
+*Engineering Intelligence: A Quantitative Framework for Measuring, Understanding, and Optimizing Modern Software Engineering*
+
+Copyright © 2026 Christopher J. Collins. All rights reserved.
+
+No part of this book may be reproduced, stored in a retrieval system, or transmitted in any form or by any means — electronic, mechanical, photocopying, recording, or otherwise — without the prior written permission of the copyright holder, except brief quotations embodied in critical reviews and certain other non-commercial uses permitted by copyright law.
+
+Every reasonable effort has been made to acknowledge the ideas, evidence, and prior work of others through the citations and source notes accompanying each chapter. Errors of omission are unintentional; corrections may be directed to the publisher and will be acknowledged in subsequent editions.
+
+The methods, frameworks, and worked examples in this book are provided for informational purposes. Application to any specific organization should be tempered by local context, legal and privacy requirements, and the judgement of accountable practitioners.
+
+_Published by_ OrionWorks. Cover art and interior illustration plates by the publisher.
+
+Set in Times Roman and Georgia. Diagrams rendered with Mermaid; mathematical typography with MathJax.
+
+First edition — 2026.
+--

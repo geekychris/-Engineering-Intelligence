@@ -1,7 +1,16 @@
+[[ch-04]]
 = Human Attention and Cognitive Load
 
 [abstract]
 Human attention is the most constrained resource in modern software engineering. Compute can be provisioned, repositories can be replicated, and AI inference can be scaled, but expert judgment, working memory, and sustained focus remain scarce. This chapter develops a measurement framework for cognitive burden without relying on intrusive surveillance or large-scale surveys. It distinguishes intrinsic task complexity from process-induced friction, models context switching and attention residue, introduces cognitive offload and cognitive reload, and describes how AI-assisted review can be evaluated as a redistribution of cognitive work.
+
+// index terms
+indexterm:[cognitive load]
+indexterm:[context switch]
+indexterm:[attention residue]
+indexterm:[Cognitive Offload Index]
+indexterm:[cognitive reload]
+indexterm:[review burden]
 
 == Why attention is the scarce resource
 
@@ -345,6 +354,23 @@ Review contributes to skill development and shared knowledge. Eliminating all hu
 === Measuring individuals rather than systems
 
 Individual-level signals are heavily confounded by task assignment, role, expertise, and hidden coordination. Use them primarily to reconstruct change-level work, not to rank people.
+
+== Worked example: quantifying context-switch cost
+
+An eight-engineer team ships to a production service and reports that "meetings are killing us." Leadership wants to know whether the complaint reflects a measurement gap or a real economic problem.
+
+Instrumentation shows that each engineer averages 3.4 material context switches per working day, with a mean recovery time of 11.5 minutes per switch, derived from the recovery model in this chapter. The loaded rate for the team is $145 per engineer-hour.
+
+Daily attention-recovery cost per engineer:
+
+[stem]
+++++
+C_{recovery} = 3.4 \times \frac{11.5}{60} \times 145 \approx 94.5\ \text{USD}
+++++
+
+Team daily cost is $8 \times 94.5 = 756$ USD. Annualised across roughly 230 working days, the team is paying roughly $174,000 per year in pure recovery overhead — before counting the reduced probability of catching a defect during fragmented reviews.
+
+A proposed intervention consolidates status updates and shifts two recurring meetings to written form. Instrumentation after four weeks shows switches per day drop from 3.4 to 2.1 and mean recovery time falls modestly to 10.8 minutes as consolidated blocks let engineers rebuild deeper context. New cost per engineer per day is $2.1 \times (10.8/60) \times 145 = 54.8$ USD, and team annual recovery cost falls to roughly $100,800 — a saving of about $73,000, with a confidence interval that should be reported alongside the point estimate. Whether the saving is worth the coordination trade-offs elsewhere is a separate question, but the economic argument is now visible instead of anecdotal.
 
 == Key takeaways
 

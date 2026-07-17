@@ -19,12 +19,18 @@ ifdef::backend-pdf[]
 :back-cover-image: image:figures/back_page.jpg[fit=fill]
 endif::[]
 
+include::frontmatter/copyright.adoc[leveloffset=+1]
+
+include::frontmatter/dedication.adoc[leveloffset=+1]
+
 [preface]
 == Preface
 
 Software engineering organizations are increasingly instrumented, yet they often remain poorly understood. They can report pull-request counts, deployment frequency, incident volume, and tool usage, but still struggle to explain where expert attention is spent, which process changes create value, or whether an AI-assisted workflow genuinely improves engineering outcomes.
 
 _Engineering Intelligence_ develops a framework for answering those questions. It treats engineering as a measurable socio-technical system and integrates engineering economics, human cognition, software architecture, queueing theory, causal inference, and AI-assisted development.
+
+include::frontmatter/acknowledgments.adoc[leveloffset=+1]
 
 include::frontmatter/executive-summary.adoc[leveloffset=+1]
 
@@ -136,3 +142,6 @@ include::appendices/j-maturity-assessment-and-adoption-roadmap.adoc[leveloffset=
 include::appendices/k-chapter-source-notes-and-citation-map.adoc[leveloffset=+1]
 
 // Additional appendices are added here as they are written.
+
+[index]
+== Index

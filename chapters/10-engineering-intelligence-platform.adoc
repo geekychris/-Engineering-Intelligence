@@ -1,7 +1,14 @@
+[[ch-10]]
 = The Engineering Intelligence Platform
 
 [abstract]
 The preceding chapters define the concepts, metrics, and evidence required to understand engineering systems. This chapter turns those ideas into a concrete platform architecture. It describes the major services, storage systems, APIs, computation paths, governance controls, decision products, and operating model needed to build an Engineering Intelligence platform incrementally in a large enterprise.
+
+// index terms
+indexterm:[metric API]
+indexterm:[decision workbench]
+indexterm:[evidence explorer]
+indexterm:[feature store]
 
 == Platform objectives
 

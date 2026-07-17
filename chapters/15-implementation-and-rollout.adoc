@@ -1,7 +1,12 @@
+[[ch-15]]
 = Implementation and Rollout
 
 [abstract]
 Engineering Intelligence should not begin as a multi-year data-platform program. It should begin with a small number of consequential decisions, a narrow evidence path, and a governance model that earns trust. This chapter presents a phased rollout strategy for large organizations. It covers pilot selection, team structure, technical sequencing, data quality, change management, value proof, operating cadence, scaling criteria, and failure recovery.
+
+// index terms
+indexterm:[pilot selection]
+indexterm:[phased rollout]
 
 == Start with decisions, not completeness
 

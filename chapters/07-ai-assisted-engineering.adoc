@@ -1,7 +1,13 @@
+[[ch-07]]
 = AI-Assisted Engineering
 
 [abstract]
 AI systems now author code, review changes, generate tests, explain failures, summarize discussions, and increasingly execute multi-step engineering tasks. Treating them merely as software licenses obscures their effect on engineering work. This chapter models AI as a first-class participant in the Engineering Change. It defines contribution, attribution, validation, trust, quality, and economic measures; distinguishes assistance from autonomy; explains how AI can create both cognitive offload and cognitive reload; and provides evaluation patterns for coding assistants, reviewers, and agents.
+
+// index terms
+indexterm:[agent task loop]
+indexterm:[autonomy tier]
+indexterm:[cognitive offload]
 
 == From tool to participant
 

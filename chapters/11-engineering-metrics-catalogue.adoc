@@ -1,7 +1,13 @@
+[[ch-11]]
 = The Engineering Metrics Catalogue
 
 [abstract]
 Engineering Intelligence requires a governed catalogue of metrics whose definitions, purposes, formulas, instrumentation, biases, and actions are explicit. This chapter provides a practical reference model for defining and operating metrics across flow, quality, economics, human attention, AI participation, architecture, and experimentation. The objective is not to maximize metric count, but to create a coherent set of measures that support decisions and remain reproducible over time.
+
+// index terms
+indexterm:[metric specification]
+indexterm:[metric lifecycle]
+indexterm:[metric bundle]
 
 == Why a catalogue matters
 

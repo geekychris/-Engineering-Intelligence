@@ -133,7 +133,7 @@ A shared library, platform capability, or deployment artifact can support severa
 
 The chapter therefore presents several allocation choices, including equal allocation, usage weighting, causal attribution, primary ownership, and separate shared-platform reporting.
 
-This is consistent with the decision-specific cost perspective developed in Chapter 2 and the cost-benefit methods summarized in <<boardman2018>>. No allocation rule is universally correct; the method must match the decision.
+This is consistent with the decision-specific cost perspective developed in xref:ch-02[Chapter 2] and the cost-benefit methods summarized in <<boardman2018>>. No allocation rule is universally correct; the method must match the decision.
 
 === Reconstruction quality as a first-class metric
 

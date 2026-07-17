@@ -27,7 +27,7 @@ require_command() {
 }
 
 case "$MODE" in
-  all|html|pdf|validate|diagrams)
+  all|html|pdf|epub|validate|diagrams)
     ;;
   *)
     fail "Unknown build mode: $MODE"
@@ -300,6 +300,19 @@ build_pdf() {
   mv "$output" "$EDITION_STAGING_DIR/engineering-intelligence.pdf"
 }
 
+build_epub() {
+  local output="$RENDER_OUTPUT_DIR/engineering-intelligence.epub"
+  rm -f "$output"
+  bundle exec asciidoctor-epub3 \
+    --safe-mode safe \
+    --attribute reproducible \
+    --attribute ebook-format=epub3 \
+    --destination-dir "$RENDER_OUTPUT_DIR" \
+    --out-file engineering-intelligence.epub \
+    "$WORK_DIR/book.adoc"
+  mv "$output" "$EDITION_STAGING_DIR/engineering-intelligence.epub"
+}
+
 write_manifest() {
   python3 - "$EDITION_STAGING_DIR" "$DIAGRAM_STAGING_DIR" "$MODE" <<'PY'
 from datetime import datetime, timezone
@@ -327,7 +340,11 @@ epoch = int(os.environ["SOURCE_DATE_EPOCH"])
 publication_time = datetime.fromtimestamp(epoch, timezone.utc).isoformat()
 
 files = []
-for name in ("engineering-intelligence.html", "engineering-intelligence.pdf"):
+for name in (
+    "engineering-intelligence.html",
+    "engineering-intelligence.pdf",
+    "engineering-intelligence.epub",
+):
     path = editions / name
     if path.exists():
         files.append(
@@ -359,7 +376,7 @@ publish_publication() {
 
   publish_diagrams
 
-  for name in engineering-intelligence.html engineering-intelligence.pdf; do
+  for name in engineering-intelligence.html engineering-intelligence.pdf engineering-intelligence.epub; do
     if [[ -f "$EDITION_STAGING_DIR/$name" ]]; then
       mv -f "$EDITION_STAGING_DIR/$name" "$BUILD_DIR/$name"
     else
@@ -408,6 +425,16 @@ case "$MODE" in
     write_manifest
     publish_publication
     ;;
+  epub)
+    render_diagrams
+    prepare_sources
+    render_math
+    render_plots
+    render_chapter_plates
+    build_epub
+    write_manifest
+    publish_publication
+    ;;
   all)
     render_diagrams
     prepare_sources
@@ -416,6 +443,7 @@ case "$MODE" in
     render_chapter_plates
     build_html
     build_pdf
+    build_epub
     write_manifest
     publish_publication
     ;;

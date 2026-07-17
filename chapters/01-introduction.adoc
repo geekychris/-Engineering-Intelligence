@@ -1,7 +1,13 @@
+[[ch-01]]
 = Introduction
 
 [abstract]
 Engineering Intelligence is the discipline of measuring, modeling, understanding, and improving software engineering as a complete socio-technical system. It extends beyond pull-request analytics and developer dashboards to connect engineering activity with human attention, AI participation, architectural complexity, operational risk, economic cost, and business outcomes. This chapter establishes the motivation, terminology, and scientific principles used throughout the book.
+
+// index terms
+indexterm:[Engineering Intelligence]
+indexterm:[measurement]
+indexterm:[socio-technical system]
 
 == Why engineering needs intelligence
 

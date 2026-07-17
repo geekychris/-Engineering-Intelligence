@@ -1,7 +1,17 @@
+[[ch-06]]
 = Experimentation and Causal Inference
 
 [abstract]
 Engineering organizations frequently introduce new tools, review policies, repository structures, and AI-assisted workflows, then compare before-and-after averages and declare success. This chapter explains why that approach is often misleading. It develops an experimentation framework for Engineering Intelligence, covering randomized trials, cluster assignment, staggered rollout, switchback designs, difference-in-differences, interrupted time series, synthetic controls, matching, heterogeneous treatment effects, statistical power, guardrails, interference, compliance, and the infrastructure required to evaluate engineering interventions at enterprise scale.
+
+// index terms
+indexterm:[potential outcomes]
+indexterm:[average treatment effect]
+indexterm:[difference-in-differences]
+indexterm:[causal graph]
+indexterm:[confounder]
+indexterm:[minimum detectable effect]
+indexterm:[statistical power]
 
 == Why observation is not enough
 
@@ -363,6 +373,30 @@ A positive average can hide harm to high-risk or specialized populations.
 === Unrecorded concurrent interventions
 
 Multiple tools and policies change simultaneously, making attribution impossible.
+
+== Worked example: did the AI reviewer actually reduce review latency?
+
+An organisation rolls out an AI reviewer to half of its 240 backend teams over a two-week window. Six weeks later, mean review latency in treated teams is 4.9 hours; in control teams it is 6.8 hours. A leader concludes the AI saved 1.9 hours per review.
+
+Two adjustments change the interpretation.
+
+First, pre-treatment baselines differ: treated teams averaged 5.6 hours in the six weeks before rollout; controls averaged 6.4 hours. A difference-in-differences estimate is:
+
+[stem]
+++++
+\widehat{\tau}_{DiD} = (4.9-5.6) - (6.8-6.4) = -1.1\ \text{hours}
+++++
+
+The estimated effect falls from -1.9 to -1.1 hours once we allow for the fact that early-adopting teams were already faster.
+
+Second, exposure is imperfect. Only 71% of assigned reviewers actually opened at least one AI finding in the study window. An intention-to-treat estimate treats the assignment as the treatment; a complier-average estimate rescales:
+
+[stem]
+++++
+\widehat{\tau}_{CACE} \approx \frac{-1.1}{0.71} \approx -1.55\ \text{hours}
+++++
+
+The two estimands answer different questions: -1.1 hours is what a policy that _offers_ the tool produces, and -1.55 hours approximates what the tool produces _among those who use it_. Neither is inherently correct; the decision at hand — mandating the tool versus opening it — determines which one belongs in the executive summary. Reporting only the raw before-after gap of -1.9 hours would have overstated the effect and mispriced the rollout.
 
 == Key takeaways
 

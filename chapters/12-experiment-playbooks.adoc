@@ -1,7 +1,13 @@
+[[ch-12]]
 = Experiment Playbooks
 
 [abstract]
 The previous chapters describe how to measure engineering systems and estimate causal effects. This chapter turns those methods into reusable experiment playbooks. Each playbook defines the intervention, mechanism, unit of assignment, outcomes, guardrails, instrumentation, external factors, analysis method, and decision rule. The examples cover AI review, merge queues, CI acceleration, review routing, pull-request slicing, repository topology, context restoration, and autonomous agents.
+
+// index terms
+indexterm:[experiment playbook]
+indexterm:[guardrail]
+indexterm:[treatment exposure]
 
 == How to use a playbook
 
@@ -497,6 +503,25 @@ A positive average hides harm in high-risk repositories or novice populations.
 === No decision threshold
 
 The experiment reaches significance but the improvement is too small to justify migration.
+
+== Worked example: applying the AI-review playbook
+
+A company is considering rolling out an AI code reviewer across its 180 backend teams. Rather than negotiate the rollout ad-hoc, the platform team applies the AI-review playbook from this chapter.
+
+The playbook fixes the intervention: vendor _V_, model _M_ at version 2024-08, prompt template _P_ at revision 12, findings are advisory and appear within 90 seconds of a pull request being opened. The unit of assignment is the team; the unit of analysis is the Engineering Change. Randomisation is stratified by baseline review latency and repository language to reduce baseline imbalance.
+
+The primary outcome is quality-adjusted human review effort per Engineering Change: measured review-time minutes weighted by a downstream-defect-cost multiplier over the following 45 days. Guardrails include escaped-defect rate, rollback rate, cognitive-reload complaints, and reviewer disengagement.
+
+The playbook's power-planning stage sets the minimum detectable effect at 8% of baseline effort. Baseline standard deviation from historical data is $\sigma = 42$ minutes per change; the required sample size per arm is:
+
+[stem]
+++++
+n = 2 \times \left(\frac{(1.96 + 0.84)\sigma}{0.08 \bar{Y}}\right)^2 \approx 1{,}950\ \text{changes per arm}
+++++
+
+At the team's observed change velocity that requires roughly 11 weeks. Stopping rules use the O'Brien-Fleming boundary at three interim looks; results are analysed by intention-to-treat with a secondary complier-average estimate.
+
+Outcome: the intervention reduces effort by 6.4% (95% CI: 2.1% to 10.7%) with escaped-defect rate unchanged (+0.02pp, non-significant). The point estimate is below the pre-declared 8% MDE; the decision record notes the effect is real but too small to justify the licensing cost at current model prices, and the playbook is re-run six months later after a model version change.
 
 == Key takeaways
 

@@ -166,7 +166,7 @@ Because models and hosted services can change, reproducibility may require retai
 
 Voluntary adoption creates strong selection bias. Early users may differ in skill, enthusiasm, task mix, or management support.
 
-The chapter therefore relies on the causal methods described in Chapter 6 and grounded in <<rubin1974>>, <<holland1986>>, <<shadish2002>>, <<imbens2015>>, <<hernan2020>>, and <<kohavi2020>>.
+The chapter therefore relies on the causal methods described in xref:ch-06[Chapter 6] and grounded in <<rubin1974>>, <<holland1986>>, <<shadish2002>>, <<imbens2015>>, <<hernan2020>>, and <<kohavi2020>>.
 
 A credible AI evaluation distinguishes:
 

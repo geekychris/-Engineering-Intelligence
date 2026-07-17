@@ -1,7 +1,14 @@
+[[ch-08]]
 = Enterprise Instrumentation
 
 [abstract]
 Engineering Intelligence depends on reliable, explainable, and governable telemetry across source control, planning, CI, deployment, AI, production, and organizational systems. This chapter describes the infrastructure required to capture that data at enterprise scale. It defines event contracts, identity resolution, event-time processing, immutable logs, stream and batch responsibilities, Engineering Change reconstruction, knowledge graphs, feature stores, metric computation, lineage, data quality, privacy, and operational architecture.
+
+// index terms
+indexterm:[event contract]
+indexterm:[immutable log]
+indexterm:[identity resolution]
+indexterm:[temporal ownership]
 
 == Instrument the system, not the dashboard
 

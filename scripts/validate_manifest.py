@@ -12,12 +12,17 @@ import sys
 
 
 EXPECTED_SCHEMA_VERSION = 1
-ALLOWED_BUILD_MODES = {"all", "html", "pdf", "validate"}
+ALLOWED_BUILD_MODES = {"all", "html", "pdf", "epub", "validate"}
 EXPECTED_ARTIFACTS = {
-    "all": {"engineering-intelligence.html", "engineering-intelligence.pdf"},
+    "all": {
+        "engineering-intelligence.html",
+        "engineering-intelligence.pdf",
+        "engineering-intelligence.epub",
+    },
     "validate": {"engineering-intelligence.html", "engineering-intelligence.pdf"},
     "html": {"engineering-intelligence.html"},
     "pdf": {"engineering-intelligence.pdf"},
+    "epub": {"engineering-intelligence.epub"},
 }
 FULL_GIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 

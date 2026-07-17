@@ -1,7 +1,14 @@
+[[ch-09]]
 = Complexity, Blast Radius, and Repository Topology
 
 [abstract]
 Engineering effort cannot be inferred from code size alone. A small change can require advanced domain knowledge, coordinated deployment, or broad operational safeguards, while a large generated change may be routine. This chapter defines a multidimensional model of Engineering Change complexity, separates intrinsic reasoning difficulty from topological and organizational complexity, formalizes blast radius, and explains how repository structure, dependency graphs, release sequencing, and expertise requirements affect cost, latency, and risk.
+
+// index terms
+indexterm:[blast radius]
+indexterm:[intrinsic complexity]
+indexterm:[topological complexity]
+indexterm:[repository topology]
 
 == Why size is not complexity
 
@@ -340,6 +347,23 @@ Potential impact exists even when controls prevent failure.
 === Ignoring reversibility
 
 Reach alone does not determine operational risk.
+
+== Worked example: scoring the blast radius of a shared-auth library change
+
+A shared authentication library is updated to change how session tokens are refreshed. The team classifies the change as "small" — 38 lines of code, one repository, passing tests.
+
+The blast-radius score developed in this chapter looks at three inputs. Reach: the service catalogue shows 47 downstream services import the library at the pinned version; 31 will pick up the change on their next deploy, and 8 have deploy cadences under 24 hours. Exposure: 5 of the downstream services are internet-facing and handle authenticated user requests. Reversibility: the change modifies a client-visible cookie attribute; rollback requires simultaneous coordinated redeployment across the fleet or a period of graceful mixed-version handling.
+
+A simple weighted score, with each factor normalised to [0, 1]:
+
+[stem]
+++++
+BR = 0.4 \times R_{reach} + 0.3 \times R_{exposure} + 0.3 \times R_{reversibility}
+++++
+
+Assigning $R_{reach} = 0.66$ (31 of 47 immediate uptake), $R_{exposure} = 0.80$ (five customer-facing services), $R_{reversibility} = 0.85$ (coordinated rollback required), gives $BR \approx 0.76$ — the top quartile.
+
+The team's 38-line "small" change is, by this measure, a high-blast-radius change that warrants a coordinated rollout schedule, an explicit rollback rehearsal, and specialist review — none of which the pull request otherwise triggered. This is exactly the case the metric exists to catch. The corresponding policy is not "block all top-quartile changes" but "require the coordinated-rollout playbook for top-quartile changes"; the score sets the process, not the verdict.
 
 == Key takeaways
 

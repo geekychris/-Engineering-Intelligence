@@ -1,7 +1,16 @@
+[[ch-02]]
 = Engineering Economics
 
 [abstract]
 Engineering organizations make economic decisions continuously: whether to automate a review step, split a repository, add a required approver, buy an AI tool, tolerate a slower build, defer a migration, or invest in platform work. Yet these decisions are often made without a shared cost model. This chapter defines the economic foundations of Engineering Intelligence. It separates direct expenditure from human attention, delay, coordination, risk, and quality costs; introduces a formal cost model for an Engineering Change; explains why averages are often misleading; and provides practical methods for estimation, calibration, and decision support.
+
+// index terms
+indexterm:[cost of delay]
+indexterm:[queueing]
+indexterm:[Little's Law]
+indexterm:[attention scarcity]
+indexterm:[carrying cost]
+indexterm:[cost of quality]
 
 == Why cost is harder than it appears
 
@@ -447,7 +456,7 @@ A publication-quality evaluation should therefore report:
 * inference and platform costs;
 * long-term effects after novelty and learning periods.
 
-The point-estimate of $650,000 is a starting hypothesis, not a conclusion. Reported in isolation it is nearly indistinguishable from an educated guess; reported with the accompaniments above, it becomes a claim that other engineering leaders can inspect, replicate, or dispute. Chapter 6 develops the causal machinery required to turn such an evaluation into evidence that survives contact with an audit or a change of leadership.
+The point-estimate of $650,000 is a starting hypothesis, not a conclusion. Reported in isolation it is nearly indistinguishable from an educated guess; reported with the accompaniments above, it becomes a claim that other engineering leaders can inspect, replicate, or dispute. xref:ch-06[Chapter 6] develops the causal machinery required to turn such an evaluation into evidence that survives contact with an audit or a change of leadership.
 
 == Worked example: a required specialist approval
 

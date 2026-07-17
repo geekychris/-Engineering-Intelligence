@@ -20,14 +20,14 @@ heading:
   margin-bottom: 8
 
 heading-h1:
-  font-size: 24
+  font-size: 26
   page-break-before: always
   margin-top: 0
-  margin-bottom: 18
+  margin-bottom: 20
 
 heading-h2:
   font-size: 17
-  margin-top: 20
+  margin-top: 22
   margin-bottom: 8
 
 heading-h3:
@@ -45,6 +45,31 @@ link:
 
 prose:
   margin-bottom: 8
+
+# First letter of the first paragraph after each chapter opening gets a
+# large drop-cap to echo the illustrated plate above it. Configured via
+# an AsciiDoc role applied on the paragraph.
+
+role:
+  dropcap:
+    font-family: Times-Roman
+    font-color: 17365D
+  lead:
+    font-size: 11.5
+    font-color: 2A3947
+  copyright-block:
+    font-family: Times-Roman
+    font-size: 9.5
+    font-color: 444444
+    line-height: 1.35
+  dedication:
+    font-family: Times-Roman
+    font-style: italic
+    font-color: 17365D
+    font-size: 13
+    align: center
+    margin-top: 120
+    line-height: 1.4
 
 caption:
   font-family: Helvetica
@@ -66,57 +91,83 @@ codespan:
   font-size: 8.5
 
 quote:
-  font-color: 444444
-  border-color: 8AA4BF
+  font-family: Times-Roman
+  font-color: 17365D
+  border-color: B78331
   border-width: 0 0 0 3
-  padding: [0, 0, 0, 12]
+  padding: [2, 0, 2, 14]
 
 admonition:
-  column-rule-color: B8C7D6
-  column-rule-width: 0.5
-  padding: [6, 8, 6, 8]
+  column-rule-color: 17365D
+  column-rule-width: 1.4
+  padding: [8, 10, 8, 12]
+  background-color: F5EBD6
 
 admonition-label:
   font-family: Helvetica
   font-style: bold
   font-color: 17365D
+  text-transform: uppercase
+
+admonition-icon:
+  tip:
+    stroke-color: B78331
+  important:
+    stroke-color: 6C371F
+  warning:
+    stroke-color: 6C371F
+  note:
+    stroke-color: 17365D
+  caution:
+    stroke-color: B78331
 
 sidebar:
-  background-color: F4F7FA
-  border-color: C8D4E0
-  border-width: 0.5
+  background-color: F5EBD6
+  border-color: B78331
+  border-width: 0
   border-radius: 3
-  padding: 10
+  padding: 12
 
 sidebar-title:
-  font-family: Helvetica
+  font-family: Times-Roman
   font-style: bold
   font-color: 17365D
 
 example:
-  background-color: F8FAFC
-  border-color: D5DEE8
-  border-width: 0.5
+  background-color: F8F1DF
+  border-color: B78331
+  border-width: 0.7
   border-radius: 2
-  padding: 10
+  padding: 12
+
+example-caption:
+  font-family: Helvetica
+  font-style: bold
+  font-color: 17365D
 
 list:
   indent: 18
   item-spacing: 3
 
+ulist:
+  marker-font-color: B78331
+
+olist:
+  marker-font-color: B78331
+
 table:
-  border-color: AEBCCB
-  border-width: 0.5
-  grid-color: D6DEE7
-  grid-width: 0.5
-  cell-padding: 5
+  border-color: 17365D
+  border-width: 0.7
+  grid-color: DCECF4
+  grid-width: 0.4
+  cell-padding: 6
   head:
-    background-color: E9EFF5
+    background-color: 17365D
     font-family: Helvetica
     font-style: bold
-    font-color: 17365D
+    font-color: F5EBD6
   body:
-    stripe-background-color: F8FAFC
+    stripe-background-color: F5EBD6
 
 image:
   align: center
@@ -127,8 +178,8 @@ footer:
   font-family: Helvetica
   font-size: 8
   font-color: 6B7280
-  border-color: D8DEE6
-  border-width: 0.5
+  border-color: B78331
+  border-width: 0.4
   recto:
     left:
       content: '{document-title}'
@@ -171,3 +222,6 @@ title-page:
     font-family: Helvetica
     font-size: 12
     font-color: 374151
+
+index:
+  columns: 2
