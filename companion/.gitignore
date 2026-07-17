@@ -1,0 +1,7 @@
+# Companion tree — build/output artifacts
+__pycache__/
+*.egg-info/
+data/
+build/
+dist/
+.ipynb_checkpoints/

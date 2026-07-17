@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "engintel-synth"
+version = "0.1.0"
+description = "Synthetic engineering telemetry for the Engineering Intelligence book"
+readme = "README.md"
+authors = [{name = "Christopher J. Collins"}]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+engintel-synth = "engintel_synth.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["engintel_synth*"]
