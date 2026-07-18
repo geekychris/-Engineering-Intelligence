@@ -38,7 +38,7 @@ Every level closes a specific gap. You _cannot_ skip levels; each is a prerequis
 
 == The six levels
 
-image::../build/figures/mermaid/maturity-ratchet.png[width=45%]
+image::figures/mermaid/maturity-ratchet.png[width=45%]
 
 L0 → L5, each ratchet adds specific capability.
 

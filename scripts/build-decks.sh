@@ -14,13 +14,22 @@ command -v bundle >/dev/null 2>&1 || fail "Bundler is required"
 [[ -f "$THEME_CSS" ]] || fail "Deck theme CSS was not found"
 
 rm -rf "$BUILD_DIR"
-mkdir -p "$BUILD_DIR/themes" "$BUILD_DIR/figures/mermaid"
+mkdir -p "$BUILD_DIR/themes" "$BUILD_DIR/figures/mermaid" "$BUILD_DIR/figures/plots"
 cp "$THEME_CSS" "$BUILD_DIR/themes/"
-if compgen -G "$ROOT/figures/mermaid/*.mmd" >/dev/null; then
-  if compgen -G "$ROOT/build/figures/mermaid/*.png" >/dev/null; then
-    cp "$ROOT/build/figures/mermaid"/*.png "$BUILD_DIR/figures/mermaid/"
-  fi
+
+# Mermaid diagrams — from the last book build.
+if compgen -G "$ROOT/build/figures/mermaid/*.png" >/dev/null; then
+  cp "$ROOT/build/figures/mermaid"/*.png "$BUILD_DIR/figures/mermaid/"
 fi
+
+# Data plots — regenerated in place so decks don't depend on a prior PDF build.
+if [[ -f "$ROOT/scripts/render-plots.py" ]]; then
+  python3 "$ROOT/scripts/render-plots.py" "$BUILD_DIR/figures/plots"
+fi
+
+# Cover art and other top-level figures referenced by the title slide.
+find "$ROOT/figures" -maxdepth 1 -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) \
+  -exec cp {} "$BUILD_DIR/figures/" \;
 
 count=0
 for src in "$DECKS_SRC"/*.adoc; do
