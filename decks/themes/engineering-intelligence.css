@@ -28,11 +28,29 @@
   padding: 20px 40px;
   box-sizing: border-box;
   overflow: hidden;
+  height: 100%;
 }
 
-.reveal .slides > section > * {
+.reveal .slides > section > *,
+.reveal .slides > section > section > * {
   flex: 0 0 auto;
   max-width: 100%;
+  min-height: 0;
+}
+
+/* asciidoctor-revealjs wraps everything after the h2 in .slide-content.
+ * Make that a flex column too so image blocks inside can consume the
+ * remaining vertical space. */
+.reveal .slides > section > .slide-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.reveal .slide-content > * {
+  flex: 0 0 auto;
+  min-height: 0;
 }
 
 .reveal h1,
@@ -168,12 +186,16 @@
 /* Images: constrain to the slide's *remaining* vertical space and shrink
  * proportionally rather than overflowing.
  *
- * The imageblock wrapper is flex:1, so the image can consume whatever space
- * the header/prose above it has left. max-height caps that.
+ * The imageblock inside .slide-content becomes flex: 1 so it consumes
+ * remaining vertical space; min-height: 0 is essential for flex-shrink
+ * to actually shrink the image below its natural size in Chrome.
+ * !important on the sizing rules overrides asciidoctor's inline
+ * width="XX%" attribute, which would otherwise force natural aspect
+ * ratio to overflow.
  */
-.reveal .imageblock {
-  flex: 1 1 auto;
-  min-height: 0;              /* essential for flex-shrink to work in Chrome */
+.reveal .slide-content > .imageblock {
+  flex: 1 1 auto !important;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -186,19 +208,21 @@
 .reveal .imageblock .title {
   max-width: 100%;
   max-height: 100%;
+  min-height: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1 1 auto;
 }
 
 .reveal section img {
   border: none;
   box-shadow: none;
   background: transparent;
-  max-height: 100%;
-  max-width: 100%;
-  width: auto;
-  height: auto;
+  max-height: 100% !important;
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
   object-fit: contain;
   display: block;
 }
