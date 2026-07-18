@@ -129,7 +129,16 @@
   border-radius: 3px;
 }
 
-.reveal section img { border: none; box-shadow: none; background: transparent; }
+.reveal section img {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  max-height: 60vh;      /* never taller than 60% of viewport */
+  max-width: 90%;        /* leave room for slide chrome */
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
 
 .reveal .stem { font-family: "Times New Roman", serif; }
 
