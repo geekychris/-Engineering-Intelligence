@@ -47,6 +47,11 @@ for src in "$DECKS_SRC"/*.adoc; do
     --attribute revealjs_progress=true \
     --attribute revealjs_center=false \
     --attribute revealjs_history=true \
+    --attribute revealjs_width=1280 \
+    --attribute revealjs_height=800 \
+    --attribute revealjs_margin=0.04 \
+    --attribute revealjs_minScale=0.2 \
+    --attribute revealjs_maxScale=2.0 \
     --attribute revealjsdir="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0" \
     --attribute stem=latexmath \
     --attribute customcss=themes/engineering-intelligence.css \

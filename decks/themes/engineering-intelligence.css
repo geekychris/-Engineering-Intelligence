@@ -1,15 +1,38 @@
 /* Reveal.js theme matching the Engineering Intelligence book palette.
  * Navy #17365D primary, cream #F5EBD6 slide background, gold #B78331 accent.
+ *
+ * Typography and spacing are tuned to fit content within a 1280x800 canvas
+ * (matches build-decks.sh revealjs_width/height). Slides that would still
+ * overflow are auto-shrunk via the flex/scale rules below.
  */
 
 .reveal {
   font-family: "Georgia", "Times New Roman", serif;
   color: #17365D;
   background: #F5EBD6;
+  font-size: 28px;
 }
 
 .reveal .slides {
   text-align: left;
+}
+
+/* Each slide is a flex column so children lay out with predictable spacing
+ * and any single overflowing block gets constrained visually rather than
+ * pushing content off the bottom. */
+.reveal .slides > section,
+.reveal .slides > section > section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.reveal .slides > section > * {
+  flex: 0 0 auto;
+  max-width: 100%;
 }
 
 .reveal h1,
@@ -21,21 +44,24 @@
   text-transform: none;
   letter-spacing: -0.005em;
   font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 0.35em 0;
 }
 
-.reveal h1 { font-size: 2.6em; margin-bottom: 0.4em; }
-.reveal h2 { font-size: 2.0em; margin-bottom: 0.35em; }
-.reveal h3 { font-size: 1.4em; margin-bottom: 0.3em; }
-.reveal h4 { font-size: 1.05em; margin-bottom: 0.25em; color: #6C371F; }
+.reveal h1 { font-size: 1.8em; }
+.reveal h2 { font-size: 1.35em; }
+.reveal h3 { font-size: 1.05em; }
+.reveal h4 { font-size: 0.9em;  color: #6C371F; }
 
 .reveal .title-slide {
   text-align: center;
+  justify-content: center;
 }
 
 .reveal .authors {
   font-family: "Helvetica", "Arial", sans-serif;
   color: #6C371F;
-  font-size: 0.9em;
+  font-size: 0.75em;
   letter-spacing: 0.08em;
 }
 
@@ -45,15 +71,20 @@
   border-bottom: 1px dotted #245A88;
 }
 
+.reveal p {
+  margin: 0.35em 0;
+  line-height: 1.35;
+}
+
 .reveal ul,
 .reveal ol {
   display: block;
-  margin: 0.4em 0 0.4em 1.2em;
+  margin: 0.25em 0 0.25em 1.1em;
 }
 
 .reveal li {
-  margin: 0.2em 0;
-  line-height: 1.35;
+  margin: 0.15em 0;
+  line-height: 1.3;
 }
 
 .reveal ul li::marker { color: #B78331; }
@@ -64,9 +95,10 @@
   background: transparent;
   border-left: 3px solid #B78331;
   padding: 0.2em 0 0.2em 1em;
-  margin: 0.6em 0;
+  margin: 0.4em 0;
   font-style: normal;
   box-shadow: none;
+  font-size: 0.95em;
 }
 
 .reveal code {
@@ -75,7 +107,7 @@
   background: rgba(23, 54, 93, 0.06);
   padding: 0.05em 0.3em;
   border-radius: 3px;
-  font-size: 0.9em;
+  font-size: 0.85em;
 }
 
 .reveal pre {
@@ -84,8 +116,10 @@
   padding: 0.4em 0.6em;
   border-radius: 3px;
   box-shadow: none;
-  font-size: 0.55em;
-  line-height: 1.35;
+  font-size: 0.5em;
+  line-height: 1.3;
+  max-height: 60vh;
+  overflow: auto;
 }
 
 .reveal pre code {
@@ -96,22 +130,24 @@
 .reveal table {
   color: #17365D;
   border-collapse: collapse;
-  margin: 0.5em 0;
-  font-size: 0.75em;
+  margin: 0.4em 0;
+  font-size: 0.7em;
+  width: 100%;
 }
 
 .reveal table th {
   background: #17365D;
   color: #F5EBD6;
   font-weight: bold;
-  padding: 0.4em 0.6em;
+  padding: 0.35em 0.5em;
   border: none;
   text-align: left;
 }
 
 .reveal table td {
-  padding: 0.35em 0.6em;
+  padding: 0.3em 0.5em;
   border-bottom: 1px solid rgba(23, 54, 93, 0.15);
+  vertical-align: top;
 }
 
 .reveal table tr:nth-child(even) td {
@@ -129,18 +165,45 @@
   border-radius: 3px;
 }
 
+/* Images: constrain to the slide's *remaining* vertical space and shrink
+ * proportionally rather than overflowing.
+ *
+ * The imageblock wrapper is flex:1, so the image can consume whatever space
+ * the header/prose above it has left. max-height caps that.
+ */
+.reveal .imageblock {
+  flex: 1 1 auto;
+  min-height: 0;              /* essential for flex-shrink to work in Chrome */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0.4em 0;
+  overflow: hidden;
+}
+
+.reveal .imageblock .content,
+.reveal .imageblock .title {
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .reveal section img {
   border: none;
   box-shadow: none;
   background: transparent;
-  max-height: 60vh;      /* never taller than 60% of viewport */
-  max-width: 90%;        /* leave room for slide chrome */
+  max-height: 100%;
+  max-width: 100%;
   width: auto;
   height: auto;
   object-fit: contain;
+  display: block;
 }
 
-.reveal .stem { font-family: "Times New Roman", serif; }
+.reveal .stem { font-family: "Times New Roman", serif; font-size: 0.9em; }
 
 .reveal blockquote.tip,
 .reveal blockquote.note {
@@ -150,14 +213,15 @@
 
 /* Callouts for chapter headers (used by explicit .lead role) */
 .reveal .lead {
-  font-size: 1.05em;
+  font-size: 1em;
   color: #6C371F;
   font-style: italic;
+  margin-top: 0.4em;
 }
 
 /* Rule ornament matches the book's chapter ornament */
 .reveal hr {
   border: none;
   border-top: 2px solid #17365D;
-  margin: 0.5em 0;
+  margin: 0.4em 0;
 }
