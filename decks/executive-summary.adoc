@@ -7,7 +7,7 @@ Christopher J. Collins
 [.title-slide]
 == &nbsp;
 
-image::figures/front_cover.jpg[width=45%]
+image::figures/front_cover.jpg[]
 
 *Engineering Intelligence*
 
@@ -64,7 +64,7 @@ The pull request is a platform artifact. It is not the unit of engineering work.
 
 Delay is not linear in load — it explodes near saturation.
 
-image::figures/mermaid/context-switch-cycle.png[width=70%]
+image::figures/mermaid/context-switch-cycle.png[]
 
 Managing utilisation is a first-class economic problem, not a scheduling detail.
 
@@ -111,7 +111,7 @@ Metrics without decision, owner, or retirement _accumulate cost while adding noi
 
 Before-and-after averages mislead. The DAG makes assumptions explicit.
 
-image::figures/plots/causal-dag.png[width=70%]
+image::figures/plots/causal-dag.png[]
 
 Randomisation cuts the confounding path. Adjustment blocks it. Neither happens by accident.
 
@@ -152,7 +152,7 @@ A 38-line "small" change can score in the *top quartile* of blast radius. The po
 
 == The reference architecture
 
-image::figures/mermaid/engineering-intelligence-reference-architecture.png[width=85%]
+image::figures/mermaid/engineering-intelligence-reference-architecture.png[]
 
 Five layers, one governance plane. Vendor-neutral; the durable value is in semantics, not tools.
 
@@ -192,7 +192,7 @@ That trade-off is legible when reported as a bundle, invisible under an ROI scor
 
 == The maturity ratchet
 
-image::figures/mermaid/maturity-ratchet.png[width=45%]
+image::figures/mermaid/maturity-ratchet.png[]
 
 Every level closes a specific gap. Progress is measured in _capability gained_, not tools bought.
 

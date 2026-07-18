@@ -66,7 +66,7 @@ Every causal method is a strategy for _estimating the missing counterfactual_.
 
 == The DAG makes assumptions visible
 
-image::figures/plots/causal-dag.png[width=70%]
+image::figures/plots/causal-dag.png[]
 
 Where does randomising T help? Where must you adjust for U instead?
 
@@ -172,7 +172,7 @@ A negative result is worthless without an MDE.
 
 Power analyses belong in the _pre-registration_, not the discussion.
 
-image::figures/plots/experiment-power.png[width=55%]
+image::figures/plots/experiment-power.png[]
 
 // ============================================================================
 
