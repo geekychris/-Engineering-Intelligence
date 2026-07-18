@@ -219,12 +219,17 @@
   border: none;
   box-shadow: none;
   background: transparent;
-  max-height: 100% !important;
-  max-width: 100% !important;
+  /* Cap in absolute deck units (canvas is 1280x800) and viewport units.
+   * The vh cap is a belt-and-braces safeguard for cases where the parent
+   * flex chain doesn't resolve to real pixels. 520px leaves 280px above
+   * for a header + one paragraph. */
+  max-height: 520px !important;
+  max-width: 1100px !important;
   width: auto !important;
   height: auto !important;
   object-fit: contain;
   display: block;
+  margin: 0 auto;
 }
 
 .reveal .stem { font-family: "Times New Roman", serif; font-size: 0.9em; }

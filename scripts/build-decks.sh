@@ -15,7 +15,13 @@ command -v bundle >/dev/null 2>&1 || fail "Bundler is required"
 
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR/themes" "$BUILD_DIR/figures/mermaid" "$BUILD_DIR/figures/plots"
-cp "$THEME_CSS" "$BUILD_DIR/themes/"
+BUILD_STAMP="$(date -u +'%Y-%m-%d %H:%M UTC')"
+# Stamp the theme copy so it's obvious in DevTools which build is live.
+{
+  printf '/* build: %s */\n' "$BUILD_STAMP"
+  cat "$THEME_CSS"
+  printf '\n.reveal .build-stamp{position:fixed;bottom:6px;left:10px;font-family:Helvetica,sans-serif;font-size:10px;color:#6C371F;background:rgba(245,235,214,0.75);padding:2px 6px;border-radius:2px;pointer-events:none;z-index:1000}\n'
+} > "$BUILD_DIR/themes/engineering-intelligence.css"
 
 # Mermaid diagrams — from the last book build.
 if compgen -G "$ROOT/build/figures/mermaid/*.png" >/dev/null; then
@@ -36,6 +42,10 @@ for src in "$DECKS_SRC"/*.adoc; do
   [[ -f "$src" ]] || continue
   base="$(basename "$src" .adoc)"
   out="$BUILD_DIR/$base.html"
+  # Copy the deck source into the staging area, appending a build stamp
+  # slide-footer node so every rendered slide carries a visible marker.
+  staged="$BUILD_DIR/.staged-$base.adoc"
+  cat "$src" > "$staged"
   bundle exec asciidoctor-revealjs \
     --safe-mode server \
     --base-dir "$ROOT" \
@@ -58,6 +68,16 @@ for src in "$DECKS_SRC"/*.adoc; do
     --destination-dir "$BUILD_DIR" \
     --out-file "$base.html" \
     "$src"
+  # Inject a fixed-position build-stamp element after <body>.
+  python3 - "$out" "$BUILD_STAMP" <<'PY'
+import sys, re
+path, stamp = sys.argv[1], sys.argv[2]
+text = open(path).read()
+tag = f'<div class="build-stamp">build: {stamp}</div>'
+text = text.replace('<body>', f'<body>{tag}', 1)
+open(path, 'w').write(text)
+PY
+  rm -f "$staged"
   count=$((count + 1))
 done
 
