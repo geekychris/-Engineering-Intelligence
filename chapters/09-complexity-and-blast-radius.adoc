@@ -350,6 +350,15 @@ Reach alone does not determine operational risk.
 
 == Worked example: scoring the blast radius of a shared-auth library change
 
+[TIP]
+====
+Runnable versions of this example live in the companion notebooks:
+* `companion/notebooks/06-blast-radius-scoring.py`
+* `companion/notebooks/16-dependency-blast-radius.py`
+* `companion/notebooks/17-critical-path.py`
+====
+
+
 A shared authentication library is updated to change how session tokens are refreshed. The team classifies the change as "small" — 38 lines of code, one repository, passing tests.
 
 The blast-radius score developed in this chapter looks at three inputs. Reach: the service catalogue shows 47 downstream services import the library at the pinned version; 31 will pick up the change on their next deploy, and 8 have deploy cadences under 24 hours. Exposure: 5 of the downstream services are internet-facing and handle authenticated user requests. Reversibility: the change modifies a client-visible cookie attribute; rollback requires simultaneous coordinated redeployment across the fleet or a period of graceful mixed-version handling.

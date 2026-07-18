@@ -1,0 +1,232 @@
+= Engineering Intelligence Maturity Assessment
+Workshop — 2 hours
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Engineering Intelligence Maturity Assessment*
+
+A self-assessment workshop derived from Appendix J of _Engineering Intelligence_.
+
+[.authors]
+2 hours  ·  self-scoring · roadmap outputs
+
+// ============================================================================
+
+== Purpose
+
+By the end of this workshop your team will:
+
+* Have scored your organisation across the eight EI dimensions
+* Know which capability closes the biggest decision-risk gap
+* Have a *next-quarter* investment plan grounded in the maturity ratchet — not in tool fashion
+
+// ============================================================================
+
+== What we mean by maturity
+
+*Not*: how many dashboards you have.
+
+*Yes*: what class of decision your evidence system can defensibly support.
+
+Every level closes a specific gap. You _cannot_ skip levels; each is a prerequisite for the practices at the next.
+
+// ============================================================================
+
+== The six levels
+
+image::../build/figures/mermaid/maturity-ratchet.png[width=45%]
+
+L0 → L5, each ratchet adds specific capability.
+
+// ============================================================================
+
+== Level 0 — Fragmented telemetry
+
+_"Teams answer the same question three different ways."_
+
+* Metrics defined locally
+* Cross-system linkage missing
+* Activity counts dominate
+* Data quality mostly implicit
+
+*Cost:* every strategic conversation starts with definition arguments.
+
+// ============================================================================
+
+== Level 1 — Descriptive visibility
+
+_"A leader can open a dashboard without arguing about definitions."_
+
+* Major sources ingested
+* Standardised team and repo metrics
+* Basic lineage and quality monitoring
+
+*Missing:* mechanism. You can see patterns, not explain them.
+
+// ============================================================================
+
+== Level 2 — Connected Engineering Change evidence
+
+_"End-to-end questions become answerable for the first time."_
+
+* Reconstruction of intent → outcome
+* Confidence bands on joins
+* Analysts stop reasoning about pull requests, start reasoning about Changes
+
+*Cost of missing this level:* multi-repo coordination is a rumour, not a measure.
+
+// ============================================================================
+
+== Level 3 — Governed decision intelligence
+
+_"A metric change is a release, not a query edit."_
+
+* Metrics have semantic versions
+* Consequential measures carry uncertainty
+* Decision records reference metric versions
+* Prohibited uses are _enforceable_
+
+*Cost of missing this:* a metric shift and a real change are indistinguishable.
+
+// ============================================================================
+
+== Level 4 — Experimental learning system
+
+_"'We rolled it out and things got better' is no longer evidence."_
+
+* Assignment + exposure instrumentation
+* Guardrails and stop rules
+* Pre-analysis plans and reproducibility packages
+* Negative results shipped
+
+*Cost of missing this:* your AI evaluations rest on before-after averages.
+
+// ============================================================================
+
+== Level 5 — Adaptive engineering organisation
+
+_"The operating model itself is a subject of measurement."_
+
+* Policies as versioned interventions
+* Learning graph survives reorganisations
+* Bounded automated policy with audit + appeal
+* AI agents with identity, authority, provenance
+
+Rare. Not many organisations. That's OK — L3 is the pragmatic target.
+
+// ============================================================================
+
+== The eight assessment dimensions
+
+Score each on 0–5 _separately_:
+
+. Decision orientation
+. Source evidence and contracts
+. Engineering Change semantics
+. Identity, ownership, organisational context
+. Metrics and governance
+. Experimentation
+. Economics
+. AI participation
+
+A single averaged score hides critical weaknesses.
+
+// ============================================================================
+
+== Segment 1 (30 min) — self-score
+
+Individually score your organisation across the eight dimensions.
+
+*One rule:* score _demonstrated operating capability_, not documented policies or purchased tools.
+
+If you can't cite a decision that was made or reversed because of the evidence, that dimension is not at L3.
+
+// ============================================================================
+
+== Segment 2 (25 min) — reconcile
+
+Compare scores across the group.
+
+_You will disagree._ That's the useful part.
+
+The disagreements are usually about interpretation of "demonstrated." Push each other to name the decision.
+
+// ============================================================================
+
+== Segment 3 (25 min) — identify the binding constraint
+
+For each dimension where you scored 0-2, ask:
+
+* Which _decision class_ becomes unreachable at this level?
+* What is the _smallest capability_ that would unlock the next level?
+
+_Not:_ what tool to buy. _Yes:_ what would allow us to answer one specific question we cannot answer today.
+
+// ============================================================================
+
+== Segment 4 (20 min) — pick one
+
+You get *one investment* for next quarter.
+
+Choose the dimension where:
+
+* The next-level unlock has the largest decision consequence
+* The path to that unlock is _bounded and known_
+
+Use the pilot-selection rubric: sponsored, consequential, evidence-reachable.
+
+_Reference:_ `companion/notebooks/20-pilot-selection.py`.
+
+// ============================================================================
+
+== Anti-patterns to name and avoid
+
+* *Maturity theatre* — scoring high without operating evidence
+* *Average-score optimism* — hiding an L1 dimension inside an L3 average
+* *Tool-based maturity* — believing a purchase implies capability
+* *Roadmap by connector* — sequencing by data availability, not decision value
+* *Enterprise-wide first step* — trying to boil the ocean instead of proving one loop
+
+// ============================================================================
+
+== Ninety-day plan template
+
+* *Week 1-2:* Register the decision question. Name the sponsor.
+* *Week 3-6:* Build minimum evidence path (source + reconstruction if needed)
+* *Week 7-10:* Governed metric v1.0 with uncertainty and guardrails
+* *Week 11-12:* Register the use, produce the decision record
+
+*What ships:* one Class-2 decision supported by governed evidence. Not a platform.
+
+// ============================================================================
+
+== What you go home with
+
+* Signed self-assessment scorecard (per dimension)
+* One next-quarter investment written as a bounded pilot proposal
+* A `no` list — dimensions you deliberately are _not_ investing in yet
+* A review date (typically 90 days out) to reconvene
+
+// ============================================================================
+
+== Reading and running
+
+* *Read:* Appendix J of _Engineering Intelligence_
+* *Read:* Chapter 15, Implementation and Rollout
+* *Run:* `companion/notebooks/20-pilot-selection.py`
+* *Run:* `companion/notebooks/19-portfolio-allocation.py` when you're negotiating capacity
+
+// ============================================================================
+
+[.title-slide]
+== Thank you
+
+Reconvene in 90 days.
+
+Bring the decision you made.
+Bring the decision you _almost_ made and _reversed_.
+Those are what a maturity system is for.

@@ -312,6 +312,15 @@ High precision with very low recall may miss important defects. High recall with
 
 == Worked example: the cost of an unversioned metric change
 
+[TIP]
+====
+Runnable versions of this example live in the companion notebooks:
+* `companion/notebooks/09-metric-versioning.py`
+* `companion/notebooks/10-composite-metric.py`
+* `companion/notebooks/11-bayesian-metric.py`
+====
+
+
 An organization reports "review latency" on a leadership scorecard. In Q2, latency drops from 8.4 hours to 5.9 hours — a 30% improvement widely attributed to the AI reviewer rolled out in that quarter.
 
 Investigation reveals that in April the metric owner also changed the eligible population: draft pull requests and bot-authored dependency bumps, which had previously counted, were excluded. Historical recomputation with the new definition shows the true Q1 latency was 6.7 hours, not 8.4 — the "improvement" was 0.8 hours, not 2.5.

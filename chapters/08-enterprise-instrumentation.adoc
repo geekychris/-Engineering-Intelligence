@@ -405,6 +405,12 @@ No tool contains complete intent, implementation, deployment, and outcome eviden
 
 == Worked example: measuring identity-resolution accuracy
 
+[TIP]
+====
+Runnable version: `companion/notebooks/15-identity-resolution.py`.
+====
+
+
 A platform team has resolved 41,290 distinct source identities across six systems into 4,177 canonical actors. The resolution model uses email matches, SSO federation records, and probabilistic name-and-history clustering.
 
 The team validates the resolution against a hand-labeled sample of 500 identities. Four counts result:

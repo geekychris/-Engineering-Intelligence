@@ -357,6 +357,12 @@ Individual-level signals are heavily confounded by task assignment, role, expert
 
 == Worked example: quantifying context-switch cost
 
+[TIP]
+====
+Runnable version: `companion/notebooks/03-context-switch-cost.py`.
+====
+
+
 An eight-engineer team ships to a production service and reports that "meetings are killing us." Leadership wants to know whether the complaint reflects a measurement gap or a real economic problem.
 
 Instrumentation shows that each engineer averages 3.4 material context switches per working day, with a mean recovery time of 11.5 minutes per switch, derived from the recovery model in this chapter. The loaded rate for the team is $145 per engineer-hour.

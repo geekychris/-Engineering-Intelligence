@@ -409,6 +409,12 @@ Many outcome effects will require longer follow-up, especially rare quality even
 
 == Worked example: selecting the first pilot
 
+[TIP]
+====
+Runnable version: `companion/notebooks/20-pilot-selection.py`.
+====
+
+
 A newly funded intelligence team must choose one of four candidate pilots for the first ninety days. Each is scored against the pilot-selection criteria in this chapter:
 
 - _Reviewer capacity in the payments organization._ Sponsor: engaged VP. Decision at stake: whether to add three senior reviewers or invest in AI review tooling. Data reachability: high — payments has clean source systems. Political cost of failure: moderate.

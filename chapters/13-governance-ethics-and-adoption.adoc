@@ -402,6 +402,12 @@ Oversight is created reactively after a metric or model has already shaped behav
 
 == Worked example: responding to a metric-misuse incident
 
+[TIP]
+====
+Runnable version: `companion/notebooks/18-governance-classification.py`.
+====
+
+
 A vice president of engineering asks the intelligence team for "the top 20 lowest-performing engineers" ranked by review-latency contribution. The registered use of the review-latency metric is Class 2 (organizational decision support); individual-level ranking would be Class 4 and is currently prohibited without a separate formal process.
 
 The governance operating model triggers three responses within 48 hours. First, the metric owner declines the request in writing, citing the registered purpose and the acceptable-use standard. Second, the request is logged as a governance incident and routed to the governance board for review. Third, the platform confirms that the metric API's purpose-bound access already blocked the underlying query at the interface layer, so no ad-hoc query produced the ranking.

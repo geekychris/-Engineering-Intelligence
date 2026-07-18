@@ -417,6 +417,14 @@ Not every change should be forced into a precise dollar value. The purpose of va
 
 == Worked example: evaluating an AI review tool
 
+[TIP]
+====
+Runnable versions of this example live in the companion notebooks:
+* `companion/notebooks/01-queueing-cost.py`
+* `companion/notebooks/13-monte-carlo-cost.py`
+====
+
+
 Consider an organization processing 100,000 pull requests per year. It is evaluating an AI reviewer with an annual license and infrastructure cost of $1.2 million.
 
 The observed treatment effects from a controlled rollout are:
@@ -459,6 +467,12 @@ A publication-quality evaluation should therefore report:
 The point-estimate of $650,000 is a starting hypothesis, not a conclusion. Reported in isolation it is nearly indistinguishable from an educated guess; reported with the accompaniments above, it becomes a claim that other engineering leaders can inspect, replicate, or dispute. xref:ch-06[Chapter 6] develops the causal machinery required to turn such an evaluation into evidence that survives contact with an audit or a change of leadership.
 
 == Worked example: a required specialist approval
+
+[TIP]
+====
+Runnable version: `companion/notebooks/01-queueing-cost.py`.
+====
+
 
 A platform team proposes requiring a database specialist to approve every schema-changing pull request.
 

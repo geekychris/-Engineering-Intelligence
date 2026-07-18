@@ -506,6 +506,14 @@ The experiment reaches significance but the improvement is too small to justify 
 
 == Worked example: applying the AI-review playbook
 
+[TIP]
+====
+Runnable versions of this example live in the companion notebooks:
+* `companion/notebooks/04-causal-did-cace.py`
+* `companion/notebooks/05-power-and-mde.py`
+====
+
+
 A company is considering rolling out an AI code reviewer across its 180 backend teams. Rather than negotiate the rollout ad-hoc, the platform team applies the AI-review playbook from this chapter.
 
 The playbook fixes the intervention: vendor _V_, model _M_ at version 2024-08, prompt template _P_ at revision 12, findings are advisory and appear within 90 seconds of a pull request being opened. The unit of assignment is the team; the unit of analysis is the Engineering Change. Randomisation is stratified by baseline review latency and repository language to reduce baseline imbalance.

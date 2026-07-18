@@ -371,6 +371,12 @@ Teams hide uncertainty and produce politically safe estimates.
 
 == Worked example: allocating capacity across three initiatives
 
+[TIP]
+====
+Runnable version: `companion/notebooks/19-portfolio-allocation.py`.
+====
+
+
 An engineering organization has 42 engineers of general capacity and 6 engineers of scarce security-specialist capacity available for the next quarter. Three initiatives compete for that capacity:
 
 _Initiative A — payments migration._ Expected value $8M realised over 18 months (revenue enablement + risk reduction), estimated cost 24 general engineer-quarters and 3 specialist-quarters, dependency on a shared identity service, cost of delay $180k per month, downside if incomplete: minor.

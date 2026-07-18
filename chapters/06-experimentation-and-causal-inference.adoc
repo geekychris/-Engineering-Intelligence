@@ -376,6 +376,15 @@ Multiple tools and policies change simultaneously, making attribution impossible
 
 == Worked example: did the AI reviewer actually reduce review latency?
 
+[TIP]
+====
+Runnable versions of this example live in the companion notebooks:
+* `companion/notebooks/04-causal-did-cace.py`
+* `companion/notebooks/05-power-and-mde.py`
+* `companion/notebooks/12-sequential-testing.py`
+====
+
+
 An organization rolls out an AI reviewer to half of its 240 backend teams over a two-week window. Six weeks later, mean review latency in treated teams is 4.9 hours; in control teams it is 6.8 hours. A leader concludes the AI saved 1.9 hours per review.
 
 Two adjustments change the interpretation.

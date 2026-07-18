@@ -487,6 +487,12 @@ Derived economics appear exact despite uncertain rates, attribution, and counter
 
 == Worked example: reading the flow bundle without misreading it
 
+[TIP]
+====
+Runnable version: `companion/notebooks/07-flow-bundle-interpretation.py`.
+====
+
+
 A platform lead is asked whether a workflow change three months ago helped delivery. She opens the flow bundle for the affected teams.
 
 - Lead time: 6.2 days, down from 7.9 days.

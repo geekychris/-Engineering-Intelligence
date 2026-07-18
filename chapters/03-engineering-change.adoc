@@ -405,6 +405,12 @@ Changing reconstruction rules can alter past metrics. Preserve model versions an
 
 == Worked example: reconstructing an Engineering Change under confidence
 
+[TIP]
+====
+Runnable version: `companion/notebooks/08-engineering-change-reconstruction.py`.
+====
+
+
 A platform team wants to attribute cost and outcome to an Engineering Change titled "add refund reason codes to checkout." The reconstruction service assembles evidence from six systems: the intent ticket, three pull requests across two repositories, a feature-flag configuration change, and a deployment record.
 
 Deterministic linkage — where the pull-request description or commit trailer carries `refs REFUND-8842` — connects two of the three pull requests to the intent with confidence 1.0. The third pull request modifies the payment-integration service and shares an author but no explicit reference; a probabilistic model links it with confidence 0.62 based on temporal co-occurrence, semantic similarity of description, and shared file paths with the other two changes.

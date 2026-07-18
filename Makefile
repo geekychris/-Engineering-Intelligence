@@ -1,6 +1,6 @@
 SHELL := /usr/bin/env bash
 
-.PHONY: all html pdf epub diagrams validate test source-validate manifest-validate clean clean-diagrams
+.PHONY: all html pdf epub decks diagrams validate test source-validate manifest-validate clean clean-diagrams
 
 all:
 	bash scripts/build.sh all
@@ -17,6 +17,9 @@ pdf:
 epub:
 	bash scripts/build.sh epub
 	python3 scripts/validate_manifest.py build
+
+decks:
+	bash scripts/build-decks.sh
 
 diagrams:
 	bash scripts/build.sh diagrams

@@ -314,6 +314,12 @@ Strong advisory performance does not automatically justify autonomous execution.
 
 == Worked example: measuring net cognitive offload from an AI reviewer
 
+[TIP]
+====
+Runnable version: `companion/notebooks/14-cognitive-offload-index.py`.
+====
+
+
 A twelve-week study evaluates whether an AI code reviewer delivers net cognitive offload on 12,400 pull requests across a treated and matched control cohort.
 
 Baseline human review effort in the control cohort averages 17.2 minutes per pull request. In the treatment cohort, direct review time falls to 13.9 minutes — an apparent 3.3 minute per-review saving.
