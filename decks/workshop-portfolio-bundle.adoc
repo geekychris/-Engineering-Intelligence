@@ -1,0 +1,291 @@
+= Building a Portfolio Bundle
+Workshop — 90 minutes
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Building a Portfolio Bundle*
+
+A hands-on workshop derived from Chapter 14 of _Engineering Intelligence_.
+
+[.authors]
+90 minutes  ·  4 hands-on segments
+
+// ============================================================================
+
+== Learning outcomes
+
+After this workshop you can:
+
+* Model a set of _competing initiatives_ as portfolio candidates
+* Represent capacity as _multidimensional_ — not one interchangeable pool
+* Surface mandatory work as a _constraint_, not a rank entry
+* Produce a *portfolio bundle* — not a single score — that legitimately supports an executive decision
+
+// ============================================================================
+
+== The problem
+
+A leadership team ranks eight initiatives by ROI score. They pick the top three. Green-light meeting adjourns in forty minutes.
+
+Underneath: two of the top three compete for the same six database specialists. A regulatory floor eats a quarter of general capacity that nobody subtracted. The fourth-ranked item is the one that unblocks the second.
+
+*The ranking is coherent as arithmetic. It is incoherent as a plan.*
+
+// ============================================================================
+
+== What we are producing today
+
+Each team leaves with a portfolio bundle for *3–5 real initiatives* — the ones actually competing on your roadmap right now.
+
+The bundle contains:
+
+* value estimate _with a range_
+* general vs. specialist capacity demand
+* dependency edges to other initiatives
+* mandatory constraints and floors
+* cost of delay
+* a decision record — including what is _not_ chosen and why
+
+// ============================================================================
+
+== The portfolio value model
+
+For initiative latexmath:[$e$]:
+
+[stem]
+++++
+NV(e) = E[B(e)] - E[C(e)]
+++++
+
+Selection under multiple constraints:
+
+[stem]
+++++
+\max_{x_e \in \{0,1\}} \sum_e x_e\, NV(e) \quad \text{s.t.} \quad \sum_e x_e\, r_{e,k} \leq Capacity_k
+++++
+
+One constraint per scarce resource latexmath:[$k$]. Not one budget line — several.
+
+// ============================================================================
+
+== Capacity is multidimensional
+
+[.lead]
+Headcount is not one interchangeable pool.
+
+* general implementation effort
+* specialist domain expertise
+* review and approval bandwidth
+* platform and infrastructure capacity
+* deployment windows, test environments
+* leadership attention
+* change absorption in customers and operations
+
+A plan fully funded in nominal engineer-months can still be infeasible because one scarce pool is overcommitted.
+
+// ============================================================================
+
+== Mandatory work is a floor
+
+[quote]
+____
+Regulatory commitments, security remediation, contractual obligations, safety controls, end-of-life migrations, incident recovery.
+
+These are *constraints*. They are not competitors in a ranking.
+____
+
+Assigning them an artificial financial "benefit" so they win an ROI comparison is the most common way a portfolio ranking becomes incoherent.
+
+// ============================================================================
+
+== Cost of delay
+
+Different work has different delay-cost _shapes_.
+
+* Regulatory: flat, then a cliff.
+* Seasonal launch: steep before the season, negligible after.
+* Incident remediation: high and immediate.
+* Internal refactor: mostly linear, often small.
+
+A useful heuristic:
+
+[stem]
+++++
+WSJF(e) = \frac{CostOfDelay(e)}{EstimatedDuration(e)}
+++++
+
+Heuristic. Not a ranking rule. Adjust for dependencies and scarcity.
+
+// ============================================================================
+
+== Segment 1 (15 min) — list your candidates
+
+On a shared surface, list *3–5 initiatives* currently competing for capacity on your team's roadmap this quarter.
+
+Rules:
+
+* Real ones. Not aspirational.
+* Include at least one *mandatory* item if any exists.
+* Include at least one you _suspect_ has a specialist bottleneck.
+
+_Report back:_ one initiative someone at the table wants funded that a naive ROI ranking would drop.
+
+// ============================================================================
+
+== Segment 2 (25 min) — model each initiative
+
+For each of the 3–5 candidates, capture:
+
+[cols="1,3"]
+|===
+|Field |Content
+
+|Value |Point estimate _and_ a credible range
+|General capacity |Engineer-quarters of general effort
+|Specialist capacity |Which specialty, how many quarters
+|Dependencies |`ENABLES`, `BLOCKS`, `REQUIRES` edges to other candidates
+|Mandatory |Yes / no. If yes: deadline and consequence
+|Cost of delay |Shape (linear, cliff, seasonal) and rate
+|===
+
+_Report back:_ the specialist pool that turned out to be a hidden bottleneck.
+
+// ============================================================================
+
+== A quick dependency graph
+
+image::figures/mermaid/portfolio-dependency-map.png[Portfolio dependency and constraint map]
+
+Edges: `ENABLES` · `BLOCKS` · `REQUIRES` · `COMPETES_FOR` · `REDUCES_RISK_OF`.
+
+Useful measures: prerequisite depth · enabled value · shared bottlenecks · critical portfolio path.
+
+// ============================================================================
+
+== The bundle, not the ranking
+
+A bundle answers: _"given the floors, the scarce pools, and the dependencies, what subset can we actually run?"_
+
+A ranking answers: _"which item has the highest score?"_
+
+[.lead]
+Bundles compose. Rankings only sort.
+
+// ============================================================================
+
+== Opportunity cost belongs in the bundle
+
+The cost of choosing an initiative includes the value of the best alternative *displaced by the same constraint*.
+
+If bundling A consumes the only database specialists, the cost of A includes B's foregone benefit — because B needed the same six people.
+
+A portfolio bundle makes this legible. A ranked list hides it inside the score.
+
+// ============================================================================
+
+== Segment 3 (25 min) — assemble the bundle
+
+Now build a bundle from your modelled candidates.
+
+. Lock the mandatory floor first. Subtract its capacity from every pool.
+. Budget specialist capacity next. It usually binds before general capacity does.
+. Respect `REQUIRES` edges. An initiative whose prerequisite is not in the bundle is not in the bundle either.
+. For each candidate _not chosen_, write the opportunity cost — the specific pool or edge that displaced it.
+
+_Report back:_ the specialist pool that decided the bundle for you, and the initiative it displaced.
+
+// ============================================================================
+
+== The worked example, condensed
+
+42 general + 6 specialist engineer-quarters.
+
+* *A — Payments migration.* $8M, 24 general + 3 specialist, $180k/mo delay.
+* *B — Platform upgrade.* $4M, 30 general + 0 specialist, $60k/mo delay.
+* *C — Regulatory program.* Mandatory. 18 general + 5 specialist. Missing date = $12M penalty.
+
+ROI ranks A first. But C is a floor — it takes 18 + 5 before any ranking starts.
+
+Remaining: 24 general + 1 specialist. A wants 3 specialist. B wants 30 general. Neither fits as posed.
+
+[.lead]
+The bundle is: fund C · negotiate specialists for A · sequence B — and *name the $180k/mo delay on A as the price of C*.
+
+// ============================================================================
+
+== The decision record
+
+For every bundle you ship, preserve:
+
+* alternatives considered — including the ranked list you rejected
+* value and cost distributions, not just point estimates
+* the constraints that bound the bundle
+* the initiatives displaced and the pool that displaced them
+* dissenting views
+* review date and trigger conditions
+
+A decision record enables later learning without judging past choices solely by realized outcome.
+
+// ============================================================================
+
+== Segment 4 (15 min) — red-team the bundle
+
+A peer team argues: _"just compress everything to one ROI number. Executives don't have time for a bundle."_
+
+Your job: show them *where the wrong decision hides* inside their single score.
+
+Prompts:
+
+* Which mandatory item disappears into the ranking?
+* Which specialist bottleneck the single score does not represent?
+* Which dependency the ranking cannot express?
+* Which _not-chosen_ initiative's opportunity cost is now invisible?
+
+_Report back:_ the one line you'd add to the exec summary that a single ROI score cannot carry.
+
+// ============================================================================
+
+== Common failure modes
+
+* *Ranking by ROI alone* — mandatory, option, risk, and dependency ignored
+* *Treating capacity as fungible* — headcount hides scarce expertise
+* *Double-counting value* — savings, throughput, and delay reduction overlap
+* *Ignoring uncertainty* — point forecasts create brittle commitments
+* *Portfolio theater* — scores produced _after_ allocation is already fixed
+* *Punishing forecast error* — teams hide uncertainty, estimate politically
+
+// ============================================================================
+
+== Don'ts, worth memorising
+
+* Don't rank mandatory work — floor it.
+* Don't budget capacity as one pool — specialists bind first.
+* Don't ship a bundle without naming the _not chosen_.
+* Don't collapse the bundle into a single score at the exec door.
+* Don't judge a past bundle by its realised outcome alone — judge it by the decision record.
+
+// ============================================================================
+
+== What you go home with
+
+* A portfolio bundle for 3–5 real initiatives on your roadmap
+* An explicit list of _not chosen_ items and the pool that displaced each
+* A dependency sketch that survives the meeting
+* A decision record template your next allocation cycle can reuse
+
+Bring the bundle to your next portfolio review. Bring the _not chosen_ list too.
+
+// ============================================================================
+
+[.title-slide]
+== Thank you
+
+Reconvene at the next portfolio cycle.
+
+Bring the bundle you shipped.
+Bring the _not chosen_ list, marked with what actually happened.
+Those are what a portfolio system is for.

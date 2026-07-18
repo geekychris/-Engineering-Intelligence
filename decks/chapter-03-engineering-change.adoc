@@ -1,0 +1,264 @@
+= The Engineering Change
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 3 — The Engineering Change*
+
+_The primary analytical unit of Engineering Intelligence: intent, artifacts, activities, outcomes — reconstructed with confidence and provenance._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== Why the pull request is insufficient
+
+Pull requests are visible, structured, API-friendly — and misleading as a universal proxy.
+
+* One capability may span web, mobile, API, shared libraries, migrations, flags, deploys, docs, verification
+* One PR may bundle refactor + dependency bump + feature — three unrelated intents
+* Repository conventions, not engineering intent, decide the boundary
+
+[.lead]
+Measurement must separate observable artifacts from the logical change they realize.
+
+// ============================================================================
+
+== The Engineering Change, formally
+
+[IMPORTANT]
+====
+An *Engineering Change* is the temporally bounded set of human, AI, code, configuration, data, infrastructure, verification, coordination, deployment, and operational activities undertaken to transform one coherent engineering intent into one or more accepted outcomes.
+====
+
+[stem]
+++++
+E = (I, A, R, O, \tau, \Pi)
+++++
+
+Intent · Artifacts and activities · Relationships · Outcomes · Time · Provenance.
+
+// ============================================================================
+
+== Four moving parts
+
+[cols="1,3"]
+|===
+| Intent       | Why the work exists — capability, remediation, migration, retirement, hypothesis
+| Artifacts    | Commits, PRs, tickets, builds, deployments, flags, schemas, incidents
+| Activities   | Authoring, reviewing, approving, deploying, observing, rolling back
+| Outcomes     | Accepted, partial, deployed-but-disabled, abandoned, superseded, rolled back
+|===
+
+A merged pull request is not an outcome. A deployed-but-disabled feature is not adoption.
+
+// ============================================================================
+
+== The change as a temporal property graph
+
+image::figures/mermaid/engineering-change-lifecycle.png[Engineering Change lifecycle]
+
+[stem]
+++++
+G_E = (V_E, E_E, X_V, X_E, T)
+++++
+
+Edges — `IMPLEMENTS`, `DEPENDS_ON`, `REVIEWS`, `DEPLOYS`, `VERIFIES`, `ROLLS_BACK`, `SUPERSEDES`, `CAUSED_BY` — carry time, source, and confidence.
+
+// ============================================================================
+
+== Questions a graph can answer
+
+* Which artifact lies on the *critical path*?
+* How many *repository and ownership boundaries* were crossed?
+* Which approvals delayed the accepted outcome?
+* Did an incident originate from a change spanning several repos?
+* How much human *and* AI effort accumulated across the whole change?
+
+Each is a *graph traversal*, not a flat-table query.
+
+// ============================================================================
+
+== Boundaries, identity, hierarchy
+
+* An opaque, org-wide identifier (`EC-01J8...`) — never a ticket number
+* External IDs become *aliases*
+* Large initiatives *decompose* into child changes with measurable lifecycles
+
+[stem]
+++++
+E_{initiative} \supset \{E_1, E_2, \dots, E_n\}
+++++
+
+Merge and split are *first-class operations* with effective time, reason, and reproducible history.
+
+// ============================================================================
+
+== Lifecycle without waterfall
+
+Accepted for work · active · under verification · ready for release · releasing · observing · accepted / abandoned / rolled back.
+
+[stem]
+++++
+S_{t+1} = f(S_t, event_t, context_t)
+++++
+
+* State is *derived from events*, not assumed from a plan
+* Event time, ingestion time, and processing time are distinct
+* Late corrections are normal — metrics must support *retractions*
+
+// ============================================================================
+
+== Deterministic reconstruction
+
+Propagate a change ID through the toolchain: tickets, branch names, commit trailers, PR fields, CI env, artifact metadata, deploy manifests, flags, telemetry, incidents.
+
+[source,text]
+----
+Engineering-Change: EC-01J8Z6D4K7J6Q2Q9H1K3B4M5N6
+----
+
+[source,text]
+----
+engineering.change.id = "EC-01J8Z6D4K7J6Q2Q9H1K3B4M5N6"
+----
+
+Explicit propagation = confidence *1.0* and telemetry that links back to intent.
+
+// ============================================================================
+
+== Probabilistic reconstruction
+
+Existing estates must *infer* most memberships.
+
+[stem]
+++++
+P(z_{ij}=1 \mid X_{ij}) = \sigma(\beta_0 + \beta^T X_{ij})
+++++
+
+image::figures/mermaid/change-reconstruction-pipeline.png[Engineering Change reconstruction pipeline]
+
+Features: ticket matches, references, shared authors, temporal proximity, deploy co-occurrence, shared flags, semantic similarity, incident linkage.
+
+*Negative evidence* is required — otherwise clusters swallow every active engineer.
+
+// ============================================================================
+
+== Confidence as a first-class attribute
+
+[cols="1,1,3"]
+|===
+| Class | Range | Interpretation
+
+| Declared          | 1.00        | Explicit ID or authoritative manifest
+| Strongly inferred | 0.90–0.99   | Multiple independent high-quality signals
+| Inferred          | 0.70–0.89   | Likely, meaningful uncertainty
+| Tentative         | 0.50–0.69   | Exploration only — not attribution
+| Rejected          | below       | Not in the graph
+|===
+
+Threshold depends on the *decision*: executive cost attribution demands more than dependency discovery.
+
+// ============================================================================
+
+== Provenance and explainability
+
+Every edge answers *"why are these linked?"* — sources, signals, model version, feature values, confidence, corrections.
+
+[source,json]
+----
+{
+  "artifact": "repo-a#1842",
+  "engineeringChange": "EC-01J8...",
+  "confidence": 0.96,
+  "evidence": [
+    {"type": "ticket_match", "value": "PAY-431", "weight": 0.52},
+    {"type": "explicit_pr_reference", "value": "repo-b#991", "weight": 0.27},
+    {"type": "coordinated_deployment", "windowMinutes": 18, "weight": 0.11}
+  ],
+  "modelVersion": "reconstruct-v3.4"
+}
+----
+
+[.lead]
+Silent mutation destroys trust. Explanation travels with the data.
+
+// ============================================================================
+
+== Multi-repo work as a dependency graph
+
+image::figures/mermaid/change-entity-relationships.png[Change entity relationships]
+
+[stem]
+++++
+T(E) = \max_{p \in Paths(E)} \sum_{a \in p} d(a)
+++++
+
+Repo count · dependency depth · fan-in/out · ownership boundaries · critical-path length · parallelism · cycles.
+
+Cycles are expensive: coordination cost can dwarf implementation complexity.
+
+// ============================================================================
+
+== Topology is context, not a substitute
+
+* Monorepo: one PR, many services and teams
+* Polyrepo: same intent produces a chain of PRs
+* Raw PR counts and sizes are *not comparable* without topology
+
+The Engineering Change separates *intrinsic*, *topological*, and *organizational* complexity — enabling experiments on the economic effect of repo layout and ownership.
+
+// ============================================================================
+
+== Worked example — refund reason codes
+
+[cols="2,1,1"]
+|===
+| Evidence | Confidence | Effort
+
+| Deterministic edges (2 PRs, commit trailers)   | 1.00 | 20.3 h
+| Probabilistic edge (3rd PR, temporal + semantic) | 0.62 | +4.4 authored, +1.7 review
+| Flag config match (normalized flag name)         | 0.88 | included
+|===
+
+* *Floor* (deterministic only): 20.3 h
+* *Expected*: 24.1 h
+* *Ceiling* (all evidence unweighted): 26.4 h
+
+Every number is stamped with `reconstruct-v3.4` — future model revisions *recompute*, they do not retcon.
+
+// ============================================================================
+
+== Common failure modes
+
+* Treating *ticket links* as ground truth
+* Clustering by *author + time* alone — active engineers create false joins
+* Ignoring *deployment and production* evidence — flow truncates at merge
+* Displaying inferred links *as facts* — hidden uncertainty
+* One giant *initiative node* — cost and causality become meaningless
+* Recomputing history *without versioning* — past metrics silently drift
+
+// ============================================================================
+
+== Key takeaways
+
+* Pull requests are *observable artifacts*, not universal units of engineering work
+* The Engineering Change connects *coherent intent* to *accepted outcome* across tools, teams, and stages
+* A *temporal property graph* is the natural representation
+* Explicit IDs are the strongest linkage; *probabilistic reconstruction* is essential for existing estates
+* Every inferred membership carries *confidence, provenance, explanation, correction history*
+* The reconstruction system itself must be measured — coverage, precision, recall, latency, correction rate
+
+// ============================================================================
+
+[.title-slide]
+== Next
+
+*Chapter 4 — Engineering Economics*
+
+The total cost of an Engineering Change · queueing delay · cost-of-delay · attention as the scarce input.

@@ -1,0 +1,324 @@
+= Classifying an Engineering Intelligence Use
+Workshop — 90 minutes
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Classifying an Engineering Intelligence Use*
+
+A hands-on workshop derived from Chapter 13 and Appendix D of _Engineering Intelligence_.
+
+[.authors]
+90 minutes  ·  4 hands-on segments  ·  real proposed uses from your org
+
+// ============================================================================
+
+== Learning outcomes
+
+After this workshop you can:
+
+* *Classify* a proposed use of engineering telemetry by consequence class 0–4
+* *Identify* the individual-ranking uses that should not be built at all
+* *Write* an acceptable-use record — purpose, populations, retention, minimisation, deletion, review date
+* *Run* a use review — including the moment where a Class 1 use quietly becomes Class 3
+
+// ============================================================================
+
+== The problem
+
+An analyst on your platform team says:
+
+[quote]
+____
+"We could correlate keystroke pauses with promotion outcomes. It'd be a great signal for coaching."
+____
+
+Sounds like coaching. Sounds like curiosity.
+
+It is a *Class 4 individual-consequence use* running on *prohibited telemetry*, dressed as an exploratory study.
+
+// ============================================================================
+
+== Why this workshop, and not a policy PDF
+
+[.lead]
+Misclassification is more dangerous than a wrong statistical test.
+
+A wrong test produces a wrong number. Someone can find it later.
+
+A wrong classification puts a Class 3 or Class 4 use into a Class 1 review body — where nobody who is qualified to stop it ever sees it. The number that comes out is unchallenged _by design_.
+
+// ============================================================================
+
+== The five consequence classes
+
+[cols="1,3"]
+|===
+| *Class 0* | Platform operations — connector health, event freshness, schema failures
+| *Class 1* | Descriptive team learning — queue analysis, retrospectives, CI bottlenecks
+| *Class 2* | Organisational decision support — tool procurement, portfolio, staffing
+| *Class 3* | Policy influence — review rules, gates, routing, org-wide defaults
+| *Class 4* | Individual or employment consequence — evaluation, promotion, discipline
+|===
+
+Each class implies a different review body, evidence bar, access scope, and re-examination cadence.
+
+// ============================================================================
+
+== The review loop
+
+image::figures/mermaid/governance-review-loop.png[Acceptable-use review loop]
+
+Proposal → classification → review body → approval → implementation → monitoring → reassessment → retirement.
+
+Two branches give it teeth: *classification routes proposals to the right body*, and *monitoring feeds drift back into rollback and appeal*.
+
+Governance without both branches degrades quickly into paperwork.
+
+// ============================================================================
+
+== The use-review lifecycle
+
+image::figures/mermaid/governance-use-review-lifecycle.png[Governance and acceptable-use lifecycle]
+
+Every governed use has an owner, a purpose, an expiration date, and a way to be retired.
+
+There is no such thing as a permanent pilot.
+
+// ============================================================================
+
+== Prohibited by default
+
+Regardless of class, these are off the table without an exceptional legal and ethical basis:
+
+* ranking individuals by commits, PRs, review speed, or AI acceptance
+* keystroke, screen, or message-content collection for productivity scoring
+* automated employment decisions from engineering telemetry
+* using exploratory metrics in compensation or discipline
+* penalising people for correcting erroneous data
+* covert monitoring outside an approved purpose
+
+[.lead]
+"We're just exploring" is not a purpose.
+
+// ============================================================================
+
+== The acceptable-use record
+
+Every non-trivial use is _registered_. Minimum fields:
+
+* `use_id` and human-readable name
+* `owner` — accountable person, not a mailing list
+* `use_class` — 0 to 4
+* `purpose` — the decision this supports
+* `population` — repos, teams, roles included
+* `data` — fields, at the field level
+* `metrics` — versioned metric IDs
+* `decisions` — what this evidence will inform
+* `prohibited_extensions` — the uses that are _explicitly_ out of scope
+* `review_date` — expiration, not aspiration
+
+// ============================================================================
+
+== What you'll produce today
+
+Each team leaves with:
+
+* *2–3 classified use records* for real uses currently under discussion in your org
+* *One item marked "do not build"* — the one that a review body would decline in writing
+* *A named review body* for each of your live proposals
+
+Not a workshop deck. Records you can hand to a governance board on Monday.
+
+// ============================================================================
+
+== Segment 1 (15 min) — surface the real proposals
+
+Each attendee writes down *two uses of engineering telemetry currently under discussion on their team*.
+
+Rules:
+
+* Real. Not hypothetical.
+* One sentence per use: _"We want to use X to decide Y."_
+* Include the awkward ones. Especially the awkward ones.
+
+_Report back:_ each person reads one aloud. No debate yet.
+
+// ============================================================================
+
+== Segment 1 — traps to notice
+
+While people write, watch for these framings — they usually hide the class:
+
+* "Just for coaching" — often Class 4
+* "Just a dashboard" — Class 3 if a leader will act on it
+* "Just exploratory" — Class 2 or 3 the moment it drives a budget
+* "Just aggregate" — check the group size, and the joins
+
+The word _just_ is a classification smell.
+
+// ============================================================================
+
+== Segment 2 (20 min) — classify each
+
+For every proposal on the wall, decide:
+
+. Which class — 0, 1, 2, 3, or 4?
+. Which review body must see it before it ships?
+. Which prohibited extensions must be written down explicitly?
+
+Use the class table. Argue.
+
+_If the group disagrees between two adjacent classes, register the higher one._ The cost of over-classification is a slower approval. The cost of under-classification is a decision that shouldn't have happened.
+
+// ============================================================================
+
+== Segment 2 — the review body map
+
+[cols="1,3"]
+|===
+| *Class 0* | Platform operations owner
+| *Class 1* | Team lead + metric owner
+| *Class 2* | Metric council + data governance
+| *Class 3* | Governance board + practitioner representative + legal/privacy
+| *Class 4* | Presumed prohibited; if pursued, formal HR / legal / works-council process, separate from EI
+|===
+
+The review body is _named_ on the record. "Someone senior" is not a review body.
+
+// ============================================================================
+
+== Segment 3 (25 min) — write the record
+
+For every *Class 2+* proposal, write an acceptable-use record. Minimum:
+
+* `purpose` — the decision, not the topic
+* `population` — who is in, who is out, who might be re-identifiable
+* `data` — field list; run the minimisation review on each field
+* `retention` — how long, and why _that_ long
+* `deletion` — the workflow, including derived artefacts
+* `review_date` — when this record expires
+
+One record per proposal. On paper if needed. Owner signs it.
+
+// ============================================================================
+
+== Segment 3 — the minimisation questions
+
+For each field on the record, ask:
+
+* Is it necessary for the approved purpose?
+* Can a less detailed feature replace it?
+* Can it be aggregated earlier?
+* Can identity be pseudonymised?
+* Can content be replaced by metadata?
+* Can the retention period be shorter?
+
+Fields with no defensible answer come off the record.
+
+[.lead]
+"We might want it later" is not a defensible answer.
+
+// ============================================================================
+
+== Segment 4 (15 min) — red-team a promotion
+
+Pair up. Take a partner's *Class 1* use — a descriptive team retro, say.
+
+Your job: promote it to Class 3 by adding _one more join at a time_.
+
+Try:
+
+* join *identity*
+* join *timesheets*
+* join *calendar*
+* join *performance-review cycle dates*
+
+At each step, ask: has the class changed? _When exactly did it flip?_
+
+// ============================================================================
+
+== Segment 4 — where it flips
+
+Common flip points:
+
+* A Class 1 team-queue view + identity join = named individual scorecard = Class 4
+* A Class 1 retro + calendar join = inferred availability / cognitive load = Class 2 at best, often Class 3
+* A Class 2 tool evaluation + timesheet join = per-engineer productivity = Class 4
+* Any Class 1 view repeatedly filtered until _n=1_ = de facto individual view
+
+_Report back:_ the join that produced the biggest jump, and which review body should have seen the promoted use.
+
+// ============================================================================
+
+== The worked example — say no in writing
+
+A VP asks for "the top 20 lowest-performing engineers" by review-latency contribution.
+
+* Review-latency is registered as *Class 2*
+* Individual ranking would be *Class 4* — prohibited
+* Metric owner declines *in writing*, citing the registered purpose
+* Request is logged as a governance incident
+* The purpose-bound metric API had already blocked the query at the interface
+
+Board reaffirms the boundary and updates leadership onboarding. No sanction — the point of the process is to make boundaries visible, not to punish the first person who bumps into one.
+
+// ============================================================================
+
+== Governance maturity
+
+image::figures/mermaid/governance-maturity.png[Engineering Intelligence governance maturity]
+
+Level 0 — implicit. Level 1 — documented. Level 2 — operational.
+Level 3 — auditable. Level 4 — adaptive. Level 5 — trustworthy autonomy.
+
+Most organisations should aim honestly at *Level 2 or 3* before they instrument broadly.
+
+// ============================================================================
+
+== Don'ts, worth memorising
+
+* Don't classify a use by who is asking for it. Classify by what it can decide.
+* Don't accept "just exploratory" as a class.
+* Don't approve a Class 2+ use without an expiration date.
+* Don't let a Class 1 view be joined into individual identity without re-review.
+* Don't rely on aggregation for anonymity when the group size can be filtered down.
+* Don't treat a metric's approved purpose as inherited by any new use.
+
+// ============================================================================
+
+== What you go home with
+
+* *2–3 signed acceptable-use records* for real proposals
+* *One "do not build" item* — declined in writing, with the reason
+* *A named review body* per record
+* *A review date* on every record — typically 90 to 180 days
+* *A prohibited-extensions list* per use — the sentences that say what this record is _not_ authorising
+
+Take them to your governance board. If you don't have one, the "do not build" item is the reason to convene one.
+
+// ============================================================================
+
+== Wrap-up
+
+* Classification is the load-bearing control. Get it wrong and every downstream safeguard misses.
+* The review body is part of the classification, not a downstream detail.
+* Class 1 uses become Class 3 or Class 4 with one join. Watch the joins.
+* Records expire. Uses are retired. There are no permanent pilots.
+* "Do not build" is a legitimate — often the correct — governance output.
+
+*Read:* Chapter 13 and Appendix D of _Engineering Intelligence_.
+
+*Reconvene:* 90 days. Bring the records. Bring the "do not build" you were asked to reconsider — and the reasons you held the line.
+
+// ============================================================================
+
+[.title-slide]
+== Thank you
+
+Classification is the moment governance is real, or theatre.
+
+Choose real.

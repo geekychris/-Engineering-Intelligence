@@ -1,0 +1,309 @@
+= The Engineering Metrics Catalogue
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 11 — The Engineering Metrics Catalogue*
+
+_Governed definitions, not dashboard proliferation: a reference model for measures across flow, quality, economics, cognition, AI, architecture, and experiments._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== Why a catalogue matters
+
+Every organisation has _many_ definitions of "cycle time" — commit-to-merge, PR-open-to-merge, work-start-to-deploy, intent-to-outcome.
+
+All can be valid. None are interchangeable.
+
+[.lead]
+Without a catalogue, arguments about performance become arguments about definitions.
+
+// ============================================================================
+
+== The catalogue fixes the vocabulary
+
+One governed location for each measure:
+
+* semantic *definition* and *construct*
+* the *decision* it supports
+* *unit of analysis* and eligible *population*
+* *formula*, exclusions, and lineage
+* *uncertainty* and data quality
+* *biases*, gaming risks, invalid uses
+* intended *actions* and *guardrails*
+* *owner* and review cadence
+
+Catalogue governance is a decision-quality concern, not an infrastructure concern.
+
+// ============================================================================
+
+== The metric specification
+
+[cols="1,3"]
+|===
+| Identifier / Title / Version | Stable name; semantic versioning of definition
+| Construct / Decision | What is measured; what decision it supports
+| Unit / Population | Engineering Change, PR, service, team — with exclusions
+| Formula / Sources  | Exact computation; events, entities, features, models
+| Latency / Uncertainty | Time to availability; confidence or quality state
+| Interpretation / Failure modes | What movement means; how it misleads or is gamed
+| Guardrails / Owner | Tolerances that must hold; accountable group
+|===
+
+A metric without these fields is a chart, not evidence.
+
+// ============================================================================
+
+== Flow — lead time and its decomposition
+
+Engineering Change lead time:
+
+[stem]
+++++
+LT(e) = t_{accepted\ outcome}(e) - t_{accepted\ intent}(e)
+++++
+
+Flow efficiency separates execution from waiting:
+
+[stem]
+++++
+FE(e) = \frac{ActiveTime(e)}{LeadTime(e)}
+++++
+
+Lower lead time may mean _faster delivery_, _simpler work_, or _weaker verification_. Always stratify.
+
+// ============================================================================
+
+== Flow — queue time is where lead time lives
+
+[stem]
+++++
+QT(e) = \sum_{q \in Q_e} duration(q)
+++++
+
+Useful subtypes: *review · CI · approval · environment · deployment*.
+
+Complements:
+
+* *Work in process* — weighted by complexity, not headcount
+* *Aging work* — 95th percentile relative to class-expected duration
+* Detects stalled work _before_ aggregate lead time worsens
+
+// ============================================================================
+
+== Review — the Review Friction Index
+
+Composite diagnostic:
+
+[stem]
+++++
+RFI(e) = \sum_k w_k z_k(e)
+++++
+
+Components (drill-down _must_ be exposed):
+
+* review queue age (cost-of-delay weighted)
+* response cycles
+* context recovery time
+* unresolved discussions
+* validation effort
+
+A high value may mean poor initial quality, unclear expectations, complex work — _or_ effective defect discovery.
+
+// ============================================================================
+
+== Quality — beyond change failure rate
+
+* *Change failure rate* — proportion needing rollback, hotfix, or material remediation _(window must be declared)_
+* *Escaped defect rate* — severity-weighted, with attribution confidence
+* *Rework ratio*:
+
+[stem]
+++++
+RR(e) = \frac{PostAcceptanceRework(e)}{TotalEffort(e)}
+++++
+
+* *Detection stage distribution* — authoring · AI review · human review · CI · staging · rollout · production · customer
+
+Earlier detection is _often_ cheaper. Stage alone does not establish value.
+
+// ============================================================================
+
+== Economics — total change cost is a model
+
+[stem]
+++++
+C_{total}=C_{human}+C_{AI}+C_{tool}+C_{infra}+C_{coord}+C_{delay}+C_{quality}+C_{risk}
+++++
+
+This is a model with explicit assumptions — not an observed number.
+
+* *Cost per accepted outcome* — only within comparable outcome classes
+* *Cost of delay* — report _ranges_, not false precision
+* *Scarce-attention consumption* — identifies organisational bottlenecks
+* *Tool net value* — benefits must be _causal_ estimates
+
+// ============================================================================
+
+== Cognition — the invisible half of engineering
+
+* *Context recovery time* — resume-to-productive after interruption
+* *Concurrent cognitive inventory*:
+
+[stem]
+++++
+CI_p(t)=\sum_{e \in Active_p(t)} w_e\,u_{p,e}(t)
+++++
+
+* *Cognitive Offload Index*:
+
+[stem]
+++++
+COI = \frac{\hat{W}_{control}-\hat{W}_{treatment}}{\hat{W}_{control}}
+++++
+
+* *Cognitive reload* — work created by inspecting, correcting, recovering from tool output
+
+[.lead]
+For system research and workload design — never for individual ranking.
+
+// ============================================================================
+
+== AI participation — precision, burden, leverage
+
+* *Precision at k* — is limited attention being directed to useful findings?
+* *NDCG* — ranking quality when severity is graded
+* *Duplicate finding rate*
+* *Human validation burden* — inspect, investigate, correct, recover
+* *Action rate* — applied · modified · equivalent independent fix · follow-up · acknowledged · rejected · ignored
+* *AI contribution latency* — a late finding may be worthless even if correct
+* *AI Leverage Factor* — value and avoided cost vs AI + validation cost
+
+Acceptance is not offload. Offload is not value.
+
+// ============================================================================
+
+== Architecture — topology as a first-class signal
+
+* *Repository spread* — repos participating in one Engineering Change
+* *Dependency depth* — longest path among affected components
+* *Critical-path duration* — longest duration-weighted path
+* *Ownership boundary count* — approval boundaries crossed
+* *Blast Radius Score* — users · systems · data · money · availability · compliance · reversibility
+
+Change surface to impact surface:
+
+[stem]
+++++
+SIR(e) = \frac{ImpactSurface(e)}{ChangeSurface(e)}
+++++
+
+A high ratio finds small changes with disproportionate reach.
+
+// ============================================================================
+
+== Experiments and data quality
+
+*Experiment metrics:*
+
+* exposure rate, compliance rate
+* average treatment effect: latexmath:[$ATE = E[Y(1)-Y(0)]$]
+* minimum practical effect attainment
+* guardrail breach rate; experiment decision latency
+
+*Data quality metrics:*
+
+* *event completeness* — expected events actually received
+* *linkage coverage* — artefacts linked to Engineering Changes above a confidence threshold
+* *identity ambiguity* — unresolved actors, repos, services, teams
+* *freshness* and *replay divergence*
+
+A number without its data-quality state is a rumour.
+
+// ============================================================================
+
+== Metrics as bundles, not scores
+
+Consume together, not in isolation.
+
+[cols="1,3"]
+|===
+| AI review bundle | human effort · validation burden · severe-finding recall · precision at k · duplicates · cycle time · escaped defects · cost
+| Flow bundle | lead time · active time · queue time by stage · WIP · aging · flow efficiency · *accepted outcome rate*
+| Platform bundle | freshness · linkage · latency · replay divergence · availability · source failure
+|===
+
+A composite that hides its components invites gaming.
+
+// ============================================================================
+
+== The metric lifecycle
+
+image::figures/mermaid/metric-lifecycle.png[Metric lifecycle]
+
+*Proposed → Experimental → Validated → Operational → Deprecated → Retired.*
+
+* A *proposed* metric does not belong on an executive scorecard.
+* A *validated* metric has evidence of construct validity and reliability.
+* An *operational* metric has an owner, SLO, lineage, and action process.
+
+// ============================================================================
+
+== Worked example — reading the flow bundle
+
+A workflow change three months ago. Every flow number improves:
+
+[cols="2,1,1"]
+|===
+| Measure | Before | After
+| Lead time (days) | 7.9 | 6.2
+| Review queue (days) | 2.6 | 1.4
+| WIP | 51 | 42
+| Flow efficiency | 41% | 50%
+| *Accepted outcome rate* | *91%* | *87%*
+|===
+
+Isolated: unambiguous win.
+As a bundle: the loudest signal is the four-point drop in accepted outcomes.
+
+Drill-down: customer-facing UI reverted twice as often — a specialist reviewer was routed around. Amend the routing, keep the queueing gains.
+
+// ============================================================================
+
+== Common failure modes
+
+* *Name without definition* — two teams, one word, incompatible meanings
+* *Formula without construct* — precisely computed, invalidly interpreted
+* *Metric without decision* — noise that accumulates cost
+* *Score without components* — hides movement, invites gaming
+* *Dollar value without assumptions* — false precision on uncertain rates
+
+Retire measures that no longer inform a decision. Do not preserve them because they once appeared on a dashboard.
+
+// ============================================================================
+
+== Key takeaways
+
+* A *governed catalogue* is necessary for reproducible Engineering Intelligence
+* Every metric requires construct, decision, unit, formula, lineage, uncertainty, owner, failure modes
+* Represent *flow · quality · economics · cognition · AI · architecture · experiments · data quality* together
+* Consume as *bundles*; expose components of every composite
+* Separate *experimental* from *operational* scorecards
+* Prohibit unsupported individual ranking
+* Retire what no longer changes a decision
+
+// ============================================================================
+
+[.title-slide]
+== Next
+
+*Chapter 12 — Instrumentation and Data Foundations*
+
+The event schemas, identity resolution, streams, and knowledge graphs the catalogue depends on.

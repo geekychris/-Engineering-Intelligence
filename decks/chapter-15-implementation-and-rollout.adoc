@@ -1,0 +1,260 @@
+= Implementation and Rollout
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 15 — Implementation and Rollout*
+
+_How to stand up Engineering Intelligence in a real organisation — starting with one consequential decision, not universal instrumentation._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== Start with decisions, not completeness
+
+The common failure pattern: months connecting tools, designing schemas, and building dashboards while practitioners see nothing change.
+
+A better first move — pick a decision that is:
+
+* *important* — real capital or attention at stake
+* *repeated* — worth instrumenting once, using many times
+* *measurable* — has an observable outcome
+* *currently made with weak evidence*
+
+[.lead]
+Collect only the evidence needed to answer that decision credibly.
+
+// ============================================================================
+
+== Pilot selection criteria
+
+A good pilot has:
+
+* a meaningful operational or economic problem
+* sufficient event volume
+* willing engineering partners
+* stable enough workflows to define treatment and outcome
+* manageable privacy and security risk
+* accessible source-control, CI, and deployment evidence
+* a plausible intervention within one or two quarters
+
+[quote]
+A technically convenient pilot with no decision consequence will not establish legitimacy.
+
+// ============================================================================
+
+== The minimum viable evidence path
+
+Enough to answer a real question — nothing more:
+
+. source-control events
+. CI and test outcomes
+. deployment or accepted-outcome evidence
+. canonical actor, repository, and team identities
+. a basic Engineering Change linkage strategy
+. a small metric catalogue
+. experiment assignment and exposure (when applicable)
+
+You do _not_ need the whole reference architecture to prove value.
+
+// ============================================================================
+
+== The phased rollout
+
+image::figures/mermaid/implementation-roadmap.png[Engineering Intelligence implementation roadmap]
+
+Seven phases, from charter to federation — sequenced so trust is earned before scale.
+
+// ============================================================================
+
+== The seven phases
+
+[cols="1,3"]
+|===
+| Phase 0 | Charter, safeguards, prohibited uses, stopping criteria
+| Phase 1 | Evidence foundation — canonical events, identity, lineage
+| Phase 2 | Engineering Change reconstruction and linkage confidence
+| Phase 3 | Governed metrics tied to the pilot decision
+| Phase 4 | Experimentation — assignment, exposure, guardrails
+| Phase 5 | Operational decision products per audience
+| Phase 6 | Scale, federation, repeatable onboarding
+|===
+
+Each phase has an exit condition. Trust is the ratchet.
+
+// ============================================================================
+
+== The team that ships this
+
+A small cross-functional team beats a large dashboard organisation:
+
+* platform engineering
+* data engineering
+* applied statistics / causal inference
+* ML or information retrieval
+* developer experience
+* security and privacy
+* domain representatives
+* product or program leadership
+
+[.lead]
+Statistical and domain depth matter more than headcount.
+
+// ============================================================================
+
+== Engineering Intelligence is a product
+
+The backlog is not "dashboards to build." It is:
+
+* decisions to improve
+* user workflows to serve
+* evidence gaps to close
+* metric quality to raise
+* experiments to run
+* source reliability to increase
+* governance debt to pay down
+* adoption and trust to earn
+
+*Usage is not the success metric.* Decision quality and realised outcome improvement are.
+
+// ============================================================================
+
+== Proving value — five flavours
+
+Distinguish, don't blend:
+
+. *realised savings* — money that stopped leaving
+. *avoided future cost* — a purchase not made
+. *released capacity* — attention returned to teams
+. *expected quality benefit* — better outcomes over time
+. *theoretical model estimates* — the weakest evidence
+
+A "$4M value" headline that mixes all five is not defensible.
+
+// ============================================================================
+
+== Baseline before intervention
+
+Before changing a workflow, capture:
+
+* current metric distributions
+* work-mix and complexity features
+* source coverage and missingness
+* seasonality and release cycles
+* existing tool exposure
+* quality and economic baselines
+* external events
+
+A rushed intervention without baseline evidence makes causal interpretation impossible later.
+
+// ============================================================================
+
+== Data quality gates
+
+High-level metrics *must not publish* when evidence falls below declared thresholds.
+
+* minimum event completeness
+* maximum source lag
+* minimum Engineering Change linkage confidence
+* maximum unresolved identity rate
+* sufficient sample size
+* stable metric version
+* no known processing incident
+
+[quote]
+A visible _unavailable_ state is better than a precise-looking but invalid number.
+
+// ============================================================================
+
+== Shadow mode and staged rollout
+
+New metrics and policies run *without affecting decisions* first.
+
+* opt-in pilot
+* selected representative teams
+* staged repository cohorts
+* risk-bounded populations
+* shadow recommendations before advisory
+* advisory before blocking policy
+* regional or organisational waves
+
+Shadow mode collects corrections; corrections improve both data and trust.
+
+// ============================================================================
+
+== Operating cadence
+
+[cols="1,3"]
+|===
+| Weekly | Operational — source failures, queue anomalies, exposure, incidents
+| Monthly | Metric review — definitions, quality, drift, dashboard use, outcomes
+| Quarterly | Governance — new uses, privacy, retention, fairness, retirement
+| Ad hoc | Experiment decision reviews when predeclared conditions are met
+|===
+
+Cadence turns a project into a system.
+
+// ============================================================================
+
+== Anti-patterns
+
+* *Enterprise-wide launch first* — universal coverage before any decision improved
+* *Data platform as the product* — infrastructure milestones replace outcomes
+* *Dashboard proliferation* — every stakeholder gets a bespoke scorecard
+* *Hidden quality problems* — coverage and freshness omitted from executive views
+* *No local ownership* — central analysts interpret domain workflows without practitioners
+* *Scaling before trust* — mandatory use before governance and legitimacy exist
+
+// ============================================================================
+
+== A 90-day pilot outline
+
+*Days 1–30* — finalise charter; select pilot and intervention; connect core sources; establish baseline event quality; define linkage; register metrics and experiment design.
+
+*Days 31–60* — run reconstruction and metrics in shadow mode; validate with practitioners; correct identity and linkage; complete power and readiness review; deliver pilot decision products.
+
+*Days 61–90* — launch bounded experiment; monitor exposure and guardrails; publish data quality and preliminary findings; record adoption, issues, and next-stage criteria.
+
+Rare quality events will need longer follow-up.
+
+// ============================================================================
+
+== Failure recovery is a first-class capability
+
+Be prepared to *pause or reverse*:
+
+* a metric that creates gaming
+* a model with poor subgroup calibration
+* a policy that increases quality risk
+* an invasive data source
+* a dashboard used for an unapproved purpose
+* an experiment with a guardrail breach
+
+Rollback is technical, policy, communication, _and_ data-retention actions — not just a flag flip.
+
+// ============================================================================
+
+== Key takeaways
+
+* Begin with a *consequential decision*, not universal instrumentation
+* Build the *minimum trustworthy evidence path* for a bounded pilot
+* Establish *safeguards, identity, lineage, and quality* before advanced models
+* Scale only after proving *decision value, trust, and repeatable onboarding*
+* Use *shadow mode and staged rollout* to improve safety and calibration
+* Treat Engineering Intelligence as a *product* with operating cost and measurable value
+* Maintain *rollback paths* for metrics, models, policies, and data collection
+
+// ============================================================================
+
+[.title-slide]
+== Next
+
+*Chapter 16 — The Future of Engineering Intelligence*
+
+Where the discipline is going · autonomous agents as participants · policy as versioned intervention · the adaptive engineering organisation.

@@ -1,0 +1,247 @@
+= The Future of Engineering Intelligence
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 18 — The Future of Engineering Intelligence*
+
+_From measuring human activity to governing a human-machine production system._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== A changing production system
+
+Software engineering is moving from _predominantly human-authored_ work to a _mixed production system_.
+
+A single Engineering Change may involve:
+
+* a product manager expressing outcome in natural language
+* an agent decomposing the work
+* specialised agents editing code, tests, infra, docs
+* automated reviewers and policy systems
+* humans validating architecture, intent, and risk
+* autonomous deployment and recovery
+
+[.lead]
+The boundaries between plan, build, review, deploy, and operate blur.
+
+// ============================================================================
+
+== Intent becomes a first-class artifact
+
+Traditional instrumentation begins _after_ intent has already been compressed into a ticket, branch, or commit.
+
+As natural-language interfaces spread, the original intent must be preserved:
+
+* desired business or user outcome
+* constraints and acceptance criteria
+* risk tolerance and affected populations
+* architectural boundaries and prohibited approaches
+* expected value and uncertainty
+
+The question becomes: _did the delivered system solve the intended problem?_ — not merely _were the requested artifacts produced?_
+
+// ============================================================================
+
+== From Engineering Change to change lineage
+
+image::figures/mermaid/future-change-lineage.png[Future Engineering Change lineage]
+
+Lineage connects intent, plans, generated artifacts, prompts, models, reviews, tests, deployments, production behaviour, and outcomes — supporting explanation, audit, learning, and rollback.
+
+// ============================================================================
+
+== AI agents as economic actors
+
+Agents are not free automation. They consume:
+
+* inference capacity and tool calls
+* repository and environment access
+* human validation and test infrastructure
+* deployment capacity and organizational risk budget
+
+[.lead]
+The question is not how much code an agent generated. It is whether the agent changed the cost, speed, quality, risk, and capability profile of producing a useful outcome.
+
+// ============================================================================
+
+== Identity, delegation, and accountability
+
+Autonomous agents need _durable identity_ and _delegation graphs_.
+
+[cols="1,3"]
+|===
+| Identity      | model + version, config, policy, tools, initiating human, delegated objective
+| Delegation    | who initiated, who decomposed, what authority passed, where humans approved
+| Accountability| enough provenance to understand and govern machine participation
+|===
+
+Not moral equivalence — _traceable participation_.
+
+// ============================================================================
+
+== Activity inflation vs. validation scarcity
+
+As generation gets cheap, artifact volume gets _less_ meaningful.
+
+Expect abundant:
+commits, branches, PRs, comments, tests, docs, experiments, fixes.
+
+Scarce and precious:
+domain judgment, architecture understanding, security expertise, production context, ethical reasoning, accountability.
+
+[.lead]
+The central optimization problem shifts from _increasing output_ to _allocating validation attention_.
+
+// ============================================================================
+
+== Review becomes orchestration
+
+Review evolves from _reading a diff_ to _orchestrating evidence_.
+
+The reviewer weighs:
+
+* intent and constraints
+* generated plans and semantic change summaries
+* dependency impact and simulations
+* adversarial findings and policy checks
+* production analogues and uncertainty estimates
+* agent disagreement
+
+Engineering Intelligence must measure whether this evidence _improves decisions_ or _overwhelms reviewers_.
+
+// ============================================================================
+
+== Model monoculture and continuous evaluation
+
+Dependence on one model family creates _correlated failure_ across design, review, and operations.
+
+Engineering Intelligence should track:
+
+* model concentration and vendor lock-in
+* failure correlation across workflows
+* critical workflows lacking independent validation
+
+Evaluation must be _continuous_, _contextual_, and run in _shadow mode_ before affecting critical decisions.
+
+// ============================================================================
+
+== Human control is not binary
+
+Control is a spectrum, not a switch.
+
+[cols="1,3"]
+|===
+| Prior policy       | permission boundaries, prohibited actions
+| Real-time          | approval gates, exception review
+| Retrospective      | audit, kill switches
+| Bounded autonomy   | reversible closed-loop actions under evaluated policy
+| Outcome supervision| escalate anomalies to humans
+|===
+
+Automation levels should match _evidence strength_, _reversibility_, and _consequence_.
+
+// ============================================================================
+
+== Governance, privacy, and the evidence system
+
+Richer lineage creates greater risk. Design accordingly:
+
+* *Governance at machine speed* — executable policy, configuration lineage, model registries, dynamic risk classification
+* *Privacy under richer instrumentation* — purpose limitation, data minimization, separate learning from employment decisions
+* *Security of the evidence system* — the platform itself is a high-value target
+* *Adversarial behavior* — telemetry poisoning, misleading activity, corrupted risk scores
+
+// ============================================================================
+
+== Synthetic evidence risk
+
+As generated text, code, tests, and reports become common, preserve the boundary between _observation_ and _interpretation_.
+
+* An AI-generated incident summary is *not* the incident record.
+* A generated test is *not* evidence that the requirement is correct.
+* A model's confidence is *not* empirical uncertainty.
+
+Lineage must distinguish observed events, human assertions, model inferences, generated explanations, simulated outcomes, and _verified_ outcomes.
+
+// ============================================================================
+
+== A staged future architecture
+
+image::figures/mermaid/engineering-intelligence-reference-architecture.png[Engineering Intelligence reference architecture]
+
+[cols="1,3"]
+|===
+| Stage 1 | Observable workflows
+| Stage 2 | Reconstructed Engineering Changes
+| Stage 3 | Experimental organization
+| Stage 4 | Human-machine production system
+| Stage 5 | Prescriptive intelligence
+| Stage 6 | Bounded autonomous optimization
+|===
+
+Do not skip foundational stages just because advanced models are available.
+
+// ============================================================================
+
+== Failure futures to avoid
+
+Several undesirable futures are plausible:
+
+* *The surveillance enterprise* — ranking individuals through weak proxies
+* *The automation illusion* — generated activity soars while defects and queues grow
+* *The model monoculture* — one vendor's assumptions embedded everywhere
+* *The unaccountable agent mesh* — delegation without provenance
+* *The synthetic management system* — polished narratives disconnected from evidence
+* *The permanently experimental organization* — endless pilots, no decisions
+
+Engineering Intelligence should be designed _explicitly_ to avoid these.
+
+// ============================================================================
+
+== A desirable future
+
+Not one in which humans disappear — one in which:
+
+* routine implementation becomes cheaper
+* intent is clearer and validation better targeted
+* architecture decisions are evidence-informed
+* AI failures are detectable and reversible
+* engineers spend more time on consequential judgment
+* experimentation replaces unsupported opinion
+* organizational learning compounds over time
+
+[.lead]
+Engineering Intelligence is not a control tower watching engineers. It is a _shared nervous system_ helping the organization understand and improve how change is produced.
+
+// ============================================================================
+
+== Key takeaways
+
+* Software engineering is becoming a *mixed human-machine production system*
+* *Intent, agent identity, delegation, model provenance,* and *validation burden* are essential evidence
+* *Artifact volume* becomes less meaningful; *attention and validation* remain scarce
+* AI must be evaluated *economically, causally, longitudinally,* and at the *system level*
+* Support *bounded autonomy* while preserving *provenance, reversibility, and human challenge*
+* *Vendor-neutral evidence* and *open standards* are strategically important
+* The desirable future is a *learning system*, not a *surveillance system*
+
+// ============================================================================
+
+[.title-slide]
+== The book, in one line
+
+[.lead]
+_Software engineering can be understood and improved when organizations connect intent, change, attention, architecture, evidence, economics, and outcomes — without reducing human contribution to visible activity._
+
+*Thank you.*
+
+[.authors]
+Christopher J. Collins  ·  Engineering Intelligence

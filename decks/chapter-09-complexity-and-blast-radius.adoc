@@ -1,0 +1,259 @@
+= Complexity, Blast Radius, and Repository Topology
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 9 — Complexity, Blast Radius, and Repository Topology*
+
+_Engineering effort is not code size. Risk is not incidents. Repositories are not units of work._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== Why size is not complexity
+
+Three changes, three verdicts:
+
+* two-line authorization change touching every customer — *small, high risk*
+* thousand-line generated API client — *large, routine*
+* one-table migration with dual writes, backfill, cutover, rollback — *modest code, operationally hard*
+
+[.lead]
+Complexity is a *vector*, not a raw count. Lines changed is evidence, not measurement.
+
+// ============================================================================
+
+== Complexity as a vector
+
+For an Engineering Change latexmath:[$e$]:
+
+[stem]
+++++
+\mathbf{C}(e) = [C_i, C_d, C_a, C_v, C_o, C_t, C_n, C_b]
+++++
+
+[cols="1,3"]
+|===
+| latexmath:[$C_i$] Implementation | algorithms, concurrency, state
+| latexmath:[$C_d$] Domain | security, consistency, tax, ML, embedded
+| latexmath:[$C_a$] Architectural | services touched, fan-in, contracts
+| latexmath:[$C_v$] Verification | nondeterminism, environment scarcity
+| latexmath:[$C_o$] Organizational | teams, handoffs, approvals, vendors
+| latexmath:[$C_t$] Topological | repository and deployment structure
+| latexmath:[$C_n$] Novelty | distance from what is already known
+| latexmath:[$C_b$] Blast radius | potential impact if it misbehaves
+|===
+
+Verification is often a stronger predictor of cycle time than implementation size.
+
+// ============================================================================
+
+== Organizational complexity, formalized
+
+A first-order model:
+
+[stem]
+++++
+C_o(e) = \alpha T_e + \beta H_e + \gamma A_e + \delta X_e
+++++
+
+* latexmath:[$T_e$] teams · latexmath:[$H_e$] handoffs · latexmath:[$A_e$] approvals · latexmath:[$X_e$] external boundaries
+
+Coefficients are calibrated from observed delay — not chosen for elegance.
+
+The same team count creates very different friction depending on interface quality and prior collaboration.
+
+// ============================================================================
+
+== Repository topology is a lens, not a measure
+
+image::figures/mermaid/repository-topology-comparison.png[]
+
+The same Engineering Change appears as *one PR* in a monorepo and *many linked PRs* in a polyrepo. Code topology and *deployment topology* are also distinct — a migration may stay operationally active long after every PR merges.
+
+[.lead]
+Repository count is a topology feature — not an intrinsic measure of work.
+
+// ============================================================================
+
+== Multi-repository change graphs
+
+Let latexmath:[$G_R=(V_R,E_R)$] be the implementation graph. Critical-path duration:
+
+[stem]
+++++
+T_{critical}(e) = \max_{p \in Paths(G_R)} \sum_{v \in p} d(v)
+++++
+
+Parallelism ratio:
+
+[stem]
+++++
+P(e) = \frac{\sum_{v \in V_R} d(v)}{T_{critical}(e)}
+++++
+
+Parallel work reduces elapsed time only when dependencies permit — coordination overhead sets the ceiling.
+
+// ============================================================================
+
+== Blast radius
+
+[IMPORTANT]
+====
+*Blast radius* is the set and severity of systems, users, data, business processes, and obligations that could be affected if an Engineering Change behaves incorrectly.
+====
+
+[stem]
+++++
+\mathbf{B}(e) = [U, S, D, F, A, C, R]
+++++
+
+Users · Services · Data · Financial · Availability · Compliance · Reversibility.
+
+Potential blast radius is distinct from realized impact. Controls that prevent incidents do not lower the potential.
+
+// ============================================================================
+
+== A blast-radius score
+
+[stem]
+++++
+BRS(e) = \sum_{k=1}^{K} w_k g_k(B_k(e))
+++++
+
+* latexmath:[$g_k$] transforms each dimension; latexmath:[$w_k$] reflects priorities
+* Interactions matter — sensitive data × broad reach exceeds either alone
+* Calibrate against *incidents, expert assessment, and policy* — not numerical convenience
+* Preserve component drill-down even when a scalar is used for routing
+
+// ============================================================================
+
+== Reversibility changes everything
+
+A flagged UI change disables in seconds. A destructive data migration may never fully reverse.
+
+Reversibility features:
+
+* rollback time and completeness
+* data restoration
+* compatibility duration
+* feature-flag coverage
+* whether side effects escape organizational control
+
+[.lead]
+High-reach reversible ≠ lower-reach irreversible. Reach alone does not determine risk.
+
+// ============================================================================
+
+== Change surface vs. impact surface
+
+[cols="1,2,2"]
+|===
+| | Change surface | Impact surface
+| Shared-auth one-liner | tiny | huge
+| Isolated test rewrite | large | small
+| Schema migration | modest | very large
+|===
+
+*Change surface* — what was modified.
+*Impact surface* — what can be affected.
+
+Review, routing, and experimentation need both.
+
+// ============================================================================
+
+== Dependency reach is more than static graphs
+
+image::figures/mermaid/blast-radius-propagation.png[]
+
+A combined reach graph joins: build-time deps · runtime calls · data flows · event subscriptions · deployment coupling · ownership · customer and business-process mappings.
+
+Dependencies change — the graph must be *versioned temporally*.
+
+// ============================================================================
+
+== A "small" change, scored honestly
+
+A shared-auth library update: *38 lines, one repo, tests pass*.
+
+* Reach: 47 downstream services, 31 pick up on next deploy
+* Exposure: 5 internet-facing, authenticated
+* Reversibility: coordinated fleet redeploy or mixed-version handling
+
+[stem]
+++++
+BR = 0.4 \, R_{reach} + 0.3 \, R_{exposure} + 0.3 \, R_{reversibility} \approx 0.76
+++++
+
+Top quartile. The score does not *block* — it selects the *coordinated-rollout playbook* the PR would otherwise skip.
+
+// ============================================================================
+
+== Complexity-adjusted comparisons
+
+Raw cycle time misleads. A hierarchical model:
+
+[stem]
+++++
+\log Y_e = \beta_0 + \beta^T \mathbf{C}(e) + u_{team(e)} + v_{repo(e)} + \epsilon_e
+++++
+
+The residual highlights unexpectedly high or low friction *after work mix is controlled*.
+
+[.lead]
+Use for team-level learning and routing. Never as an individual performance ranking.
+
+// ============================================================================
+
+== Routing, not ranking
+
+Complexity features drive controls:
+
+* low-risk routine → automated checks, light review
+* high-domain → specialist reviewer
+* high-blast-radius → stronger verification, rollout safeguards
+* high-novelty → design review, knowledge sharing
+* irreversible → explicit recovery plan
+
+AI performance varies by dimension too — evaluation must *stratify* by domain, novelty, dependency depth, blast radius, and verification.
+
+// ============================================================================
+
+== Common failure modes
+
+[cols="1,2"]
+|===
+| Lines changed = complexity | misses domain, arch, verification, impact
+| Repo count = work count | topology is a lens, not a measure
+| One universal score | hides *why* something is hard
+| Static deps = full reach | runtime, data, deploy, org coupling missed
+| Incidents = blast radius | controls hide potential impact
+| Ignoring reversibility | reach alone doesn't set risk
+|===
+
+// ============================================================================
+
+== Key takeaways
+
+* Engineering Change complexity is *multidimensional* — code size is one feature among many
+* Model domain, architecture, verification, org, topology, novelty, and blast radius *separately*
+* Repository and deployment topology *shape appearance and coordination*, not intrinsic work
+* Multi-repo work is a *dependency graph with a critical path*
+* *Blast radius is potential* — not realized incidents
+* *Change surface ≠ impact surface*
+* Complexity supports *adjustment, routing, experimentation* — never individual ranking
+
+// ============================================================================
+
+[.title-slide]
+== Next
+
+*Chapter 10 — The Engineering Change Graph*
+
+Reconstructing intent across PRs, deploys, approvals, and flags — the graph on which every credible metric is computed.

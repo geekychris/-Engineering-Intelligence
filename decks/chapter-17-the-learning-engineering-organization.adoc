@@ -1,0 +1,268 @@
+= Chapter 17 — The Learning Engineering Organization
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 17 — The Learning Engineering Organization*
+
+_The purpose of Engineering Intelligence is not measurement. It is learning._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== Measurement is not the destination
+
+An organization can have excellent telemetry and still fail to learn.
+
+* collect events without constructing evidence
+* compute metrics without changing decisions
+* run experiments without retaining the results
+* deploy AI without knowing whether it releases or consumes capacity
+
+[.lead]
+Engineering Intelligence succeeds only when evidence changes action — and the consequences of that action become new evidence.
+
+// ============================================================================
+
+== The organizational learning loop
+
+image::figures/mermaid/organizational-learning-loop.png[The organizational learning loop]
+
+Seven activities, repeated:
+
+. identify a consequential decision
+. describe the current system
+. form a theory of what limits performance
+. design a bounded intervention
+. observe operational, human, quality, and economic effects
+. decide: adopt, modify, or stop
+. preserve the result as institutional knowledge
+
+// ============================================================================
+
+== Observation, explanation, intervention
+
+* *Observation* — trustworthy evidence, with visible coverage and uncertainty
+* *Explanation* — a mechanism, not just a pattern; combines telemetry with local expertise
+* *Intervention* — bounded, reversible, observable, ethically acceptable, economically plausible, mechanism-linked
+
+A metric identifies a pattern.  Explanation identifies a mechanism.
+
+// ============================================================================
+
+== Evaluation is more than the primary metric
+
+An intervention that improves the median while concentrating risk in a few teams is not an unqualified success.
+
+Evaluation examines:
+
+* intended outcome _and_ guardrails
+* human effort and attention
+* distribution across teams and work types
+* direct and indirect cost
+* adoption fidelity
+* short-term _and_ delayed effects
+* behavioral adaptation and alternative explanations
+
+// ============================================================================
+
+== Decisions and institutional memory
+
+Every evaluation ends in a decision: *adopt, adopt narrowly, keep gathering, modify, replace, stop, or preserve without action.*
+
+A decision record states:
+
+* evidence and assumptions
+* uncertainty
+* affected population
+* expected value and guardrails
+* owner and review date
+
+Memory is searchable by construct, system, intervention, outcome, decision — not by presentation filename.
+
+// ============================================================================
+
+== The five capabilities
+
+[cols="1,3"]
+|===
+| Evidence | collect, link, govern, interpret trustworthy engineering data
+| Experimental | test workflow, tool, architecture, and policy interventions credibly
+| Decision | translate evidence into explicit choices under uncertainty
+| Adaptation | change tools, processes, architecture, allocation from results
+| Memory | preserve and retrieve what the organization has learned
+|===
+
+[.lead]
+Weakness in any one capability breaks the loop.
+
+// ============================================================================
+
+== Central foundations, local ownership
+
+Learning happens close to the work — but cannot depend on isolated local systems.
+
+[cols="1,1"]
+|===
+| *Central foundations* | *Domain teams*
+| canonical event contracts | workflow semantics
+| identity & temporal ownership | local hypotheses
+| Engineering Change reconstruction | intervention ownership
+| governed metric definitions | interpretation
+| experiment & exposure services | validation of reconstructed evidence
+| privacy, lineage, evidence registry | adoption and follow-through
+|===
+
+A federated model avoids centralized misinterpretation _and_ duplicated local infrastructure.
+
+// ============================================================================
+
+== Leadership behavior
+
+[quote]
+____
+Leadership determines whether Engineering Intelligence becomes a learning system or a surveillance system.
+____
+
+Leaders should ask:
+
+* What decision will this metric improve?
+* What mechanism do we believe is operating?
+* What evidence could change our minds?
+* Who bears the cost or risk of this intervention?
+* Has the result replicated? When will we review or retire it?
+
+They should _not_ ask which engineer produced the most visible artifacts.
+
+// ============================================================================
+
+== Practitioners are co-designers, not subjects
+
+Practitioners understand what telemetry cannot see:
+
+* hidden manual work and workflow exceptions
+* why apparently idle time exists
+* where automation creates validation burden
+* which approvals are substantive or ceremonial
+* how architecture constrains change
+* which metrics will be gamed
+
+Participation improves construct validity, intervention design, trust, and adoption.
+
+// ============================================================================
+
+== Learning from incidents and from success
+
+Incidents expose interactions among code, architecture, process, ownership, and attention — the richest learning surface an organization has.
+
+Successful high-risk changes reveal effective review patterns, decomposition strategies, ownership models, and resilient deployment mechanisms.
+
+[.lead]
+Studying success distinguishes robust capability from mere absence of observed failure.
+
+// ============================================================================
+
+== AI as participant and subject
+
+AI systems both _perform_ engineering work and _are_ subjects of evaluation.
+
+Measure them for:
+
+* task success and error severity
+* validation burden and ranking quality
+* latency, cost, calibration
+* change in human behavior and long-term skill effects
+* security and governance risk
+
+[.lead]
+Don't ask _whether_ engineers use AI. Ask how AI changes the production function of engineering — and under which conditions that change creates durable value.
+
+// ============================================================================
+
+== Capability preservation
+
+Automation can improve output while quietly weakening latent capability.
+
+Can the organization still:
+
+* diagnose failures without a vendor?
+* review critical changes deeply?
+* understand generated code?
+* operate during model or tool outages?
+* maintain architecture knowledge?
+* train less-experienced engineers?
+* challenge automated recommendations?
+
+Resilience requires preserving critical human capability _even when_ routine work is automated.
+
+// ============================================================================
+
+== Incentives, truth, and economic discipline
+
+Metrics that affect status, funding, or headcount get optimized — sometimes at the expense of the evidence needed to learn.
+
+Protect truth by:
+
+* limiting high-stakes use of weak proxies
+* separating exploration from formal accountability
+* publishing definitions _and_ limitations
+* auditing for gaming and displacement
+* retiring metrics that distort behavior
+
+And apply economic reasoning: not every significant improvement is worth implementing.
+
+// ============================================================================
+
+== Signs of maturity vs. failure
+
+[cols="1,1"]
+|===
+| *Mature* | *Failing*
+| metrics have owners, versions, quality indicators | dashboards multiply; decisions unchanged
+| leaders ask for causal evidence | successful pilots scaled without replication
+| experiments include exposure and decision rules | negative studies disappear
+| practitioners correct reconstructed evidence | teams cannot explain metric calculations
+| AI evaluated on net value _and_ validation burden | AI measured only through usage
+| negative results retained | metrics used beyond their validity
+| metrics retired when meaning degrades | no intervention is ever stopped
+|===
+
+// ============================================================================
+
+== The durable advantage
+
+Tools can be purchased. Models can be copied. Dashboards can be reproduced. Practices diffuse quickly.
+
+[.lead]
+A more durable advantage is the ability to learn faster and more honestly than comparable organizations.
+
+That advantage combines high-quality evidence, explicit theory, disciplined experimentation, economic judgment, practitioner knowledge, architectural understanding, trustworthy governance, and institutional memory.
+
+Engineering Intelligence is the system that connects them.
+
+// ============================================================================
+
+== Key takeaways
+
+* The purpose of Engineering Intelligence is *organizational learning*, not measurement for its own sake
+* Learning requires a *closed loop*: observation → explanation → intervention → evaluation → decision → memory
+* Central evidence foundations and local domain ownership must operate *together*
+* AI, architecture, process, and policy are all *testable interventions*
+* Leadership behavior determines whether evidence supports learning or *surveillance*
+* Negative findings, correction mechanisms, and metric retirement protect *integrity*
+* Learning velocity depends on decision consequence and retained knowledge — *not experiment count*
+
+// ============================================================================
+
+[.title-slide]
+== Next
+
+*Chapter 18 — Closing*
+
+The book in one line · what to do on Monday · the ninety-day path from first decision to first learning.

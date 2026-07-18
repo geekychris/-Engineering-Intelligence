@@ -1,0 +1,388 @@
+= Running an Engineering Experiment
+Workshop — 90 minutes
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Running an Engineering Experiment*
+
+A hands-on workshop derived from Chapter 12 of _Engineering Intelligence_.
+
+[.lead]
+Pick a playbook; run the design; write the pre-registration.
+
+[.authors]
+90 minutes  ·  4 hands-on segments  ·  one signed pre-reg per team
+
+// ============================================================================
+
+== Learning outcomes
+
+By the end of the ninety minutes each team will:
+
+* *Apply a playbook* — AI reviewer, merge queue, PR size, CI acceleration, review routing — to a real intervention on your own team
+* *Write a pre-registration* — primary outcome, guardrails, MDE, stopping rule, interpretation table
+* *Name and avoid the top failure modes* — wrong unit, missing exposure, interference, novelty, seasonality
+
+[.lead]
+You will leave with a signed document you could actually launch.
+
+// ============================================================================
+
+== What this workshop is _not_
+
+This is not a causal-inference lecture. We are not teaching DiD, IV, or synthetic controls today.
+
+We are teaching how to *drive one experiment end-to-end from a playbook* — the operational document, not the estimator.
+
+If you need the inference technique, the sibling workshop covers it.
+
+// ============================================================================
+
+== The problem
+
+A director walks in. "We're rolling out the AI reviewer to all 180 backend teams next month. Can you *A/B test* it?"
+
+You nod. You should not have nodded.
+
+* *Assignment unit?* Reviewers are shared across teams
+* *Compliance?* Teams may install but never open the findings
+* *Interference?* One team's PR is another team's review
+* *Guardrails?* What breaks if the tool is wrong
+* *Decision rule?* At what effect size do we _adopt_
+
+[quote]
+"Let's just A/B test it" is not a design. It is a wish.
+
+// ============================================================================
+
+== A playbook forces the choices
+
+image::../figures/mermaid/experiment-playbook-template.png[Experiment playbook structure]
+
+Every playbook names: *decision · hypothesis · treatment · control · assignment unit · analysis unit · eligibility · primary outcome · guardrails · exposure · external factors · statistical design · MDE · stopping rules · interpretation risks*.
+
+_Nothing on the list is optional._
+
+// ============================================================================
+
+== The experiment lifecycle
+
+image::../figures/mermaid/engineering-experiment-lifecycle.png[Engineering experiment lifecycle]
+
+The playbook governs the _design_ phase. If design is wrong, no amount of clever analysis rescues it later.
+
+// ============================================================================
+
+== The twelve playbooks (menu)
+
+You will pick _one_ of these in Segment 1:
+
+[cols="1,3"]
+|===
+| 1 | AI pull-request reviewer
+| 2 | Ranked vs. unranked AI findings
+| 3 | Merge queue introduction
+| 4 | CI acceleration
+| 5 | Risk-based specialist review
+| 6 | Pull-request size guidance
+| 7 | Monorepo consolidation
+| 8 | Automated context restoration
+| 9 | Human-first vs. AI-first review
+| 10 | Autonomous maintenance agent
+| 11 | Branch-protection policy
+| 12 | Review-queue prioritization
+|===
+
+// ============================================================================
+
+== Segment 1 — pick and hypothesise (15 min)
+
+*Task.*  Choose a playbook. Choose an intervention on _your_ team.
+
+Write, on one sheet:
+
+. *Decision* — what commits or refuses on the basis of this experiment
+. *Treatment* — the exact versioned thing
+. *Control* — the exact status-quo it replaces
+. *Hypothesis* — direction and mechanism, in one sentence
+
+_Rule:_ if the decision does not commit the org to _adopt / revise / reject_, pick a different intervention.
+
+_Report back:_ the decision sentence.
+
+// ============================================================================
+
+== Assignment vs analysis unit
+
+* *Assignment unit* — receives the treatment (team, repository, engineer, time block)
+* *Analysis unit* — contributes an outcome (Engineering Change, PR, service)
+
+They can differ. The mismatch is where most designs die.
+
+[.lead]
+Pull-request assignment breaks when reviewers are shared. Team-level assignment costs power. *Engineering Change is usually the right analysis unit for workflow interventions.*
+
+// ============================================================================
+
+== Exposure is not assignment
+
+Assignment is _policy_. Exposure is _use_.
+
+* Team A is assigned the AI reviewer
+* Only 71% of authors open a finding on any given PR
+* Reporting the average outcome across Team A confuses _mandating_ the tool with _using_ it
+
+Instrument both. The gap between them is the story.
+
+[stem]
+++++
+\widehat{\tau}_{ITT} \neq \widehat{\tau}_{\text{on the compliers}}
+++++
+
+// ============================================================================
+
+== Sample size and MDE
+
+The _minimum detectable effect_ decides whether the experiment can possibly answer your question.
+
+For a two-sample z-test on means:
+
+[stem]
+++++
+n = 2 \left( \frac{(z_{\alpha/2} + z_\beta) \sigma}{\delta} \right)^2
+++++
+
+Work backwards from the _smallest effect worth acting on_:
+
+* effort improvement < 5% → probably not worth vendor cost
+* < 3% → within noise of a Monday morning
+
+[.lead]
+If your throughput can't reach _n_ in a quarter, redesign.
+
+// ============================================================================
+
+== Guardrails
+
+Guardrails are the outcomes that must _not_ get worse.
+
+They exist because a well-optimised primary outcome can silently break the system.
+
+* Merge queue: queue age, urgent-change latency, CI cost
+* AI reviewer: escaped defects, security findings, cognitive reload, trust calibration
+* CI acceleration: flaky-test rate, cache correctness, missed defects
+* Autonomous agent: unrelated-file mods, license violations, escalation rate
+
+_Every playbook names its guardrails._ Copy that list. Do not shorten it.
+
+// ============================================================================
+
+== Segment 2 — design (25 min)
+
+For your chosen intervention, write:
+
+. *Assignment unit* — and _why_ that unit (interference, shared reviewers, shared infra)
+. *Analysis unit* — usually Engineering Change; justify if different
+. *Exposure instrumentation* — how you will know it was actually used
+. *Eligibility and exclusions* — who is in, who is out, why
+. *Sample size / MDE* — declare latexmath:[$\sigma$], the smallest useful effect latexmath:[$\delta$], compute _n_
+. *Duration* — _n_ divided by your real throughput
+
+_Report back:_ the assignment unit, and the compliance rate you are willing to tolerate before the ITT number becomes uninterpretable.
+
+// ============================================================================
+
+== Pre-registration — what goes in
+
+* *Primary outcome* — one, quality-adjusted, at the Engineering Change level
+* *Guardrail outcomes* — the ones the playbook names
+* *Analysis plan* — estimator, adjustment variables, subgroups
+* *Stopping rule* — how you handle interim looks
+* *Expected effect direction* — sign, rough magnitude, mechanism
+* *Interpretation table* — what each outcome pattern _means_
+
+[quote]
+Pre-analysis plans belong before data, not in the discussion section.
+
+// ============================================================================
+
+== The interpretation table
+
+Decide, _before_ launching, what every outcome means. Four cells:
+
+[cols="1,3,3"]
+|===
+| Outcome | Reading | Action
+
+| *Win*
+| Primary improves ≥ MDE, guardrails hold
+| Adopt; roll out; register decision record
+
+| *Null*
+| Primary within ± MDE of zero, guardrails hold
+| Reject at current cost; revisit at price change or model refresh
+
+| *Regression*
+| Primary worse, or a guardrail breached
+| Reject; investigate mechanism; do not retry the same design
+
+| *Can't tell*
+| CI wider than MDE, or exposure < threshold
+| Extend, redesign, or abandon — do _not_ report as null
+|===
+
+// ============================================================================
+
+== Stopping rules and peeking
+
+Engineering experiments run continuously. Teams peek.
+
+Repeated naive tests at latexmath:[$\alpha = 0.05$] inflate false positives fast (1 look 5%, 5 looks ~14%, 10 looks ~19%).
+
+Pick one, pre-declare, do not deviate:
+
+* *Fixed horizon* — commit to _n_; do not analyse before
+* *Group-sequential (O'Brien-Fleming)* — strict early, conventional late
+* *Always-valid (mSPRT / e-value)* — safe under continuous monitoring
+
+// ============================================================================
+
+== Segment 3 — write the pre-reg (25 min)
+
+Draft, on one sheet:
+
+. *Primary outcome* — expression and window
+. *Guardrails* — from the playbook, verbatim
+. *Analysis plan* — estimator, adjustment, ITT + secondary CACE
+. *Stopping rule* — fixed / OBF / always-valid, with the numbers
+. *Expected direction* — sign and rough magnitude
+. *Interpretation table* — the four cells above, filled in
+
+_Sign it._ Names on the sheet. That signature is the pre-registration.
+
+_Report back:_ read your interpretation table aloud. The room can push back on ambiguous cells.
+
+// ============================================================================
+
+== The failure modes
+
+* *Wrong unit* — PR metrics for Engineering-Change-level effects
+* *Multiple mechanisms* — new model + prompt + UI + policy shipped together
+* *Missing exposure* — assignment recorded, actual use unknown
+* *Short window* — speed measured; quality and learning still to arrive
+* *Interference* — treated and control units affect each other (shared reviewers, shared CI capacity)
+* *Novelty* — the effect is being new, not being better
+* *Seasonality* — the effect is a release freeze
+* *No decision threshold* — significance without practical significance
+
+// ============================================================================
+
+== External factors
+
+Scope to affected entities and time windows, not global notes.
+
+[cols="1,1"]
+|===
+| release and planning cycles | reorganizations
+| holidays and staffing       | new tools or model releases
+| incidents and outages       | repository migrations
+| policy and compliance       | vendor or platform failures
+|===
+
+Every one of these has ended a well-designed experiment. Record them from day one.
+
+// ============================================================================
+
+== Segment 4 — red-team (15 min)
+
+Swap pre-registrations with the next team.
+
+For _their_ design, break it. Look for:
+
+* *Interference* — their assignment unit is porous
+* *Novelty* — the effect will decay in six weeks
+* *Seasonality* — the pilot window is not representative
+* *Non-random assignment* — who volunteered, who was chosen
+* *Missing exposure* — assignment ≠ use
+* *Ambiguous interpretation cell* — the "can't tell" quadrant is not defined
+
+Return the sheet with a red-line list.
+
+_Rule:_ the receiving team must _address_ each red-line — accept, mitigate, or defend — before the pre-reg is final.
+
+// ============================================================================
+
+== Pre-experiment readiness
+
+Do not launch until:
+
+. treatment and control are technically stable
+. assignment and exposure are instrumented
+. primary outcomes and guardrails are available
+. baseline variance and power are understood
+. security, legal, and ethical reviews are complete
+. stopping and rollback rules are defined
+. concurrent interventions are registered
+
+[.lead]
+The cost of a delayed launch is almost always smaller than the cost of a study that has to be redone.
+
+// ============================================================================
+
+== Worked example — the AI-review pre-reg
+
+180 backend teams. Vendor _V_, model _M_ @ 2024-08, prompt _P_ rev 12. Assign by team; analyse by Engineering Change. Stratified by baseline review latency and language.
+
+Baseline latexmath:[$\sigma = 42$] minutes per change; MDE = 8%.
+
+[stem]
+++++
+n = 2 \times \left(\frac{(1.96 + 0.84)\sigma}{0.08 \bar{Y}}\right)^2 \approx 1{,}950\ \text{changes per arm}
+++++
+
+*Result:* −6.4% effort (CI 2.1%–10.7%); escapes unchanged.
+
+Below the pre-declared 8% MDE. Real, but too small at current licensing cost. Interpretation-table cell: _Can't tell → revisit at next model refresh._
+
+// ============================================================================
+
+== Post-experiment decision record
+
+Whatever the outcome, write:
+
+* estimated causal effects and intervals
+* practical significance vs. pre-declared threshold
+* guardrail status
+* heterogeneous effects
+* external-factor sensitivity
+* economic interpretation and limitations
+* *adopt · revise · reject · extend*
+* rollout and monitoring plan
+
+[.lead]
+The output of a good experiment is organizational knowledge — even when the intervention fails.
+
+// ============================================================================
+
+== What you go home with
+
+* A *signed pre-registration* for one experiment you can actually run
+* A *red-line list* from a peer team, with each item addressed
+* A *decision the pre-reg commits you to*, per interpretation cell
+* A *launch date* — or a written reason the design is not yet ready
+
+// ============================================================================
+
+[.title-slide]
+== Close
+
+[.lead]
+Playbooks make the choices explicit before the data arrives.
+
+_Read:_ Chapter 12 of _Engineering Intelligence_. +
+_Pair with:_ the causal-inference workshop when the estimator matters. +
+_Return:_ when the experiment ends. Bring the decision record.

@@ -1,0 +1,285 @@
+= AI-Assisted Engineering
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 7 — AI-Assisted Engineering*
+
+_Modeling AI as a first-class participant in the Engineering Change: contribution, attribution, validation, trust, cost._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== From tool to participant
+
+A compiler transforms source deterministically. An AI reviewer _judges_, ranks, and influences decisions. An agent inspects, edits, tests, and opens PRs.
+
+[.lead]
+These systems participate in engineering work in a qualitatively different way than passive tooling.
+
+Every contribution now carries an *actor type*:
+
+* human
+* AI model
+* agent or orchestration system
+* deterministic automation
+* hybrid human-AI action
+
+// ============================================================================
+
+== Levels of AI participation
+
+[cols="1,3"]
+|===
+| Assistive  | Suggests code, tests, explanations; human controls each action
+| Advisory   | Reviews work, ranks findings, recommends decisions
+| Delegated  | Executes a bounded task under explicit constraints
+| Agentic    | Plans and executes multi-step work, uses tools, revises
+| Autonomous | Operates within a governed scope and escalation policy
+|===
+
+Evaluation requirements scale with autonomy. A completion can be judged at suggestion level; an autonomous migration agent needs task, system, and operational evaluation.
+
+// ============================================================================
+
+== AI contribution records
+
+image::figures/mermaid/ai-contribution-provenance.png[AI contribution provenance]
+
+Every AI contribution should retain: change and artifact IDs, actor, model, provider, version, prompt, policy, context selection, tools, input scope, output, confidence, cost, human actions, downstream revisions, governance.
+
+_Without provenance, you cannot explain why behavior changed after a model, prompt, or index update._
+
+// ============================================================================
+
+== Attribution is a graph problem
+
+AI work is rarely accepted unchanged. A model proposes, a human edits, another model reviews, a reviewer requests more.
+
+Represent contribution as a *derivation graph*: `GENERATED`, `EDITED`, `VERIFIED`, `REJECTED`, `REPLACED`, `INSPIRED`, `DUPLICATED`.
+
+Four distinct attribution objects:
+
+* *Production* — who produced the content
+* *Decision* — who influenced the decision
+* *Accountability* — which human role accepted responsibility
+* *Causal contribution* — did the AI change the outcome vs. counterfactual?
+
+Only the last supports value claims — and it normally requires experimentation.
+
+// ============================================================================
+
+== Evaluating AI code generation
+
+Suggestion acceptance is an _interaction_ measure, not an outcome. Evaluation needs:
+
+* acceptance with and without modification
+* time to usable result
+* compilation and test success
+* defect and security outcomes
+* maintainability and architectural fit
+* duplicated or unnecessary code
+* review burden, downstream rework
+* author understanding
+* task completion and abandonment
+
+At the task level: compare quality-adjusted human effort and accepted outcome — not generated lines.
+
+// ============================================================================
+
+== Evaluating AI review
+
+Findings are information-retrieval + decision-support objects.
+
+[stem]
+++++
+Precision = \frac{TP}{TP+FP} \qquad Recall = \frac{TP}{TP+FN}
+++++
+
+Severity-weighted recall matters more:
+
+[stem]
+++++
+Recall_w = \frac{\sum_{i \in TP} w_i}{\sum_{i \in TP \cup FN} w_i}
+++++
+
+Ranking quality matters because human attention is limited. Use *NDCG*, *precision at k*, and *severe-finding recall at k* so the most important issues appear first.
+
+// ============================================================================
+
+== Ground truth and golden data
+
+A labeled corpus of Engineering Changes with known defects, non-defects, severity, category, context, and expected evidence.
+
+Golden sets should include:
+
+* real historical defects
+* injected or mutation-based defects
+* clean changes to estimate false positives
+* security, concurrency, data, UI, API, ops categories
+* multiple languages and repo types
+* expert-adjudicated ambiguous cases
+
+[.lead]
+Fixed sets overfit. Maintain hidden holdouts. Refresh. Evaluate live.
+
+// ============================================================================
+
+== Human validation burden
+
+AI output must be interpreted and verified.
+
+[stem]
+++++
+VB(e) = T_{inspect} + T_{investigate} + T_{correct} + T_{recover}
+++++
+
+High output volume can raise latexmath:[$VB$] even when inference cost is low.
+
+Proxies: finding views, code navigation after a finding, time to action, independent reproduction, discussion, suggestion modification, rejection reason.
+
+// ============================================================================
+
+== Trust calibration
+
+The goal is *calibrated* trust, not maximum trust.
+
+* Over-trust → automation bias
+* Under-trust → destroys offload value
+
+Trust depends on precision, consistency, explanation quality, confidence honesty, domain fit, and recovery from errors.
+
+Measure: reliance conditional on correctness, rejection of incorrect findings, acceptance of correct high-value findings, behavior change after visible errors, calibration by category and confidence band.
+
+// ============================================================================
+
+== Cognitive offload and reload
+
+image::figures/mermaid/ai-cognitive-workflow.png[AI cognitive workflow]
+
+*Offload*: reduced reasoning, search, production, or verification while preserving outcomes.
+*Reload*: inspecting noisy output, reconstructing hidden assumptions, correcting artifacts, recovering from misplaced trust.
+
+[stem]
+++++
+NCE = W_{offload} - W_{reload}
+++++
+
+Estimate experimentally. Stratify by task type, expertise, and risk.
+
+// ============================================================================
+
+== Quality-adjusted AI leverage
+
+[stem]
+++++
+ALF = \frac{\Delta V + \Delta C_{human} + \Delta C_{quality}}{C_{AI} + C_{validation}}
+++++
+
+Numerator: value added, human cost avoided, expected quality benefit.
+Denominator: AI cost + validation cost.
+
+[.lead]
+A decision model, not a universal score. Assumptions and uncertainty must be visible.
+
+// ============================================================================
+
+== Agents and multi-step tasks
+
+image::figures/mermaid/agent-task-loop.png[Agent task execution loop]
+
+Agent evaluation adds: planning quality, tool selection and permissions, state tracking, recovery from failed steps, verification discipline, boundedness, reproducibility, side effects, final task success.
+
+_A successful pull request is not sufficient if the agent used unsafe permissions, modified unrelated files, or produced hidden operational risk._
+
+// ============================================================================
+
+== Every arrow crosses a trust boundary
+
+image::figures/mermaid/agent-task-sequence.png[Agent–human–environment sequence]
+
+From human intent → autonomous plan → permitted execution surface → human review of evidence.
+
+Each boundary is a place where *instrumentation, permissions, and audit trails must be defined*.
+
+// ============================================================================
+
+== Autonomy and risk tiers
+
+[cols="1,3"]
+|===
+| Low          | Advisory output, easy reversal, non-production, standard validation
+| Moderate     | Bounded writes, required tests, human approval, audit, rollback
+| High         | Sensitive data, security, financial logic, infra, broad blast radius; specialist review, constrained permissions
+| Prohibited   | Actions exceeding policy, legal, safety, or accountability boundaries
+|===
+
+Risk routing must consider both *task risk* and *model uncertainty*.
+
+// ============================================================================
+
+== Drift is a versioned intervention
+
+AI behavior changes because of model upgrades, prompt edits, retrieval changes, repository evolution, or policy configuration.
+
+Monitor: finding volume, precision proxies, action rates, cost, latency, category mix, failure modes, guardrail outcomes.
+
+[.lead]
+A vendor model update without an experiment record can invalidate every historical comparison.
+
+// ============================================================================
+
+== Worked example: an AI reviewer
+
+12,400 PRs, twelve weeks, treated vs. matched control cohort.
+
+* Direct review time saved: *−3.3 min*
+* Author verification of AI findings: *+1.4 min*
+* Reviewer verification: *+1.1 min*
+* Additional rework cycles (probability-weighted): *+0.4 min*
+
+*Net: −0.4 min* — a 2.3% reduction, not the 19% headline.
+
+Escaped-defect rate falls 8% (significant). Quality-retention factor latexmath:[$Q_r = 1.05$] makes QCOI marginally net-positive.
+
+_The case for the tool depends on the quality effect, not the raw time saving._
+
+// ============================================================================
+
+== Common failure modes
+
+* Counting generated code as productivity
+* Treating acceptance as correctness
+* Ignoring human validation cost
+* Evaluating only on synthetic benchmarks
+* Reporting global averages across languages and risk
+* Silent, unversioned model changes
+* Automating beyond the evidence advisory performance provides
+
+// ============================================================================
+
+== Key takeaways
+
+* AI is a *first-class participant* with explicit provenance, cost, and outcomes
+* Attribution splits into *production, decision, accountability, causal*
+* Review evaluation = precision, recall, ranking, validation burden, downstream quality
+* *Acceptance is interaction, not value*
+* Net value = *offload − reload*, quality-adjusted
+* Agents require planning, permissions, recovery, side-effect, and boundedness measures
+* Model, prompt, retrieval, and policy versions are *part of the treatment*
+* Humans remain accountable for accepted engineering outcomes
+
+// ============================================================================
+
+[.title-slide]
+== Next
+
+*Chapter 8 — Complexity and Blast Radius*
+
+Structural risk, dependency depth, coordinated rollback, and why a two-line change can outrank a ten-thousand-line generated client.

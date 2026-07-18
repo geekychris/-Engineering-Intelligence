@@ -185,11 +185,15 @@ footer:
   recto:
     left:
       content: '{document-title}'
+    center:
+      content: 'build {build-date}'
     right:
       content: '{page-number}'
   verso:
     left:
       content: '{page-number}'
+    center:
+      content: 'build {build-date}'
     right:
       content: '{chapter-title}'
 

@@ -84,7 +84,10 @@ initialize_publication_identity() {
   [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]] || \
     fail "SOURCE_COMMIT must be a full 40-character lowercase Git SHA"
 
-  export SOURCE_DATE_EPOCH SOURCE_COMMIT
+  BUILD_DATE="$(date -u -r "$SOURCE_DATE_EPOCH" +'%Y-%m-%d')"
+  BUILD_COMMIT_SHORT="${SOURCE_COMMIT:0:8}"
+
+  export SOURCE_DATE_EPOCH SOURCE_COMMIT BUILD_DATE BUILD_COMMIT_SHORT
 }
 
 initialize_publication_identity
@@ -312,6 +315,8 @@ build_html() {
     --failure-level WARN \
     --safe-mode safe \
     --attribute reproducible \
+    --attribute build-date="$BUILD_DATE" \
+    --attribute build-commit="$BUILD_COMMIT_SHORT" \
     --attribute linkcss! \
     --attribute data-uri \
     --attribute stylesdir="$WORK_DIR/styles" \
@@ -329,6 +334,8 @@ build_pdf() {
     --failure-level WARN \
     --safe-mode safe \
     --attribute reproducible \
+    --attribute build-date="$BUILD_DATE" \
+    --attribute build-commit="$BUILD_COMMIT_SHORT" \
     --attribute pdf-themesdir="$WORK_DIR/themes" \
     --attribute pdf-theme=engineering-intelligence \
     --destination-dir "$RENDER_OUTPUT_DIR" \
@@ -343,6 +350,8 @@ build_epub() {
   bundle exec asciidoctor-epub3 \
     --safe-mode safe \
     --attribute reproducible \
+    --attribute build-date="$BUILD_DATE" \
+    --attribute build-commit="$BUILD_COMMIT_SHORT" \
     --attribute ebook-format=epub3 \
     --destination-dir "$RENDER_OUTPUT_DIR" \
     --out-file engineering-intelligence.epub \

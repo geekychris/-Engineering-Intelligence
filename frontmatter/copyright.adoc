@@ -17,4 +17,6 @@ _Published by_ OrionWorks. Cover art and interior illustration plates by the pub
 Set in Times Roman and Georgia. Diagrams rendered with Mermaid; mathematical typography with MathJax.
 
 First edition — 2026.
+
+Build {build-date} · commit `{build-commit}`
 --

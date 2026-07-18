@@ -1,0 +1,218 @@
+= Introduction to Engineering Intelligence
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 1 — Introduction*
+
+_Engineering Intelligence: measuring, modeling, and improving software engineering as a socio-technical system._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== Why we need a new discipline
+
+Modern engineering orgs are drowning in operational data — commits, builds, deploys, incidents, AI suggestions — yet still cannot answer:
+
+* What does an engineering change actually cost?
+* Where is scarce expert attention consumed?
+* Which review activities prevent defects; which merely add delay?
+* Does an AI reviewer reduce burden, or create a new one?
+
+[.lead]
+The obstacle is not a lack of metrics. It is a lack of _models_.
+
+// ============================================================================
+
+== From metric to model
+
+A *metric* describes an observation.
+A *model* explains how observations relate, supports prediction, and lets rival interventions be compared.
+
+Lead time is useful as a description. It becomes _operationally_ valuable only when you can:
+
+* separate waiting from active work
+* control for change complexity
+* identify the constrained stage
+* estimate an intervention's counterfactual impact
+
+// ============================================================================
+
+== The change in objective
+
+[quote]
+____
+The purpose of engineering measurement is not to count activity.
+It is to improve decisions about how scarce engineering resources are used.
+____
+
+The scarcest resource in most engineering organizations is not compute or money — it is *expert human attention*.
+
+// ============================================================================
+
+== From dashboards to a learning system
+
+image::figures/mermaid/engineering-intelligence-loop.png[The Engineering Intelligence learning loop]
+
+Six capabilities close the loop: *Observation → Reconstruction → Modeling → Explanation → Experimentation → Learning*.
+
+Measurement that does not change a decision is, at best, descriptive.
+
+// ============================================================================
+
+== The limits of familiar productivity measures
+
+* Lines of code, commit count, PR count, story points, utilization — all _local, gameable, context-dependent_
+* DORA metrics and SPACE are system-level foundations, not universal scores
+* Engineering Intelligence _extends_ them with:
+** a richer unit of analysis than the individual PR
+** explicit economic and cognitive models
+** first-class treatment of AI participants
+** an experimentation and causal-inference layer
+
+// ============================================================================
+
+== The Engineering Change
+
+The pull request is a platform artifact. It is not the unit of engineering work.
+
+[IMPORTANT]
+====
+An *Engineering Change* is the set of human, AI, code, configuration, data, infrastructure, review, verification, deployment, and operational activities required to move one coherent engineering intent from conception to an accepted outcome.
+====
+
+One product change may span 8+ PRs, migrations, flags, approvals, deployments — or one PR may bundle several unrelated intents.
+
+// ============================================================================
+
+== The change graph
+
+image::figures/mermaid/engineering-change-graph.png[Engineering Change graph]
+
+* Intent → many PRs, deploys, approvals
+* Attribution runs on the _whole graph_, not the artifact
+* Reconstruction may be explicit (change ID, plan) or probabilistic
+* Confidence and provenance must be preserved
+
+// ============================================================================
+
+== Engineering is a socio-technical system
+
+A two-line config change can be _trivial_ in code and _catastrophic_ in blast radius.
+A 10,000-line generated client can be _large_ and _low-risk_.
+
+Change is a *multidimensional vector*:
+
+[cols="1,3"]
+|===
+| Implementation | control flow, concurrency, language difficulty
+| Domain         | security, distributed systems, regulation
+| Architectural  | services, dependency depth, contracts
+| Verification   | test environments, nondeterminism
+| Deployment     | ordering, migrations, rollback paths
+| Organizational | teams, approvals, decision rights
+| Blast radius   | users, data, money, availability, compliance
+| Novelty        | distance from patterns already understood
+|===
+
+// ============================================================================
+
+== Human attention as an economic resource
+
+An hour of uninterrupted work is not equivalent to twelve five-minute interruptions.
+
+Four kinds of human effort — all real, only some visible:
+
+. *Production* — code, designs, tests, docs
+. *Verification* — review, validate, challenge
+. *Coordination* — align people, schedules, decisions
+. *Recovery* — reconstruct context after interruption
+
+Recovery is usually invisible in cost accounting — and usually the largest hidden number.
+
+// ============================================================================
+
+== AI as a first-class participant
+
+An AI reviewer is not a software license. It participates in engineering work.
+
+* *Cognitive offload* — reasoning avoided because a reliable AI contribution performed it first
+* *Cognitive reload* — extra human work created by noisy or untrustworthy AI output
+
+[.lead]
+Acceptance rate is not evidence of offload. The correct object of study is the causal effect on quality-adjusted outcomes.
+
+// ============================================================================
+
+== Six questions for every metric
+
+. *Purpose* — what decision does it inform?
+. *Definition* — what is counted, at what unit?
+. *Instrumentation* — which events and entities are required?
+. *Interpretation* — what mechanisms move it?
+. *Failure modes* — how can it be biased or gamed?
+. *Actionability* — what intervention becomes possible?
+
+Metrics without a decision or an owner _accumulate cost while adding noise_.
+
+// ============================================================================
+
+== Experimentation as infrastructure
+
+Before-and-after averages mis-attribute. Adoption is non-random. Novelty decays. Definitions drift.
+
+A credible evaluation specifies:
+
+* intervention and mechanism
+* assignment vs. analysis unit
+* primary and guardrail outcomes
+* compliance, interference, stopping rules
+* heterogeneous effects and external events
+
+Randomised experiments _when feasible_; staggered rollouts, diff-in-diff, synthetic controls _when not_.
+
+// ============================================================================
+
+== The reference architecture
+
+image::figures/mermaid/reference-architecture.png[Engineering Intelligence reference architecture]
+
+Separate: *event capture · identity resolution · change reconstruction · features · causal analysis · presentation*.
+
+A number displayed without its definition and model version is not reproducible evidence.
+
+// ============================================================================
+
+== What the rest of the book delivers
+
+* *Foundations* — Engineering Change, economics, cognition, AI, complexity, blast radius
+* *Measurement* — a catalogue of direct and derived measures
+* *Instrumentation* — schemas, identity, streams, knowledge graphs, governance
+* *Experimentation* — randomised and quasi-experimental design, causal inference
+* *Applications* — AI reviewers, merge queues, autonomous agents, portfolio decisions
+
+// ============================================================================
+
+== Key takeaways
+
+* Organizations lack _models_, not metrics
+* The *Engineering Change* — not the PR — is the primary unit
+* *Attention* is the scarce economic resource
+* *AI* is a participant that creates both offload and reload
+* Metrics exist to support _decisions_, not dashboards
+* Engineering Intelligence is a closed loop from observation to learning
+
+// ============================================================================
+
+[.title-slide]
+== Next
+
+*Chapter 2 — Engineering Economics*
+
+The total cost of an Engineering Change · queueing delay · cost-of-delay · attention scarcity multiplier.

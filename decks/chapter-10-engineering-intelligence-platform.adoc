@@ -1,0 +1,278 @@
+= The Engineering Intelligence Platform
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 10 — The Engineering Intelligence Platform*
+
+_From concepts and metrics to a concrete architecture: services, storage, APIs, computation, governance, and operating model._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== From ideas to a platform
+
+The preceding chapters defined the _concepts, metrics, and evidence_.
+This chapter turns them into an operable system.
+
+An Engineering Intelligence platform must answer four classes of questions:
+
+* *What happened?* — reconstruct changes, queues, reviews, deployments, outcomes
+* *Why did it happen?* — constraints, complexity, dependencies, external factors
+* *What is likely to happen next?* — delay, risk, cost, quality
+* *What should we change?* — experiments, routing, prioritization, investment
+
+[.lead]
+It is not a reporting warehouse. It is an evidence and decision system.
+
+// ============================================================================
+
+== Core architectural principles
+
+. Preserve *immutable* raw evidence
+. Separate *canonical entities* from source-specific IDs
+. Treat the *Engineering Change* as the primary unit of analysis
+. Version *events, features, metrics, models, policies*
+. Support both near-real-time and retrospective recomputation
+. Keep *causal assignment* independent from metric computation
+. Expose *uncertainty, provenance, and quality* with every result
+. Minimize surveillance; prohibit unsupported individual ranking
+
+// ============================================================================
+
+== Logical architecture
+
+image::figures/mermaid/engineering-intelligence-platform.png[Engineering Intelligence platform]
+
+Seven planes, each with a distinct responsibility.
+
+// ============================================================================
+
+== The seven planes
+
+[cols="1,3"]
+|===
+| Collection      | connectors, webhooks, CDC, polling, agent telemetry
+| Evidence        | immutable log, raw payloads, deduplication, replay
+| Identity & graph| canonical identities, change reconstruction, topology
+| Computation     | streaming state, batch features, metrics, models, experiments
+| Governance      | schema registry, lineage, privacy, access, retention, audit
+| Decision        | dashboards, alerts, APIs, reports, recommendations
+| Control         | experiment assignment, policy delivery, versions
+|===
+
+// ============================================================================
+
+== Service boundaries
+
+Not one monolith. Nine services with sharp contracts:
+
+* *Source connector* — canonical envelopes, original payloads preserved
+* *Identity* — stable temporal identities for people, AI, repos, services, teams
+* *Engineering Change* — lifecycle, graph membership, confidence, provenance
+* *Topology* — repo, service, data, ownership, and business dependency graphs
+* *Feature* — versioned point-in-time features
+* *Metric* — governed definitions with lineage and uncertainty
+* *Experiment* — eligibility, assignment, exposure, guardrails
+* *Model* — predictive, causal, ranking, reconstruction
+* *Decision product* — APIs, dashboards, alerts tailored per audience
+
+// ============================================================================
+
+== Canonical APIs
+
+Every metric result is a _tuple_: value, interval, sample basis, quality, lineage.
+
+[source,http]
+----
+GET /engineering-changes/{id}/graph
+POST /engineering-changes/{id}:merge
+
+GET /metrics/review-friction/v2.1
+  ?entityType=engineering_change
+  &entityId=EC-01J8...
+  &asOf=2026-07-15T22:00:00Z
+----
+
+[.lead]
+Explicit *version* and *time context* are required — always.
+
+// ============================================================================
+
+== Storage: no single database wins
+
+[cols="1,3"]
+|===
+| Object store / lakehouse | immutable events, history, batch features, snapshots
+| Event broker             | low-latency transport, ordering, replay
+| Relational store         | experiment registry, catalogues, operational state
+| Graph store              | change, repo, service, ownership relationships
+| Search index             | interactive discovery over changes and findings
+| Feature store            | point-in-time online + offline model inputs
+| Analytical warehouse     | large-scale aggregation and reporting
+|===
+
+The canonical source of truth must be explicit for every entity and fact.
+
+// ============================================================================
+
+== Streaming, batch, and graph
+
+*Streaming* maintains lifecycle state, queues, exposure, AI interaction, freshness alerts. Transitions must be *deterministic and replayable*; processors emit changelogs, not opaque state.
+
+*Batch* handles historical reconstruction, semantic code analysis, dependency graphs, ownership networks, complexity features, experiment datasets, model training.
+
+*Incremental graph* processing where possible — complete recomputation available for recovery.
+
+// ============================================================================
+
+== A metric specification language
+
+A declarative definition eliminates divergence between dashboards and experiments.
+
+[source,yaml]
+----
+id: review_friction
+version: 2.1.0
+entity: engineering_change
+construct: review_process_friction
+features:
+  - review_queue_minutes
+  - review_response_cycles
+  - context_recovery_events
+aggregation: weighted_sum
+uncertainty: bootstrap_clustered_by_repository
+guardrails:
+  - severe_escape_rate
+  - rollback_rate
+owner: engineering-intelligence
+----
+
+The engine compiles it into SQL, batch, or streaming plans.
+
+// ============================================================================
+
+== Policy engine: metrics become operational
+
+Metrics matter when they change routing.
+
+* Send *high-blast-radius* changes to specialist review
+* Suppress *low-confidence* duplicate AI comments
+* Prioritize *aged* changes with high cost of delay
+* Require stronger rollout for *irreversible* migrations
+* Route scarce reviewers to *highest expected risk reduction*
+
+[.lead]
+Every policy is versioned, explainable, and linked to an experiment.
+
+// ============================================================================
+
+== Decision products by audience
+
+[cols="1,3"]
+|===
+| Engineer  | current change, dependencies, review queues, AI findings, outcome
+| Team      | flow distributions, WIP, review constraints, quality, experiments
+| Platform  | infrastructure latency, tool cost, drift, source freshness
+| Executive | portfolio cost, value, risk, capacity, intervention evidence
+|===
+
+One governed semantic layer. Different views. Drill-down from aggregate to evidence — without leaking individual detail.
+
+// ============================================================================
+
+== Contracts, SLOs, and freshness
+
+Each _domain_ owns event quality. The *platform* owns canonical contracts, identity, lineage, and shared computation.
+
+Suggested platform SLOs:
+
+* event ingestion availability · source-to-platform lag
+* duplicate and loss rate · reconstruction latency
+* metric freshness · experiment assignment availability
+* replay time · lineage completeness · data-quality alert time
+
+[.lead]
+Freshness must be visible in every product. Stale metrics must not appear current.
+
+// ============================================================================
+
+== Reference implementation roadmap
+
+Six phases, not one big bang:
+
+. *Evidence foundation* — source-control, CI, deploys; canonical envelopes; replay; identity
+. *Engineering Change graph* — explicit IDs where possible, probabilistic elsewhere
+. *Governed metrics* — catalogue, features, lineage, quality
+. *Experimentation* — assignment, exposure, external-factor registry, guardrails
+. *AI and cognitive instrumentation* — contributions, validation, trust, offload
+. *Predictive and prescriptive* — delay, risk, complexity, routing; policy after validation
+
+// ============================================================================
+
+== Common failure modes
+
+* *Universal data lake without decisions* — data accumulates, value unclear
+* *Metrics coupled to dashboards* — definitions diverge, cannot be reproduced
+* *Provenance hidden* — users cannot challenge or correct conclusions
+* *Ownership centralized* — platform team cannot understand every source
+* *Policy automated too early* — unvalidated models create self-reinforcing bias
+* *Operating model ignored* — technology exists; no one owns definitions or action
+
+// ============================================================================
+
+== Build vs buy
+
+[quote]
+____
+Buy commodity capabilities. Retain control of the strategic ones.
+Vendor products should integrate through contracts —
+not become the only place where evidence lives.
+____
+
+*Buy:* connectors, visualization, cataloguing, infrastructure monitoring.
+
+*Build/own:* canonical event history, identity, Engineering Change reconstruction, metric definitions, experiment assignments, AI telemetry, policy logic.
+
+// ============================================================================
+
+== Sequencing first-year value
+
+18 engineer-quarters. Four candidate capabilities. The naive parallel plan slips all four.
+
+The sequenced plan:
+
+* *Q1* — ingestion + descriptive dashboard through governance (7 EQ)
+* *Q2–Q3* — Engineering Change reconstruction on governed ingest (6 EQ)
+* *Q4* — experiment platform against the reconstructed graph (4 EQ)
+
+Outcome by month twelve: two governed executive metrics, one causal experiment on review routing, one adopted blast-radius measure.
+
+[.lead]
+Experiment platform first would have shipped nothing for eight months.
+
+// ============================================================================
+
+== Key takeaways
+
+* An Engineering Intelligence platform is an *evidence, experimentation, and decision* system — not a dashboard stack
+* Sharp *service boundaries* separate collection, identity, graph, features, metrics, experiments, models, decisions
+* *Immutable evidence*, *temporal identities*, *point-in-time features*, and *versioned definitions* are foundational
+* Operational policies must be *explainable, versioned, and experimentally validated*
+* Different audiences, one *governed semantic layer*
+* Deliver *value before automation* — evidence first, prediction later
+
+// ============================================================================
+
+[.title-slide]
+== Next
+
+*Chapter 11 — Adoption, Governance, and the Road Ahead*
+
+Rolling the platform out · governing consequential use · the maturity ratchet · what comes after the reference architecture.

@@ -1,0 +1,279 @@
+= Chapter 13 — Governance, Ethics, and Organizational Adoption
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 13 — Governance, Ethics, and Organizational Adoption*
+
+_The rules, architecture, and operating model that keep Engineering Intelligence legitimate._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== Why this chapter exists
+
+Engineering Intelligence can:
+
+* improve decisions
+* reduce wasted effort
+* make hidden constraints visible
+
+It can also:
+
+* become a surveillance system
+* distort incentives
+* silently repurpose telemetry into performance scoring
+
+[.lead]
+Governance is not paperwork — it decides whether the platform is trusted enough to be used at all.
+
+// ============================================================================
+
+== Measurement changes behavior
+
+Once a metric exists, engineers respond to it. Predictably.
+
+* splitting PRs to inflate throughput
+* delaying issue creation to shorten lead time
+* avoiding hard work that harms personal scores
+* accepting AI suggestions to lift adoption
+* moving coordination into uninstrumented channels
+* optimising deploy count over customer value
+
+Behavioural adaptation is _part of the system being measured_, not a discipline problem.
+
+// ============================================================================
+
+== Goodhart's Law, formalised
+
+[quote]
+____
+When a measure becomes a target, it often ceases to be a good measure.
+____
+
+image::figures/mermaid/metric-corruption-cycle.png[Metric corruption cycle]
+
+Correlation → reward → optimisation of proxy → decoupling from outcome → misleading metric.
+
+The answer is *not* to abandon measurement — it is bundles, guardrails, rotation, and _no individual quotas from diagnostic telemetry_.
+
+// ============================================================================
+
+== Seven foundational principles
+
+[cols="1,3"]
+|===
+| Purpose limitation | Only for declared engineering, safety, or operational decisions
+| Data minimization | Least granular data that answers the question
+| Proportionality | Intrusiveness matches decision importance and risk
+| Transparency | People know what is collected, derived, accessed, decided
+| Contestability | Users can challenge identities, links, classifications
+| Separation of purposes | System telemetry is _not_ performance data
+| Human accountability | Models inform; humans remain accountable
+|===
+
+// ============================================================================
+
+== Acceptable and prohibited uses
+
+[cols="1,3"]
+|===
+| Generally appropriate | Queue bottlenecks, tool evaluation, CI reliability, review routing
+| Heightened governance | Team comparisons, cognitive-burden studies, risk prediction, AI trust
+| Generally inappropriate | Ranking engineers by commits, PRs, review speed, AI acceptance
+| Prohibited (barring exceptional basis) | Covert surveillance, keystroke monitoring, automated employment decisions
+|===
+
+Publish the boundaries *before* broad instrumentation begins.
+
+// ============================================================================
+
+== Individual-level measurement
+
+Some events must retain actor identity to reconstruct changes, approvals, and handoffs.
+That does *not* justify named individual scorecards.
+
+Recommended controls:
+
+* pseudonymous IDs in analytical datasets
+* team or role aggregation by default
+* minimum group-size thresholds
+* audit logs for identity lookups
+* explicit review before *any* new individual-level use
+
+Private self-view is legitimate. Silent repurposing is not.
+
+// ============================================================================
+
+== Metric rights
+
+People represented in the data should have practical rights:
+
+* to know what is measured
+* to understand metric definitions
+* to see relevant personal or team data
+* to correct factual errors
+* to challenge derived classifications
+* to know whether data affects consequential decisions
+* to understand retention and access
+
+[.lead]
+Rights improve trust — and, incidentally, data quality.
+
+// ============================================================================
+
+== Privacy by architecture
+
+Enforce privacy _structurally_, not by policy alone.
+
+* pseudonymisation before analytical processing
+* separate identity vaults
+* row- and column-level authorisation
+* aggregation before broad access
+* short retention for detailed behavioural events
+* irreversible aggregation for long-term trends
+* deletion propagation across raw, graph, feature, metric stores
+
+A dashboard cannot leak data the underlying service never exposes.
+
+// ============================================================================
+
+== Model governance
+
+Every model used for reconstruction, risk, complexity, or routing needs a record:
+
+* owner and accountable approver
+* intended and prohibited uses
+* training and evaluation data
+* features and sensitive attributes
+* subgroup performance, calibration, uncertainty
+* drift monitoring, human override
+* rollback and retirement criteria
+* version history
+
+Models that shape review, permissions, or workload get *greater* scrutiny than exploratory ones.
+
+// ============================================================================
+
+== Fairness without naive parity
+
+Engineering populations differ by role, tenure, location, repo, accessibility, work type.
+
+Metrics can create unequal effects without using protected attributes:
+
+* legacy-system owners look slower
+* new engineers score lower on familiarity
+* specialists appear as delays because they _are_ the bottleneck
+* distributed teams show longer calendar latency
+
+Goal: *avoid unjustified harm from invalid comparisons* — not force identical raw numbers.
+
+// ============================================================================
+
+== Incentive-aware metric design
+
+Before operationalising a metric, ask:
+
+. How could a rational person improve this number *without* improving the outcome?
+. Which work becomes invisible?
+. Who bears the cost of optimisation?
+. What behaviour will be discouraged?
+. What guardrail detects distortion?
+. When should this metric be retired?
+
+[.lead]
+A metric's gaming surface is part of its specification.
+
+// ============================================================================
+
+== A trust model
+
+Trust is not a communications layer. It determines whether people use tools, correct data, join experiments, and believe conclusions.
+
+[stem]
+++++
+Trust = f(Accuracy, Transparency, Benefit, Control, Fairness, Restraint)
+++++
+
+Rises with accuracy, transparency, usefulness, corrigibility, restraint.
+Falls when metrics are surprising, opaque, punitive, or obviously incomplete.
+
+// ============================================================================
+
+== Adoption maturity
+
+[cols="1,3"]
+|===
+| Ad hoc | Local dashboards, inconsistent definitions, limited governance
+| Standardized | Canonical events, metric catalogue, published principles
+| Trusted | Transparent lineage, corrections, privacy controls, participation
+| Experimental | Registered experiments, guardrails, causal evaluation
+| Adaptive | Validated models, continuous monitoring, formal retirement and rollback
+|===
+
+image::figures/mermaid/governance-maturity.png[Engineering Intelligence governance maturity]
+
+// ============================================================================
+
+== Common failure modes
+
+* *Ranking dashboards first* — defensive behaviour before value is proven
+* *Policy without architecture* — rules exist, raw access makes misuse trivial
+* *Consent theater* — informed on paper, no real correction path
+* *Fairness as equal averages* — different work should not produce identical numbers
+* *Permanent experimental telemetry* — one study's data reused forever
+* *Governance only after harm* — oversight built reactively, after behaviour has shifted
+
+// ============================================================================
+
+== A healthier adoption sequence
+
+. Start with visible system problems engineers already feel
+. Publish principles and prohibited uses
+. Deliver local value: queue visibility, CI diagnosis
+. Involve teams in metric definitions
+. Show uncertainty and data quality openly
+. Allow corrections
+. Evaluate interventions, don't rank teams
+. Expand only after trust and usefulness are demonstrated
+
+// ============================================================================
+
+== Worked example: an illegitimate request
+
+A VP asks for "the top 20 lowest-performing engineers" ranked by review-latency contribution.
+
+* Review-latency is registered as Class 2 (organisational decision support)
+* Individual ranking would be Class 4 — currently prohibited
+* Metric owner declines *in writing*, citing registered purpose
+* Request logged as a governance incident
+* Purpose-bound metric API had already blocked the underlying query
+
+Board reaffirms the boundary, updates leadership onboarding. No sanction — the point is to make boundaries *visible*, not to punish first contact.
+
+// ============================================================================
+
+== Key takeaways
+
+* Measurement changes behaviour and incentives
+* Purpose limitation, minimisation, transparency, contestability, separation are foundational
+* System telemetry must not silently become individual performance data
+* Privacy and governance are enforced through *architecture*, not policy alone
+* Models, routing, and experiments need lifecycle governance and rollback
+* Trust is a functional dependency of valid Engineering Intelligence
+* Adoption begins with local value and practitioner participation
+
+// ============================================================================
+
+[.title-slide]
+== Next
+
+*Chapter 14 — From Metrics to a Learning Engineering Organization*
+
+Closing the loop · evidence-led decisions · continuous experimentation · the operating model of a measured engineering system.

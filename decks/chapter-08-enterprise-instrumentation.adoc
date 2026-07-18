@@ -1,0 +1,289 @@
+= Enterprise Instrumentation
+Christopher J. Collins
+:revealjs_theme: white
+:stem: latexmath
+:customcss: themes/engineering-intelligence.css
+
+[.title-slide]
+== &nbsp;
+
+*Chapter 8 — Enterprise Instrumentation*
+
+_The infrastructure required to make Engineering Intelligence reliable, explainable, and governable at scale._
+
+[.authors]
+Christopher J. Collins  ·  Chapter Overview
+
+// ============================================================================
+
+== Instrument the system, not the dashboard
+
+Most analytics programs start with a dashboard and work backward toward data. The result is brittle queries, inconsistent definitions, and local extracts that cannot survive a rerun.
+
+A measurement architecture reverses the flow:
+
+. identify decisions and constructs
+. define canonical entities and events
+. capture raw evidence immutably
+. normalize identity and time
+. reconstruct Engineering Changes
+. compute versioned features and metrics
+. expose evidence through decision products
+
+[.lead]
+The dashboard is the last layer, not the first.
+
+// ============================================================================
+
+== Source domains
+
+[cols="1,3"]
+|===
+| Planning        | initiatives, issues, priority, intent, ownership
+| Source control  | repos, branches, commits, PRs, reviews, approvals
+| Dev environment | builds, tests, agent interactions, work sessions
+| AI systems      | model, prompt, context, findings, cost, latency
+| CI              | jobs, steps, tests, scans, retries, queues, artifacts
+| Deployment      | releases, environments, flags, rollout waves, rollback
+| Production      | metrics, traces, incidents, customer outcomes
+| Organization    | teams, roles, ownership, expertise, calendars
+|===
+
+No source is universally authoritative. Each is authoritative for a bounded type of evidence.
+
+// ============================================================================
+
+== The reference architecture
+
+image::figures/mermaid/enterprise-instrumentation-architecture.png[Enterprise instrumentation architecture]
+
+Collection → Semantic Core → Serving. Immutable evidence flows left; governed decisions flow right.
+
+// ============================================================================
+
+== The canonical event envelope
+
+Every source event wears a common envelope while preserving its original payload.
+
+[source,json]
+----
+{
+  "eventId": "01J9K3...",
+  "eventType": "pull_request.review.submitted",
+  "schemaVersion": "1.3",
+  "eventTime": "...",
+  "ingestionTime": "...",
+  "source": "github-enterprise",
+  "actor": {"type": "human", "id": "person-392"},
+  "engineeringChangeId": "EC-01J8...",
+  "classification": "internal",
+  "payload": { }
+}
+----
+
+Required: uniqueness, source identity, event time, schema version, actor type, provenance, classification.
+
+// ============================================================================
+
+== Three clocks, three questions
+
+* *event time* — when the source activity occurred
+* *ingestion time* — when the platform received it
+* *processing time* — when a computation used it
+
+Late events are normal. Deployments publish after completion; incident links arrive days later; batch imports are out of order.
+
+[.lead]
+Stream processors use event-time windows and watermarks. Historical metrics must support correction and recomputation.
+
+// ============================================================================
+
+== Delivery, idempotency, immutability
+
+* At-least-once is the practical default. Consumers must be idempotent.
+* Use stable event IDs, source sequence numbers, deduplication windows, deterministic upserts.
+* "Exactly-once" marketing does not remove end-to-end idempotency.
+
+Raw source events are retained immutably before transformation — for audit, replay, defect recovery, recomputation, schema migration, forensics, and retraining.
+
+// ============================================================================
+
+== Collection layer
+
+image::figures/mermaid/collection-layer-components.png[Collection layer components]
+
+* Wrap every event in the canonical envelope
+* Retain original payload verbatim
+* Version schemas; treat semantic drift as more dangerous than structural drift
+* Partition and preserve raw evidence before any transformation
+
+// ============================================================================
+
+== Identity resolution
+
+Different systems use different identifiers for the same person, repo, service, team, environment. Identity resolution creates canonical entities and *time-bounded* aliases:
+
+[stem]
+++++
+alias(source, sourceId, canonicalId, [t_s, t_e], confidence)
+++++
+
+Organizational membership changes over time. A pull request must be attributed to the team and ownership state that existed *when the event occurred* — not today's org chart.
+
+Named identity is unnecessary for most system-level questions. Use pseudonyms, role or team aggregation, and minimum-access.
+
+// ============================================================================
+
+== The semantic core
+
+image::figures/mermaid/semantic-core-components.png[Semantic core components]
+
+Where raw events become entities, changes, features, and metrics — all versioned, all point-in-time correct.
+
+// ============================================================================
+
+== Stream vs. batch — latency vs. breadth
+
+[cols="1,1"]
+|===
+| *Stream*                          | *Batch*
+| current Engineering Change state  | historical change reconstruction
+| review, CI, approval queues       | repository and dependency topology
+| aging and stalled work            | ownership and collaboration networks
+| experiment assignment / exposure  | incident attribution
+| AI interaction state              | model training and calibration
+| operational alerts                | long-window experiments
+|===
+
+Not real-time versus accurate. Both must be accurate. The trade is *operational latency versus computational breadth* — and both paths must reconcile against a single canonical definition.
+
+// ============================================================================
+
+== Engineering Change reconstruction
+
+The reconstruction service consumes normalized events and identity mappings, applies deterministic links, computes probabilistic ones, and maintains a temporal Engineering Change graph.
+
+It exposes:
+
+* create, merge, split, close operations
+* membership and confidence
+* parent–child relationships
+* evidence and explanation
+* temporal state and correction history
+* versioned graph snapshots
+
+High-confidence explicit identifiers override weak inferred links unless contradictory authoritative evidence exists.
+
+// ============================================================================
+
+== The engineering knowledge graph
+
+Connects Engineering Changes to people, AI actors, repositories, services, teams, dependencies, builds, deployments, incidents, and outcomes.
+
+Useful queries:
+
+* the critical path across repositories
+* services repeatedly involved in failed changes
+* scarce reviewers bridging many teams
+* incident-to-artifact tracing
+* repository boundaries causing coordination delay
+* shared dependencies with high blast radius
+
+Current ownership and historical ownership are *distinct facts*.
+
+// ============================================================================
+
+== Feature store and metric engine
+
+*Feature store* — versioned, reusable inputs. Every feature has a definition, entity key, event-time semantics, freshness, owner, source lineage, version.
+
+*Metric engine* — separates semantic definition from execution. One spec compiles to stream, SQL, or batch plans.
+
+[.lead]
+Point-in-time correctness is essential: experiment analysis must use features known *before* treatment, not information that arrived after.
+
+// ============================================================================
+
+== Serving layer
+
+image::figures/mermaid/serving-layer-components.png[Serving layer components]
+
+* Governed metric catalogue with versions and guardrails
+* Experiment data plane: deterministic assignment, exposure events, treatment versions, outcome joins
+* Decision products: dashboards, alerts, APIs, reports, recommendations
+* Every reported value carries lineage back to raw evidence
+
+// ============================================================================
+
+== The Engineering Intelligence record
+
+image::figures/mermaid/engineering-intelligence-record-flow.png[Engineering Intelligence record flow]
+
+Every published number should be reproducible from: metric version, feature versions, model version, source schemas, source partitions, computation code, execution time, correction history.
+
+A decision made six months ago must be reproducible even if definitions have since changed.
+
+// ============================================================================
+
+== Data quality as a product outcome
+
+Measure — and enforce thresholds on:
+
+* event completeness, duplicate rate, late-event rate
+* schema-conformance rate
+* identity-resolution confidence
+* Engineering Change linkage coverage
+* contradictory-link rate
+* source freshness, event-to-metric latency
+* replay divergence, orphan entity rate
+
+Measurement systems that silently lose events create misleading confidence. *Fail visibly. Publish freshness.*
+
+// ============================================================================
+
+== Worked example — identity-resolution accuracy
+
+41,290 source identities across six systems → 4,177 canonical actors, validated against 500 hand-labeled samples.
+
+* Precision: latexmath:[$462 / (462 + 8) = 98.3\%$]
+* Recall: latexmath:[$462 / (462 + 9) = 98.1\%$]
+
+Both high — but the consequences are *asymmetric*.
+
+* False positive: work attributed to the wrong person (governance and fairness risk)
+* False negative: under-attribution and inflated headcount
+
+SLO set at precision latexmath:[$\geq 99.0\%$]. Changes below 0.90 confidence are flagged for manual review. Two months later: 0.4% of joins reviewed — absorbable.
+
+// ============================================================================
+
+== Common failure modes
+
+* *Dashboard-first architecture* — local queries become the unofficial data model
+* *Transformed-only storage* — processing defects cannot be replayed or audited
+* *Ignoring temporal identity* — today's org chart applied to yesterday's work
+* *Mixing event and processing time* — late data produces unexplained metric swings
+* *Unversioned schemas and metrics* — history stops being comparable
+* *Excessive behavioral telemetry* — privacy risk up, trust and validity down
+* *Treating one source as universal truth* — no single tool contains intent, implementation, deployment, and outcome
+
+// ============================================================================
+
+== Key takeaways
+
+* Design around *evidence, entities, and decisions* — not dashboards.
+* Canonical envelopes, immutable raw storage, and replay are foundational.
+* Event time, identity, schema, metric, and model *versions* enable reproducibility.
+* Stream and batch serve different needs — and must reconcile against one definition.
+* Engineering Change reconstruction and a temporal knowledge graph connect fragmented evidence.
+* Feature stores require *point-in-time correctness* for valid experiments.
+* Quality, privacy, security, lineage, and reliability are first-class capabilities.
+
+// ============================================================================
+
+[.title-slide]
+== Next
+
+*Chapter 9 — Experimentation and Causal Inference*
+
+From well-governed telemetry to credible causal claims: assignment, exposure, guardrails, and what "the AI reviewer helped" really has to prove.
