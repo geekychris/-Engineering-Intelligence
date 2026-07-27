@@ -1,6 +1,6 @@
 SHELL := /usr/bin/env bash
 
-.PHONY: all html pdf epub decks diagrams validate test source-validate manifest-validate clean clean-diagrams
+.PHONY: all html pdf epub decks diagrams validate test source-validate manifest-validate pages publish clean clean-diagrams clean-pages
 
 all:
 	bash scripts/build.sh all
@@ -37,8 +37,22 @@ source-validate:
 manifest-validate:
 	python3 scripts/validate_manifest.py build
 
+pages: all
+	bash scripts/build-pages.sh build site
+
+publish:
+	@if [[ -n "$$(git status --porcelain)" ]]; then \
+		echo "Working tree is dirty. Commit or stash before publishing."; \
+		exit 1; \
+	fi
+	@echo "Pushing main; the publish-book workflow will deploy Pages."
+	git push origin main
+
 clean-diagrams:
 	rm -rf build/figures/mermaid
 
+clean-pages:
+	rm -rf site
+
 clean:
-	rm -rf build .build-src
+	rm -rf build .build-src site

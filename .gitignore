@@ -1,5 +1,6 @@
 build/
 .build-src/
+site/
 .bundle/
 vendor/bundle/
 node_modules/
