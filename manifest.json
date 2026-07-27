@@ -1,0 +1,26 @@
+{
+  "build_mode": "all",
+  "diagram_count": 42,
+  "files": [
+    {
+      "bytes": 25763136,
+      "name": "engineering-intelligence.html",
+      "sha256": "1715b58da25ec3fedddad0f240900b6edbbb74d46c34abc9de8319c13d2091a6"
+    },
+    {
+      "bytes": 37206387,
+      "name": "engineering-intelligence.pdf",
+      "sha256": "32d5128f56109b4d784658d1c3c65fc210a36f06c355d4e9cc421221ca7d13e6"
+    },
+    {
+      "bytes": 16041783,
+      "name": "engineering-intelligence.epub",
+      "sha256": "6f84dcfe3955595a0e30f19b7819e9c116a8150d614f64645d56a3bb07b25252"
+    }
+  ],
+  "publication_time": "2026-07-18T01:02:43+00:00",
+  "schema_version": 1,
+  "source_commit": "96885dfae546d66122dfd0edb190597d9d1c968f",
+  "source_date_epoch": 1784336563,
+  "title": "Engineering Intelligence"
+}
