@@ -40,13 +40,8 @@ manifest-validate:
 pages: all
 	bash scripts/build-pages.sh build site
 
-publish:
-	@if [[ -n "$$(git status --porcelain)" ]]; then \
-		echo "Working tree is dirty. Commit or stash before publishing."; \
-		exit 1; \
-	fi
-	@echo "Pushing main; the publish-book workflow will deploy Pages."
-	git push origin main
+publish: pages
+	bash scripts/publish-pages.sh
 
 clean-diagrams:
 	rm -rf build/figures/mermaid
