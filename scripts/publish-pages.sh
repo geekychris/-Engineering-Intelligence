@@ -20,10 +20,11 @@ if [[ ! -d "${SITE_DIR}" || ! -f "${SITE_DIR}/index.html" ]]; then
   exit 1
 fi
 
-# Refuse to publish uncommitted source changes silently — the site should
+# Refuse to publish uncommitted tracked changes silently — the site should
 # correspond to a real commit so its "built from <sha>" footer means something.
-if [[ -n "$(git status --porcelain)" ]]; then
-  echo "Working tree is dirty. Commit or stash before publishing." >&2
+# Untracked files are fine; they don't affect HEAD.
+if ! git diff-index --quiet HEAD --; then
+  echo "Tracked files have uncommitted changes. Commit or stash before publishing." >&2
   exit 1
 fi
 
